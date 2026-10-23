@@ -1,1 +1,1 @@
-{"backbone": "ViT-B-32:openai", "size": 224, "mean": [0.48145466, 0.4578275, 0.40821073], "std": [0.26862954, 0.26130258, 0.27577711], "resize": "shorter side to size, then center crop"}
+{"backbone": "ViT-B-32-SigLIP2-256:webli", "size": 256, "mean": [0.5, 0.5, 0.5], "std": [0.5, 0.5, 0.5], "resize": "squash"}

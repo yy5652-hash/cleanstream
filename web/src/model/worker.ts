@@ -3,7 +3,7 @@
 import * as ort from 'onnxruntime-web/wasm'
 
 type Head = { classes: string[]; temperature: number; dim: number; W: number[][]; b: number[] }
-type Prep = { size: number; mean: number[]; std: number[] }
+type Prep = { size: number; mean: number[]; std: number[]; resize: 'squash' | 'shortest' }
 
 const base = new URL(import.meta.env.BASE_URL, self.location.origin).href
 let session: ort.InferenceSession | null = null
@@ -46,15 +46,19 @@ async function fetchWithProgress(url: string): Promise<Uint8Array> {
   return out
 }
 
-// Shorter side to `size`, then a centre crop, then per-channel normalisation (matches training).
+// Resize exactly as in training (the whole photo squashed to size x size, or a centre crop for "shortest"),
+// then per-channel normalisation.
 function pixels(bitmap: ImageBitmap): Float32Array {
-  const { size, mean, std } = prep!
+  const { size, mean, std, resize } = prep!
   const canvas = new OffscreenCanvas(size, size)
   const ctx = canvas.getContext('2d')!
   ctx.imageSmoothingEnabled = true
   ctx.imageSmoothingQuality = 'high'
-  const s = Math.min(bitmap.width, bitmap.height)
-  ctx.drawImage(bitmap, (bitmap.width - s) / 2, (bitmap.height - s) / 2, s, s, 0, 0, size, size)
+  if (resize === 'squash') ctx.drawImage(bitmap, 0, 0, size, size)
+  else {
+    const s = Math.min(bitmap.width, bitmap.height)
+    ctx.drawImage(bitmap, (bitmap.width - s) / 2, (bitmap.height - s) / 2, s, s, 0, 0, size, size)
+  }
   const { data } = ctx.getImageData(0, 0, size, size)
   const out = new Float32Array(3 * size * size)
   const plane = size * size

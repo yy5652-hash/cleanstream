@@ -1,96 +1,96 @@
 {
- "backbone": "ViT-B-32__openai",
+ "backbone": "ViT-B-32-SigLIP2-256__webli",
  "classes": 32,
- "n_train": 9795,
- "n_test": 2245,
- "model_mb": 89,
+ "n_train": 12454,
+ "n_test": 2661,
+ "model_mb": 96,
  "test": {
-  "item_acc": 0.9561034275405893,
-  "material_acc": 0.961662817551963,
-  "n_item": 1663,
-  "n_material": 2165,
+  "item_acc": 0.9062049062049062,
+  "material_acc": 0.9492444788841534,
+  "n_item": 2079,
+  "n_material": 2581,
   "bin_acc": {
-   "nyc": 0.9843656043295249,
-   "sf": 0.9879735417919423,
-   "us": 0.9861695730607336
+   "nyc": 0.9528619528619529,
+   "sf": 0.9567099567099567,
+   "us": 0.9591149591149591
   }
  },
  "external": {
-  "item_acc": 0.5208169677926159,
-  "material_acc": 0.755461592670895,
+  "item_acc": 0.6661429693637078,
+  "material_acc": 0.8130138595254874,
   "n_item": 2546,
   "n_material": 4257,
   "bin_acc": {
-   "nyc": 0.8153967007069913,
-   "sf": 0.8424980361351139,
-   "us": 0.8491751767478397
+   "nyc": 0.8020424194815396,
+   "sf": 0.8189316575019638,
+   "us": 0.8385703063629222
   }
  },
  "zero_shot": {
   "test": {
-   "item_acc": 0.719783523752255,
-   "material_acc": 0.8466512702078522,
-   "n_item": 1663,
-   "n_material": 2165,
+   "item_acc": 0.6921596921596922,
+   "material_acc": 0.8624564122433166,
+   "n_item": 2079,
+   "n_material": 2581,
    "bin_acc": {
-    "nyc": 0.8196031268791341,
-    "sf": 0.9013830426939267,
-    "us": 0.8947684906794949
+    "nyc": 0.8047138047138047,
+    "sf": 0.8547378547378547,
+    "us": 0.8792688792688793
    }
   },
   "external": {
-   "item_acc": 0.33935585231736054,
-   "material_acc": 0.6272022551092319,
+   "item_acc": 0.3809897879025923,
+   "material_acc": 0.7084801503406155,
    "n_item": 2546,
    "n_material": 4257,
    "bin_acc": {
-    "nyc": 0.5852317360565593,
-    "sf": 0.683032207384132,
-    "us": 0.6987431264728987
+    "nyc": 0.6001571091908877,
+    "sf": 0.6520031421838177,
+    "us": 0.6700706991358995
    }
   }
  },
  "answered": {
   "nyc": {
    "val": {
-    "coverage": 0.9932014833127317,
-    "accuracy_answered": 0.9900435594275047
+    "coverage": 0.967654986522911,
+    "accuracy_answered": 0.9726090993500465
    },
    "test": {
-    "coverage": 0.9903788334335538,
-    "accuracy_answered": 0.9902853673345476
+    "coverage": 0.9706589706589707,
+    "accuracy_answered": 0.9658077304261645
    },
    "external": {
-    "coverage": 0.8692065985860172,
-    "accuracy_answered": 0.8639855399909625
+    "coverage": 0.8075412411626081,
+    "accuracy_answered": 0.8759727626459144
    }
   },
   "sf": {
    "val": {
-    "coverage": 0.9969097651421508,
-    "accuracy_answered": 0.9925604463732176
+    "coverage": 0.9748427672955975,
+    "accuracy_answered": 0.9709677419354839
    },
    "test": {
-    "coverage": 0.9915814792543596,
-    "accuracy_answered": 0.9933292904790783
+    "coverage": 0.9778739778739779,
+    "accuracy_answered": 0.9680275454992622
    },
    "external": {
-    "coverage": 0.9018067556952082,
-    "accuracy_answered": 0.8680313588850174
+    "coverage": 0.8440691280439906,
+    "accuracy_answered": 0.8776174965100046
    }
   },
   "us": {
    "val": {
-    "coverage": 0.9938195302843016,
-    "accuracy_answered": 0.9925373134328358
+    "coverage": 0.9532794249775381,
+    "accuracy_answered": 0.9679547596606974
    },
    "test": {
-    "coverage": 0.9909801563439568,
-    "accuracy_answered": 0.991504854368932
+    "coverage": 0.9552669552669553,
+    "accuracy_answered": 0.9753272910372608
    },
    "external": {
-    "coverage": 0.8857030636292224,
-    "accuracy_answered": 0.8789356984478935
+    "coverage": 0.8232521602513747,
+    "accuracy_answered": 0.8950381679389313
    }
   }
  },
@@ -114,7 +114,7 @@
    "url": "http://tacodataset.org",
    "license": "CC BY 4.0",
    "role": "train / test",
-   "images": 0
+   "images": 3670
   },
   {
    "name": "RealWaste",

@@ -1,44 +1,122 @@
 [
  {
-  "file": "00-cardboard.jpg",
+  "file": "00-plastic_bottle.jpg",
+  "label": "plastic_bottle",
+  "source": "TACO (CC BY 4.0)",
+  "origin": "taco_crops_p110/330.jpg"
+ },
+ {
+  "file": "01-metal_can.jpg",
+  "label": "metal_can",
+  "source": "TACO (CC BY 4.0)",
+  "origin": "taco_crops_p110/162.jpg"
+ },
+ {
+  "file": "02-plastic_bag_film.jpg",
+  "label": "plastic_bag_film",
+  "source": "TACO (CC BY 4.0)",
+  "origin": "taco_crops_p110/2770.jpg"
+ },
+ {
+  "file": "03-cardboard.jpg",
   "label": "cardboard",
   "source": "Garbage Dataset (MIT)",
-  "origin": "garbage_v2/standardized_384/cardboard/cardboard_826.jpg"
+  "origin": "garbage_v2/standardized_384/cardboard/cardboard_1173.jpg"
  },
  {
-  "file": "01-glass_bottle_jar.jpg",
+  "file": "04-glass_bottle_jar.jpg",
   "label": "glass_bottle_jar",
   "source": "Garbage Dataset (MIT)",
-  "origin": "garbage_v2/standardized_384/glass/glass_1568.jpg"
+  "origin": "garbage_v2/standardized_384/glass/glass_132.jpg"
  },
  {
-  "file": "02-food_scraps.jpg",
+  "file": "05-paper_cup.jpg",
+  "label": "paper_cup",
+  "source": "TACO (CC BY 4.0)",
+  "origin": "taco_crops_p110/1052.jpg"
+ },
+ {
+  "file": "06-food_scraps.jpg",
   "label": "food_scraps",
   "source": "Garbage Dataset (MIT)",
-  "origin": "garbage_v2/standardized_384/biological/biological_411.jpg"
+  "origin": "garbage_v2/standardized_384/biological/biological_389.jpg"
  },
  {
-  "file": "03-battery.jpg",
+  "file": "07-battery.jpg",
   "label": "battery",
   "source": "Garbage Dataset (MIT)",
-  "origin": "garbage_v2/standardized_384/battery/battery_171.jpg"
+  "origin": "garbage_v2/standardized_384/battery/battery_177.jpg"
  },
  {
-  "file": "04-paper.jpg",
+  "file": "08-snack_wrapper.jpg",
+  "label": "snack_wrapper",
+  "source": "TACO (CC BY 4.0)",
+  "origin": "taco_crops_p110/793.jpg"
+ },
+ {
+  "file": "09-paper.jpg",
   "label": "paper",
   "source": "Garbage Dataset (MIT)",
-  "origin": "garbage_v2/standardized_384/paper/paper_1204.jpg"
+  "origin": "garbage_v2/standardized_384/paper/paper_372.jpg"
  },
  {
-  "file": "05-textile.jpg",
+  "file": "10-textile.jpg",
   "label": "textile",
   "source": "Garbage Dataset (MIT)",
-  "origin": "garbage_v2/standardized_384/clothes/clothes_781.jpg"
+  "origin": "garbage_v2/standardized_384/clothes/clothes_105.jpg"
  },
  {
-  "file": "06-shoes.jpg",
+  "file": "11-foam.jpg",
+  "label": "foam",
+  "source": "TACO (CC BY 4.0)",
+  "origin": "taco_crops_p110/1593.jpg"
+ },
+ {
+  "file": "12-carton.jpg",
+  "label": "carton",
+  "source": "TACO (CC BY 4.0)",
+  "origin": "taco_crops_p110/35.jpg"
+ },
+ {
+  "file": "13-shoes.jpg",
   "label": "shoes",
   "source": "Garbage Dataset (MIT)",
-  "origin": "garbage_v2/standardized_384/shoes/shoes_1154.jpg"
+  "origin": "garbage_v2/standardized_384/shoes/shoes_376.jpg"
+ },
+ {
+  "file": "14-plastic_container.jpg",
+  "label": "plastic_container",
+  "source": "TACO (CC BY 4.0)",
+  "origin": "taco_crops_p110/1698.jpg"
+ },
+ {
+  "file": "15-aluminum_foil.jpg",
+  "label": "aluminum_foil",
+  "source": "TACO (CC BY 4.0)",
+  "origin": "taco_crops_p110/1759.jpg"
+ },
+ {
+  "file": "16-cigarette_butt.jpg",
+  "label": "cigarette_butt",
+  "source": "TACO (CC BY 4.0)",
+  "origin": "taco_crops_p110/1716.jpg"
+ },
+ {
+  "file": "17-drinking_glass_ceramic.jpg",
+  "label": "drinking_glass_ceramic",
+  "source": "TACO (CC BY 4.0)",
+  "origin": "taco_crops_p110/4059.jpg"
+ },
+ {
+  "file": "18-plastic_cup.jpg",
+  "label": "plastic_cup",
+  "source": "TACO (CC BY 4.0)",
+  "origin": "taco_crops_p110/3102.jpg"
+ },
+ {
+  "file": "19-pizza_box.jpg",
+  "label": "pizza_box",
+  "source": "TACO (CC BY 4.0)",
+  "origin": "taco_crops_p110/717.jpg"
  }
 ]

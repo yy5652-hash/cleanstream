@@ -131,6 +131,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("key")
     ap.add_argument("--export")
+    ap.add_argument("--aug", action="store_true", help="add augmented views of training photos (ml/embed_aug.py)")
     a = ap.parse_args()
     rows, X, T = load(a.key)
     packs = {p.stem: json.loads(p.read_text()) for p in sorted((ROOT / "web/public/rules").glob("*.json"))}
@@ -146,8 +147,17 @@ def main():
     Mall = np.array([[MATERIAL[n] == r["material"] for n in NAMES] for r in rows])
     val, test = (split == "val") & ours, (split == "test") & ours
 
+    Xa, ia = np.zeros((0, X.shape[1]), np.float32), np.zeros(0, int)
+    if a.aug:
+        where = {r["path"]: i for i, r in enumerate(rows)}
+        Xa = np.load(CACHE / f"{a.key}.aug.npy").astype(np.float32)
+        ia = np.array([where[p] for p in (CACHE / f"{a.key}.aug.paths.txt").read_text().splitlines()])
+
     def fit(mask, lam):
-        return fit_head(X[mask & has], y_all[mask & has], T, lam, X[mask & coarse], Mall[mask & coarse])
+        """Head trained on the rows in mask, plus their augmented views when --aug is on."""
+        la, ca = mask[ia] & has[ia], mask[ia] & coarse[ia]
+        return fit_head(np.concatenate([X[mask & has], Xa[la]]), np.concatenate([y_all[mask & has], y_all[ia[la]]]), T, lam,
+                        np.concatenate([X[mask & coarse], Xa[ca]]), np.concatenate([Mall[mask & coarse], Mall[ia[ca]]]))
 
     def item_acc(Wm, bm, mask):
         j = np.where(mask & has)[0]
@@ -164,7 +174,7 @@ def main():
     vi = np.where(val & has)[0]
     temp = fit_temperature(X[vi] @ W.T + b, y_all[vi])
     zs_W, zs_b = T * SCALE, np.zeros(len(NAMES))
-    report = {"backbone": a.key, "train_sources": TRAIN_SOURCES, "external_test": EXTERNAL, "dropped_duplicates": n_dup,
+    report = {"backbone": a.key, "augmented_views": int(len(ia)), "train_sources": TRAIN_SOURCES, "external_test": EXTERNAL, "dropped_duplicates": n_dup,
               "train_counts": dict(Counter(rows[i]["label"] or rows[i]["material"] + "*" for i in np.where(pool)[0])),
               "n_train": int(pool.sum()), "n_val": int(val.sum()), "n_test": int(test.sum()), "n_external": int(ext.sum()),
               "lambda_grid": grid, "lam": lam, "temperature": temp}

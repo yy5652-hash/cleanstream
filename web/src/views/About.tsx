@@ -33,7 +33,7 @@ export default function About({ packs }: { packs: Pack[] }) {
 
       <div className="pipeline">
         <div><b>1. Photo</b>Camera, upload, or a bin-station tablet. It stays on the device.</div>
-        <div><b>2. Image encoder</b>Open CLIP image model, 8-bit, running in WebAssembly.</div>
+        <div><b>2. Image encoder</b>SigLIP 2 (ViT-B/32), open weights stored in 8 bits, running in WebAssembly.</div>
         <div><b>3. Item head</b>{m?.classes ?? 32} item types, chosen by what changes the bin.</div>
         <div><b>4. Rule pack</b>The city's bin for that item, plus prep steps and a source link.</div>
         <div><b>5. Answer or ask</b>Probabilities are summed per bin. Below 60% it says it is not sure.</div>
@@ -53,7 +53,7 @@ export default function About({ packs }: { packs: Pack[] }) {
               <thead><tr><th>Test set</th><th>Model</th><th>Item type</th><th>Material</th>{packs.map((p) => <th key={p.id}>Bin ({p.name})</th>)}</tr></thead>
               <tbody>
                 {([['Held-out test split', 'test'], ['RealWaste (never seen)', 'external']] as const).map(([name, k]) => (
-                  [['Zero-shot CLIP', m.zero_shot[k]], ['Cleanstream', m[k]]] as const).map(([model, s], i) => (
+                  [['Text prompts only (zero-shot)', m.zero_shot[k]], ['Cleanstream', m[k]]] as const).map(([model, s], i) => (
                   <tr key={name + model}>
                     <td>{i === 0 ? <strong>{name}</strong> : null}</td>
                     <td>{model}</td>
@@ -66,7 +66,7 @@ export default function About({ packs }: { packs: Pack[] }) {
             </table>
           </div>
           <p className="small muted">
-            Item head trained on {m.n_train.toLocaleString()} photos. Every number above is measured with the same {m.model_mb} MB 8-bit model that ships in this page.
+            Item head trained on {m.n_train.toLocaleString()} photos. Every number above is measured with the same {m.model_mb} MB model file that ships in this page.
             Bin accuracy counts the bin the app would show. Training images that were near-copies of any test image were removed first.
           </p>
         </>
@@ -76,7 +76,8 @@ export default function About({ packs }: { packs: Pack[] }) {
       <ul>
         <li><b>Item types follow the rules, not the material.</b> A plastic bottle and a plastic bag are both plastic, but most cities want them in different places, so they are different classes.</li>
         <li><b>It learns from coarse labels too.</b> Thousands of public photos are only labelled "plastic" or "metal". A partial-label loss lets those photos teach the model without guessing their exact type.</li>
-        <li><b>It keeps what CLIP already knows.</b> The classifier starts from CLIP's text descriptions of each item and is pulled back toward them while it trains, so rare items with few photos are still recognised.</li>
+        <li><b>It keeps what the encoder already knows.</b> The classifier starts from the model's own text descriptions of each item ("a crumpled chip bag") and is pulled back toward them while it trains. Item types with no training photos keep their text-only weights, so they are still recognised.</li>
+        <li><b>It was tested on photos from somewhere else.</b> RealWaste, photos of real waste at a landfill sorting line, is never used for training or tuning. It shows how the model holds up on photos unlike its training data.</li>
         <li><b>It knows when to ask.</b> The app adds up probability per bin, so it can be sure of the bin even when two item types look alike, and it says so plainly when it is not.</li>
       </ul>
 
@@ -103,7 +104,7 @@ export default function About({ packs }: { packs: Pack[] }) {
               </tbody>
             </table>
           </div>
-          <p className="small muted">Image encoder: {m.backbone.replace('__', ' / ')} (open_clip). Rule sources are linked on the Rules tab.</p>
+          <p className="small muted">Image encoder: SigLIP 2 ViT-B/32 at 256 px (Google, Apache 2.0), loaded through open_clip and exported to ONNX. Runtime: ONNX Runtime Web. Rule sources are linked on the Rules tab.</p>
         </>
       )}
     </div>

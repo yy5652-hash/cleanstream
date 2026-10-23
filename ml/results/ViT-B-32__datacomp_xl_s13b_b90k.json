@@ -1,0 +1,521 @@
+{
+ "backbone": "ViT-B-32__datacomp_xl_s13b_b90k",
+ "augmented_views": 0,
+ "train_sources": [
+  "trashnet",
+  "garbage_v2",
+  "taco"
+ ],
+ "external_test": "realwaste",
+ "dropped_duplicates": 15,
+ "train_counts": {
+  "cardboard": 1409,
+  "glass_bottle_jar": 1653,
+  "metal*": 949,
+  "paper": 1425,
+  "plastic*": 1461,
+  "battery": 507,
+  "food_scraps": 478,
+  "textile": 1307,
+  "shoes": 1020,
+  "plastic_bottle": 240,
+  "plastic_lid_cap": 185,
+  "aerosol_can": 6,
+  "metal_can": 173,
+  "drinking_glass_ceramic": 81,
+  "metal_lid_scrap": 138,
+  "foam": 100,
+  "plastic_bag_film": 393,
+  "plastic_container": 42,
+  "paper_cup": 50,
+  "snack_wrapper": 216,
+  "cigarette_butt": 368,
+  "plastic_utensil_straw": 115,
+  "paper_bag": 22,
+  "aluminum_foil": 40,
+  "blister_pack": 6,
+  "squeezable_tube": 5,
+  "rope_string": 20,
+  "carton": 33,
+  "soiled_paper": 24,
+  "plastic_cup": 71,
+  "mask_gloves": 3,
+  "pizza_box": 1
+ },
+ "n_train": 12541,
+ "n_val": 2822,
+ "n_test": 2661,
+ "n_external": 4752,
+ "lambda_grid": {
+  "0.0": {
+   "val": 0.8903863432165319,
+   "lodo_val": 0.6631979441480247
+  },
+  "0.0003": {
+   "val": 0.8912848158131177,
+   "lodo_val": 0.6862679113413916
+  },
+  "0.001": {
+   "val": 0.8854447439353099,
+   "lodo_val": 0.6902272389057723
+  },
+  "0.003": {
+   "val": 0.8737646001796945,
+   "lodo_val": 0.6883390153336939
+  },
+  "0.01": {
+   "val": 0.8530997304582211,
+   "lodo_val": 0.6746438179897837
+  },
+  "0.03": {
+   "val": 0.8333333333333334,
+   "lodo_val": 0.6612578731750655
+  }
+ },
+ "lam": 0.0003,
+ "temperature": 1.2,
+ "test": {
+  "zero_shot": {
+   "all": {
+    "n_item": 2079,
+    "item_acc": 0.6551226551226551,
+    "n_material": 2581,
+    "material_acc": 0.8148004649360713,
+    "bin_acc_nyc": 0.7710437710437711,
+    "bin_acc_sf": 0.8157768157768158,
+    "bin_acc_us": 0.8475228475228476
+   },
+   "garbage_v2": {
+    "n_item": 1445,
+    "item_acc": 0.7391003460207612,
+    "n_material": 1830,
+    "material_acc": 0.8770491803278688,
+    "bin_acc_nyc": 0.8179930795847751,
+    "bin_acc_sf": 0.8830449826989619,
+    "bin_acc_us": 0.8975778546712803
+   },
+   "taco": {
+    "n_item": 416,
+    "item_acc": 0.43509615384615385,
+    "n_material": 416,
+    "material_acc": 0.5841346153846154,
+    "bin_acc_nyc": 0.6730769230769231,
+    "bin_acc_sf": 0.6706730769230769,
+    "bin_acc_us": 0.7692307692307693
+   },
+   "trashnet": {
+    "n_item": 218,
+    "item_acc": 0.518348623853211,
+    "n_material": 335,
+    "material_acc": 0.7611940298507462,
+    "bin_acc_nyc": 0.6467889908256881,
+    "bin_acc_sf": 0.6467889908256881,
+    "bin_acc_us": 0.6651376146788991
+   }
+  },
+  "cleanstream": {
+   "all": {
+    "n_item": 2079,
+    "item_acc": 0.897065897065897,
+    "n_material": 2581,
+    "material_acc": 0.9407206509104998,
+    "bin_acc_nyc": 0.949013949013949,
+    "bin_acc_sf": 0.9581529581529582,
+    "bin_acc_us": 0.9600769600769601
+   },
+   "garbage_v2": {
+    "n_item": 1445,
+    "item_acc": 0.9660899653979239,
+    "n_material": 1830,
+    "material_acc": 0.9775956284153006,
+    "bin_acc_nyc": 0.9916955017301038,
+    "bin_acc_sf": 0.9944636678200692,
+    "bin_acc_us": 0.9930795847750865
+   },
+   "taco": {
+    "n_item": 416,
+    "item_acc": 0.6538461538461539,
+    "n_material": 416,
+    "material_acc": 0.7692307692307693,
+    "bin_acc_nyc": 0.7836538461538461,
+    "bin_acc_sf": 0.8149038461538461,
+    "bin_acc_us": 0.8317307692307693
+   },
+   "trashnet": {
+    "n_item": 218,
+    "item_acc": 0.9036697247706422,
+    "n_material": 335,
+    "material_acc": 0.9522388059701492,
+    "bin_acc_nyc": 0.981651376146789,
+    "bin_acc_sf": 0.9908256880733946,
+    "bin_acc_us": 0.9862385321100917
+   }
+  }
+ },
+ "external": {
+  "zero_shot": {
+   "all": {
+    "n_item": 2546,
+    "item_acc": 0.3201099764336214,
+    "n_material": 4257,
+    "material_acc": 0.6629081512802443,
+    "bin_acc_nyc": 0.5577376276512176,
+    "bin_acc_sf": 0.593872741555381,
+    "bin_acc_us": 0.6402199528672428
+   },
+   "realwaste": {
+    "n_item": 2546,
+    "item_acc": 0.3201099764336214,
+    "n_material": 4257,
+    "material_acc": 0.6629081512802443,
+    "bin_acc_nyc": 0.5577376276512176,
+    "bin_acc_sf": 0.593872741555381,
+    "bin_acc_us": 0.6402199528672428
+   }
+  },
+  "cleanstream": {
+   "all": {
+    "n_item": 2546,
+    "item_acc": 0.6158680282796544,
+    "n_material": 4257,
+    "material_acc": 0.7639182522903453,
+    "bin_acc_nyc": 0.7482325216025137,
+    "bin_acc_sf": 0.7741555380989787,
+    "bin_acc_us": 0.8248232521602514
+   },
+   "realwaste": {
+    "n_item": 2546,
+    "item_acc": 0.6158680282796544,
+    "n_material": 4257,
+    "material_acc": 0.7639182522903453,
+    "bin_acc_nyc": 0.7482325216025137,
+    "bin_acc_sf": 0.7741555380989787,
+    "bin_acc_us": 0.8248232521602514
+   }
+  }
+ },
+ "thresholds": {
+  "nyc": {
+   "val": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.9550763701707098
+    },
+    "0.5": {
+     "coverage": 0.9860736747529201,
+     "accuracy_answered": 0.9612756264236902
+    },
+    "0.6": {
+     "coverage": 0.9627133872416891,
+     "accuracy_answered": 0.9710685954269715
+    },
+    "0.7": {
+     "coverage": 0.9330637915543576,
+     "accuracy_answered": 0.9773712084737602
+    },
+    "0.8": {
+     "coverage": 0.8876909254267745,
+     "accuracy_answered": 0.9873481781376519
+    }
+   },
+   "test": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.949013949013949
+    },
+    "0.5": {
+     "coverage": 0.9817219817219818,
+     "accuracy_answered": 0.9554140127388535
+    },
+    "0.6": {
+     "coverage": 0.9600769600769601,
+     "accuracy_answered": 0.9629258517034068
+    },
+    "0.7": {
+     "coverage": 0.9288119288119289,
+     "accuracy_answered": 0.9735888140859659
+    },
+    "0.8": {
+     "coverage": 0.9062049062049062,
+     "accuracy_answered": 0.9808917197452229
+    }
+   },
+   "external": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.7482325216025137
+    },
+    "0.5": {
+     "coverage": 0.8821681068342498,
+     "accuracy_answered": 0.7943009795191451
+    },
+    "0.6": {
+     "coverage": 0.7666928515318147,
+     "accuracy_answered": 0.8401639344262295
+    },
+    "0.7": {
+     "coverage": 0.6677140612725845,
+     "accuracy_answered": 0.8811764705882353
+    },
+    "0.8": {
+     "coverage": 0.5569520816967792,
+     "accuracy_answered": 0.919605077574048
+    }
+   }
+  },
+  "sf": {
+   "val": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.9577717879604672
+    },
+    "0.5": {
+     "coverage": 0.9959568733153639,
+     "accuracy_answered": 0.9598556608028868
+    },
+    "0.6": {
+     "coverage": 0.9761904761904762,
+     "accuracy_answered": 0.9696272434422457
+    },
+    "0.7": {
+     "coverage": 0.9501347708894878,
+     "accuracy_answered": 0.9787234042553191
+    },
+    "0.8": {
+     "coverage": 0.9088050314465409,
+     "accuracy_answered": 0.9866534849233811
+    }
+   },
+   "test": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.9581529581529582
+    },
+    "0.5": {
+     "coverage": 0.9947089947089947,
+     "accuracy_answered": 0.9613152804642167
+    },
+    "0.6": {
+     "coverage": 0.9745069745069745,
+     "accuracy_answered": 0.9689042448173741
+    },
+    "0.7": {
+     "coverage": 0.9461279461279462,
+     "accuracy_answered": 0.9766141331977631
+    },
+    "0.8": {
+     "coverage": 0.9235209235209235,
+     "accuracy_answered": 0.9838541666666667
+    }
+   },
+   "external": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.7741555380989787
+    },
+    "0.5": {
+     "coverage": 0.924980361351139,
+     "accuracy_answered": 0.7987261146496816
+    },
+    "0.6": {
+     "coverage": 0.8118617439120188,
+     "accuracy_answered": 0.8432510885341074
+    },
+    "0.7": {
+     "coverage": 0.7058130400628436,
+     "accuracy_answered": 0.8825820812465219
+    },
+    "0.8": {
+     "coverage": 0.5993715632364494,
+     "accuracy_answered": 0.9207077326343381
+    }
+   }
+  },
+  "us": {
+   "val": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.9532794249775381
+    },
+    "0.5": {
+     "coverage": 0.9793351302785265,
+     "accuracy_answered": 0.9619266055045872
+    },
+    "0.6": {
+     "coverage": 0.944743935309973,
+     "accuracy_answered": 0.9747979077508322
+    },
+    "0.7": {
+     "coverage": 0.9115004492362982,
+     "accuracy_answered": 0.9837358304583539
+    },
+    "0.8": {
+     "coverage": 0.8652291105121294,
+     "accuracy_answered": 0.9890965732087228
+    }
+   },
+   "test": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.9600769600769601
+    },
+    "0.5": {
+     "coverage": 0.9793169793169794,
+     "accuracy_answered": 0.9690569744597249
+    },
+    "0.6": {
+     "coverage": 0.9543049543049543,
+     "accuracy_answered": 0.9747983870967742
+    },
+    "0.7": {
+     "coverage": 0.9225589225589226,
+     "accuracy_answered": 0.9843587069864442
+    },
+    "0.8": {
+     "coverage": 0.8951418951418951,
+     "accuracy_answered": 0.9887157442235357
+    }
+   },
+   "external": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.8248232521602514
+    },
+    "0.5": {
+     "coverage": 0.8860958366064414,
+     "accuracy_answered": 0.8554964539007093
+    },
+    "0.6": {
+     "coverage": 0.7827965435978005,
+     "accuracy_answered": 0.88509784244857
+    },
+    "0.7": {
+     "coverage": 0.678318931657502,
+     "accuracy_answered": 0.9102489866821077
+    },
+    "0.8": {
+     "coverage": 0.575019638648861,
+     "accuracy_answered": 0.9351092896174863
+    }
+   }
+  }
+ },
+ "per_class_test": {
+  "plastic_bottle": {
+   "n": 36,
+   "acc": 0.7222222222222222
+  },
+  "plastic_container": {
+   "n": 5,
+   "acc": 0.6
+  },
+  "plastic_cup": {
+   "n": 16,
+   "acc": 0.6875
+  },
+  "plastic_lid_cap": {
+   "n": 33,
+   "acc": 0.696969696969697
+  },
+  "plastic_bag_film": {
+   "n": 65,
+   "acc": 0.7230769230769231
+  },
+  "snack_wrapper": {
+   "n": 24,
+   "acc": 0.5833333333333334
+  },
+  "foam": {
+   "n": 18,
+   "acc": 0.4444444444444444
+  },
+  "plastic_utensil_straw": {
+   "n": 50,
+   "acc": 0.74
+  },
+  "paper": {
+   "n": 305,
+   "acc": 0.9114754098360656
+  },
+  "paper_bag": {
+   "n": 1,
+   "acc": 1.0
+  },
+  "cardboard": {
+   "n": 276,
+   "acc": 0.927536231884058
+  },
+  "pizza_box": {
+   "n": 1,
+   "acc": 0.0
+  },
+  "soiled_paper": {
+   "n": 9,
+   "acc": 0.4444444444444444
+  },
+  "paper_cup": {
+   "n": 4,
+   "acc": 0.5
+  },
+  "carton": {
+   "n": 7,
+   "acc": 0.14285714285714285
+  },
+  "metal_can": {
+   "n": 37,
+   "acc": 0.5945945945945946
+  },
+  "aluminum_foil": {
+   "n": 7,
+   "acc": 0.5714285714285714
+  },
+  "aerosol_can": {
+   "n": 1,
+   "acc": 1.0
+  },
+  "metal_lid_scrap": {
+   "n": 14,
+   "acc": 0.6428571428571429
+  },
+  "glass_bottle_jar": {
+   "n": 336,
+   "acc": 0.9107142857142857
+  },
+  "drinking_glass_ceramic": {
+   "n": 5,
+   "acc": 0.2
+  },
+  "food_scraps": {
+   "n": 116,
+   "acc": 0.9396551724137931
+  },
+  "battery": {
+   "n": 138,
+   "acc": 0.9927536231884058
+  },
+  "textile": {
+   "n": 313,
+   "acc": 1.0
+  },
+  "shoes": {
+   "n": 216,
+   "acc": 1.0
+  },
+  "cigarette_butt": {
+   "n": 39,
+   "acc": 0.8974358974358975
+  },
+  "rope_string": {
+   "n": 5,
+   "acc": 0.2
+  },
+  "squeezable_tube": {
+   "n": 1,
+   "acc": 0.0
+  },
+  "mask_gloves": {
+   "n": 1,
+   "acc": 0.0
+  }
+ }
+}

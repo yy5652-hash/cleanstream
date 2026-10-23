@@ -1,6 +1,10 @@
 """Image and text embeddings for every manifest row, per backbone, cached in ml/cache/.
 
     .venv/bin/python ml/embed.py ViT-B-32:openai ViT-B-32:laion2b_s34b_b79k
+    .venv/bin/python ml/embed.py ViT-B-32-SigLIP2-256:webli@web/public/model/encoder.onnx   # the shipped int8 encoder
+
+With @model.onnx the image embeddings come from that ONNX file (cache key gets "__onnx"), so evaluation uses
+exactly the encoder the browser runs.
 """
 import csv, sys
 from pathlib import Path
@@ -47,11 +51,22 @@ def image_embeddings(model, preprocess, paths, bs=64):
     return np.concatenate(out).astype(np.float16)
 
 
+def onnx_image_embeddings(path, preprocess, paths, bs=32):
+    import onnxruntime as ort
+    sess = ort.InferenceSession(str(path))
+    out = []
+    for i in range(0, len(paths), bs):
+        x = np.stack([preprocess(Image.open(p).convert("RGB")).numpy() for p in paths[i:i + bs]])
+        out.append(sess.run(None, {"pixels": x})[0])
+    return np.concatenate(out).astype(np.float16)
+
+
 def main():
     rows = list(csv.DictReader(open(ROOT / "data/manifest.csv")))
     CACHE.mkdir(parents=True, exist_ok=True)
-    for spec in sys.argv[1:]:
-        key = spec.replace(":", "__").replace("/", "_")
+    for arg in sys.argv[1:]:
+        spec, _, onnx_path = arg.partition("@")
+        key = spec.replace(":", "__").replace("/", "_") + ("__onnx" if onnx_path else "")
         model, preprocess, tok = load(spec)
         np.save(CACHE / f"{key}.text.npy", text_embeddings(model, tok))
         f = CACHE / f"{key}.img.npy"
@@ -61,12 +76,13 @@ def main():
             done = dict(zip((CACHE / f"{key}.paths.txt").read_text().splitlines(), old))
         todo = [r["path"] for r in rows if r["path"] not in done]
         if todo:
-            new = image_embeddings(model, preprocess, [ROOT / "data" / p for p in todo])
+            files = [ROOT / "data" / p for p in todo]
+            new = onnx_image_embeddings(ROOT / onnx_path, preprocess, files) if onnx_path else image_embeddings(model, preprocess, files)
             done.update(zip(todo, new))
         paths = [r["path"] for r in rows]
         np.save(f, np.stack([done[p] for p in paths]))
         (CACHE / f"{key}.paths.txt").write_text("\n".join(paths))
-        print(spec, "->", f.name, len(paths))
+        print(arg, "->", f.name, len(paths))
 
 
 if __name__ == "__main__":

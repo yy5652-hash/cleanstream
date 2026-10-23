@@ -1,4 +1,4 @@
-"""Exports a CLIP image encoder to ONNX (int8 weights) for the browser, and checks it against PyTorch.
+"""Exports a CLIP image encoder to ONNX with int8 weights (float32 arithmetic) for the browser, and checks it.
 
     .venv/bin/python ml/export_onnx.py ViT-B-32:openai web/public/model
 
@@ -9,10 +9,12 @@ import json, sys
 from pathlib import Path
 
 import numpy as np
+import onnx
 import onnxruntime as ort
 import open_clip
 import torch
-from onnxruntime.quantization import QuantType, quantize_dynamic
+
+from wq import weight_only_int8
 
 
 class Encoder(torch.nn.Module):
@@ -39,7 +41,7 @@ def main(spec, out):
     torch.onnx.export(enc, x, fp32, input_names=["pixels"], output_names=["embedding"],
                       dynamic_axes={"pixels": {0: "n"}, "embedding": {0: "n"}}, opset_version=17, dynamo=False)
     q = out / "encoder.onnx"
-    quantize_dynamic(fp32, q, weight_type=QuantType.QUInt8)
+    onnx.save(weight_only_int8(onnx.load(str(fp32))), str(q))
     fp32.unlink()
     with torch.no_grad():
         ref = enc(x).numpy()
@@ -47,7 +49,7 @@ def main(spec, out):
     cos = (ref * got).sum(1)
     (out / "preprocess.json").write_text(json.dumps({
         "backbone": spec, "size": size, "mean": list(cfg["mean"]), "std": list(cfg["std"]),
-        "resize": "shorter side to size, then center crop"}))
+        "resize": cfg.get("resize_mode", "shortest")}))  # squash: whole image to size x size; shortest: centre crop
     print(f"{q} {q.stat().st_size / 1e6:.1f} MB, cosine to fp32 {cos.min():.4f}..{cos.max():.4f}, size {size}")
 
 

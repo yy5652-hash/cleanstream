@@ -1,0 +1,131 @@
+# Cleanstream
+
+**Which bin? Cleanstream answers with your city's rules, and helps you prove your bins got cleaner.**
+
+Live app: https://yy5652-hash.github.io/cleanstream/ (runs in your browser; photos never leave your device)
+
+Cleanstream is a web app for the moment someone stands in front of three bins holding a coffee cup. Show it the item and a
+model running in the browser recognises it, then answers with the local rules: which bin, how to prep it, why, and a
+link to the official source. The same model powers a bin-station mode for an old tablet mounted above shared bins, and
+an audit mode that turns a standard bin audit into a few minutes of photos, so a site can measure contamination before
+and after a change.
+
+Built for ArbiterHacks V1, Theme Track: Rethinking Waste.
+
+## The waste problem it targets
+
+Contamination: things in recycling and compost bins that don't belong there. In New York City, contamination in the
+metal, glass and plastic recycling stream was 27.5% in 2023, up from 18.7% in 2017 (DSNY 2023 Waste Characterization
+Study). The Recycling Partnership estimates contamination costs the US recycling system more than $300 million a year.
+Some contaminants are dangerous: an EPA report counted 245 lithium-ion battery fires at 64 waste facilities from 2013
+to 2020 and calls that count severely underreported.
+
+The right answer depends on the item and on the city. A paper coffee cup goes in the green paper bin in New York and
+the blue bin in San Francisco. Cleanstream answers that question at the bin, and gives sites a cheap way to measure
+whether answering it changed anything.
+
+**How we would measure it.** Pick six shared bin stations (for example, campus building lobbies). Audit each station's
+recycling bin weekly for two weeks with Cleanstream's audit mode, alongside a standard weight-based audit of the same
+bags. Then mount a bin-station tablet at three of the stations for four weeks and keep three as controls. The outcome
+is the change in contamination rate at tablet stations minus the change at control stations (by weight, with item
+counts from the audit mode as a second view), plus which contaminants dropped. Feedback programs have moved this number
+before: The Recycling Partnership's cart-tagging work cut contamination 31% in Atlanta and 37% in Grand Rapids.
+
+## What it does
+
+| Tab | What you get |
+| --- | --- |
+| **Scan** | Camera, upload or a held-out test photo. The bin for your city, how sure the model is, prep steps, the reason, the official source, and what the same item gets in other cities. One tap corrects it. |
+| **Bin station** | Kiosk view for a tablet above a set of bins. It scans when an item is held still, lights up the right bin and keeps per-bin counts. It never stores a picture. |
+| **Audit** | Photograph each item pulled from a bin (drop a whole batch). It sorts them, flags what doesn't belong, gives the contamination rate and top contaminants, compares baseline and after audits, and exports CSV. |
+| **Rules** | The full rule table for NYC, San Francisco and US general guidance (EPA and The Recycling Partnership), with a source link on every row and a filter for items where places disagree. |
+| **How it works** | The model, the evaluation numbers below, data sources and licences. |
+
+## How it works
+
+1. **Photo.** Never uploaded. Everything below runs in a Web Worker with ONNX Runtime Web (WebAssembly).
+2. **Image encoder.** SigLIP 2 ViT-B/32 (256 px, open weights, Apache 2.0). We store its weights in 8 bits with one scale
+   per output channel and dequantize at load, so the file is 96 MB and the arithmetic stays 32-bit (embedding cosine to
+   the original model above 0.999 on test photos).
+3. **Item head.** A linear classifier over 32 item types. The types follow the rules, not the material: a plastic bottle
+   and a plastic bag are both plastic, but most cities want them in different places.
+4. **Rule pack.** JSON per city: bins, and for each item type the main bin, any other accepted bin, prep steps, the
+   reason and the source URL.
+5. **Answer or ask.** Item probabilities are summed per bin. The app can be sure of the bin even when two look-alike
+   items split the vote, and below 60% for the top bin it says it is not sure.
+
+### Training the item head
+
+- **Data.** TrashNet (MIT), the Garbage Dataset v2 (MIT) and object crops from TACO, real litter photos (CC BY 4.0).
+  Splits are fixed by a hash of the source photo, so crops of one TACO photo never land in two splits. Training photos
+  that are near-copies of any test photo (embedding cosine above 0.97) are removed first.
+- **Text-anchored head.** The classifier starts from the encoder's own text embeddings of each item ("a crumpled chip
+  bag", "a greasy pizza box") and an L2 penalty pulls it back toward them while it trains.
+- **Partial labels.** Thousands of photos are labelled only "plastic" or "metal". They train the head with a
+  partial-label loss: the probability summed over that material's item types.
+- **No photos, no drift.** Item types without a training photo (yard waste, electronics) keep their text-only weights.
+  Without this they only ever see negatives and learn to reject whatever background the other datasets have. On the
+  outside test set, freezing them and dropping class-balanced loss weights lifted NYC bin accuracy from 63% to 70%
+  with the earlier encoder.
+- **Choices made on validation data only.** The anchor strength is picked on the validation split plus
+  leave-one-dataset-out validation, which rewards generalising to a new photo source. The encoder was picked from four
+  open models (OpenAI CLIP, LAION-2B CLIP, DataComp CLIP, SigLIP 2) with the same pipeline.
+
+## Results
+
+All numbers come from `ml/train.py` with embeddings computed by the exact `encoder.onnx` the page downloads.
+"Bin" counts the bin the app would show as correct when the city accepts that item there. RealWaste (photos of real
+waste on a landfill sorting line) is never used for training or tuning: it shows how the model holds up on photos unlike
+its training data.
+
+<!-- results:start -->
+<!-- results:end -->
+
+## Run it
+
+```bash
+cd web
+npm install
+npm run dev        # http://localhost:5173/cleanstream/
+npm test           # rule-pack coverage, bin logic, contamination maths
+npm run build
+```
+
+Retrain from scratch (Python 3.12):
+
+```bash
+uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python torch torchvision open_clip_torch scikit-learn onnx onnxruntime onnxscript pillow numpy tqdm
+# put the four datasets under data/ (see ml/prepare.py), then:
+.venv/bin/python ml/prepare.py
+.venv/bin/python ml/export_onnx.py ViT-B-32-SigLIP2-256:webli web/public/model
+.venv/bin/python ml/embed.py "ViT-B-32-SigLIP2-256:webli@web/public/model/encoder.onnx"
+.venv/bin/python ml/train.py ViT-B-32-SigLIP2-256__webli__onnx --export web/public/model
+.venv/bin/python ml/samples.py && .venv/bin/python ml/readme_results.py
+```
+
+## Repository
+
+| Path | What |
+| --- | --- |
+| `web/` | The app: React + TypeScript + Vite, ONNX Runtime Web in a worker, no backend |
+| `web/public/rules/` | Rule packs (NYC, San Francisco, US general) with sources |
+| `web/public/model/` | `encoder.onnx`, the trained head, preprocessing and evaluation metrics |
+| `ml/` | Dataset preparation, embedding, training, evaluation, export and parity checks |
+
+## What's next
+
+- A pilot at campus bin stations with the measurement plan above.
+- More rule packs. A pack is one JSON file, and the Rules tab shows what a city would need to fill in.
+- Training photos for the item types that run on text alone today (yard waste, electronics), and photos taken at bin
+  stations, which are the closest match to real use.
+- Optional sharing of station counts and audits across a campus, keeping images on the device.
+
+## Credits
+
+Datasets: [TrashNet](https://github.com/garythung/trashnet) (MIT),
+[Garbage Dataset v2](https://www.kaggle.com/datasets/sumn2u/garbage-classification-v2) (MIT),
+[TACO](http://tacodataset.org) (CC BY 4.0), [RealWaste](https://archive.ics.uci.edu/dataset/908/realwaste)
+(CC BY-NC-SA 4.0, evaluation only, not redistributed). Encoder: SigLIP 2 (Google, Apache 2.0) via
+[open_clip](https://github.com/mlfoundations/open_clip). Rules: DSNY and NYC311; Recology and SF Environment; US EPA and
+The Recycling Partnership (links on every row of the Rules tab). Sample photos in the app are held-out test photos from
+TrashNet, the Garbage Dataset and TACO.

@@ -1,5 +1,6 @@
 {
  "backbone": "ViT-B-32__openai",
+ "augmented_views": 0,
  "train_sources": [
   "trashnet",
   "garbage_v2",

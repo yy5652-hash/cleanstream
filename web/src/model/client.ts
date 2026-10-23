@@ -7,7 +7,7 @@ export type ModelState = { status: 'loading' | 'ready' | 'error'; loaded: number
 let state: ModelState = { status: 'loading', loaded: 0, total: 0, classes: [] }
 const listeners = new Set<() => void>()
 const pending = new Map<number, { resolve: (p: Prediction) => void; reject: (e: Error) => void }>()
-let worker: Worker | null = null
+let worker: Promise<Worker> | null = null
 let nextId = 1
 
 function set(patch: Partial<ModelState>) {
@@ -15,22 +15,43 @@ function set(patch: Partial<ModelState>) {
   listeners.forEach((l) => l())
 }
 
-function start() {
-  if (worker) return worker
-  worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' })
-  worker.onmessage = (e) => {
-    const m = e.data
-    if (m.type === 'progress') set({ loaded: m.loaded, total: m.total })
-    else if (m.type === 'ready') set({ status: 'ready', classes: m.classes })
-    else if (m.type === 'result') pending.get(m.id)?.resolve({ probs: m.probs, ms: m.ms })
-    else if (m.type === 'error') {
-      if (state.status !== 'ready') set({ status: 'error', error: m.message })
-      pending.get(m.id)?.reject(new Error(m.message))
-    }
-    if (m.id) pending.delete(m.id)
+// In the built app a service worker caches the model the first time it is fetched. Wait (briefly) until it controls
+// the page, so the model worker's downloads go through it and the next visit works offline.
+async function controlled() {
+  if (!import.meta.env.PROD || !('serviceWorker' in navigator)) return
+  try {
+    await navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`)
+    if (navigator.serviceWorker.controller) return
+    await Promise.race([
+      new Promise((r) => navigator.serviceWorker.addEventListener('controllerchange', r, { once: true })),
+      new Promise((r) => setTimeout(r, 4000)),
+    ])
+  } catch {
+    /* no service worker: everything still works online */
   }
-  worker.postMessage({ id: 0 })
+}
+
+function start(): Promise<Worker> {
+  if (worker) return worker
+  worker = controlled().then(() => {
+    const w = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' })
+    w.onmessage = onMessage
+    w.postMessage({ id: 0 })
+    return w
+  })
   return worker
+}
+
+function onMessage(e: MessageEvent) {
+  const m = e.data
+  if (m.type === 'progress') set({ loaded: m.loaded, total: m.total })
+  else if (m.type === 'ready') set({ status: 'ready', classes: m.classes })
+  else if (m.type === 'result') pending.get(m.id)?.resolve({ probs: m.probs, ms: m.ms })
+  else if (m.type === 'error') {
+    if (state.status !== 'ready') set({ status: 'error', error: m.message })
+    pending.get(m.id)?.reject(new Error(m.message))
+  }
+  if (m.id) pending.delete(m.id)
 }
 
 export function useModel(): ModelState {
@@ -42,7 +63,7 @@ export function useModel(): ModelState {
 }
 
 export async function classify(source: Blob | ImageBitmapSource): Promise<Prediction> {
-  const w = start()
+  const w = await start()
   const bitmap = await createImageBitmap(source as ImageBitmapSource)
   const id = nextId++
   return new Promise((resolve, reject) => {
