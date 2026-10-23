@@ -1,0 +1,156 @@
+{
+ "backbone": "ViT-B-32__openai",
+ "train_sources": [
+  "trashnet",
+  "garbage_v2",
+  "taco"
+ ],
+ "external_test": "realwaste",
+ "dropped_duplicates": 115,
+ "train_counts": {
+  "cardboard": 1234,
+  "glass_bottle_jar": 1547,
+  "metal*": 944,
+  "paper": 1339,
+  "plastic*": 1450,
+  "battery": 502,
+  "food_scraps": 476,
+  "textile": 1293,
+  "shoes": 1010
+ },
+ "n_train": 9795,
+ "n_val": 2214,
+ "n_test": 2245,
+ "n_external": 4752,
+ "lambda_grid": {
+  "0.0": {
+   "val": 0.9598269468479604,
+   "lodo_val": 0.6640029805122609
+  },
+  "0.0003": {
+   "val": 0.9555006180469716,
+   "lodo_val": 0.7158671207840859
+  },
+  "0.001": {
+   "val": 0.9468479604449939,
+   "lodo_val": 0.7058269601415157
+  },
+  "0.003": {
+   "val": 0.9394313967861557,
+   "lodo_val": 0.6764354716161944
+  },
+  "0.01": {
+   "val": 0.9196538936959209,
+   "lodo_val": 0.643753978661175
+  },
+  "0.03": {
+   "val": 0.8980222496909765,
+   "lodo_val": 0.6180089239353322
+  }
+ },
+ "lam": 0.0003,
+ "temperature": 0.9000000000000001,
+ "test": {
+  "zero_shot": {
+   "all": {
+    "n_item": 1663,
+    "item_acc": 0.719783523752255,
+    "n_material": 2165,
+    "material_acc": 0.8466512702078522
+   },
+   "garbage_v2": {
+    "n_item": 1445,
+    "item_acc": 0.7453287197231834,
+    "n_material": 1830,
+    "material_acc": 0.8633879781420765
+   },
+   "trashnet": {
+    "n_item": 218,
+    "item_acc": 0.5504587155963303,
+    "n_material": 335,
+    "material_acc": 0.755223880597015
+   }
+  },
+  "cleanstream": {
+   "all": {
+    "n_item": 1663,
+    "item_acc": 0.9561034275405893,
+    "n_material": 2165,
+    "material_acc": 0.961662817551963
+   },
+   "garbage_v2": {
+    "n_item": 1445,
+    "item_acc": 0.9584775086505191,
+    "n_material": 1830,
+    "material_acc": 0.9628415300546448
+   },
+   "trashnet": {
+    "n_item": 218,
+    "item_acc": 0.9403669724770642,
+    "n_material": 335,
+    "material_acc": 0.9552238805970149
+   }
+  }
+ },
+ "external": {
+  "zero_shot": {
+   "all": {
+    "n_item": 2546,
+    "item_acc": 0.33935585231736054,
+    "n_material": 4257,
+    "material_acc": 0.6272022551092319
+   },
+   "realwaste": {
+    "n_item": 2546,
+    "item_acc": 0.33935585231736054,
+    "n_material": 4257,
+    "material_acc": 0.6272022551092319
+   }
+  },
+  "cleanstream": {
+   "all": {
+    "n_item": 2546,
+    "item_acc": 0.5208169677926159,
+    "n_material": 4257,
+    "material_acc": 0.755461592670895
+   },
+   "realwaste": {
+    "n_item": 2546,
+    "item_acc": 0.5208169677926159,
+    "n_material": 4257,
+    "material_acc": 0.755461592670895
+   }
+  }
+ },
+ "thresholds": {},
+ "per_class_test": {
+  "paper": {
+   "n": 293,
+   "acc": 0.9351535836177475
+  },
+  "cardboard": {
+   "n": 260,
+   "acc": 0.9346153846153846
+  },
+  "glass_bottle_jar": {
+   "n": 330,
+   "acc": 0.9151515151515152
+  },
+  "food_scraps": {
+   "n": 113,
+   "acc": 0.9734513274336283
+  },
+  "battery": {
+   "n": 138,
+   "acc": 0.9782608695652174
+  },
+  "textile": {
+   "n": 313,
+   "acc": 0.9936102236421726
+  },
+  "shoes": {
+   "n": 216,
+   "acc": 0.9953703703703703
+  }
+ }
+}

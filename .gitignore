@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+data/
+work/
+ml/cache/
+ml/results/*.tmp
+web/public/model/encoder.onnx
