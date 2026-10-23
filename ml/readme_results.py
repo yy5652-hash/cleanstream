@@ -25,7 +25,9 @@ def main():
                          + " | ".join(pct(s["bin_acc"][p]) for p, _ in packs) + " |")
             name = ""
     a = m["answered"]["nyc"]
-    lines += ["", f"When the top bin is below 60% the app says it is not sure. With NYC rules it answers {pct(a['test']['coverage'])} of "
+    lines += ["", f"Item type and bin columns use photos with an item label. The material column also counts photos labelled only "
+              f"by material ({m['test']['n_material']:,} and {m['external']['n_material']:,}).",
+              "", f"When the top bin is below 60% the app says it is not sure. With NYC rules it answers {pct(a['test']['coverage'])} of "
               f"held-out test photos and is right on {pct(a['test']['accuracy_answered'])} of those; on RealWaste it answers "
               f"{pct(a['external']['coverage'])} and is right on {pct(a['external']['accuracy_answered'])}."]
     readme = ROOT / "README.md"

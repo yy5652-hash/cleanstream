@@ -45,8 +45,8 @@ before: The Recycling Partnership's cart-tagging work cut contamination 31% in A
 
 1. **Photo.** Never uploaded. Everything below runs in a Web Worker with ONNX Runtime Web (WebAssembly).
 2. **Image encoder.** SigLIP 2 ViT-B/32 (256 px, open weights, Apache 2.0). We store its weights in 8 bits with one scale
-   per output channel and dequantize at load, so the file is 96 MB and the arithmetic stays 32-bit (embedding cosine to
-   the original model above 0.999 on test photos).
+   per output channel and dequantize at load, so the file is 96 MB and the arithmetic stays 32-bit (mean embedding cosine
+   to the original model 0.998 over 300 test photos; `ml/parity.py`).
 3. **Item head.** A linear classifier over 32 item types. The types follow the rules, not the material: a plastic bottle
    and a plastic bag are both plastic, but most cities want them in different places.
 4. **Rule pack.** JSON per city: bins, and for each item type the main bin, any other accepted bin, prep steps, the
@@ -79,6 +79,16 @@ waste on a landfill sorting line) is never used for training or tuning: it shows
 its training data.
 
 <!-- results:start -->
+| Test set | Model | Item type | Material | Bin (NYC) | Bin (San Francisco) | Bin (US general) |
+| --- | --- | --- | --- | --- | --- | --- |
+| Held-out test split (2,079 photos) | Text prompts only (zero-shot) | 68.9% | 86.2% | 80.5% | 85.2% | 87.7% |
+|  | **Cleanstream** | 90.6% | 95.0% | 95.3% | 95.8% | 96.0% |
+| RealWaste, never seen (2,546 photos) | Text prompts only (zero-shot) | 37.7% | 70.5% | 59.6% | 64.4% | 66.7% |
+|  | **Cleanstream** | 66.4% | 81.2% | 80.0% | 81.9% | 83.9% |
+
+Item type and bin columns use photos with an item label. The material column also counts photos labelled only by material (2,581 and 4,257).
+
+When the top bin is below 60% the app says it is not sure. With NYC rules it answers 97.2% of held-out test photos and is right on 96.4% of those; on RealWaste it answers 80.6% and is right on 87.4%.
 <!-- results:end -->
 
 ## Run it
