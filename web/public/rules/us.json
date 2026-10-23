@@ -1,0 +1,368 @@
+{
+ "id": "us",
+ "name": "US (general)",
+ "authority": "US EPA and The Recycling Partnership",
+ "checked": "2026-10-23",
+ "sources": [
+  {
+   "label": "EPA: How do I recycle common recyclables",
+   "url": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables"
+  },
+  {
+   "label": "EPA: Frequent questions on recycling",
+   "url": "https://www.epa.gov/recycle/frequent-questions-recycling"
+  },
+  {
+   "label": "The Recycling Partnership: What can I recycle",
+   "url": "https://recyclingpartnership.org/what-can-i-recycle/"
+  }
+ ],
+ "bins": [
+  {
+   "id": "recycling",
+   "name": "Recycling",
+   "accepts": "Curbside cart: bottles, cans, paper, cardboard",
+   "color": "#1f63c6",
+   "ink": "#ffffff",
+   "kind": "recycle"
+  },
+  {
+   "id": "compost",
+   "name": "Compost",
+   "accepts": "Food and yard waste, where offered",
+   "color": "#3a8f3a",
+   "ink": "#ffffff",
+   "kind": "compost"
+  },
+  {
+   "id": "trash",
+   "name": "Trash",
+   "accepts": "Anything your program doesn't accept",
+   "color": "#2c3134",
+   "ink": "#ffffff",
+   "kind": "landfill"
+  },
+  {
+   "id": "dropoff",
+   "name": "Drop-off",
+   "accepts": "Store take-back or hazardous waste site",
+   "color": "#f0b429",
+   "ink": "#2a1d00",
+   "kind": "special"
+  }
+ ],
+ "items": {
+  "plastic_bottle": {
+   "bin": "recycling",
+   "prep": [
+    "Empty and rinse",
+    "Caps and labels can stay on"
+   ],
+   "why": "Plastic bottles are among the most commonly recycled items.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables"
+  },
+  "plastic_container": {
+   "bin": "recycling",
+   "prep": [
+    "Rinse until spatula-clean",
+    "Check that your program takes this plastic"
+   ],
+   "why": "Many programs accept rigid containers; items with food on them can't be recycled.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables",
+   "also": [
+    "trash"
+   ]
+  },
+  "plastic_cup": {
+   "bin": "recycling",
+   "prep": [
+    "Rinse",
+    "Check that your program takes cups"
+   ],
+   "why": "Acceptance depends on the local program.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables",
+   "also": [
+    "trash"
+   ]
+  },
+  "plastic_lid_cap": {
+   "bin": "recycling",
+   "prep": [
+    "Leave it on the bottle"
+   ],
+   "why": "Bottles and caps are on EPA's common recyclables list.",
+   "source": "https://www.epa.gov/recycle/frequent-questions-recycling"
+  },
+  "plastic_bag_film": {
+   "bin": "dropoff",
+   "prep": [
+    "Return clean, dry bags to a store drop-off",
+    "Never bag your recyclables"
+   ],
+   "why": "Plastic bags are recyclable, but not in your household recycling bin.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables",
+   "also": [
+    "trash"
+   ]
+  },
+  "snack_wrapper": {
+   "bin": "trash",
+   "prep": [
+    "No prep"
+   ],
+   "why": "Wraps and film can't go in a curbside recycling bin.",
+   "source": "https://www.epa.gov/recycle/frequent-questions-recycling"
+  },
+  "foam": {
+   "bin": "trash",
+   "prep": [
+    "No prep"
+   ],
+   "why": "Very few localities accept Styrofoam in curbside recycling.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables"
+  },
+  "plastic_utensil_straw": {
+   "bin": "trash",
+   "prep": [
+    "No prep"
+   ],
+   "why": "EPA says plastic utensils can't be recycled. Some cities, like NYC, do accept them.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables"
+  },
+  "paper": {
+   "bin": "recycling",
+   "prep": [
+    "Clean and dry",
+    "Window envelopes are fine"
+   ],
+   "why": "Paper, mail and newspapers are recyclable when clean and dry.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables"
+  },
+  "paper_bag": {
+   "bin": "recycling",
+   "prep": [
+    "Clean and dry"
+   ],
+   "why": "Paper must be empty, clean and dry to be recycled.",
+   "source": "https://www.epa.gov/recycle/frequent-questions-recycling",
+   "also": [
+    "compost"
+   ]
+  },
+  "cardboard": {
+   "bin": "recycling",
+   "prep": [
+    "Flatten boxes"
+   ],
+   "why": "Cardboard is one of the most commonly recycled items.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables"
+  },
+  "pizza_box": {
+   "bin": "recycling",
+   "prep": [
+    "Remove leftover food",
+    "Very greasy? Compost if you can"
+   ],
+   "why": "EPA says pizza boxes can be recycled, even with some grease.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables",
+   "also": [
+    "compost",
+    "trash"
+   ]
+  },
+  "soiled_paper": {
+   "bin": "compost",
+   "prep": [
+    "No compost? Trash"
+   ],
+   "why": "Food-soiled paper never goes in recycling but may be compostable.",
+   "source": "https://www.epa.gov/recycle/frequent-questions-recycling",
+   "also": [
+    "trash"
+   ]
+  },
+  "paper_cup": {
+   "bin": "trash",
+   "prep": [
+    "Check your local list: some programs take them"
+   ],
+   "why": "Coated paper cups are not on EPA's common recyclables list.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables",
+   "also": [
+    "recycling"
+   ]
+  },
+  "carton": {
+   "bin": "recycling",
+   "prep": [
+    "Empty and rinse",
+    "Check your local list"
+   ],
+   "why": "Carton acceptance depends on the local program.",
+   "source": "https://www.epa.gov/recycle/frequent-questions-recycling",
+   "also": [
+    "trash"
+   ]
+  },
+  "metal_can": {
+   "bin": "recycling",
+   "prep": [
+    "Rinse or wipe",
+    "Don't crush aluminum cans"
+   ],
+   "why": "Soda and soup cans are accepted almost everywhere.",
+   "source": "https://recyclingpartnership.org/what-can-i-recycle/"
+  },
+  "aluminum_foil": {
+   "bin": "recycling",
+   "prep": [
+    "Remove all food",
+    "Only if your local program lists foil"
+   ],
+   "why": "EPA says foil can be recycled; programs differ.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables",
+   "also": [
+    "trash"
+   ]
+  },
+  "aerosol_can": {
+   "bin": "dropoff",
+   "prep": [
+    "Not empty: household hazardous waste",
+    "Empty: some programs take it with metal"
+   ],
+   "why": "Aerosol cans that aren't empty must never go in recycling.",
+   "source": "https://www.epa.gov/recycle/frequent-questions-recycling",
+   "also": [
+    "recycling"
+   ]
+  },
+  "metal_lid_scrap": {
+   "bin": "trash",
+   "prep": [
+    "Larger scrap metal: a scrap metal recycler"
+   ],
+   "why": "Curbside programs usually take metal cans, not loose small metal.",
+   "source": "https://recyclingpartnership.org/what-can-i-recycle/",
+   "also": [
+    "recycling",
+    "dropoff"
+   ]
+  },
+  "glass_bottle_jar": {
+   "bin": "recycling",
+   "prep": [
+    "Rinse",
+    "Take metal caps off"
+   ],
+   "why": "Glass jars are on EPA's most-common list; a few programs exclude glass.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables"
+  },
+  "drinking_glass_ceramic": {
+   "bin": "trash",
+   "prep": [
+    "Wrap broken glass"
+   ],
+   "why": "Broken glass should not go in the recycling bin.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables"
+  },
+  "food_scraps": {
+   "bin": "compost",
+   "prep": [
+    "No compost? Trash"
+   ],
+   "why": "Food can't be recycled, but it can be composted.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables",
+   "also": [
+    "trash"
+   ]
+  },
+  "yard_waste": {
+   "bin": "compost",
+   "prep": [
+    "Use yard-trimmings collection if offered"
+   ],
+   "why": "Lawn materials can't be recycled, but they can be composted.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables"
+  },
+  "battery": {
+   "bin": "dropoff",
+   "prep": [
+    "Tape the terminals",
+    "Retail drop-off or hazardous waste event"
+   ],
+   "why": "Batteries should not go in household garbage or recycling bins.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables"
+  },
+  "electronics": {
+   "bin": "dropoff",
+   "prep": [
+    "Collection site, maker or retailer take-back"
+   ],
+   "why": "Electronics can't be recycled curbside.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables"
+  },
+  "textile": {
+   "bin": "dropoff",
+   "prep": [
+    "Donate or use a retail take-back"
+   ],
+   "why": "Textiles can't go in a curbside recycling bin.",
+   "source": "https://www.epa.gov/recycle/frequent-questions-recycling",
+   "also": [
+    "trash"
+   ]
+  },
+  "shoes": {
+   "bin": "dropoff",
+   "prep": [
+    "Donate gently worn pairs"
+   ],
+   "why": "Gently worn shoes can be donated to many charities.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables",
+   "also": [
+    "trash"
+   ]
+  },
+  "cigarette_butt": {
+   "bin": "trash",
+   "prep": [
+    "Put it out fully"
+   ],
+   "why": "Not on any common recyclables list.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables"
+  },
+  "blister_pack": {
+   "bin": "trash",
+   "prep": [
+    "No prep"
+   ],
+   "why": "Mixed plastic and foil packaging is not on common recyclables lists.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables"
+  },
+  "rope_string": {
+   "bin": "trash",
+   "prep": [
+    "Never in recycling"
+   ],
+   "why": "Hoses and similar tanglers are on EPA's never-recycle list.",
+   "source": "https://www.epa.gov/recycle/frequent-questions-recycling"
+  },
+  "squeezable_tube": {
+   "bin": "trash",
+   "prep": [
+    "No prep"
+   ],
+   "why": "Not on EPA's common recyclables list.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables"
+  },
+  "mask_gloves": {
+   "bin": "trash",
+   "prep": [
+    "No prep"
+   ],
+   "why": "Not on EPA's common recyclables list.",
+   "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables"
+  }
+ }
+}

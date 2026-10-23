@@ -45,24 +45,27 @@ def drop_near_duplicates(rows, X, train_mask, thr=0.97):
 
 def fit_head(X, y, T, lam, Xc=None, Mc=None, epochs=300, seed=0):
     """Xc/Mc: images labelled only by material and, per image, a mask of the item types of that material.
-    They add a partial-label loss: -log of the probability summed over the allowed item types."""
+    They add a partial-label loss: -log of the probability summed over the allowed item types.
+    Item types with no labelled photo keep their zero-shot weights (frozen): otherwise they only ever see negatives
+    and learn to reject whatever backgrounds the other datasets happen to have (e.g. grass behind litter)."""
     torch.manual_seed(seed)
     X, y = torch.tensor(X), torch.tensor(y)
     W0 = torch.tensor(T) * SCALE
     W = W0.clone().requires_grad_(True)
     b = torch.zeros(len(NAMES), requires_grad=True)
-    counts = torch.bincount(y, minlength=len(NAMES)).float()
-    cw = torch.where(counts > 0, (counts.sum() / counts.clamp(min=1)).sqrt(), torch.zeros_like(counts))
-    cw = cw / cw[counts > 0].mean()
+    trained = torch.bincount(y, minlength=len(NAMES)) > 0
     opt = torch.optim.Adam([W, b], lr=0.05)
     for _ in range(epochs):
         opt.zero_grad()
-        loss = torch.nn.functional.cross_entropy(X @ W.T + b, y, weight=cw) + lam * ((W - W0) ** 2).sum() / SCALE
+        loss = torch.nn.functional.cross_entropy(X @ W.T + b, y) + lam * ((W - W0) ** 2).sum() / SCALE
         if Xc is not None and len(Xc):
             lp = torch.log_softmax(torch.tensor(Xc) @ W.T + b, 1)
             loss = loss - torch.logsumexp(lp.masked_fill(~torch.tensor(Mc), -1e9), 1).mean()
         loss.backward()
         opt.step()
+        with torch.no_grad():
+            W[~trained] = W0[~trained]
+            b[~trained] = b[trained].median()
     return W.detach().numpy(), b.detach().numpy()
 
 
@@ -79,6 +82,12 @@ def fit_temperature(logits, y):
 
 def bins_for(pack):
     return {k: v["bin"] for k, v in pack["items"].items()}
+
+
+def ok_bin(pack, item, bin):
+    """The city accepts this item in this bin (its main bin or one of its alternatives)."""
+    r = pack["items"][item]
+    return bin == r["bin"] or bin in r.get("also", [])
 
 
 def scores(P, rows, idx, packs):
@@ -98,7 +107,7 @@ def scores(P, rows, idx, packs):
         names = list(binp)
         M = np.stack([binp[n] for n in names], 1)
         guess = [names[j] for j in M.argmax(1)]
-        out[f"bin_acc_{pid}"] = float(np.mean([guess[k] == b[l] for k, l in lab])) if lab else None
+        out[f"bin_acc_{pid}"] = float(np.mean([ok_bin(pack, l, guess[k]) for k, l in lab])) if lab else None
     return out
 
 
@@ -113,7 +122,7 @@ def bin_answers(P, rows, idx, pack, thr):
     names = sorted(set(b.values()))
     M = np.stack([P[:, [c for c, n in enumerate(NAMES) if b[n] == bn]].sum(1) for bn in names], 1)
     lab = [(k, rows[i]["label"]) for k, i in enumerate(idx) if rows[i]["label"]]
-    ans = [(M[k].max() >= thr, names[M[k].argmax()] == b[l]) for k, l in lab]
+    ans = [(M[k].max() >= thr, ok_bin(pack, l, names[M[k].argmax()])) for k, l in lab]
     answered = [ok for a, ok in ans if a]
     return {"coverage": len(answered) / max(1, len(ans)), "accuracy_answered": float(np.mean(answered)) if answered else None}
 
@@ -206,7 +215,25 @@ def main():
         (d / "head.json").write_text(json.dumps({
             "classes": NAMES, "temperature": temp, "dim": int(W.shape[1]),
             "W": [[round(float(v), 5) for v in row] for row in W], "b": [round(float(v), 5) for v in b]}))
-        print("exported head to", d)
+
+        def brief(r):
+            return {"item_acc": r["item_acc"], "material_acc": r["material_acc"], "n_item": r["n_item"], "n_material": r["n_material"],
+                    "bin_acc": {k[8:]: v for k, v in r.items() if k.startswith("bin_acc_")}}
+        n_src = Counter(src)
+        enc = d / "encoder.onnx"
+        (d / "metrics.json").write_text(json.dumps({
+            "backbone": a.key, "classes": len(NAMES), "n_train": report["n_train"], "n_test": report["n_test"],
+            "model_mb": round(enc.stat().st_size / 1e6) if enc.exists() else None,
+            "test": brief(report["test"]["cleanstream"]["all"]), "external": brief(report["external"]["cleanstream"]["all"]),
+            "zero_shot": {"test": brief(report["test"]["zero_shot"]["all"]), "external": brief(report["external"]["zero_shot"]["all"])},
+            "answered": {pid: {k: v["0.6"] for k, v in t.items()} for pid, t in report["thresholds"].items()},
+            "datasets": [
+                {"name": "TrashNet", "url": "https://github.com/garythung/trashnet", "license": "MIT", "role": "train / test", "images": n_src["trashnet"]},
+                {"name": "Garbage Dataset (v2)", "url": "https://www.kaggle.com/datasets/sumn2u/garbage-classification-v2", "license": "MIT", "role": "train / test", "images": n_src["garbage_v2"]},
+                {"name": "TACO (object crops)", "url": "http://tacodataset.org", "license": "CC BY 4.0", "role": "train / test", "images": n_src["taco"]},
+                {"name": "RealWaste", "url": "https://archive.ics.uci.edu/dataset/908/realwaste", "license": "CC BY-NC-SA 4.0", "role": "outside test only", "images": n_src["realwaste"]},
+            ]}, indent=1))
+        print("exported head and metrics to", d)
 
 
 if __name__ == "__main__":

@@ -7,7 +7,7 @@ Splits are fixed by a hash of the source image, so crops of one TACO photo never
 import csv, hashlib, json, sys
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageOps
 
 sys.path.insert(0, str(Path(__file__).parent))
 from taxonomy import GARBAGE_V2, MATERIAL, REALWASTE, TACO, TRASHNET  # noqa: E402
@@ -15,6 +15,7 @@ from taxonomy import GARBAGE_V2, MATERIAL, REALWASTE, TACO, TRASHNET  # noqa: E4
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 IMG = {".jpg", ".jpeg", ".png", ".webp"}
+PAD = 1.1  # crop side relative to the object's longer side: a little context, not much ground
 COARSE = {"metal": "metal", "plastic": "plastic", "Metal": "metal", "Plastic": "plastic"}
 
 
@@ -42,7 +43,7 @@ def taco_crops(top):
     coco = json.loads(ann.read_text())
     cats = {c["id"]: c["name"] for c in coco["categories"]}
     images = {i["id"]: i for i in coco["images"]}
-    out = DATA / "taco_crops"
+    out = DATA / f"taco_crops_p{int(PAD * 100)}"
     out.mkdir(exist_ok=True)
     rows, opened = [], {}
     for a in sorted(coco["annotations"], key=lambda a: a["image_id"]):
@@ -54,9 +55,14 @@ def taco_crops(top):
         dest = out / f"{a['id']}.jpg"
         if not dest.exists():
             if info["id"] not in opened:
-                opened = {info["id"]: Image.open(ann.parent / info["file_name"]).convert("RGB")}
+                im = Image.open(ann.parent / info["file_name"])
+                if im.size != (info["width"], info["height"]):  # some photos are stored rotated: boxes follow the EXIF view
+                    im = ImageOps.exif_transpose(im)
+                opened = {info["id"]: im.convert("RGB") if im.size == (info["width"], info["height"]) else None}
             im = opened[info["id"]]
-            side = max(w, h) * 1.3
+            if im is None:
+                continue
+            side = max(w, h) * PAD
             cx, cy = x + w / 2, y + h / 2
             box = [max(0, cx - side / 2), max(0, cy - side / 2), min(im.width, cx + side / 2), min(im.height, cy + side / 2)]
             crop = im.crop(tuple(int(v) for v in box))

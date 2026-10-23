@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { itemName } from '../items'
 import { classify, useModel } from '../model/client'
-import { binById, type Pack } from '../rules'
+import { belongs, binById, type Pack } from '../rules'
 import { download, thumbnail, today, uid, useAudits, type Audit as AuditT, type AuditItem } from '../store'
 import { BinChip, ItemPicker, pct } from '../ui'
 
@@ -9,7 +9,7 @@ const label = (it: AuditItem) => it.fixed ?? it.pred
 
 export function contamination(a: AuditT, pack: Pack) {
   const done = a.items.filter((i) => i.pred)
-  const bad = done.filter((i) => pack.items[label(i)]?.bin !== a.bin)
+  const bad = done.filter((i) => !belongs(pack, label(i), a.bin))
   const by = new Map<string, number>()
   bad.forEach((i) => by.set(label(i), (by.get(label(i)) ?? 0) + 1))
   return { n: done.length, bad: bad.length, rate: done.length ? bad.length / done.length : 0, top: [...by].sort((x, y) => y[1] - x[1]) }
@@ -165,7 +165,7 @@ function AuditSession({ audit, pack, ready, classes, close, update, remove }: {
     const rows = [['site', 'city', 'bin_audited', 'phase', 'date', 'item', 'model_item', 'model_confidence', 'corrected', 'belongs_in', 'contaminant']]
     for (const i of audit.items.filter((x) => x.pred)) {
       const l = label(i)
-      rows.push([audit.site, pack.name, bin.name, audit.phase, audit.date, itemName(l), itemName(i.pred), i.p.toFixed(3), i.fixed ? 'yes' : 'no', binById(pack, pack.items[l].bin).name, pack.items[l].bin !== audit.bin ? 'yes' : 'no'])
+      rows.push([audit.site, pack.name, bin.name, audit.phase, audit.date, itemName(l), itemName(i.pred), i.p.toFixed(3), i.fixed ? 'yes' : 'no', binById(pack, pack.items[l].bin).name, belongs(pack, l, audit.bin) ? 'no' : 'yes'])
     }
     download(`audit-${audit.site.replace(/\W+/g, '-')}-${audit.date}.csv`, rows.map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n'))
   }
@@ -199,7 +199,7 @@ function AuditSession({ audit, pack, ready, classes, close, update, remove }: {
           <div className="tiles">
             {audit.items.map((i) => {
               const l = i.pred ? label(i) : ''
-              const bad = l && pack.items[l].bin !== audit.bin
+              const bad = l && !belongs(pack, l, audit.bin)
               return (
                 <button key={i.id} className={`tile${bad ? ' bad' : ''}${i.pred ? '' : ' pending'}`} onClick={() => i.pred && setFixing(i.id)}>
                   <img src={i.thumb} alt={l ? itemName(l) : 'Sorting'} />

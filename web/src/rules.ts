@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 
 export type Bin = { id: string; name: string; accepts: string; color: string; ink: string; kind: 'recycle' | 'compost' | 'landfill' | 'special' }
-export type Rule = { bin: string; prep: string[]; why: string; source: string }
+export type Rule = { bin: string; also?: string[]; prep: string[]; why: string; source: string } // also: other bins the city accepts it in
 export type Pack = {
   id: string
   name: string
@@ -30,6 +30,9 @@ export function usePacks(): Pack[] | null {
 }
 
 export const binById = (pack: Pack, id: string) => pack.bins.find((b) => b.id === id)!
+
+// True when the city accepts this item type in this bin (its main bin or an alternative one).
+export const belongs = (pack: Pack, item: string, bin: string) => pack.items[item]?.bin === bin || !!pack.items[item]?.also?.includes(bin)
 
 export type Answer = {
   items: { id: string; p: number }[] // item types, most likely first

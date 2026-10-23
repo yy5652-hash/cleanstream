@@ -1,0 +1,366 @@
+{
+ "id": "nyc",
+ "name": "New York City",
+ "authority": "NYC Department of Sanitation (DSNY)",
+ "checked": "2026-10-23",
+ "sources": [
+  {
+   "label": "DSNY: Metal, Glass, Plastic & Cartons",
+   "url": "https://www.nyc.gov/site/dsny/collection/get-rid-of/metal-glass-plastic-cartons.page"
+  },
+  {
+   "label": "DSNY: Mixed Paper & Cardboard",
+   "url": "https://www.nyc.gov/site/dsny/collection/get-rid-of/mixed-paper-cardboard.page"
+  },
+  {
+   "label": "DSNY: Curbside Composting",
+   "url": "https://www.nyc.gov/site/dsny/collection/residents/curbside-composting.page"
+  },
+  {
+   "label": "DSNY: Trash",
+   "url": "https://www.nyc.gov/site/dsny/collection/residents/trash.page"
+  },
+  {
+   "label": "NYC311: Recycling",
+   "url": "https://portal.311.nyc.gov/article/?kanumber=KA-02013"
+  }
+ ],
+ "bins": [
+  {
+   "id": "blue",
+   "name": "Blue bin",
+   "accepts": "Metal, glass, plastic & cartons",
+   "color": "#1f5fbf",
+   "ink": "#ffffff",
+   "kind": "recycle"
+  },
+  {
+   "id": "green",
+   "name": "Green bin",
+   "accepts": "Mixed paper & cardboard",
+   "color": "#2f8a3f",
+   "ink": "#ffffff",
+   "kind": "recycle"
+  },
+  {
+   "id": "brown",
+   "name": "Brown bin",
+   "accepts": "Food scraps, yard waste, food-soiled paper",
+   "color": "#7b5434",
+   "ink": "#ffffff",
+   "kind": "compost"
+  },
+  {
+   "id": "trash",
+   "name": "Trash",
+   "accepts": "Anything that can't be recycled or composted",
+   "color": "#2c3134",
+   "ink": "#ffffff",
+   "kind": "landfill"
+  },
+  {
+   "id": "dropoff",
+   "name": "Drop-off",
+   "accepts": "Batteries, electronics, clothing: special disposal",
+   "color": "#f0b429",
+   "ink": "#2a1d00",
+   "kind": "special"
+  }
+ ],
+ "items": {
+  "plastic_bottle": {
+   "bin": "blue",
+   "prep": [
+    "Empty and rinse",
+    "Caps can stay on"
+   ],
+   "why": "NYC takes rigid plastic bottles and jugs whatever the number on the bottom.",
+   "source": "https://portal.311.nyc.gov/article/?kanumber=KA-02013"
+  },
+  "plastic_container": {
+   "bin": "blue",
+   "prep": [
+    "Empty and rinse"
+   ],
+   "why": "Rigid food containers, tubs, caps and lids are accepted.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/metal-glass-plastic-cartons.page"
+  },
+  "plastic_cup": {
+   "bin": "blue",
+   "prep": [
+    "Empty and rinse",
+    "Foam cups go in the trash instead"
+   ],
+   "why": "Rigid plastic cups and bowls are accepted.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/metal-glass-plastic-cartons.page"
+  },
+  "plastic_lid_cap": {
+   "bin": "blue",
+   "prep": [
+    "Leave on the container or toss in loose"
+   ],
+   "why": "Rigid plastic caps and lids are accepted.",
+   "source": "https://portal.311.nyc.gov/article/?kanumber=KA-02013"
+  },
+  "plastic_bag_film": {
+   "bin": "trash",
+   "prep": [
+    "Better: return clean bags and film to a large store's drop-off",
+    "Never bag your recycling in black bags"
+   ],
+   "why": "Plastic bags should not go in household recycling. They tangle sorting machines.",
+   "source": "https://portal.311.nyc.gov/article/?kanumber=KA-02080"
+  },
+  "snack_wrapper": {
+   "bin": "trash",
+   "prep": [
+    "No prep"
+   ],
+   "why": "Soft plastics like candy and snack wrappers can't be recycled in NYC.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/metal-glass-plastic-cartons.page"
+  },
+  "foam": {
+   "bin": "trash",
+   "prep": [
+    "Never in the blue or brown bin"
+   ],
+   "why": "Foam products like Styrofoam and packing peanuts go in the trash.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/metal-glass-plastic-cartons.page"
+  },
+  "plastic_utensil_straw": {
+   "bin": "blue",
+   "prep": [
+    "Rinse"
+   ],
+   "why": "NYC lists plastic cutlery as recyclable rigid plastic.",
+   "source": "https://portal.311.nyc.gov/article/?kanumber=KA-02013"
+  },
+  "paper": {
+   "bin": "green",
+   "prep": [
+    "Keep it dry",
+    "Staples and window envelopes are fine"
+   ],
+   "why": "Newspapers, magazines, mail and office paper go in paper recycling.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/mixed-paper-cardboard.page"
+  },
+  "paper_bag": {
+   "bin": "green",
+   "prep": [
+    "Keep it clean and dry",
+    "Food-soiled bags go in the brown bin"
+   ],
+   "why": "DSNY rules list paper bags with mixed paper.",
+   "source": "https://www.nyc.gov/assets/dsny/downloads/pdf/about/laws/DSNY_rules_regs_2015.pdf",
+   "also": [
+    "brown"
+   ]
+  },
+  "cardboard": {
+   "bin": "green",
+   "prep": [
+    "Flatten",
+    "Bundle big pieces with twine, 18 inches or smaller"
+   ],
+   "why": "Flattened cardboard goes with mixed paper.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/mixed-paper-cardboard.page"
+  },
+  "pizza_box": {
+   "bin": "green",
+   "prep": [
+    "Remove leftover food",
+    "Greasy box? Put it in the brown bin"
+   ],
+   "why": "Lightly-soiled pizza boxes go with paper; greasy ones are compostable.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/mixed-paper-cardboard.page",
+   "also": [
+    "brown"
+   ]
+  },
+  "soiled_paper": {
+   "bin": "brown",
+   "prep": [
+    "Scrape off food first",
+    "Clean tissues can go in the trash"
+   ],
+   "why": "NYC composting takes food-soiled paper along with food scraps.",
+   "source": "https://www.nyc.gov/site/dsny/collection/residents/curbside-composting.page",
+   "also": [
+    "trash"
+   ]
+  },
+  "paper_cup": {
+   "bin": "green",
+   "prep": [
+    "Empty and dry it"
+   ],
+   "why": "NYC accepts empty, dry paper cups with mixed paper.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/mixed-paper-cardboard.page"
+  },
+  "carton": {
+   "bin": "blue",
+   "prep": [
+    "Empty and rinse",
+    "Blue bin, not with paper"
+   ],
+   "why": "Milk, juice and soup cartons go with metal, glass and plastic.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/metal-glass-plastic-cartons.page"
+  },
+  "metal_can": {
+   "bin": "blue",
+   "prep": [
+    "Empty and rinse"
+   ],
+   "why": "All kinds of metal are accepted, including food and drink cans.",
+   "source": "https://portal.311.nyc.gov/article/?kanumber=KA-02013"
+  },
+  "aluminum_foil": {
+   "bin": "blue",
+   "prep": [
+    "Remove food scraps"
+   ],
+   "why": "Aluminum foil and trays are accepted.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/metal-glass-plastic-cartons.page"
+  },
+  "aerosol_can": {
+   "bin": "blue",
+   "prep": [
+    "Only when completely empty",
+    "Anything still full is special waste"
+   ],
+   "why": "Empty aerosol cans are accepted with metal.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/metal-glass-plastic-cartons.page"
+  },
+  "metal_lid_scrap": {
+   "bin": "blue",
+   "prep": [
+    "Remove cords or cables"
+   ],
+   "why": "NYC accepts all kinds of metal, including lids and small metal items.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/metal-glass-plastic-cartons.page"
+  },
+  "glass_bottle_jar": {
+   "bin": "blue",
+   "prep": [
+    "Rinse"
+   ],
+   "why": "Glass bottles and jars are accepted.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/metal-glass-plastic-cartons.page"
+  },
+  "drinking_glass_ceramic": {
+   "bin": "trash",
+   "prep": [
+    "Broken glass: seal in a box marked 'broken glass' or double-bag it"
+   ],
+   "why": "Drinking glasses, mugs and dishes can't be recycled.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/metal-glass-plastic-cartons.page"
+  },
+  "food_scraps": {
+   "bin": "brown",
+   "prep": [
+    "Bag in a clear, paper or compostable bag, or put in loose",
+    "No black bags"
+   ],
+   "why": "Composting is mandatory in NYC. All food scraps are accepted, including meat and bones.",
+   "source": "https://www.nyc.gov/site/dsny/collection/residents/curbside-composting.page"
+  },
+  "yard_waste": {
+   "bin": "brown",
+   "prep": [
+    "Paper lawn bags or clear bags",
+    "Tie twigs in bundles"
+   ],
+   "why": "Leaf and yard waste must be kept out of the trash.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/plant-yard-waste.page"
+  },
+  "battery": {
+   "bin": "dropoff",
+   "prep": [
+    "Tape the ends or bag each battery",
+    "Rechargeable and lithium-ion: take back to a store that sells them",
+    "Single-use alkaline (AA, AAA, 9V) may go in the trash"
+   ],
+   "why": "Rechargeable and lithium-ion batteries must never go in trash or recycling. They start fires in trucks and plants.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/batteries.page",
+   "also": [
+    "trash"
+   ]
+  },
+  "electronics": {
+   "bin": "dropoff",
+   "prep": [
+    "Use a store or nonprofit drop-off, a SAFE event, or ecycleNYC"
+   ],
+   "why": "It is illegal to put electronics in the trash or recycling in New York.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/electronics.page"
+  },
+  "textile": {
+   "bin": "dropoff",
+   "prep": [
+    "Donate or use a textile drop-off",
+    "Clean, dry and bagged"
+   ],
+   "why": "Clothing can be donated or taken to textile recyclers instead of the trash.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/clothing-household-fabrics-accessories.page",
+   "also": [
+    "trash"
+   ]
+  },
+  "shoes": {
+   "bin": "dropoff",
+   "prep": [
+    "Donate wearable pairs",
+    "Bag them, clean and dry"
+   ],
+   "why": "Shoes count as accessories in NYC's clothing reuse guidance.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/clothing-household-fabrics-accessories.page",
+   "also": [
+    "trash"
+   ]
+  },
+  "cigarette_butt": {
+   "bin": "trash",
+   "prep": [
+    "Fully put it out first"
+   ],
+   "why": "Items that can't be recycled or composted go in the trash.",
+   "source": "https://www.nyc.gov/site/dsny/collection/residents/trash.page"
+  },
+  "blister_pack": {
+   "bin": "blue",
+   "prep": [
+    "Empty it",
+    "Pill packs with a foil back go in the trash"
+   ],
+   "why": "Rigid plastic 'blisterpak' packaging is accepted.",
+   "source": "https://portal.311.nyc.gov/article/?kanumber=KA-02013",
+   "also": [
+    "trash"
+   ]
+  },
+  "rope_string": {
+   "bin": "trash",
+   "prep": [
+    "Never in recycling"
+   ],
+   "why": "Tanglers like cords, hoses and string lights jam sorting machines.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/metal-glass-plastic-cartons.page"
+  },
+  "squeezable_tube": {
+   "bin": "trash",
+   "prep": [
+    "No prep"
+   ],
+   "why": "Plastic tubes and pouches, like toothpaste tubes, can't be recycled.",
+   "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/metal-glass-plastic-cartons.page"
+  },
+  "mask_gloves": {
+   "bin": "trash",
+   "prep": [
+    "No prep"
+   ],
+   "why": "Face masks and disposable gloves go in the trash.",
+   "source": "https://www.nyc.gov/site/dsny/collection/residents/trash.page"
+  }
+ }
+}

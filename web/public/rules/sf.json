@@ -1,0 +1,346 @@
+{
+ "id": "sf",
+ "name": "San Francisco",
+ "authority": "Recology and SF Environment",
+ "checked": "2026-10-23",
+ "sources": [
+  {
+   "label": "Recology: What goes where",
+   "url": "https://www.recology.com/recology-san-francisco/what-goes-where/"
+  },
+  {
+   "label": "SF Environment: Recyclable items",
+   "url": "https://sfenvironment.org/sfrecycles/recyclable-items"
+  },
+  {
+   "label": "SF Environment: Landfill items",
+   "url": "https://sfenvironment.org/sfrecycles/landfill-items"
+  }
+ ],
+ "bins": [
+  {
+   "id": "blue",
+   "name": "Blue bin",
+   "accepts": "Recycling: containers, paper, cardboard",
+   "color": "#1f63c6",
+   "ink": "#ffffff",
+   "kind": "recycle"
+  },
+  {
+   "id": "green",
+   "name": "Green bin",
+   "accepts": "Compost: food, plants, soiled paper",
+   "color": "#3a8f3a",
+   "ink": "#ffffff",
+   "kind": "compost"
+  },
+  {
+   "id": "black",
+   "name": "Black bin",
+   "accepts": "Landfill",
+   "color": "#24282b",
+   "ink": "#ffffff",
+   "kind": "landfill"
+  },
+  {
+   "id": "special",
+   "name": "Special handling",
+   "accepts": "Not in any bin: batteries, e-waste, scrap metal",
+   "color": "#f0b429",
+   "ink": "#2a1d00",
+   "kind": "special"
+  }
+ ],
+ "items": {
+  "plastic_bottle": {
+   "bin": "blue",
+   "prep": [
+    "Empty and give it a light rinse",
+    "Leave the cap on",
+    "Put it in loose, not in a bag"
+   ],
+   "why": "Bottles are accepted with caps on.",
+   "source": "https://www.recology.com/recology-san-francisco/what-goes-where/"
+  },
+  "plastic_container": {
+   "bin": "blue",
+   "prep": [
+    "Empty and rinse",
+    "No bag liner"
+   ],
+   "why": "Plastic containers, clamshells and tubs are accepted.",
+   "source": "https://www.recology.com/recology-san-francisco/what-goes-where/"
+  },
+  "plastic_cup": {
+   "bin": "blue",
+   "prep": [
+    "Empty it",
+    "Labeled 'compostable'? Green bin"
+   ],
+   "why": "Plastic cups are recyclable; foam cups are not.",
+   "source": "https://sfenvironment.org/sfrecycles/item/plastic-cups-plates-empty",
+   "also": [
+    "green"
+   ]
+  },
+  "plastic_lid_cap": {
+   "bin": "blue",
+   "prep": [
+    "Leave caps on bottles"
+   ],
+   "why": "Caps and lids, including coffee cup lids, are accepted.",
+   "source": "https://www.recology.com/recology-san-francisco/what-goes-where/"
+  },
+  "plastic_bag_film": {
+   "bin": "black",
+   "prep": [
+    "Better: reuse it or use a store take-back",
+    "Never in the blue bin, loose or as a liner"
+   ],
+   "why": "Plastic bags and film are landfill in SF and a top contaminant in blue bins.",
+   "source": "https://sfenvironment.org/sfrecycles/item/plastic-bags-plastic-wrap"
+  },
+  "snack_wrapper": {
+   "bin": "black",
+   "prep": [
+    "No prep"
+   ],
+   "why": "Shiny food wrappers and chip bags are landfill.",
+   "source": "https://sfenvironment.org/sfrecycles/item/shiny-food-wrappers"
+  },
+  "foam": {
+   "bin": "black",
+   "prep": [
+    "Clean foam blocks: Recology transfer station"
+   ],
+   "why": "Styrofoam is on the landfill list.",
+   "source": "https://www.recology.com/recology-san-francisco/what-goes-where/"
+  },
+  "plastic_utensil_straw": {
+   "bin": "blue",
+   "prep": [
+    "Rinse",
+    "Wood or bamboo utensils go in the green bin"
+   ],
+   "why": "Plastic utensils can go in the recycling bin.",
+   "source": "https://sfenvironment.org/sfrecycles/item/plastic-utensils"
+  },
+  "paper": {
+   "bin": "blue",
+   "prep": [
+    "Clean and dry",
+    "Shredded paper: sealed, labeled paper bag"
+   ],
+   "why": "Clean, dry paper, mail and magazines are recyclable.",
+   "source": "https://www.recology.com/recology-san-francisco/what-goes-where/"
+  },
+  "paper_bag": {
+   "bin": "blue",
+   "prep": [
+    "Clean and dry",
+    "Greasy or food-stained? Green bin"
+   ],
+   "why": "Clean paper bags are recyclable; soiled ones are compostable.",
+   "source": "https://sfenvironment.org/sfrecycles/item/paper-bags",
+   "also": [
+    "green"
+   ]
+  },
+  "cardboard": {
+   "bin": "blue",
+   "prep": [
+    "Flatten",
+    "Extra boxes: break down and bundle beside the cart"
+   ],
+   "why": "Non-waxed cardboard is recyclable.",
+   "source": "https://www.recology.com/recology-san-francisco/what-goes-where/"
+  },
+  "pizza_box": {
+   "bin": "green",
+   "prep": [
+    "Scrape out leftover food"
+   ],
+   "why": "Greasy pizza boxes go in compost, not recycling.",
+   "source": "https://www.recology.com/recology-san-francisco/what-goes-where/"
+  },
+  "soiled_paper": {
+   "bin": "green",
+   "prep": [
+    "No prep"
+   ],
+   "why": "Napkins, paper towels, tissues and soiled paper are compostable.",
+   "source": "https://www.recology.com/recology-san-francisco/what-goes-where/"
+  },
+  "paper_cup": {
+   "bin": "blue",
+   "prep": [
+    "Empty it",
+    "Sleeve and plastic lid can stay on"
+   ],
+   "why": "Empty paper coffee cups are recyclable in SF.",
+   "source": "https://sfenvironment.org/sfrecycles/item/paper-coffee-cups-empty"
+  },
+  "carton": {
+   "bin": "blue",
+   "prep": [
+    "Empty it"
+   ],
+   "why": "Milk, juice and other cartons are recyclable.",
+   "source": "https://www.recology.com/recology-san-francisco/what-goes-where/"
+  },
+  "metal_can": {
+   "bin": "blue",
+   "prep": [
+    "Empty, no food or liquid"
+   ],
+   "why": "Aluminum and steel cans are recyclable.",
+   "source": "https://www.recology.com/recology-san-francisco/what-goes-where/"
+  },
+  "aluminum_foil": {
+   "bin": "blue",
+   "prep": [
+    "Remove food",
+    "Ball it up, up to softball size"
+   ],
+   "why": "Aluminum foil and trays are recyclable.",
+   "source": "https://sfenvironment.org/sfrecycles/item/aluminum-foil"
+  },
+  "aerosol_can": {
+   "bin": "special",
+   "prep": [
+    "Use up completely",
+    "Check SF Environment's spray can page before tossing"
+   ],
+   "why": "SF lists spray cans for special handling; SF's recyclables list shows empty ones as recyclable.",
+   "source": "https://sfenvironment.org/sfrecycles/item/spray-cans-empty",
+   "also": [
+    "blue"
+   ]
+  },
+  "metal_lid_scrap": {
+   "bin": "blue",
+   "prep": [
+    "Caps and lids: blue bin",
+    "Pots, pans and other scrap metal: special handling"
+   ],
+   "why": "Caps and lids from bottles and jars are recyclable; scrap metal is not.",
+   "source": "https://www.recology.com/recology-san-francisco/what-goes-where/",
+   "also": [
+    "special"
+   ]
+  },
+  "glass_bottle_jar": {
+   "bin": "blue",
+   "prep": [
+    "Empty",
+    "Metal caps can stay on"
+   ],
+   "why": "Glass bottles and jars only.",
+   "source": "https://www.recology.com/recology-san-francisco/what-goes-where/"
+  },
+  "drinking_glass_ceramic": {
+   "bin": "black",
+   "prep": [
+    "Broken bottles and jars can still go in blue"
+   ],
+   "why": "Drinking glasses, ceramics and tempered glass are landfill.",
+   "source": "https://sfenvironment.org/sfrecycles/item/broken-glassware"
+  },
+  "food_scraps": {
+   "bin": "green",
+   "prep": [
+    "No prep"
+   ],
+   "why": "All food, including meat and bones, is compostable.",
+   "source": "https://www.recology.com/recology-san-francisco/what-goes-where/"
+  },
+  "yard_waste": {
+   "bin": "green",
+   "prep": [
+    "Branches under 6 in. thick and 4 ft. long"
+   ],
+   "why": "All plant debris is compostable.",
+   "source": "https://www.recology.com/recology-san-francisco/what-goes-where/"
+  },
+  "battery": {
+   "bin": "special",
+   "prep": [
+    "Tape over the contacts of lithium batteries",
+    "Clear bag on top of your black bin, or the orange bucket in larger buildings"
+   ],
+   "why": "Batteries don't go in any bin. They can start fires.",
+   "source": "https://sfenvironment.org/sfrecycles/item/household-batteries"
+  },
+  "electronics": {
+   "bin": "special",
+   "prep": [
+    "Donate if it works",
+    "Otherwise e-waste drop-off"
+   ],
+   "why": "Electronics are not accepted in any of the three bins.",
+   "source": "https://sfenvironment.org/sfrecycles/item/e-waste"
+  },
+  "textile": {
+   "bin": "special",
+   "prep": [
+    "Donate or reuse"
+   ],
+   "why": "Clothing is not accepted in recycling or compost.",
+   "source": "https://sfenvironment.org/sfrecycles/item/clothes-usable",
+   "also": [
+    "black"
+   ]
+  },
+  "shoes": {
+   "bin": "special",
+   "prep": [
+    "Donate wearable pairs"
+   ],
+   "why": "Usable shoes should be reused or donated.",
+   "source": "https://sfenvironment.org/sfrecycles/item/shoes-usable",
+   "also": [
+    "black"
+   ]
+  },
+  "cigarette_butt": {
+   "bin": "black",
+   "prep": [
+    "Put it out and run it under water"
+   ],
+   "why": "Cigarette butts are landfill.",
+   "source": "https://www.recology.com/recology-san-francisco/what-goes-where/"
+  },
+  "blister_pack": {
+   "bin": "black",
+   "prep": [
+    "No prep"
+   ],
+   "why": "Plastic mixed with other materials goes to landfill.",
+   "source": "https://www.recology.com/recology-san-francisco/what-goes-where/"
+  },
+  "rope_string": {
+   "bin": "black",
+   "prep": [
+    "Never in recycling"
+   ],
+   "why": "Items that can't be recycled or composted go to landfill.",
+   "source": "https://www.recology.com/recology-san-francisco/what-goes-where/"
+  },
+  "squeezable_tube": {
+   "bin": "black",
+   "prep": [
+    "Empty it"
+   ],
+   "why": "Toothpaste and cream tubes are on the landfill list.",
+   "source": "https://sfenvironment.org/sfrecycles/landfill-items"
+  },
+  "mask_gloves": {
+   "bin": "black",
+   "prep": [
+    "No prep"
+   ],
+   "why": "Disposable masks are landfill.",
+   "source": "https://sfenvironment.org/sfrecycles/item/disposable-masks"
+  }
+ }
+}

@@ -112,7 +112,7 @@ main { max-width: 1180px; margin: 0 auto; padding: 28px 24px 64px; }
 
 /* station */
 .station { background: #0e1513; color: #eef3f0; border-radius: 18px; padding: 18px; display: grid; gap: 16px; }
-.station .feed { position: relative; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: #1b2522; display: grid; place-items: center; }
+.station .feed { position: relative; height: min(54vh, 520px); min-height: 260px; border-radius: 12px; overflow: hidden; background: #1b2522; display: grid; place-items: center; }
 .station .feed video, .station .feed img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; }
 .station .callout { position: absolute; left: 16px; right: 16px; bottom: 16px; padding: 14px 18px; border-radius: 12px; display: flex; align-items: center; gap: 14px; font-size: 22px; font-weight: 700; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
 .station .callout small { display: block; font-size: 14px; font-weight: 600; opacity: 0.85; }
