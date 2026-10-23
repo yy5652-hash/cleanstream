@@ -4,6 +4,8 @@
 
 Live app: https://yy5652-hash.github.io/cleanstream/ (runs in your browser; photos never leave your device)
 
+![Scan: a plastic bottle goes in New York's blue bin](docs/scan.jpg)
+
 Cleanstream is a web app for the moment someone stands in front of three bins holding a coffee cup. Show it the item and a
 model running in the browser recognises it, then answers with the local rules: which bin, how to prep it, why, and a
 link to the official source. The same model powers a bin-station mode for an old tablet mounted above shared bins, and
@@ -40,6 +42,8 @@ before: The Recycling Partnership's cart-tagging work cut contamination 31% in A
 | **Audit** | Photograph each item pulled from a bin (drop a whole batch). It sorts them, flags what doesn't belong, gives the contamination rate and top contaminants, compares baseline and after audits, and exports CSV. |
 | **Rules** | The full rule table for NYC, San Francisco and US general guidance (EPA and The Recycling Partnership), with a source link on every row and a filter for items where places disagree. |
 | **How it works** | The model, the evaluation numbers below, data sources and licences. |
+
+<p><img src="docs/station.jpg" width="49%" alt="Bin station"> <img src="docs/audit.jpg" width="49%" alt="Bin audit"></p>
 
 ## How it works
 
@@ -131,6 +135,8 @@ uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python torch to
 - Optional sharing of station counts and audits across a campus, keeping images on the device.
 
 ## Credits
+
+Code: MIT licence (see `LICENSE`).
 
 Datasets: [TrashNet](https://github.com/garythung/trashnet) (MIT),
 [Garbage Dataset v2](https://www.kaggle.com/datasets/sumn2u/garbage-classification-v2) (MIT),
