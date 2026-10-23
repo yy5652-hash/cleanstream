@@ -63,6 +63,11 @@ before: The Recycling Partnership's cart-tagging work cut contamination 31% in A
 - **Data.** TrashNet (MIT), the Garbage Dataset v2 (MIT) and object crops from TACO, real litter photos (CC BY 4.0).
   Splits are fixed by a hash of the source photo, so crops of one TACO photo never land in two splits. Training photos
   that are near-copies of any test photo (embedding cosine above 0.97) are removed first.
+- **Cleaner labels.** The Garbage Dataset and RealWaste file milk, juice and soup cartons under "cardboard", but New
+  York wants cartons in the blue bin and cardboard in the green one. `ml/fix_labels.py` relabels a cardboard photo as a
+  carton when the encoder's text score favours "carton" over "cardboard" by at least 0.03 (a threshold set by looking
+  at photos on both sides of it), in every split, before training: 694 photos. Measured on the corrected labels, this
+  lifted NYC bin accuracy on held-out photos from 91.2% to 95.2%.
 - **Text-anchored head.** The classifier starts from the encoder's own text embeddings of each item ("a crumpled chip
   bag", "a greasy pizza box") and an L2 penalty pulls it back toward them while it trains.
 - **Partial labels.** Thousands of photos are labelled only "plastic" or "metal". They train the head with a
@@ -85,14 +90,14 @@ its training data.
 <!-- results:start -->
 | Test set | Model | Item type | Material | Bin (NYC) | Bin (San Francisco) | Bin (US general) |
 | --- | --- | --- | --- | --- | --- | --- |
-| Held-out test split (2,079 photos) | Text prompts only (zero-shot) | 68.9% | 86.2% | 80.5% | 85.2% | 87.7% |
-|  | **Cleanstream** | 90.6% | 95.0% | 95.3% | 95.8% | 96.0% |
-| RealWaste, never seen (2,546 photos) | Text prompts only (zero-shot) | 37.7% | 70.5% | 59.6% | 64.4% | 66.7% |
-|  | **Cleanstream** | 66.4% | 81.2% | 80.0% | 81.9% | 83.9% |
+| Held-out test split (2,079 photos) | Text prompts only (zero-shot) | 73.1% | 86.2% | 84.6% | 85.2% | 87.7% |
+|  | **Cleanstream** | 90.7% | 95.0% | 95.2% | 95.7% | 96.1% |
+| RealWaste, never seen (2,546 photos) | Text prompts only (zero-shot) | 39.4% | 70.5% | 61.1% | 64.4% | 67.2% |
+|  | **Cleanstream** | 65.6% | 81.0% | 79.3% | 81.5% | 83.8% |
 
 Item type and bin columns use photos with an item label. The material column also counts photos labelled only by material (2,581 and 4,257).
 
-When the top bin is below 60% the app says it is not sure. With NYC rules it answers 97.2% of held-out test photos and is right on 96.4% of those; on RealWaste it answers 80.6% and is right on 87.4%.
+When the top bin is below 60% the app says it is not sure. With NYC rules it answers 97.1% of held-out test photos and is right on 96.5% of those; on RealWaste it answers 81.0% and is right on 86.6%.
 <!-- results:end -->
 
 ## Run it

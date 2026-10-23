@@ -9,7 +9,8 @@
  "external_test": "realwaste",
  "dropped_duplicates": 98,
  "train_counts": {
-  "cardboard": 1384,
+  "cardboard": 940,
+  "carton": 477,
   "glass_bottle_jar": 1642,
   "metal*": 925,
   "paper": 1427,
@@ -36,7 +37,6 @@
   "blister_pack": 6,
   "squeezable_tube": 5,
   "rope_string": 20,
-  "carton": 33,
   "soiled_paper": 24,
   "plastic_cup": 71,
   "mask_gloves": 3,
@@ -48,28 +48,28 @@
  "n_external": 4752,
  "lambda_grid": {
   "0.0": {
-   "val": 0.9011680143755616,
-   "lodo_val": 0.6642189746259654
+   "val": 0.8971248876909255,
+   "lodo_val": 0.6821783002346294
   },
   "0.0003": {
-   "val": 0.9029649595687331,
-   "lodo_val": 0.6897279907501805
+   "val": 0.9020664869721473,
+   "lodo_val": 0.7162683563312752
   },
   "0.001": {
    "val": 0.8998203054806828,
-   "lodo_val": 0.6997764004642871
+   "lodo_val": 0.7261358413418645
   },
   "0.003": {
-   "val": 0.8917340521114105,
-   "lodo_val": 0.7036763697749747
+   "val": 0.8935309973045822,
+   "lodo_val": 0.7286958326945089
   },
   "0.01": {
-   "val": 0.8778077268643306,
-   "lodo_val": 0.700331095440159
+   "val": 0.8791554357592093,
+   "lodo_val": 0.7233397904794372
   },
   "0.03": {
-   "val": 0.8629829290206649,
-   "lodo_val": 0.6858434999079012
+   "val": 0.8638814016172507,
+   "lodo_val": 0.7140898744851897
   }
  },
  "lam": 0.001,
@@ -78,21 +78,21 @@
   "zero_shot": {
    "all": {
     "n_item": 2079,
-    "item_acc": 0.6892736892736893,
+    "item_acc": 0.7306397306397306,
     "n_material": 2581,
     "material_acc": 0.8616815187911662,
-    "bin_acc_nyc": 0.8047138047138047,
+    "bin_acc_nyc": 0.8460798460798461,
     "bin_acc_sf": 0.8518518518518519,
-    "bin_acc_us": 0.8768638768638769
+    "bin_acc_us": 0.8773448773448773
    },
    "garbage_v2": {
     "n_item": 1445,
-    "item_acc": 0.7653979238754325,
+    "item_acc": 0.8242214532871972,
     "n_material": 1830,
     "material_acc": 0.9163934426229509,
-    "bin_acc_nyc": 0.8387543252595155,
+    "bin_acc_nyc": 0.8975778546712803,
     "bin_acc_sf": 0.9024221453287197,
-    "bin_acc_us": 0.9086505190311419
+    "bin_acc_us": 0.9093425605536333
    },
    "taco": {
     "n_item": 416,
@@ -105,10 +105,10 @@
    },
    "trashnet": {
     "n_item": 218,
-    "item_acc": 0.6009174311926605,
+    "item_acc": 0.6055045871559633,
     "n_material": 335,
     "material_acc": 0.8208955223880597,
-    "bin_acc_nyc": 0.7752293577981652,
+    "bin_acc_nyc": 0.7798165137614679,
     "bin_acc_sf": 0.7844036697247706,
     "bin_acc_us": 0.8119266055045872
    }
@@ -116,36 +116,36 @@
   "cleanstream": {
    "all": {
     "n_item": 2079,
-    "item_acc": 0.9062049062049062,
+    "item_acc": 0.9066859066859067,
     "n_material": 2581,
     "material_acc": 0.9496319256102286,
-    "bin_acc_nyc": 0.9533429533429534,
-    "bin_acc_sf": 0.9576719576719577,
-    "bin_acc_us": 0.9600769600769601
+    "bin_acc_nyc": 0.9523809523809523,
+    "bin_acc_sf": 0.9567099567099567,
+    "bin_acc_us": 0.9605579605579606
    },
    "garbage_v2": {
     "n_item": 1445,
-    "item_acc": 0.9667820069204153,
+    "item_acc": 0.9660899653979239,
     "n_material": 1830,
     "material_acc": 0.9797814207650273,
-    "bin_acc_nyc": 0.9923875432525952,
+    "bin_acc_nyc": 0.9903114186851211,
     "bin_acc_sf": 0.9944636678200692,
     "bin_acc_us": 0.9916955017301038
    },
    "taco": {
     "n_item": 416,
-    "item_acc": 0.6802884615384616,
+    "item_acc": 0.6826923076923077,
     "n_material": 416,
-    "material_acc": 0.8028846153846154,
-    "bin_acc_nyc": 0.7980769230769231,
-    "bin_acc_sf": 0.8076923076923077,
-    "bin_acc_us": 0.8341346153846154
+    "material_acc": 0.8004807692307693,
+    "bin_acc_nyc": 0.8004807692307693,
+    "bin_acc_sf": 0.8028846153846154,
+    "bin_acc_us": 0.8365384615384616
    },
    "trashnet": {
     "n_item": 218,
-    "item_acc": 0.9357798165137615,
+    "item_acc": 0.9403669724770642,
     "n_material": 335,
-    "material_acc": 0.9671641791044776,
+    "material_acc": 0.9701492537313433,
     "bin_acc_nyc": 0.9908256880733946,
     "bin_acc_sf": 1.0,
     "bin_acc_us": 0.9908256880733946
@@ -156,41 +156,41 @@
   "zero_shot": {
    "all": {
     "n_item": 2546,
-    "item_acc": 0.3774548311076198,
+    "item_acc": 0.3935585231736057,
     "n_material": 4257,
     "material_acc": 0.704721634954193,
-    "bin_acc_nyc": 0.5958366064414768,
+    "bin_acc_nyc": 0.6111547525530243,
     "bin_acc_sf": 0.6437549096622153,
-    "bin_acc_us": 0.6665357423409269
+    "bin_acc_us": 0.6724273369992144
    },
    "realwaste": {
     "n_item": 2546,
-    "item_acc": 0.3774548311076198,
+    "item_acc": 0.3935585231736057,
     "n_material": 4257,
     "material_acc": 0.704721634954193,
-    "bin_acc_nyc": 0.5958366064414768,
+    "bin_acc_nyc": 0.6111547525530243,
     "bin_acc_sf": 0.6437549096622153,
-    "bin_acc_us": 0.6665357423409269
+    "bin_acc_us": 0.6724273369992144
    }
   },
   "cleanstream": {
    "all": {
     "n_item": 2546,
-    "item_acc": 0.6637863315003928,
+    "item_acc": 0.6555380989787902,
     "n_material": 4257,
-    "material_acc": 0.8120742306788818,
-    "bin_acc_nyc": 0.7996857816182247,
-    "bin_acc_sf": 0.8185388845247447,
-    "bin_acc_us": 0.8389630793401414
+    "material_acc": 0.8099600657740192,
+    "bin_acc_nyc": 0.7930086410054988,
+    "bin_acc_sf": 0.8153967007069913,
+    "bin_acc_us": 0.8377847604084839
    },
    "realwaste": {
     "n_item": 2546,
-    "item_acc": 0.6637863315003928,
+    "item_acc": 0.6555380989787902,
     "n_material": 4257,
-    "material_acc": 0.8120742306788818,
-    "bin_acc_nyc": 0.7996857816182247,
-    "bin_acc_sf": 0.8185388845247447,
-    "bin_acc_us": 0.8389630793401414
+    "material_acc": 0.8099600657740192,
+    "bin_acc_nyc": 0.7930086410054988,
+    "bin_acc_sf": 0.8153967007069913,
+    "bin_acc_us": 0.8377847604084839
    }
   }
  },
@@ -199,67 +199,67 @@
    "val": {
     "0.0": {
      "coverage": 1.0,
-     "accuracy_answered": 0.9573225516621743
+     "accuracy_answered": 0.9577717879604672
     },
     "0.5": {
-     "coverage": 0.9874213836477987,
-     "accuracy_answered": 0.9645131938125568
+     "coverage": 0.9878706199460916,
+     "accuracy_answered": 0.9640745793542519
     },
     "0.6": {
-     "coverage": 0.9649595687331537,
-     "accuracy_answered": 0.973463687150838
+     "coverage": 0.9663072776280324,
+     "accuracy_answered": 0.9725708972570897
     },
     "0.7": {
      "coverage": 0.9371069182389937,
      "accuracy_answered": 0.9846596356663471
     },
     "0.8": {
-     "coverage": 0.9088050314465409,
-     "accuracy_answered": 0.9881364310430054
+     "coverage": 0.9092542677448338,
+     "accuracy_answered": 0.9881422924901185
     }
    },
    "test": {
     "0.0": {
      "coverage": 1.0,
-     "accuracy_answered": 0.9533429533429534
+     "accuracy_answered": 0.9523809523809523
     },
     "0.5": {
-     "coverage": 0.9889369889369889,
-     "accuracy_answered": 0.958171206225681
+     "coverage": 0.9894179894179894,
+     "accuracy_answered": 0.9567331064657267
     },
     "0.6": {
-     "coverage": 0.9721019721019721,
-     "accuracy_answered": 0.9643740722414647
+     "coverage": 0.9706589706589707,
+     "accuracy_answered": 0.964816650148662
     },
     "0.7": {
-     "coverage": 0.9422799422799423,
-     "accuracy_answered": 0.9760081674323634
+     "coverage": 0.9384319384319384,
+     "accuracy_answered": 0.9784725781650435
     },
     "0.8": {
-     "coverage": 0.9158249158249159,
-     "accuracy_answered": 0.9852941176470589
+     "coverage": 0.9153439153439153,
+     "accuracy_answered": 0.9852863899106674
     }
    },
    "external": {
     "0.0": {
      "coverage": 1.0,
-     "accuracy_answered": 0.7996857816182247
+     "accuracy_answered": 0.7930086410054988
     },
     "0.5": {
-     "coverage": 0.9002356637863315,
-     "accuracy_answered": 0.8359511343804538
+     "coverage": 0.8986645718774549,
+     "accuracy_answered": 0.8291083916083916
     },
     "0.6": {
-     "coverage": 0.8063629222309505,
-     "accuracy_answered": 0.8738431563565514
+     "coverage": 0.8095051060487038,
+     "accuracy_answered": 0.8655992236778263
     },
     "0.7": {
-     "coverage": 0.7187745483110762,
-     "accuracy_answered": 0.9103825136612022
+     "coverage": 0.7164179104477612,
+     "accuracy_answered": 0.9051535087719298
     },
     "0.8": {
-     "coverage": 0.6209740769835035,
-     "accuracy_answered": 0.9380139152435167
+     "coverage": 0.6158680282796544,
+     "accuracy_answered": 0.9349489795918368
     }
    }
   },
@@ -267,67 +267,67 @@
    "val": {
     "0.0": {
      "coverage": 1.0,
-     "accuracy_answered": 0.9591194968553459
+     "accuracy_answered": 0.9582210242587601
     },
     "0.5": {
      "coverage": 0.9941599281221922,
-     "accuracy_answered": 0.9615906009941256
+     "accuracy_answered": 0.9611387257117036
     },
     "0.6": {
-     "coverage": 0.972596585804133,
-     "accuracy_answered": 0.9709006928406466
+     "coverage": 0.9757412398921833,
+     "accuracy_answered": 0.9691528545119705
     },
     "0.7": {
-     "coverage": 0.949685534591195,
-     "accuracy_answered": 0.9810785241248817
+     "coverage": 0.9510332434860737,
+     "accuracy_answered": 0.9806329711856401
     },
     "0.8": {
-     "coverage": 0.9195867026055705,
-     "accuracy_answered": 0.986809965803615
+     "coverage": 0.9227313566936208,
+     "accuracy_answered": 0.9868549172346641
     }
    },
    "test": {
     "0.0": {
      "coverage": 1.0,
-     "accuracy_answered": 0.9576719576719577
+     "accuracy_answered": 0.9567099567099567
     },
     "0.5": {
-     "coverage": 0.9951899951899952,
-     "accuracy_answered": 0.9594006766553891
+     "coverage": 0.9956709956709957,
+     "accuracy_answered": 0.9589371980676329
     },
     "0.6": {
-     "coverage": 0.9793169793169794,
-     "accuracy_answered": 0.9670923379174853
+     "coverage": 0.9788359788359788,
+     "accuracy_answered": 0.9670761670761671
     },
     "0.7": {
-     "coverage": 0.9538239538239538,
-     "accuracy_answered": 0.978315683308119
+     "coverage": 0.9523809523809523,
+     "accuracy_answered": 0.9797979797979798
     },
     "0.8": {
-     "coverage": 0.9312169312169312,
-     "accuracy_answered": 0.9860537190082644
+     "coverage": 0.9336219336219336,
+     "accuracy_answered": 0.9855744461617723
     }
    },
    "external": {
     "0.0": {
      "coverage": 1.0,
-     "accuracy_answered": 0.8185388845247447
+     "accuracy_answered": 0.8153967007069913
     },
     "0.5": {
-     "coverage": 0.9336213668499608,
-     "accuracy_answered": 0.8405553218342449
+     "coverage": 0.9320502749410841,
+     "accuracy_answered": 0.8398651495996629
     },
     "0.6": {
-     "coverage": 0.8436763550667714,
-     "accuracy_answered": 0.8756983240223464
+     "coverage": 0.8472113118617439,
+     "accuracy_answered": 0.8720445062586927
     },
     "0.7": {
-     "coverage": 0.7568735271013354,
-     "accuracy_answered": 0.9060716139076285
+     "coverage": 0.7584446190102121,
+     "accuracy_answered": 0.9052304505437597
     },
     "0.8": {
-     "coverage": 0.6598586017282011,
-     "accuracy_answered": 0.9386904761904762
+     "coverage": 0.6567164179104478,
+     "accuracy_answered": 0.9383971291866029
     }
    }
   },
@@ -335,67 +335,67 @@
    "val": {
     "0.0": {
      "coverage": 1.0,
-     "accuracy_answered": 0.9555256064690026
+     "accuracy_answered": 0.9550763701707098
     },
     "0.5": {
-     "coverage": 0.9766397124887691,
-     "accuracy_answered": 0.9604415823367065
+     "coverage": 0.9761904761904762,
+     "accuracy_answered": 0.9599631845375057
     },
     "0.6": {
-     "coverage": 0.9528301886792453,
-     "accuracy_answered": 0.967939651107968
+     "coverage": 0.9550763701707098,
+     "accuracy_answered": 0.9666039510818438
     },
     "0.7": {
-     "coverage": 0.922282120395328,
-     "accuracy_answered": 0.9824646858256211
+     "coverage": 0.9236298292902066,
+     "accuracy_answered": 0.9820038910505836
     },
     "0.8": {
-     "coverage": 0.8863432165318957,
-     "accuracy_answered": 0.9888494678155094
+     "coverage": 0.8881401617250674,
+     "accuracy_answered": 0.988872028325746
     }
    },
    "test": {
     "0.0": {
      "coverage": 1.0,
-     "accuracy_answered": 0.9600769600769601
+     "accuracy_answered": 0.9605579605579606
     },
     "0.5": {
-     "coverage": 0.9836459836459837,
-     "accuracy_answered": 0.9667481662591687
+     "coverage": 0.9822029822029822,
+     "accuracy_answered": 0.9676787463271302
     },
     "0.6": {
-     "coverage": 0.9571909571909571,
-     "accuracy_answered": 0.9748743718592965
+     "coverage": 0.9562289562289562,
+     "accuracy_answered": 0.9748490945674044
     },
     "0.7": {
-     "coverage": 0.9316979316979317,
-     "accuracy_answered": 0.982447083118224
+     "coverage": 0.9312169312169312,
+     "accuracy_answered": 0.9834710743801653
     },
     "0.8": {
-     "coverage": 0.9042809042809042,
-     "accuracy_answered": 0.9898936170212767
+     "coverage": 0.9057239057239057,
+     "accuracy_answered": 0.9899097185342538
     }
    },
    "external": {
     "0.0": {
      "coverage": 1.0,
-     "accuracy_answered": 0.8389630793401414
+     "accuracy_answered": 0.8377847604084839
     },
     "0.5": {
-     "coverage": 0.9073055773762765,
-     "accuracy_answered": 0.8675324675324675
+     "coverage": 0.9080911233307148,
+     "accuracy_answered": 0.8672145328719724
     },
     "0.6": {
-     "coverage": 0.8208955223880597,
-     "accuracy_answered": 0.8947368421052632
+     "coverage": 0.8236449332285939,
+     "accuracy_answered": 0.894134477825465
     },
     "0.7": {
-     "coverage": 0.7344854673998429,
-     "accuracy_answered": 0.9187165775401069
+     "coverage": 0.7340926944226237,
+     "accuracy_answered": 0.9197431781701445
     },
     "0.8": {
-     "coverage": 0.6300078554595444,
-     "accuracy_answered": 0.9501246882793017
+     "coverage": 0.6272584446190103,
+     "accuracy_answered": 0.9511584220413275
     }
    }
   }
@@ -442,8 +442,8 @@
    "acc": 0.0
   },
   "cardboard": {
-   "n": 276,
-   "acc": 0.9166666666666666
+   "n": 188,
+   "acc": 0.8882978723404256
   },
   "pizza_box": {
    "n": 1,
@@ -458,8 +458,8 @@
    "acc": 0.75
   },
   "carton": {
-   "n": 7,
-   "acc": 0.0
+   "n": 95,
+   "acc": 0.9157894736842105
   },
   "metal_can": {
    "n": 37,

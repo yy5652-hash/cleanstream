@@ -80,6 +80,12 @@ def main():
             rows += folder_dataset(name, DATA / sub, mapping)
     if (DATA / "taco").exists():
         rows += taco_crops(DATA / "taco")
+    fixes = ROOT / "ml/relabel.csv"  # label corrections from ml/fix_labels.py (cartons filed as cardboard)
+    if fixes.exists():
+        new = {r["path"]: r["label"] for r in csv.DictReader(open(fixes))}
+        for r in rows:
+            if r["path"] in new:
+                r["label"], r["material"] = new[r["path"]], MATERIAL[new[r["path"]]]
     with open(DATA / "manifest.csv", "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=["path", "source", "label", "material", "split"])
         w.writeheader()
