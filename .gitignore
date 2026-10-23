@@ -11,4 +11,3 @@ data/
 work/
 ml/cache/
 ml/results/*.tmp
-web/public/model/encoder.onnx
