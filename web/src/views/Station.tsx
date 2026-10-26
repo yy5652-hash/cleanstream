@@ -66,7 +66,7 @@ function Rotating({ items, every, render }: { items: string[]; every: number; re
 }
 
 // `full`: the kiosk alone, filling the window (the ?kiosk URL a station tablet keeps open)
-export default function Station({ pack, full = false, start = 'off' }: { pack: Pack; full?: boolean; start?: Source }) {
+export default function Station({ pack, full = false, start = 'off', wait = 0 }: { pack: Pack; full?: boolean; start?: Source; wait?: number }) {
   const model = useModel()
   const samples = useSamples()
   const [source, setSource] = useState<Source>(start)
@@ -167,9 +167,10 @@ export default function Station({ pack, full = false, start = 'off' }: { pack: P
       if (!stop) await run(blob, sampleUrl(s))
       setTimeout(step, RESULT_MS + THANKS_MS + 1600)
     }
-    step()
+    const first = window.setTimeout(step, wait)
     return () => {
       stop = true
+      clearTimeout(first)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [source, samples, pack, model.status])
