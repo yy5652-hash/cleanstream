@@ -48,6 +48,13 @@ export default function App() {
   }, [city])
 
   const pack = packs?.find((p) => p.id === city)
+  const params = new URLSearchParams(location.search)
+
+  // ?kiosk: the bin station alone, full window, for a tablet mounted above the bins
+  if (params.has('kiosk')) {
+    const start = params.get('source') === 'demo' ? 'demo' : 'camera'
+    return pack ? <Station pack={pack} full start={start} /> : null
+  }
 
   return (
     <>
