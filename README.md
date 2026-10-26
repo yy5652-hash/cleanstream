@@ -38,7 +38,7 @@ before: The Recycling Partnership's cart-tagging work cut contamination 31% in A
 | Tab | What you get |
 | --- | --- |
 | **Scan** | Camera, upload or a held-out test photo. The bin for your city, how sure the model is, prep steps, the reason, the official source, and what the same item gets in other cities. One tap corrects it. |
-| **Bin station** | Kiosk view for a tablet above a set of bins. It scans when an item is held still, lights up the right bin and keeps per-bin counts. It never stores a picture. |
+| **Bin station** | Kiosk for a tablet above a set of bins, modelled on commercial sorting stations. While idle it greets people in several languages and shows the items most often binned wrong; when an item is held still it fills the screen with that bin's colour and points at the right lid. Set which bins stand there and in what order; open `?kiosk` on the tablet for a full-screen station. It keeps counts, never pictures. |
 | **Audit** | Photograph each item pulled from a bin (drop a whole batch). It sorts them, flags what doesn't belong, gives the contamination rate and top contaminants, compares baseline and after audits, and exports CSV. |
 | **Rules** | The full rule table for NYC, San Francisco and US general guidance (EPA and The Recycling Partnership), with a source link on every row and a filter for items where places disagree. |
 | **How it works** | The model, the evaluation numbers below, data sources and licences. |
