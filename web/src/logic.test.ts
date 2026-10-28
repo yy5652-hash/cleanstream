@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { ITEMS } from './items'
+import { ITEMS, searchItems } from './items'
 import { answer, PACK_IDS, SURE, type Pack } from './rules'
 import { contamination } from './views/Audit'
 
@@ -40,6 +40,26 @@ describe('answer', () => {
   it('says it is not sure when the probability is split across bins', () => {
     const a = answer(nyc, classes, probs({ plastic_bottle: 0.45, plastic_bag_film: 0.3, food_scraps: 0.25 }))
     expect(a.sure).toBe(false)
+  })
+})
+
+describe('item search', () => {
+  it.each([
+    ['tin foil', 'aluminum_foil'],
+    ['amazon box', 'cardboard'],
+    ['styrofoam', 'foam'],
+    ['coffee cup', 'paper_cup'],
+    ['vape', 'battery'],
+    ['Pizza', 'pizza_box'],
+    ['milk carton', 'carton'],
+    ['batt', 'battery'],
+  ])('"%s" finds %s first', (q, id) => {
+    expect(searchItems(q)[0]).toBe(id)
+  })
+
+  it('returns nothing for one letter or no match', () => {
+    expect(searchItems('a')).toEqual([])
+    expect(searchItems('xylophone')).toEqual([])
   })
 })
 

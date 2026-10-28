@@ -1,6 +1,6 @@
-// Shared pieces: logo, bin icon and chip, photo input (drop, upload, camera, samples), item picker, result card.
+// Shared pieces: logo, bin icon and chip, photo input (drop, upload, camera, samples), item search and picker, result card.
 import { useEffect, useRef, useState } from 'react'
-import { ITEMS, itemName } from './items'
+import { ITEMS, itemName, searchItems } from './items'
 import { binById, type Answer, type Bin, type Pack } from './rules'
 
 export const pct = (p: number) => `${Math.round(p * 100)}%`
@@ -140,7 +140,68 @@ export function PhotoInput({ onImage, preview }: { onImage: (blob: Blob) => void
   )
 }
 
+// Type-ahead search over item names and everyday synonyms ("tin foil", "amazon box"); needs no model.
+export function ItemSearch({ pack, onPick, popular = [] }: { pack: Pack; onPick: (id: string) => void; popular?: string[] }) {
+  const [q, setQ] = useState('')
+  const [open, setOpen] = useState(false)
+  const [active, setActive] = useState(0)
+  const hits = searchItems(q)
+  const pick = (id: string) => {
+    onPick(id)
+    setQ(itemName(id))
+    setOpen(false)
+  }
+  const showList = open && q.trim().length >= 2
+
+  return (
+    <div className="search">
+      <div className="search-box">
+        <svg viewBox="0 0 20 20" aria-hidden><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" strokeWidth="2" /><path d="M13 13l4.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+        <input
+          type="search" value={q} placeholder="Search an item: coffee cup, pizza box, batteries…" aria-label="Search an item"
+          role="combobox" aria-expanded={showList} aria-controls="search-list" aria-autocomplete="list" autoComplete="off"
+          onChange={(e) => (setQ(e.target.value), setOpen(true), setActive(0))}
+          onFocus={() => setOpen(true)}
+          onBlur={() => setTimeout(() => setOpen(false), 120)}
+          onKeyDown={(e) => {
+            if (e.key === 'ArrowDown') (e.preventDefault(), setActive((a) => Math.min(a + 1, hits.length - 1)))
+            else if (e.key === 'ArrowUp') (e.preventDefault(), setActive((a) => Math.max(a - 1, 0)))
+            else if (e.key === 'Enter' && hits[active]) (e.preventDefault(), pick(hits[active]))
+            else if (e.key === 'Escape') setOpen(false)
+          }}
+        />
+      </div>
+      {showList && (
+        <div className="search-list card" id="search-list" role="listbox">
+          {hits.length ? hits.map((id, k) => {
+            const bin = binById(pack, pack.items[id].bin)
+            return (
+              <button key={id} role="option" aria-selected={k === active} className={k === active ? 'on' : ''}
+                onMouseDown={(e) => e.preventDefault()} onMouseEnter={() => setActive(k)} onClick={() => pick(id)}>
+                <span><strong>{itemName(id)}</strong><span className="small muted">{ITEMS[id].examples}</span></span>
+                <span className="chip" style={{ background: bin.color, color: bin.ink }}>{bin.name}</span>
+              </button>
+            )
+          }) : (
+            <div className="small muted" style={{ padding: '12px 14px' }}>
+              Nothing matches “{q.trim()}”. Try a simpler word, or show it with a photo. When in doubt, keep it out of recycling.
+            </div>
+          )}
+        </div>
+      )}
+      {popular.length > 0 && (
+        <div className="row small" style={{ gap: 6, marginTop: 10 }}>
+          <span className="muted">Often asked:</span>
+          {popular.map((id) => <button key={id} className="tag" onClick={() => pick(id)}>{ITEMS[id].aka?.[0] ?? itemName(id)}</button>)}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function ItemPicker({ onPick, onClose, pack }: { onPick: (id: string) => void; onClose: () => void; pack: Pack }) {
+  const [q, setQ] = useState('')
+  const ids = q.trim().length >= 2 ? searchItems(q, 32) : Object.keys(ITEMS)
   return (
     <div className="pick" onClick={onClose}>
       <div className="card pad" onClick={(e) => e.stopPropagation()}>
@@ -148,8 +209,9 @@ export function ItemPicker({ onPick, onClose, pack }: { onPick: (id: string) => 
           <h3>What is it?</h3>
           <button className="btn small" onClick={onClose}>Close</button>
         </div>
+        <input className="filter" type="search" autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="Filter: foil, mug, vape…" aria-label="Filter item types" />
         <div className="opts">
-          {Object.keys(ITEMS).map((id) => {
+          {ids.map((id) => {
             const bin = binById(pack, pack.items[id].bin)
             return (
               <button key={id} onClick={() => onPick(id)}>
@@ -164,16 +226,37 @@ export function ItemPicker({ onPick, onClose, pack }: { onPick: (id: string) => 
   )
 }
 
+// A link that opens this answer directly: #scan?item=pizza_box&city=sf
+export const answerLink = (pack: Pack, item: string) => `${location.origin}${import.meta.env.BASE_URL}#scan?item=${item}&city=${pack.id}`
+
+function ShareButton({ pack, item, bin }: { pack: Pack; item: string; bin: Bin }) {
+  const [copied, setCopied] = useState(false)
+  const share = async () => {
+    const url = answerLink(pack, item)
+    const text = `${itemName(item)}: ${bin.name} in ${pack.name}.`
+    try {
+      if (navigator.share) return await navigator.share({ title: 'Which bin? Cleanstream', text, url })
+      await navigator.clipboard.writeText(`${text} ${url}`)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1800)
+    } catch {
+      /* share sheet dismissed */
+    }
+  }
+  return <button className="btn small" onClick={share}>{copied ? 'Link copied' : 'Share'}</button>
+}
+
+// ans is the model's answer for a photo; null when the item came from search or a shared link (then `override` is the item).
 export function ResultCard({ ans, pack, packs, override, onOverride }: {
-  ans: Answer; pack: Pack; packs: Pack[]; override: string | null; onOverride: (id: string | null) => void
+  ans: Answer | null; pack: Pack; packs: Pack[]; override: string | null; onOverride: (id: string | null) => void
 }) {
   const [picking, setPicking] = useState(false)
-  const item = override ?? ans.items[0].id
+  const item = override ?? ans!.items[0].id
   const rule = pack.items[item]
   const bin = binById(pack, rule.bin)
-  const binP = override ? 1 : ans.bins[0].p
-  const unsure = !override && !ans.sure
+  const unsure = !!ans && !override && !ans.sure
   const others = packs.filter((p) => p.id !== pack.id)
+  const also = (rule.also ?? []).map((id) => binById(pack, id))
 
   return (
     <div className="card pad">
@@ -190,17 +273,21 @@ export function ResultCard({ ans, pack, packs, override, onOverride }: {
           <h2>{bin.name}</h2>
           <div className="sub">{bin.accepts}</div>
         </div>
-        <div className="conf">{override ? 'You chose' : pct(binP)}<small>{override ? 'item type' : 'sure of the bin'}</small></div>
+        {ans && <div className="conf">{override ? 'You chose' : pct(ans.bins[0].p)}<small>{override ? 'item type' : 'sure of the bin'}</small></div>}
       </div>
+      {also.length > 0 && <p className="small muted" style={{ marginTop: 8 }}>Also accepted in: {also.map((b) => b.name).join(', ')}</p>}
 
       <div style={{ marginTop: 16 }}>
-        <div className="row" style={{ justifyContent: 'space-between' }}>
+        <div className="row" style={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
             <div className="label">Item</div>
             <h3 style={{ fontSize: 20 }}>{itemName(item)}</h3>
             <div className="small muted">{ITEMS[item]?.examples}</div>
           </div>
-          {!override && <div className="small muted" style={{ textAlign: 'right' }}>{pct(ans.items[0].p)} sure of the item</div>}
+          <div style={{ display: 'grid', justifyItems: 'end', gap: 6 }}>
+            {ans && !override && <div className="small muted">{pct(ans.items[0].p)} sure of the item</div>}
+            <ShareButton pack={pack} item={item} bin={bin} />
+          </div>
         </div>
       </div>
 
@@ -227,25 +314,34 @@ export function ResultCard({ ans, pack, packs, override, onOverride }: {
         </div>
       )}
 
-      <div className="section">
-        <div className="row" style={{ justifyContent: 'space-between' }}>
-          <div className="label">{override ? 'Model suggestions' : 'Not right? Tap the correct item'}</div>
-          {override ? <button className="btn small" onClick={() => onOverride(null)}>Use model answer</button> : null}
+      {ans ? (
+        <div className="section">
+          <div className="row" style={{ justifyContent: 'space-between' }}>
+            <div className="label">{override ? 'Model suggestions' : 'Not right? Tap the correct item'}</div>
+            {override ? <button className="btn small" onClick={() => onOverride(null)}>Use model answer</button> : null}
+          </div>
+          <div className="alts">
+            {ans.items.slice(0, override ? 3 : 4).map((it) => {
+              const b = binById(pack, pack.items[it.id].bin)
+              return (
+                <button key={it.id} className="alt" onClick={() => onOverride(it.id)}>
+                  <span>{itemName(it.id)}</span>
+                  <span className="chip" style={{ background: b.color, color: b.ink }}>{b.name}</span>
+                  <span className="small muted" style={{ width: 38, textAlign: 'right' }}>{pct(it.p)}</span>
+                </button>
+              )
+            })}
+            <button className="btn small" style={{ justifySelf: 'start' }} onClick={() => setPicking(true)}>Something else…</button>
+          </div>
         </div>
-        <div className="alts">
-          {ans.items.slice(0, override ? 3 : 4).map((it) => {
-            const b = binById(pack, pack.items[it.id].bin)
-            return (
-              <button key={it.id} className="alt" onClick={() => onOverride(it.id)}>
-                <span>{itemName(it.id)}</span>
-                <span className="chip" style={{ background: b.color, color: b.ink }}>{b.name}</span>
-                <span className="small muted" style={{ width: 38, textAlign: 'right' }}>{pct(it.p)}</span>
-              </button>
-            )
-          })}
-          <button className="btn small" style={{ justifySelf: 'start' }} onClick={() => setPicking(true)}>Something else…</button>
+      ) : (
+        <div className="section">
+          <div className="row" style={{ justifyContent: 'space-between' }}>
+            <div className="label">Not the item you meant?</div>
+            <button className="btn small" onClick={() => setPicking(true)}>Browse all items</button>
+          </div>
         </div>
-      </div>
+      )}
       {picking && <ItemPicker pack={pack} onClose={() => setPicking(false)} onPick={(id) => (onOverride(id), setPicking(false))} />}
     </div>
   )

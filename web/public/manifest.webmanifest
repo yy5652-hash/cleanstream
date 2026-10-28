@@ -1,0 +1,22 @@
+{
+  "name": "Cleanstream: which bin?",
+  "short_name": "Cleanstream",
+  "description": "Which bin does it go in? Search an item or show a photo and get your city's rule, how to prep it and the official source. Runs on your device.",
+  "id": "./",
+  "start_url": "./#scan",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f6f1",
+  "theme_color": "#f5f6f1",
+  "categories": ["utilities", "education", "lifestyle"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Which bin?", "url": "./#scan", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Bin station", "short_name": "Station", "url": "./?kiosk", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Bin audit", "short_name": "Audit", "url": "./#audit", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

@@ -239,3 +239,17 @@ table.list tr.click:hover td { background: #f8f9f6; }
   .conf { margin-left: 0; text-align: left; width: 100%; font-size: 18px; display: flex; gap: 8px; align-items: baseline; }
   .conf small { display: inline; }
 }
+
+/* item search */
+.search { position: relative; margin-top: 16px; }
+.search-box { display: flex; align-items: center; gap: 10px; background: var(--card); border: 1.5px solid #cdd3c8; border-radius: 14px; padding: 0 14px; box-shadow: var(--shadow); }
+.search-box:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.search-box svg { width: 20px; height: 20px; flex: none; color: var(--muted); }
+.search-box input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; padding: 14px 0; font: inherit; font-size: 17px; color: var(--ink); }
+.search-list { position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 40; padding: 6px; display: grid; gap: 2px; max-height: 380px; overflow: auto; }
+.search-list button { display: flex; justify-content: space-between; align-items: center; gap: 12px; border: 0; background: none; text-align: left; padding: 10px 12px; border-radius: 10px; cursor: pointer; color: var(--ink); }
+.search-list button > span:first-child { display: grid; gap: 2px; min-width: 0; }
+.search-list button.on { background: #f0f3ec; }
+.tag { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 4px 11px; font: inherit; font-size: 13px; font-weight: 600; color: var(--ink); cursor: pointer; }
+.tag:hover { border-color: var(--accent); color: var(--accent); }
+.pick .filter { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 9px 11px; font: inherit; margin-bottom: 12px; }

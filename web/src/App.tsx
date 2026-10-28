@@ -17,9 +17,26 @@ const TABS = [
 ] as const
 type Tab = (typeof TABS)[number][0]
 
-const tabFromHash = (): Tab => (TABS.find(([id]) => `#${id}` === location.hash)?.[0] ?? 'scan')
+const tabFromHash = (): Tab => (TABS.find(([id]) => id === location.hash.slice(1).split('?')[0])?.[0] ?? 'scan')
+
+// Chrome, Edge and Android offer to install the app (manifest + service worker); keep the prompt for a header button.
+type InstallPrompt = Event & { prompt: () => Promise<void> }
+function useInstall() {
+  const [prompt, setPrompt] = useState<InstallPrompt | null>(null)
+  useEffect(() => {
+    const on = (e: Event) => (e.preventDefault(), setPrompt(e as InstallPrompt))
+    const done = () => setPrompt(null)
+    addEventListener('beforeinstallprompt', on)
+    addEventListener('appinstalled', done)
+    return () => (removeEventListener('beforeinstallprompt', on), removeEventListener('appinstalled', done))
+  }, [])
+  return prompt && (() => prompt.prompt().finally(() => setPrompt(null)))
+}
 
 function storedCity() {
+  // a shared answer link carries its city: #scan?item=pizza_box&city=sf
+  const linked = new URLSearchParams(location.hash.split('?')[1] ?? '').get('city')
+  if (linked && (PACK_IDS as readonly string[]).includes(linked)) return linked
   try {
     const c = localStorage.getItem('cleanstream.city')
     return c && (PACK_IDS as readonly string[]).includes(c) ? c : 'nyc'
@@ -33,9 +50,14 @@ export default function App() {
   const [city, setCity] = useState(storedCity)
   const packs = usePacks()
   const model = useModel()
+  const install = useInstall()
 
   useEffect(() => {
-    const on = () => setTab(tabFromHash())
+    const on = () => {
+      setTab(tabFromHash())
+      const linked = new URLSearchParams(location.hash.split('?')[1] ?? '').get('city')
+      if (linked && (PACK_IDS as readonly string[]).includes(linked)) setCity(linked)
+    }
     addEventListener('hashchange', on)
     return () => removeEventListener('hashchange', on)
   }, [])
@@ -71,6 +93,7 @@ export default function App() {
             <span className="meter"><i style={{ width: `${model.total ? (model.loaded / model.total) * 100 : 5}%` }} /></span>
           </div>
         )}
+        {install && <button className="btn small" onClick={install} title="Add Cleanstream to your home screen or dock; it works offline">Install app</button>}
         <label className="city">
           Rules for
           <select value={city} onChange={(e) => setCity(e.target.value)}>
