@@ -13,7 +13,7 @@ export type Pack = {
   items: Record<string, Rule>
 }
 
-export const PACK_IDS = ['nyc', 'sf', 'us'] as const
+export const PACK_IDS = ['nyc', 'sf', 'la', 'chi', 'sea', 'us'] as const
 const cache = new Map<string, Promise<Pack>>()
 
 export function loadPack(id: string): Promise<Pack> {

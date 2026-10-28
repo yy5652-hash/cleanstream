@@ -241,7 +241,7 @@ table.list tr.click:hover td { background: #f8f9f6; }
 }
 
 /* item search */
-.search { position: relative; margin-top: 16px; }
+.isearch { position: relative; margin-top: 16px; }
 .search-box { display: flex; align-items: center; gap: 10px; background: var(--card); border: 1.5px solid #cdd3c8; border-radius: 14px; padding: 0 14px; box-shadow: var(--shadow); }
 .search-box:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 .search-box svg { width: 20px; height: 20px; flex: none; color: var(--muted); }

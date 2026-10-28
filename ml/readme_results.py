@@ -13,17 +13,24 @@ def pct(x):
     return f"{x * 100:.1f}%"
 
 
+ORDER = ["nyc", "sf", "la", "chi", "sea", "us"]  # the app's city order; any other pack follows
+
+
 def main():
     m = json.loads((ROOT / "web/public/model/metrics.json").read_text())
-    packs = [("nyc", "NYC"), ("sf", "San Francisco"), ("us", "US general")]
-    lines = ["| Test set | Model | Item type | Material | " + " | ".join(f"Bin ({n})" for _, n in packs) + " |",
-             "| --- | --- | --- | --- | " + " | ".join("---" for _ in packs) + " |"]
-    for name, k in [(f"Held-out test split ({m['test']['n_item']:,} photos)", "test"),
-                    (f"RealWaste, never seen ({m['external']['n_item']:,} photos)", "external")]:
+    names = {p.stem: json.loads(p.read_text())["name"] for p in (ROOT / "web/public/rules").glob("*.json")}
+    packs = sorted(names, key=lambda p: (ORDER.index(p) if p in ORDER else len(ORDER), p))
+    sets = [(f"Held-out test split ({m['test']['n_item']:,} photos)", "test"), (f"RealWaste, never seen ({m['external']['n_item']:,} photos)", "external")]
+    lines = ["| Test set | Model | Item type | Material |", "| --- | --- | --- | --- |"]
+    for name, k in sets:
         for model, s in [("Text prompts only (zero-shot)", m["zero_shot"][k]), ("**Cleanstream**", m[k])]:
-            lines.append(f"| {name} | {model} | {pct(s['item_acc'])} | {pct(s['material_acc'])} | "
-                         + " | ".join(pct(s["bin_acc"][p]) for p, _ in packs) + " |")
+            lines.append(f"| {name} | {model} | {pct(s['item_acc'])} | {pct(s['material_acc'])} |")
             name = ""
+    lines += ["", "Right bin under each city's rules (the same model and photos; only the rule pack changes):", "",
+              "| Rules | Held-out test: zero-shot | Held-out test: **Cleanstream** | RealWaste: zero-shot | RealWaste: **Cleanstream** |",
+              "| --- | --- | --- | --- | --- |"]
+    for p in packs:
+        lines.append(f"| {names[p]} | " + " | ".join(pct(s[k]["bin_acc"][p]) for k in ("test", "external") for s in (m["zero_shot"], m)) + " |")
     a = m["answered"]["nyc"]
     lines += ["", f"Item type and bin columns use photos with an item label. The material column also counts photos labelled only "
               f"by material ({m['test']['n_material']:,} and {m['external']['n_material']:,}).",

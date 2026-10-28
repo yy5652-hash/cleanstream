@@ -1,0 +1,408 @@
+{
+ "id": "sea",
+ "name": "Seattle",
+ "authority": "Seattle Public Utilities (SPU)",
+ "checked": "2026-10-28",
+ "sources": [
+  {
+   "label": "SPU: Where Does It Go? tool",
+   "url": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go"
+  },
+  {
+   "label": "SPU: How to Sort at Home",
+   "url": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/how-to-sort-at-home"
+  },
+  {
+   "label": "SPU: Recycle Right",
+   "url": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/recycling/recycle-right"
+  },
+  {
+   "label": "SPU: Compost Right",
+   "url": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/food-and-yard/compost-right"
+  },
+  {
+   "label": "SPU: Ban on Batteries and Electronics in Garbage",
+   "url": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/ban-on-batteries-and-electronics-in-garbage"
+  }
+ ],
+ "bins": [
+  {
+   "id": "recycle",
+   "name": "Recycling cart",
+   "accepts": "Paper, cardboard, bottles, tubs, cans, glass jars",
+   "color": "#1f63c6",
+   "ink": "#ffffff",
+   "kind": "recycle"
+  },
+  {
+   "id": "compost",
+   "name": "Food and yard waste cart",
+   "accepts": "Food scraps, yard waste, food-soiled paper",
+   "color": "#3a8f3a",
+   "ink": "#ffffff",
+   "kind": "compost"
+  },
+  {
+   "id": "garbage",
+   "name": "Garbage cart",
+   "accepts": "Everything else: no recyclables, food, batteries or electronics",
+   "color": "#2c3134",
+   "ink": "#ffffff",
+   "kind": "landfill"
+  },
+  {
+   "id": "dropoff",
+   "name": "Drop-off",
+   "accepts": "Batteries, electronics, hazardous waste, clothing: not in any cart",
+   "color": "#f0b429",
+   "ink": "#2a1d00",
+   "kind": "special"
+  }
+ ],
+ "items": {
+  "plastic_bottle": {
+   "bin": "recycle",
+   "prep": [
+    "Empty it and let it dry",
+    "Screw the cap back on",
+    "Put it in loose, not in a bag"
+   ],
+   "why": "Empty, clean plastic bottles and jugs up to 5 gallons are accepted, with the cap attached.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/plastic-bottles-or-jugs-and-soda-bottles"
+  },
+  "plastic_container": {
+   "bin": "recycle",
+   "prep": [
+    "Empty, rinse and let it dry",
+    "Only if bigger than 3 inches",
+    "Can't get it clean? Garbage"
+   ],
+   "why": "Clean, dry tubs, trays and clamshells bigger than 3 inches are accepted; foam containers are not.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/plastic-tubs",
+   "also": [
+    "compost"
+   ]
+  },
+  "plastic_cup": {
+   "bin": "recycle",
+   "prep": [
+    "Empty and rinse",
+    "Labeled \"compostable\" or \"#7 PLA\"? Food and yard waste cart",
+    "Foam cups go in the garbage"
+   ],
+   "why": "Empty, clean plastic cups are recyclable; dirty cups and foam cups are garbage.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/plastic-cups-or-utensils",
+   "also": [
+    "compost"
+   ]
+  },
+  "plastic_lid_cap": {
+   "bin": "recycle",
+   "prep": [
+    "Screw caps back onto the empty bottle",
+    "Loose lids must be 3 inches or bigger",
+    "Smaller loose caps and lids: garbage"
+   ],
+   "why": "Caps on a bottle and loose lids 3 inches or bigger are recycled; smaller loose ones fall through the sorting equipment.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/plastic-lids",
+   "also": [
+    "garbage"
+   ]
+  },
+  "plastic_bag_film": {
+   "bin": "garbage",
+   "prep": [
+    "Keep it out of the recycling cart, even bundled in a bag",
+    "Clean, dry film can go to a store drop-off instead"
+   ],
+   "why": "Plastic bags and wrap have not been accepted in Seattle recycling carts since January 2020 because they jam sorting machines.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/recycling/recycle-right",
+   "also": [
+    "dropoff"
+   ]
+  },
+  "snack_wrapper": {
+   "bin": "garbage",
+   "prep": [
+    "No prep"
+   ],
+   "why": "Chip bags, candy wrappers and pouches are made of mixed materials that cannot be recycled.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/chip-bags"
+  },
+  "foam": {
+   "bin": "garbage",
+   "prep": [
+    "Bag loose packing peanuts and tie the bag",
+    "Clean foam blocks: free Special Item Pickup or Styro Recycle in Kent"
+   ],
+   "why": "Foam goes in the garbage; only clean Styrofoam blocks have a recycling option.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/foam-blocks",
+   "also": [
+    "dropoff"
+   ]
+  },
+  "plastic_utensil_straw": {
+   "bin": "garbage",
+   "prep": [
+    "No prep",
+    "Labeled \"compostable\"? Food and yard waste cart"
+   ],
+   "why": "Plastic utensils and straws are not recyclable in Seattle.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/plastic-cups-or-utensils",
+   "also": [
+    "compost"
+   ]
+  },
+  "paper": {
+   "bin": "recycle",
+   "prep": [
+    "Keep it clean and dry",
+    "Staples can stay in",
+    "Shredded paper: food and yard waste cart instead"
+   ],
+   "why": "Office paper, mail, newspaper and magazines go in the recycling cart and cannot go in the garbage.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/office-paper-and-paper-products"
+  },
+  "paper_bag": {
+   "bin": "recycle",
+   "prep": [
+    "Keep it clean and dry",
+    "Stickers, tape and staples are fine",
+    "Food-soiled? Food and yard waste cart"
+   ],
+   "why": "Clean, dry paper bags are recycled; wet or food-soiled ones are composted.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/paper-bags",
+   "also": [
+    "compost"
+   ]
+  },
+  "cardboard": {
+   "bin": "recycle",
+   "prep": [
+    "Flatten it; tape and labels can stay on",
+    "Too much for the cart? Box or bundle it beside the cart, no charge",
+    "Wet or greasy cardboard: food and yard waste cart"
+   ],
+   "why": "Clean, flattened cardboard is recyclable; waxed cardboard is garbage.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/cardboard-boxes",
+   "also": [
+    "compost"
+   ]
+  },
+  "pizza_box": {
+   "bin": "compost",
+   "prep": [
+    "Remove any foil, plastic or other non-paper pieces"
+   ],
+   "why": "Greasy or food-soiled pizza boxes go in the food and yard waste cart.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/pizza-boxes"
+  },
+  "soiled_paper": {
+   "bin": "compost",
+   "prep": [
+    "Napkins, paper towels and uncoated plates with food or grease: compost",
+    "Tissues, or towels used with cleaners or bodily fluids: garbage",
+    "Shiny coated paper: garbage"
+   ],
+   "why": "Uncoated paper with food or grease on it is compostable, but tissues and shiny-coated paper are not.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/food-soiled-paper",
+   "also": [
+    "garbage"
+   ]
+  },
+  "paper_cup": {
+   "bin": "recycle",
+   "prep": [
+    "Empty it and let it dry",
+    "Sleeve can go in too",
+    "Labeled \"compostable\"? Food and yard waste cart"
+   ],
+   "why": "Empty, clean and dry paper cups are recyclable in Seattle; foam cups are garbage.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/hot-or-to-go-beverage-cups",
+   "also": [
+    "compost"
+   ]
+  },
+  "carton": {
+   "bin": "recycle",
+   "prep": [
+    "Empty it and let it dry",
+    "Leave the spout on; put the cap in the garbage"
+   ],
+   "why": "Milk, juice, soup and other aseptic cartons are accepted when clean, empty and dry.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/milk-juice-or-soup-cartons"
+  },
+  "metal_can": {
+   "bin": "recycle",
+   "prep": [
+    "Empty, rinse and let it dry",
+    "Push the lid into the can or leave it attached",
+    "Leave the label on"
+   ],
+   "why": "Aluminum and steel food and drink cans are recyclable.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/food-and-beverage-cans"
+  },
+  "aluminum_foil": {
+   "bin": "recycle",
+   "prep": [
+    "Remove all food and let it dry",
+    "Ball it up, bigger than 3 inches",
+    "Dirty foil or small bits: garbage"
+   ],
+   "why": "Clean, dry foil and foil trays larger than 3 inches are recyclable.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/aluminum-foil"
+  },
+  "aerosol_can": {
+   "bin": "dropoff",
+   "prep": [
+    "Use it up until no contents or pressure remain",
+    "Completely empty and non-hazardous (hairspray, cooking spray): recycling cart",
+    "Paint, solvents, bear spray or anything partly full: hazardous waste facility, free"
+   ],
+   "why": "Seattle recycles only completely empty, non-hazardous aerosol cans; cans with contents are hazardous waste.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/aerosol-cans",
+   "also": [
+    "recycle"
+   ]
+  },
+  "metal_lid_scrap": {
+   "bin": "garbage",
+   "prep": [
+    "3 inches or bigger (pots, pans, large lids): recycling cart",
+    "Smaller loose pieces: garbage, or a metal can to the transfer station scrap bin",
+    "Small lid on its jar or bottle: recycle with it"
+   ],
+   "why": "Metal bigger than 3 inches is recycled; smaller loose pieces fall through the sorting equipment.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/scrap-metal",
+   "also": [
+    "recycle",
+    "dropoff"
+   ]
+  },
+  "glass_bottle_jar": {
+   "bin": "recycle",
+   "prep": [
+    "Empty, rinse and let it dry",
+    "Screw small lids back on; lids 3 inches or bigger can go in loose",
+    "No Pyrex or frosted glass"
+   ],
+   "why": "Glass bottles and jars are recyclable; other glass has a different melting point and is not.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/glass-bottles-or-jars"
+  },
+  "drinking_glass_ceramic": {
+   "bin": "garbage",
+   "prep": [
+    "Donate whole items in good condition",
+    "Broken bottle or jar pieces 3 inches or bigger can go in recycling"
+   ],
+   "why": "Drinking glasses, ceramics and other non-bottle glass are not recyclable.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/glass-or-ceramic-household-items"
+  },
+  "food_scraps": {
+   "bin": "compost",
+   "prep": [
+    "Take off produce stickers and any plastic",
+    "Use only approved compostable bags, or none"
+   ],
+   "why": "All food, including meat, dairy, bones and shells, goes in the food and yard waste cart.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/food-scraps"
+  },
+  "yard_waste": {
+   "bin": "compost",
+   "prep": [
+    "Cut branches to 4 feet long and 4 inches thick or less",
+    "Remove soil",
+    "Lid must close, or extra yard waste costs a fee"
+   ],
+   "why": "Leaves, grass, plants and small branches go in the food and yard waste cart.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/plants-trees-or-brush"
+  },
+  "battery": {
+   "bin": "dropoff",
+   "prep": [
+    "Tape the ends of each battery",
+    "Free drop-off at a household hazardous waste facility or city transfer station",
+    "Never in the garbage or recycling cart"
+   ],
+   "why": "Seattle bans all batteries, even alkaline, from garbage and recycling because they cause fires in trucks and plants.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/batteries"
+  },
+  "electronics": {
+   "bin": "dropoff",
+   "prep": [
+    "Donate it if it still works",
+    "Take it to a King County Take It Back Network e-cycler",
+    "Or book a paid Special Item Pickup"
+   ],
+   "why": "Seattle bans TVs, computers, tablets and anything with a battery from the garbage, though SPU says plain cables and headphones may go in it.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/e-waste"
+  },
+  "textile": {
+   "bin": "dropoff",
+   "prep": [
+    "Donate it if it is in good shape",
+    "Worn or stained: Threadcycle drop-off at partner thrift stores",
+    "Otherwise it may go in the garbage"
+   ],
+   "why": "Clothing and fabric can be donated or recycled through Threadcycle, and the garbage is allowed as a last resort.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/fabric-or-textiles",
+   "also": [
+    "garbage"
+   ]
+  },
+  "shoes": {
+   "bin": "dropoff",
+   "prep": [
+    "Donate wearable pairs",
+    "Worn out: Threadcycle drop-off at partner thrift stores",
+    "Otherwise they may go in the garbage"
+   ],
+   "why": "Shoes can be donated or recycled through Threadcycle, and the garbage is allowed as a last resort.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/clothes-or-shoes",
+   "also": [
+    "garbage"
+   ]
+  },
+  "cigarette_butt": {
+   "bin": "garbage",
+   "prep": [
+    "Make sure it is fully out"
+   ],
+   "why": "Cigarette butts go in the garbage; vape devices and e-liquid are hazardous waste instead.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/e-cigarettes-vaping-devices-and-cigarettes"
+  },
+  "blister_pack": {
+   "bin": "garbage",
+   "prep": [
+    "No prep"
+   ],
+   "why": "Blister packages are hard plastic packaging that cannot be recycled.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/blister-packages"
+  },
+  "rope_string": {
+   "bin": "garbage",
+   "prep": [
+    "Bag it so it cannot tangle",
+    "Donate or reuse it if it is still usable"
+   ],
+   "why": "Rope, twine and yarn with synthetic fibers go in the garbage because they tangle sorting machines.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/rope-thread-and-strings"
+  },
+  "squeezable_tube": {
+   "bin": "garbage",
+   "prep": [
+    "Ignore any \"recyclable\" label on the tube"
+   ],
+   "why": "Soft plastic tubes, like toothpaste tubes, are garbage even when labeled recyclable.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/plastic-tubes-and-plastic-fencing"
+  },
+  "mask_gloves": {
+   "bin": "garbage",
+   "prep": [
+    "Cut the ear loops on masks first"
+   ],
+   "why": "All face masks, disposable gloves and other protective equipment go in the garbage.",
+   "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/medical-equipment-and-personal-protective-equipment-(ppe)"
+  }
+ }
+}

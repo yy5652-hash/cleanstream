@@ -1,0 +1,371 @@
+{
+  "id": "chi",
+  "name": "Chicago",
+  "authority": "City of Chicago Department of Streets and Sanitation (DSS)",
+  "checked": "2026-10-28",
+  "sources": [
+    {
+      "label": "Chicago Recycles: Residential Recycling",
+      "url": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/residential-recycling.html"
+    },
+    {
+      "label": "Chicago Recycles: What Goes Where",
+      "url": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/residential-recycling/what-goes-where.html"
+    },
+    {
+      "label": "Chicago Recycles: Food Scrap Drop-Off",
+      "url": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/food-scrap-drop-off.html"
+    },
+    {
+      "label": "Chicago Recycles: Food Scrap Drop-Off, accepted and not accepted",
+      "url": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/accepted-and-not-accepted.html"
+    },
+    {
+      "label": "DSS: Yard Waste Collection",
+      "url": "https://www.chicago.gov/city/en/depts/streets/provdrs/streets_san/svcs/yard_waste.html"
+    },
+    {
+      "label": "Chicago Recycles: E-Waste",
+      "url": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/other-wastes.html"
+    },
+    {
+      "label": "Dept. of Environment: Household Chemicals & Computer Recycling Facility",
+      "url": "https://www.chicago.gov/city/en/depts/env/supp_info/environmental-permitting-and-inspection/hccrf.html"
+    },
+    {
+      "label": "DSS: How It Works (drop-off centers and black cart)",
+      "url": "https://www.chicago.gov/city/en/depts/streets/supp_info/how_it_works.html"
+    },
+    {
+      "label": "Chicago Recycles: Blue Cart video text",
+      "url": "https://www.chicago.gov/dam/city/depts/doe/general/RecyclingAndWasteMgmt_PDFs/BlueCart/BlueCartRecycling_BlueCart_Text.pdf"
+    }
+  ],
+  "bins": [
+    {
+      "id": "blue",
+      "name": "Blue cart",
+      "accepts": "Recycling: cans, glass, plastic bottles & containers, cartons, paper. Loose, no bags",
+      "color": "#1f5fbf",
+      "ink": "#ffffff",
+      "kind": "recycle"
+    },
+    {
+      "id": "black",
+      "name": "Black cart",
+      "accepts": "Garbage: anything that can't be recycled or dropped off",
+      "color": "#2c3134",
+      "ink": "#ffffff",
+      "kind": "landfill"
+    },
+    {
+      "id": "dropoff",
+      "name": "Drop-off",
+      "accepts": "Food scraps, yard waste, batteries, e-waste, chemicals, textiles",
+      "color": "#f0b429",
+      "ink": "#2a1d00",
+      "kind": "special"
+    }
+  ],
+  "items": {
+    "plastic_bottle": {
+      "bin": "blue",
+      "prep": [
+        "Empty it",
+        "Put it in loose, not in a bag"
+      ],
+      "why": "Chicago's Blue Cart takes plastic bottles and jugs.",
+      "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home.html"
+    },
+    "plastic_container": {
+      "bin": "blue",
+      "prep": [
+        "Empty it",
+        "Put it in loose, not in a bag",
+        "Foam (#6) goes in the black cart"
+      ],
+      "why": "Rigid plastic containers marked #1 to #5 or #7 are accepted; #6 is not.",
+      "source": "https://www.chicago.gov/dam/city/depts/doe/general/RecyclingAndWasteMgmt_PDFs/BlueCart/BlueCartRecycling_BlueCart_Text.pdf"
+    },
+    "plastic_cup": {
+      "bin": "blue",
+      "prep": [
+        "Empty it",
+        "Check the number on the bottom: #6 goes in the black cart"
+      ],
+      "why": "Rigid plastic marked #1 to #5 or #7 is accepted; foam and other #6 cups are not.",
+      "source": "https://www.chicago.gov/dam/city/depts/doe/general/RecyclingAndWasteMgmt_PDFs/BlueCart/BlueCartRecycling_BlueCart_Text.pdf"
+    },
+    "plastic_lid_cap": {
+      "bin": "blue",
+      "prep": [
+        "Put them in loose, not in a bag",
+        "#6 or foam lids go in the black cart"
+      ],
+      "why": "The City's older guide lists plastic bottle caps as accepted, though only some sorting plants take them.",
+      "source": "https://www.chicago.gov/dam/city/depts/streets/supp_info/RecyclingPDFdocs/AZGuide_2_1_12.pdf"
+    },
+    "plastic_bag_film": {
+      "bin": "black",
+      "prep": [
+        "Never in the blue cart, loose or as a liner",
+        "Clean bags and film: use a store take-back bin"
+      ],
+      "why": "Bags and film jam sorting machines and are one of Chicago's most common recycling contaminants.",
+      "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/residential-recycling.html",
+      "also": [
+        "dropoff"
+      ]
+    },
+    "snack_wrapper": {
+      "bin": "black",
+      "prep": [
+        "Never in the blue cart"
+      ],
+      "why": "The City asks residents to keep bags and other soft plastics out of the Blue Cart.",
+      "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/residential-recycling.html"
+    },
+    "foam": {
+      "bin": "black",
+      "prep": [
+        "Never in the blue cart"
+      ],
+      "why": "Foam is #6 plastic, which the City does not recycle because there is no market for it.",
+      "source": "https://www.chicago.gov/dam/city/depts/doe/general/RecyclingAndWasteMgmt_PDFs/BlueCart/BlueCartRecycling_BlueCart_Text.pdf"
+    },
+    "plastic_utensil_straw": {
+      "bin": "black",
+      "prep": [
+        "No prep"
+      ],
+      "why": "The Blue Cart takes plastic bottles and containers; utensils and straws are not on the City's list.",
+      "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/residential-recycling/what-goes-where.html"
+    },
+    "paper": {
+      "bin": "blue",
+      "prep": [
+        "Put it in loose, not in a bag",
+        "Shredded paper is not accepted"
+      ],
+      "why": "Newspaper, magazines, junk mail and office paper are accepted.",
+      "source": "https://www.chicago.gov/city/en/depts/streets/supp_info/how_it_works.html"
+    },
+    "paper_bag": {
+      "bin": "blue",
+      "prep": [
+        "Put it in loose, not inside another bag",
+        "Wet or food-soiled bags go in the black cart"
+      ],
+      "why": "Paper bags are listed with the paper the City accepts.",
+      "source": "https://www.chicago.gov/city/en/depts/streets/supp_info/how_it_works.html"
+    },
+    "cardboard": {
+      "bin": "blue",
+      "prep": [
+        "Break the box down and flatten it",
+        "Put it in loose, not in a bag"
+      ],
+      "why": "Cardboard is accepted; flatten boxes to save space in the cart.",
+      "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/residential-recycling/what-goes-where.html"
+    },
+    "pizza_box": {
+      "bin": "blue",
+      "prep": [
+        "Remove all food, liners and napkins",
+        "Grease marks are fine"
+      ],
+      "why": "The City says pizza boxes can be recycled if they are empty; food scrap drop-offs do not take them.",
+      "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/food-scrap-drop-off.html"
+    },
+    "soiled_paper": {
+      "bin": "black",
+      "prep": [
+        "Not in the blue cart",
+        "Not accepted at food scrap drop-offs"
+      ],
+      "why": "Napkins and paper are not accepted at Chicago's food scrap drop-offs, and soiled paper can't be recycled.",
+      "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/accepted-and-not-accepted.html"
+    },
+    "paper_cup": {
+      "bin": "black",
+      "prep": [
+        "Empty it"
+      ],
+      "why": "Chicago does not list paper cups as accepted, so the black cart is the safe choice.",
+      "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/residential-recycling/what-goes-where.html"
+    },
+    "carton": {
+      "bin": "blue",
+      "prep": [
+        "Empty it",
+        "Don't crush it",
+        "Put it in loose, not in a bag"
+      ],
+      "why": "Milk and juice cartons are accepted; the City asks residents not to crush them.",
+      "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/residential-recycling/what-goes-where.html"
+    },
+    "metal_can": {
+      "bin": "blue",
+      "prep": [
+        "Empty it",
+        "Don't crush it"
+      ],
+      "why": "Aluminum, steel and tin cans are accepted.",
+      "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/residential-recycling/what-goes-where.html"
+    },
+    "aluminum_foil": {
+      "bin": "blue",
+      "prep": [
+        "Remove food residue"
+      ],
+      "why": "Aluminum foil and pie tins are listed with the metal the City accepts.",
+      "source": "https://www.chicago.gov/city/en/depts/streets/supp_info/how_it_works.html"
+    },
+    "aerosol_can": {
+      "bin": "dropoff",
+      "prep": [
+        "Never in the blue cart",
+        "Take to the Household Chemicals & Computer Recycling Facility",
+        "Open Tue, Thu and the first Sat of the month"
+      ],
+      "why": "Aerosol cans are a safety hazard at sorting plants; the City's chemicals facility takes all aerosol cans.",
+      "source": "https://www.chicago.gov/city/en/depts/env/supp_info/environmental-permitting-and-inspection/hccrf.html"
+    },
+    "metal_lid_scrap": {
+      "bin": "black",
+      "prep": [
+        "Usable pots and pans: donate or reuse"
+      ],
+      "why": "The Blue Cart takes steel and aluminum cans and foil; lids and scrap metal are not on the City's list.",
+      "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/residential-recycling/what-goes-where.html"
+    },
+    "glass_bottle_jar": {
+      "bin": "blue",
+      "prep": [
+        "Empty it",
+        "Take the lid off",
+        "Put it in loose, not in a bag"
+      ],
+      "why": "Glass bottles and jars are accepted.",
+      "source": "https://www.chicago.gov/city/en/depts/streets/supp_info/how_it_works.html"
+    },
+    "drinking_glass_ceramic": {
+      "bin": "black",
+      "prep": [
+        "Wrap broken pieces so they can't cut anyone"
+      ],
+      "why": "Only glass bottles and jars are accepted, so drinking glasses, ceramics and broken glass go in the black cart.",
+      "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/residential-recycling/what-goes-where.html"
+    },
+    "food_scraps": {
+      "bin": "black",
+      "prep": [
+        "Better: take it to a City food scrap drop-off site (sign up first, no bags of any kind)",
+        "Otherwise it goes in the black cart"
+      ],
+      "why": "Chicago has no curbside compost cart, so food scraps are garbage unless you use the free City drop-off sites, which take all food, including meat and bones.",
+      "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/food-scrap-drop-off.html",
+      "also": [
+        "dropoff"
+      ]
+    },
+    "yard_waste": {
+      "bin": "dropoff",
+      "prep": [
+        "Bag it separately from garbage and recycling",
+        "Call 311 to request a pickup",
+        "Christmas trees: use the City's January tree drop-off"
+      ],
+      "why": "The City collects bagged yard waste separately on request and composts it; it is not accepted at food scrap sites.",
+      "source": "https://www.chicago.gov/city/en/depts/streets/provdrs/streets_san/svcs/yard_waste.html"
+    },
+    "battery": {
+      "bin": "dropoff",
+      "prep": [
+        "Rechargeable, lithium and car batteries: take to the Household Chemicals & Computer Recycling Facility",
+        "Never in the blue cart",
+        "Alkaline (AA, AAA, 9V): the facility does not take them; black cart"
+      ],
+      "why": "Lithium-ion batteries cause fires at sorting plants, so they never go in the blue cart.",
+      "source": "https://www.chicago.gov/city/en/depts/env/supp_info/environmental-permitting-and-inspection/hccrf.html",
+      "also": [
+        "black"
+      ]
+    },
+    "electronics": {
+      "bin": "dropoff",
+      "prep": [
+        "Take it to the Household Chemicals & Computer Recycling Facility",
+        "Only listed items are taken: computers, TVs, phones, printers, keyboards",
+        "Check hours first (Tue, Thu, first Sat)"
+      ],
+      "why": "Illinois law bars most electronics from the trash, so Chicago sends them to its computer recycling facility.",
+      "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/other-wastes.html"
+    },
+    "textile": {
+      "bin": "dropoff",
+      "prep": [
+        "Donate wearable items",
+        "Use a textile drop-off for the rest",
+        "Never in the blue cart"
+      ],
+      "why": "Textiles can't be captured at the recycling plant, so the City points residents to reuse and drop-off outlets.",
+      "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/residential-recycling/discovery-zone.html",
+      "also": [
+        "black"
+      ]
+    },
+    "shoes": {
+      "bin": "dropoff",
+      "prep": [
+        "Donate wearable pairs",
+        "Never in the blue cart"
+      ],
+      "why": "The City's older guide lists shoes as a donation or drop-off item, not a Blue Cart item.",
+      "source": "https://www.chicago.gov/dam/city/depts/streets/supp_info/RecyclingPDFdocs/AZGuide_2_1_12.pdf",
+      "also": [
+        "black"
+      ]
+    },
+    "cigarette_butt": {
+      "bin": "black",
+      "prep": [
+        "Make sure it is fully out"
+      ],
+      "why": "Butts can't be recycled; non-recyclables go in the black cart.",
+      "source": "https://www.chicago.gov/city/en/depts/streets/supp_info/how_it_works.html"
+    },
+    "blister_pack": {
+      "bin": "black",
+      "prep": [
+        "Empty it"
+      ],
+      "why": "Mixed plastic and foil packaging is not a bottle or container the Blue Cart takes.",
+      "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/residential-recycling/what-goes-where.html"
+    },
+    "rope_string": {
+      "bin": "black",
+      "prep": [
+        "Never in the blue cart"
+      ],
+      "why": "Hoses, cords and other tanglers jam sorting machines at the recycling plant.",
+      "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/residential-recycling/what-goes-where.html"
+    },
+    "squeezable_tube": {
+      "bin": "black",
+      "prep": [
+        "No prep"
+      ],
+      "why": "Tubes are not bottles or containers the Blue Cart takes.",
+      "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/residential-recycling/what-goes-where.html"
+    },
+    "mask_gloves": {
+      "bin": "black",
+      "prep": [
+        "No prep"
+      ],
+      "why": "Masks and gloves can't be recycled; they go in the black cart.",
+      "source": "https://www.chicago.gov/city/en/depts/streets/supp_info/how_it_works.html"
+    }
+  }
+}

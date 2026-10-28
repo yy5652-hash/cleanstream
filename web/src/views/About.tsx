@@ -50,7 +50,7 @@ export default function About({ packs }: { packs: Pack[] }) {
           </div>
           <div className="card" style={{ overflowX: 'auto' }}>
             <table className="list">
-              <thead><tr><th>Test set</th><th>Model</th><th>Item type</th><th>Material</th>{packs.map((p) => <th key={p.id}>Bin ({p.name})</th>)}</tr></thead>
+              <thead><tr><th>Test set</th><th>Model</th><th>Item type</th><th>Material</th></tr></thead>
               <tbody>
                 {([['Held-out test split', 'test'], ['RealWaste (never seen)', 'external']] as const).map(([name, k]) => (
                   [['Text prompts only (zero-shot)', m.zero_shot[k]], ['Cleanstream', m[k]]] as const).map(([model, s], i) => (
@@ -59,9 +59,22 @@ export default function About({ packs }: { packs: Pack[] }) {
                     <td>{model}</td>
                     <td>{pct(s.item_acc)}</td>
                     <td>{pct(s.material_acc)}</td>
-                    {packs.map((p) => <td key={p.id}>{pct(s.bin_acc[p.id])}</td>)}
                   </tr>
                 )))}
+              </tbody>
+            </table>
+          </div>
+          <p className="small muted" style={{ margin: '14px 0 8px' }}>Right bin under each place's rules: the same model and photos, only the rule pack changes.</p>
+          <div className="card" style={{ overflowX: 'auto' }}>
+            <table className="list">
+              <thead><tr><th>Rules</th><th>Held-out test, zero-shot</th><th>Held-out test, Cleanstream</th><th>RealWaste, zero-shot</th><th>RealWaste, Cleanstream</th></tr></thead>
+              <tbody>
+                {packs.filter((p) => m.test.bin_acc[p.id] !== undefined).map((p) => (
+                  <tr key={p.id}>
+                    <td><strong>{p.name}</strong></td>
+                    {(['test', 'external'] as const).flatMap((k) => [m.zero_shot[k], m[k]].map((s, i) => <td key={k + i}>{i ? <strong>{pct(s.bin_acc[p.id])}</strong> : pct(s.bin_acc[p.id])}</td>))}
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

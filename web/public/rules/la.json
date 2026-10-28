@@ -1,0 +1,360 @@
+{
+ "id": "la",
+ "name": "Los Angeles",
+ "authority": "LA Sanitation and Environment (LASAN)",
+ "checked": "2026-10-28",
+ "sources": [
+  {
+   "label": "LA Sanitation: Blue bin (recycling)",
+   "url": "https://sanitation.lacity.gov/services/recycling-collection"
+  },
+  {
+   "label": "LA Sanitation: Green bin (organics)",
+   "url": "https://sanitation.lacity.gov/services/weekly-curbside-green-bin-collection-organics"
+  },
+  {
+   "label": "LA Sanitation: Black bin (trash)",
+   "url": "https://sanitation.lacity.gov/services/weekly-curbside-black-bin-collection-trash"
+  },
+  {
+   "label": "LA Sanitation: S.A.F.E. Centers (household hazardous waste)",
+   "url": "https://sanitation.lacity.gov/services/safe-centers-household-hazardous-waste-disposal"
+  },
+  {
+   "label": "LA Sanitation: Accepted electronic waste",
+   "url": "https://sanitation.lacity.gov/documents/2025-lasan-electronic-waste-flyer"
+  },
+  {
+   "label": "recycLA: What goes in your blue bin (City of LA guide)",
+   "url": "https://www.republicservices.com/cms/documents/municipality/ca/CoLA/LANG-Industry/ENGLISH/Mixed-Recyclables-Quick-Guide-English.pdf"
+  }
+ ],
+ "bins": [
+  {
+   "id": "blue",
+   "name": "Blue bin",
+   "accepts": "Recycling: paper, cardboard, glass, metal, plastics 1, 2 & 5",
+   "color": "#1f63c6",
+   "ink": "#ffffff",
+   "kind": "recycle"
+  },
+  {
+   "id": "green",
+   "name": "Green bin",
+   "accepts": "Organics: food scraps, food-soiled paper, yard trimmings",
+   "color": "#3a8f3a",
+   "ink": "#ffffff",
+   "kind": "compost"
+  },
+  {
+   "id": "black",
+   "name": "Black bin",
+   "accepts": "Trash: what can't be recycled, composted or donated",
+   "color": "#24282b",
+   "ink": "#ffffff",
+   "kind": "landfill"
+  },
+  {
+   "id": "special",
+   "name": "Special drop-off",
+   "accepts": "Not in any bin: batteries, e-waste, spray cans (S.A.F.E. Centers)",
+   "color": "#f0b429",
+   "ink": "#2a1d00",
+   "kind": "special"
+  }
+ ],
+ "items": {
+  "plastic_bottle": {
+   "bin": "blue",
+   "prep": [
+    "Empty it and rinse it clean",
+    "Check the number: 1, 2 or 5",
+    "Screw the cap back on"
+   ],
+   "why": "The blue bin takes clean plastic bottles and jugs made from plastics 1, 2 and 5.",
+   "source": "https://sanitation.lacity.gov/services/recycling-collection"
+  },
+  "plastic_container": {
+   "bin": "blue",
+   "prep": [
+    "Empty it and rinse it clean",
+    "Check the number: only 1, 2 or 5"
+   ],
+   "why": "Clean tubs like yogurt and margarine containers are accepted if they are plastic 1, 2 or 5.",
+   "source": "https://sanitation.lacity.gov/services/recycling-collection"
+  },
+  "plastic_cup": {
+   "bin": "black",
+   "prep": [
+    "Empty it",
+    "Cups labeled compostable go in the black bin too"
+   ],
+   "why": "The blue bin lists only plastic bottles, jugs and tubs, so cups go in the black bin.",
+   "source": "https://sanitation.lacity.gov/services/recycling-collection"
+  },
+  "plastic_lid_cap": {
+   "bin": "blue",
+   "prep": [
+    "Screw it back onto the empty bottle or tub",
+    "Loose, flimsy or unmarked lids: black bin"
+   ],
+   "why": "Bottle caps are made of plastic 2 or 5, which the blue bin takes, and LASAN says to keep caps on bottles.",
+   "source": "https://sanitation.lacity.gov/cs/groups/public/documents/document/y250/mdiw/~edisp/cnt020614.pdf"
+  },
+  "plastic_bag_film": {
+   "bin": "black",
+   "prep": [
+    "Reuse it if you can",
+    "Never in the blue or green bin"
+   ],
+   "why": "LA's blue bin does not take plastic bags or film plastic, and they are kept out of the green bin too.",
+   "source": "https://sanitation.lacity.gov/services/weekly-curbside-black-bin-collection-trash"
+  },
+  "snack_wrapper": {
+   "bin": "black",
+   "prep": [
+    "Empty it",
+    "Never in the blue bin"
+   ],
+   "why": "Candy and snack wrappers are film plastic, which LA's recycling guide lists as trash.",
+   "source": "https://www.republicservices.com/cms/documents/municipality/ca/CoLA/LANG-Industry/ENGLISH/Mixed-Recyclables-Quick-Guide-English.pdf"
+  },
+  "foam": {
+   "bin": "black",
+   "prep": [
+    "Never in the blue bin"
+   ],
+   "why": "Styrofoam is not recyclable in LA and goes in the black bin.",
+   "source": "https://sanitation.lacity.gov/services/weekly-curbside-black-bin-collection-trash"
+  },
+  "plastic_utensil_straw": {
+   "bin": "black",
+   "prep": [
+    "Untreated wood or bamboo utensils: green bin",
+    "Compostable-labeled plastic: black bin"
+   ],
+   "why": "The blue bin lists only plastic bottles, jugs and tubs, so plastic utensils and straws go in the black bin.",
+   "source": "https://sanitation.lacity.gov/services/recycling-collection"
+  },
+  "paper": {
+   "bin": "blue",
+   "prep": [
+    "Keep it clean and dry",
+    "Greasy or food-soiled paper: green bin"
+   ],
+   "why": "Junk mail, newspapers and other clean, dry paper are accepted.",
+   "source": "https://sanitation.lacity.gov/services/recycling-collection"
+  },
+  "paper_bag": {
+   "bin": "blue",
+   "prep": [
+    "Keep it clean and dry",
+    "Greasy or food-soiled bags: green bin"
+   ],
+   "why": "Clean paper goes in the blue bin, and food-soiled paper goes in the green bin.",
+   "source": "https://sanitation.lacity.gov/services/recycling-collection",
+   "also": [
+    "green"
+   ]
+  },
+  "cardboard": {
+   "bin": "blue",
+   "prep": [
+    "Flatten it",
+    "Keep it clean and dry"
+   ],
+   "why": "Cereal boxes and flattened delivery boxes are accepted.",
+   "source": "https://sanitation.lacity.gov/services/recycling-collection"
+  },
+  "pizza_box": {
+   "bin": "green",
+   "prep": [
+    "Leftover crusts can go in with it",
+    "No plastic or compostable bags"
+   ],
+   "why": "LASAN lists greasy pizza boxes as food-soiled paper for the green bin.",
+   "source": "https://sanitation.lacity.gov/organics"
+  },
+  "soiled_paper": {
+   "bin": "green",
+   "prep": [
+    "Paper only, with no plastic or wax coating",
+    "No plastic or compostable bags"
+   ],
+   "why": "Food-soiled paper like napkins, paper towels and coffee filters goes in the green bin.",
+   "source": "https://sanitation.lacity.gov/organics"
+  },
+  "paper_cup": {
+   "bin": "black",
+   "prep": [
+    "Empty it",
+    "Cups with no plastic or wax lining: green bin"
+   ],
+   "why": "LA's recycling guide lists disposable coffee cups as trash because most have a plastic lining.",
+   "source": "https://www.republicservices.com/cms/documents/municipality/ca/CoLA/LANG-Industry/ENGLISH/Mixed-Recyclables-Quick-Guide-English.pdf"
+  },
+  "carton": {
+   "bin": "blue",
+   "prep": [
+    "Empty it and rinse it clean",
+    "Wax-coated cartons: black bin"
+   ],
+   "why": "LASAN lists cartons with the blue bin recyclables.",
+   "source": "https://sanitation.lacity.gov/services/single-family-residents"
+  },
+  "metal_can": {
+   "bin": "blue",
+   "prep": [
+    "Empty it and rinse it clean",
+    "Let it dry"
+   ],
+   "why": "Aluminum and tin cans are accepted.",
+   "source": "https://sanitation.lacity.gov/services/recycling-collection"
+  },
+  "aluminum_foil": {
+   "bin": "blue",
+   "prep": [
+    "Scrape off food",
+    "Keep it clean and dry"
+   ],
+   "why": "Clean aluminum foil is accepted.",
+   "source": "https://sanitation.lacity.gov/services/recycling-collection"
+  },
+  "aerosol_can": {
+   "bin": "special",
+   "prep": [
+    "Use it up completely",
+    "Take it to a S.A.F.E. Center",
+    "Never in the blue or black bin"
+   ],
+   "why": "LASAN lists aerosol cans as household hazardous waste for S.A.F.E. Centers.",
+   "source": "https://sanitation.lacity.gov/services/safe-centers-household-hazardous-waste-disposal"
+  },
+  "metal_lid_scrap": {
+   "bin": "black",
+   "prep": [
+    "Appliances and large metal: book a free bulky item pickup"
+   ],
+   "why": "LA's blue bin list names aluminum and tin cans and clean foil, not lids or scrap metal, so small metal items go in the black bin.",
+   "source": "https://sanitation.lacity.gov/services/recycling-collection"
+  },
+  "glass_bottle_jar": {
+   "bin": "blue",
+   "prep": [
+    "Empty it and rinse it clean",
+    "Any color is fine"
+   ],
+   "why": "Glass bottles and jars of any color are accepted.",
+   "source": "https://sanitation.lacity.gov/services/recycling-collection"
+  },
+  "drinking_glass_ceramic": {
+   "bin": "black",
+   "prep": [
+    "Wrap sharp pieces so no one gets cut"
+   ],
+   "why": "Broken glass and dishware can't be recycled and go in the black bin.",
+   "source": "https://sanitation.lacity.gov/services/weekly-curbside-black-bin-collection-trash"
+  },
+  "food_scraps": {
+   "bin": "green",
+   "prep": [
+    "Collect it in a bowl or kitchen pail",
+    "Empty it loose into the green bin",
+    "No plastic or compostable bags"
+   ],
+   "why": "Food scraps, including meat, bones and dairy, go in the green bin.",
+   "source": "https://sanitation.lacity.gov/services/weekly-curbside-green-bin-collection-organics"
+  },
+  "yard_waste": {
+   "bin": "green",
+   "prep": [
+    "Put it in loose, not in plastic bags",
+    "Too much? Use the free yearly brush pickup"
+   ],
+   "why": "Flowers, grass clippings, tree and bush trimmings and clean untreated wood go in the green bin.",
+   "source": "https://sanitation.lacity.gov/services/weekly-curbside-green-bin-collection-organics"
+  },
+  "battery": {
+   "bin": "special",
+   "prep": [
+    "Tape over the terminals",
+    "Take it to a S.A.F.E. Center",
+    "Small household batteries can go in a library battery bucket"
+   ],
+   "why": "Batteries are household hazardous waste and can start fires, so they never go in a bin.",
+   "source": "https://sanitation.lacity.gov/services/safe-centers-household-hazardous-waste-disposal"
+  },
+  "electronics": {
+   "bin": "special",
+   "prep": [
+    "Erase your data first",
+    "Take out the batteries if you can",
+    "Drop it off at a S.A.F.E. Center"
+   ],
+   "why": "LASAN collects electronic waste at S.A.F.E. Centers, not in the curbside bins.",
+   "source": "https://sanitation.lacity.gov/documents/2025-lasan-electronic-waste-flyer"
+  },
+  "textile": {
+   "bin": "black",
+   "prep": [
+    "Donate it if it is clean and wearable",
+    "Worn-out or torn fabric: black bin"
+   ],
+   "why": "The black bin takes worn-out cloth that is unsuitable for donation, and textiles are not on the blue or green bin lists.",
+   "source": "https://sanitation.lacity.gov/services/weekly-curbside-black-bin-collection-trash",
+   "also": [
+    "special"
+   ]
+  },
+  "shoes": {
+   "bin": "black",
+   "prep": [
+    "Donate wearable pairs instead",
+    "Worn-out shoes: black bin"
+   ],
+   "why": "Shoes are not on the blue or green bin lists, so worn-out pairs go in the black bin with other non-reusable items.",
+   "source": "https://sanitation.lacity.gov/services/weekly-curbside-black-bin-collection-trash"
+  },
+  "cigarette_butt": {
+   "bin": "black",
+   "prep": [
+    "Put it out completely",
+    "Let it cool first"
+   ],
+   "why": "Cigarette butts can't be recycled or composted, so they go in the black bin.",
+   "source": "https://sanitation.lacity.gov/services/weekly-curbside-black-bin-collection-trash"
+  },
+  "blister_pack": {
+   "bin": "black",
+   "prep": [
+    "No prep"
+   ],
+   "why": "Blister packs mix plastic and foil and are not a bottle, jug or tub, so they go in the black bin.",
+   "source": "https://sanitation.lacity.gov/services/recycling-collection"
+  },
+  "rope_string": {
+   "bin": "black",
+   "prep": [
+    "Never in the blue bin"
+   ],
+   "why": "Cords, rope and other tanglers jam the sorting machines at the recycling plant.",
+   "source": "https://sanitation.lacity.gov/services/recycling-collection"
+  },
+  "squeezable_tube": {
+   "bin": "black",
+   "prep": [
+    "Empty it as far as you can"
+   ],
+   "why": "Tubes are not bottles, jugs or tubs, and those are the only plastics the blue bin takes.",
+   "source": "https://sanitation.lacity.gov/services/recycling-collection"
+  },
+  "mask_gloves": {
+   "bin": "black",
+   "prep": [
+    "No prep"
+   ],
+   "why": "Disposable masks and gloves can't be recycled or composted, so they go in the black bin.",
+   "source": "https://sanitation.lacity.gov/services/weekly-curbside-black-bin-collection-trash"
+  }
+ }
+}

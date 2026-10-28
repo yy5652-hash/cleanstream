@@ -154,7 +154,7 @@ export function ItemSearch({ pack, onPick, popular = [] }: { pack: Pack; onPick:
   const showList = open && q.trim().length >= 2
 
   return (
-    <div className="search">
+    <div className="isearch">
       <div className="search-box">
         <svg viewBox="0 0 20 20" aria-hidden><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" strokeWidth="2" /><path d="M13 13l4.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
         <input

@@ -23,7 +23,7 @@ Some contaminants are dangerous: an EPA report counted 245 lithium-ion battery f
 to 2020 and calls that count severely underreported.
 
 The right answer depends on the item and on the city. A paper coffee cup goes in the green paper bin in New York and
-the blue bin in San Francisco. Cleanstream answers that question at the bin, and gives sites a cheap way to measure
+the blue bin in San Francisco, and in the trash in Los Angeles. Cleanstream answers that question at the bin, and gives sites a cheap way to measure
 whether answering it changed anything.
 
 **How we would measure it.** Pick six shared bin stations (for example, campus building lobbies). Audit each station's
@@ -40,7 +40,7 @@ before: The Recycling Partnership's cart-tagging work cut contamination 31% in A
 | **Scan** | Camera, upload or a held-out test photo. The bin for your city, how sure the model is, prep steps, the reason, the official source, and what the same item gets in other cities. One tap corrects it. Or type the item: search knows everyday names (tin foil, Amazon box, styrofoam). Every answer has a share link (`#scan?item=pizza_box&city=sf`), and the app installs to a home screen and works offline. |
 | **Bin station** | Kiosk for a tablet above a set of bins, modelled on commercial sorting stations. While idle it greets people in several languages and shows the items most often binned wrong; when an item is held still it fills the screen with that bin's colour and points at the right lid. Set which bins stand there and in what order; open `?kiosk` on the tablet for a full-screen station. It keeps counts, never pictures. |
 | **Audit** | Photograph each item pulled from a bin (drop a whole batch). It sorts them, flags what doesn't belong, gives the contamination rate and top contaminants, compares baseline and after audits, and exports CSV. |
-| **Rules** | The full rule table for NYC, San Francisco and US general guidance (EPA and The Recycling Partnership), with a source link on every row and a filter for items where places disagree. |
+| **Rules** | The full rule table for New York, San Francisco, Los Angeles, Chicago, Seattle and US general guidance (EPA and The Recycling Partnership), with a source link on every row and a filter for items where places disagree. |
 | **How it works** | The model, the evaluation numbers below, data sources and licences. |
 
 <p><img src="docs/station.jpg" width="49%" alt="Bin station"> <img src="docs/audit.jpg" width="49%" alt="Bin audit"></p>
@@ -88,12 +88,23 @@ waste on a landfill sorting line) is never used for training or tuning: it shows
 its training data.
 
 <!-- results:start -->
-| Test set | Model | Item type | Material | Bin (NYC) | Bin (San Francisco) | Bin (US general) |
-| --- | --- | --- | --- | --- | --- | --- |
-| Held-out test split (2,079 photos) | Text prompts only (zero-shot) | 73.1% | 86.2% | 84.6% | 85.2% | 87.7% |
-|  | **Cleanstream** | 90.7% | 95.0% | 95.2% | 95.7% | 96.1% |
-| RealWaste, never seen (2,546 photos) | Text prompts only (zero-shot) | 39.4% | 70.5% | 61.1% | 64.4% | 67.2% |
-|  | **Cleanstream** | 65.6% | 81.0% | 79.3% | 81.5% | 83.8% |
+| Test set | Model | Item type | Material |
+| --- | --- | --- | --- |
+| Held-out test split (2,079 photos) | Text prompts only (zero-shot) | 73.1% | 86.2% |
+|  | **Cleanstream** | 90.7% | 95.0% |
+| RealWaste, never seen (2,546 photos) | Text prompts only (zero-shot) | 39.4% | 70.5% |
+|  | **Cleanstream** | 65.6% | 81.0% |
+
+Right bin under each city's rules (the same model and photos; only the rule pack changes):
+
+| Rules | Held-out test: zero-shot | Held-out test: **Cleanstream** | RealWaste: zero-shot | RealWaste: **Cleanstream** |
+| --- | --- | --- | --- | --- |
+| New York City | 84.6% | 95.2% | 61.1% | 79.3% |
+| San Francisco | 85.2% | 95.7% | 64.4% | 81.5% |
+| Los Angeles | 84.9% | 96.0% | 60.5% | 80.8% |
+| Chicago | 88.0% | 96.3% | 67.2% | 82.2% |
+| Seattle | 87.1% | 96.5% | 63.4% | 81.3% |
+| US (general) | 87.7% | 96.1% | 67.2% | 83.8% |
 
 Item type and bin columns use photos with an item label. The material column also counts photos labelled only by material (2,581 and 4,257).
 
@@ -127,14 +138,15 @@ uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python torch to
 | Path | What |
 | --- | --- |
 | `web/` | The app: React + TypeScript + Vite, ONNX Runtime Web in a worker, no backend |
-| `web/public/rules/` | Rule packs (NYC, San Francisco, US general) with sources |
+| `web/public/rules/` | Rule packs (New York, San Francisco, Los Angeles, Chicago, Seattle, US general) with sources |
 | `web/public/model/` | `encoder.onnx`, the trained head, preprocessing and evaluation metrics |
 | `ml/` | Dataset preparation, embedding, training, evaluation, export and parity checks |
 
 ## What's next
 
 - A pilot at campus bin stations with the measurement plan above.
-- More rule packs. A pack is one JSON file, and the Rules tab shows what a city would need to fill in.
+- More rule packs. A pack is one JSON file, and the Rules tab shows what a city would need to fill in. Adding a city
+  needs no retraining: `ml/eval_packs.py` scores the shipped model under the new rules on the same held-out photos.
 - Training photos for the item types that run on text alone today (yard waste, electronics), and photos taken at bin
   stations, which are the closest match to real use.
 - Optional sharing of station counts and audits across a campus, keeping images on the device.
@@ -147,6 +159,7 @@ Datasets: [TrashNet](https://github.com/garythung/trashnet) (MIT),
 [Garbage Dataset v2](https://www.kaggle.com/datasets/sumn2u/garbage-classification-v2) (MIT),
 [TACO](http://tacodataset.org) (CC BY 4.0), [RealWaste](https://archive.ics.uci.edu/dataset/908/realwaste)
 (CC BY-NC-SA 4.0, evaluation only, not redistributed). Encoder: SigLIP 2 (Google, Apache 2.0) via
-[open_clip](https://github.com/mlfoundations/open_clip). Rules: DSNY and NYC311; Recology and SF Environment; US EPA and
+[open_clip](https://github.com/mlfoundations/open_clip). Rules: DSNY and NYC311; Recology and SF Environment; LA Sanitation; Chicago Streets and Sanitation; Seattle Public
+Utilities; US EPA and
 The Recycling Partnership (links on every row of the Rules tab). Sample photos in the app are held-out test photos from
 TrashNet, the Garbage Dataset and TACO.

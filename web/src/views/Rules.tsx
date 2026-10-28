@@ -1,14 +1,14 @@
 import { useState } from 'react'
-import { ITEMS, itemName } from '../items'
+import { ITEMS, itemName, searchItems } from '../items'
 import { binById, type Pack } from '../rules'
 import { BinChip } from '../ui'
 
 export default function Rules({ pack, packs }: { pack: Pack; packs: Pack[] }) {
   const [q, setQ] = useState('')
   const [onlyDiff, setOnlyDiff] = useState(false)
+  const hits = q.trim().length >= 2 ? new Set(searchItems(q, 32)) : null // same synonyms as the Scan search
   const ids = Object.keys(ITEMS).filter((id) => {
-    const text = `${itemName(id)} ${ITEMS[id].examples}`.toLowerCase()
-    if (q && !text.includes(q.toLowerCase())) return false
+    if (hits && !hits.has(id)) return false
     if (onlyDiff) return new Set(packs.map((p) => binById(p, p.items[id].bin).kind)).size > 1
     return true
   })
