@@ -1,4 +1,4 @@
-// Everything the app keeps lives in this browser's localStorage: audits (with small thumbnails) and station tallies.
+// Everything the app keeps lives in this browser's localStorage: audits (with small thumbnails) and station counts.
 import { useCallback, useEffect, useState } from 'react'
 
 export type AuditItem = { id: string; thumb: string; pred: string; p: number; fixed?: string }
@@ -11,7 +11,17 @@ export type Audit = {
   date: string
   items: AuditItem[]
 }
-export type Tally = Record<string, Record<string, number>> // day -> bin id -> count
+export type StationDay = { bins: Record<string, number>; items: Record<string, number>; unsure: number }
+export type StationLog = Record<string, Record<string, StationDay>> // city pack id -> day -> counts (never pictures)
+
+// One answer at a station: the bin and item it showed, or null when it said it was not sure.
+export function record(log: StationLog, pack: string, day: string, shown: { bin: string; item: string } | null): StationLog {
+  const d = log[pack]?.[day] ?? { bins: {}, items: {}, unsure: 0 }
+  const next = shown
+    ? { ...d, bins: { ...d.bins, [shown.bin]: (d.bins[shown.bin] ?? 0) + 1 }, items: { ...d.items, [shown.item]: (d.items[shown.item] ?? 0) + 1 } }
+    : { ...d, unsure: d.unsure + 1 }
+  return { ...log, [pack]: { ...log[pack], [day]: next } }
+}
 
 function read<T>(key: string, fallback: T): T {
   try {
@@ -38,9 +48,15 @@ function useStored<T>(key: string, fallback: T): [T, (f: (v: T) => T) => void] {
 }
 
 export const useAudits = () => useStored<Audit[]>('cleanstream.audits', [])
-export const useTally = () => useStored<Tally>('cleanstream.station', {})
+export const useStationLog = () => useStored<StationLog>('cleanstream.station.log', {})
 
-export const today = () => new Date().toISOString().slice(0, 10)
+// Local calendar day (YYYY-MM-DD), and the n days ending on `last`, oldest first
+export const today = () => {
+  const d = new Date()
+  return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10)
+}
+export const lastDays = (n: number, last = today()) =>
+  Array.from({ length: n }, (_, k) => new Date(Date.parse(`${last}T12:00:00Z`) - (n - 1 - k) * 86400000).toISOString().slice(0, 10))
 export const uid = () => Math.random().toString(36).slice(2, 10)
 
 export async function thumbnail(blob: Blob, size = 112): Promise<string> {

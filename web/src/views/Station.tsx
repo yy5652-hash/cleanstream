@@ -2,8 +2,9 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { itemName } from '../items'
 import { classify, useModel } from '../model/client'
 import { answer, binById, type Answer, type Bin, type Pack } from '../rules'
-import { today, useTally } from '../store'
+import { record, today, useStationLog } from '../store'
 import { Can, Logo, sampleUrl, useSamples } from '../ui'
+import StationReport from './StationReport'
 
 type Source = 'off' | 'camera' | 'demo'
 type Phase = 'idle' | 'looking' | 'result' | 'thanks'
@@ -56,6 +57,33 @@ function useStationBins(pack: Pack): [string[], (ids: string[]) => void] {
   return [ids, setIds]
 }
 
+// Says the answer out loud, when the station is set to: for people who can't read the screen from where they stand.
+function say(text: string) {
+  if (!('speechSynthesis' in window)) return
+  speechSynthesis.cancel()
+  const u = new SpeechSynthesisUtterance(text)
+  u.lang = 'en-US'
+  speechSynthesis.speak(u)
+}
+
+function useVoice(): [boolean, (on: boolean) => void] {
+  const [on, setOn] = useState(() => {
+    try {
+      return localStorage.getItem('cleanstream.station.voice') === '1'
+    } catch {
+      return false
+    }
+  })
+  useEffect(() => {
+    try {
+      localStorage.setItem('cleanstream.station.voice', on ? '1' : '0')
+    } catch {
+      /* ignore */
+    }
+  }, [on])
+  return [on, setOn]
+}
+
 function Rotating({ items, every, render }: { items: string[]; every: number; render: (s: string) => ReactNode }) {
   const [i, setI] = useState(0)
   useEffect(() => {
@@ -76,13 +104,16 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
   const [frame, setFrame] = useState<string | null>(null)
   const [settings, setSettings] = useState(false)
   const [binIds, setBinIds] = useStationBins(pack)
-  const [tally, setTally] = useTally()
+  const [log, setLog] = useStationLog()
+  const [voice, setVoice] = useVoice()
+  const speak = useRef(voice)
+  speak.current = voice // read by the camera loop, which keeps its first closure
   const video = useRef<HTMLVideoElement>(null)
   const kiosk = useRef<HTMLDivElement>(null)
   const busy = useRef(false)
   const timers = useRef<number[]>([])
   const day = today()
-  const counts = tally[day] ?? {}
+  const counts = log[pack.id]?.[day]?.bins ?? {}
   const total = Object.values(counts).reduce((a, b) => a + b, 0)
   const bins = binIds.map((id) => binById(pack, id))
   const tips = useMemo(() => TIPS.filter((id) => pack.items[id]), [pack])
@@ -104,10 +135,10 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
       const a = answer(pack, model.classes, r.probs)
       setAns(a)
       setPhase('result')
-      if (a.sure) {
-        const bin = a.bins[0].bin.id
-        setTally((t) => ({ ...t, [day]: { ...(t[day] ?? {}), [bin]: (t[day]?.[bin] ?? 0) + 1 } }))
-      }
+      const bin = a.bins[0].bin.id
+      const item = a.items.find((it) => pack.items[it.id]?.bin === bin)!.id // the likeliest item in the bin it shows
+      setLog((l) => record(l, pack.id, day, a.sure ? { bin, item } : null))
+      if (speak.current) say(a.sure ? `${itemName(item)}. ${a.bins[0].bin.name}.` : 'Not sure about this one. Please check the label.')
       later(RESULT_MS, () => {
         setPhase(a.sure ? 'thanks' : 'idle')
         later(THANKS_MS, () => setPhase('idle'))
@@ -273,11 +304,13 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
         </div>
       </div>
 
+      {!full && <StationReport pack={pack} log={log[pack.id] ?? {}} onReset={() => setLog(({ [pack.id]: _, ...rest }) => rest)} />}
+
       {settings && (
         <div className="pick" onClick={() => setSettings(false)}>
           <div className="card pad" onClick={(e) => e.stopPropagation()}>
             <div className="row" style={{ justifyContent: 'space-between', marginBottom: 8 }}>
-              <h3>Bins at this station</h3>
+              <h3>Station setup</h3>
               <button className="btn small" onClick={() => setSettings(false)}>Done</button>
             </div>
             <p className="small muted" style={{ marginBottom: 12 }}>Tick the bins that stand here and put them in order, left to right, so the arrow points at the right one.</p>
@@ -308,6 +341,13 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
                 )
               })}
             </div>
+            <label className="row" style={{ gap: 10, marginTop: 16, alignItems: 'flex-start', flexWrap: 'nowrap' }}>
+              <input type="checkbox" checked={voice} style={{ marginTop: 3 }} onChange={() => {
+                if (!voice) say('Answers will be spoken.') // a tap unlocks speech in most browsers
+                setVoice(!voice)
+              }} />
+              <span className="small"><strong>Say the answer out loud</strong><br /><span className="muted">For people who can't read the screen from where they stand. Uses the device's built-in voice.</span></span>
+            </label>
           </div>
         </div>
       )}

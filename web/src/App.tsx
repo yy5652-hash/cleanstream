@@ -4,6 +4,7 @@ import { PACK_IDS, usePacks } from './rules'
 import { Logo } from './ui'
 import About from './views/About'
 import Audit from './views/Audit'
+import Quiz from './views/Quiz'
 import Rules from './views/Rules'
 import Scan from './views/Scan'
 import Station from './views/Station'
@@ -13,6 +14,7 @@ const TABS = [
   ['station', 'Bin station'],
   ['audit', 'Audit'],
   ['rules', 'Rules'],
+  ['quiz', 'Quiz'],
   ['how', 'How it works'],
 ] as const
 type Tab = (typeof TABS)[number][0]
@@ -108,6 +110,7 @@ export default function App() {
             {tab === 'station' && <Station pack={pack} />}
             {tab === 'audit' && <Audit pack={pack} packs={packs} />}
             {tab === 'rules' && <Rules pack={pack} packs={packs} />}
+            {tab === 'quiz' && <Quiz key={pack.id} pack={pack} packs={packs} />}
             {tab === 'how' && <About packs={packs} />}
           </>
         )}

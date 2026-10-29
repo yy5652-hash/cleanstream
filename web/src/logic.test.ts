@@ -2,7 +2,10 @@ import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { ITEMS, searchItems } from './items'
 import { answer, PACK_IDS, SURE, type Pack } from './rules'
+import { lastDays, record, type StationLog } from './store'
 import { contamination } from './views/Audit'
+import { pickQuiz, ROUNDS } from './views/Quiz'
+import { summarize } from './views/StationReport'
 
 const packs: Pack[] = PACK_IDS.map((id) => JSON.parse(readFileSync(new URL(`../public/rules/${id}.json`, import.meta.url), 'utf8')))
 const classes = Object.keys(ITEMS)
@@ -74,5 +77,38 @@ describe('contamination', () => {
     expect(c.n).toBe(3) // the unsorted photo is not counted yet
     expect(c.bad).toBe(1)
     expect(c.top[0][0]).toBe('plastic_bag_film')
+  })
+})
+
+describe('station log', () => {
+  it('counts bins and items per city and day, and unsure answers apart', () => {
+    let log: StationLog = {}
+    log = record(log, 'nyc', '2026-10-28', { bin: 'blue', item: 'plastic_bottle' })
+    log = record(log, 'nyc', '2026-10-28', { bin: 'blue', item: 'metal_can' })
+    log = record(log, 'nyc', '2026-10-29', { bin: 'green', item: 'cardboard' })
+    log = record(log, 'nyc', '2026-10-29', null)
+    log = record(log, 'sf', '2026-10-29', { bin: 'black', item: 'foam' })
+    const s = summarize(log.nyc, lastDays(2, '2026-10-29'))
+    expect(s.total).toBe(3)
+    expect(s.unsure).toBe(1)
+    expect(s.bins).toEqual({ blue: 2, green: 1 })
+    expect(s.perDay.map((d) => d.total)).toEqual([2, 1])
+    expect(summarize(log.nyc, ['2026-10-29']).total).toBe(1)
+  })
+
+  it('lists the last n days oldest first, across a month end', () => {
+    expect(lastDays(3, '2026-11-01')).toEqual(['2026-10-30', '2026-10-31', '2026-11-01'])
+  })
+})
+
+describe('quiz', () => {
+  it('picks distinct items, at least half of them ones places disagree on', () => {
+    const pool = classes.slice(0, 20)
+    const tricky = new Set(pool.filter((id) => new Set(packs.map((p) => p.bins.find((b) => b.id === p.items[id].bin)!.kind)).size > 1))
+    for (let k = 0; k < 20; k++) {
+      const q = pickQuiz(packs, pool)
+      expect(new Set(q).size).toBe(ROUNDS)
+      expect(q.filter((id) => tricky.has(id)).length).toBeGreaterThanOrEqual(Math.min(tricky.size, ROUNDS / 2))
+    }
   })
 })
