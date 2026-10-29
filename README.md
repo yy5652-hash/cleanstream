@@ -4,7 +4,7 @@
 
 Live app: https://yy5652-hash.github.io/cleanstream/ (runs in your browser; photos never leave your device)
 
-![Scan: a plastic bottle goes in New York's blue bin](docs/scan.jpg)
+<p><img src="docs/scan.jpg" width="67%" alt="Scan: a plastic bottle goes in New York's blue bin"> <img src="docs/search.jpg" width="31%" alt="Search on a phone: tin foil goes in the blue bin"></p>
 
 Cleanstream is a web app for the moment someone stands in front of three bins holding a coffee cup. Show it the item and a
 model running in the browser recognises it, then answers with the local rules: which bin, how to prep it, why, and a

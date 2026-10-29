@@ -241,7 +241,8 @@ table.list tr.click:hover td { background: #f8f9f6; }
 }
 
 /* item search */
-.isearch { position: relative; margin-top: 16px; }
+.isearch { margin-top: 16px; }
+.isearch-field { position: relative; }
 .search-box { display: flex; align-items: center; gap: 10px; background: var(--card); border: 1.5px solid #cdd3c8; border-radius: 14px; padding: 0 14px; box-shadow: var(--shadow); }
 .search-box:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 .search-box svg { width: 20px; height: 20px; flex: none; color: var(--muted); }
@@ -253,3 +254,4 @@ table.list tr.click:hover td { background: #f8f9f6; }
 .tag { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 4px 11px; font: inherit; font-size: 13px; font-weight: 600; color: var(--ink); cursor: pointer; }
 .tag:hover { border-color: var(--accent); color: var(--accent); }
 .pick .filter { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 9px 11px; font: inherit; margin-bottom: 12px; }
+@media (max-width: 560px) { .loadbar { display: none; } .lede h1 { font-size: 26px; } }

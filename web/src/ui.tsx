@@ -155,40 +155,42 @@ export function ItemSearch({ pack, onPick, popular = [] }: { pack: Pack; onPick:
 
   return (
     <div className="isearch">
-      <div className="search-box">
-        <svg viewBox="0 0 20 20" aria-hidden><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" strokeWidth="2" /><path d="M13 13l4.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
-        <input
-          type="search" value={q} placeholder="Search an item: coffee cup, pizza box, batteries…" aria-label="Search an item"
-          role="combobox" aria-expanded={showList} aria-controls="search-list" aria-autocomplete="list" autoComplete="off"
-          onChange={(e) => (setQ(e.target.value), setOpen(true), setActive(0))}
-          onFocus={() => setOpen(true)}
-          onBlur={() => setTimeout(() => setOpen(false), 120)}
-          onKeyDown={(e) => {
-            if (e.key === 'ArrowDown') (e.preventDefault(), setActive((a) => Math.min(a + 1, hits.length - 1)))
-            else if (e.key === 'ArrowUp') (e.preventDefault(), setActive((a) => Math.max(a - 1, 0)))
-            else if (e.key === 'Enter' && hits[active]) (e.preventDefault(), pick(hits[active]))
-            else if (e.key === 'Escape') setOpen(false)
-          }}
-        />
-      </div>
-      {showList && (
-        <div className="search-list card" id="search-list" role="listbox">
-          {hits.length ? hits.map((id, k) => {
-            const bin = binById(pack, pack.items[id].bin)
-            return (
-              <button key={id} role="option" aria-selected={k === active} className={k === active ? 'on' : ''}
-                onMouseDown={(e) => e.preventDefault()} onMouseEnter={() => setActive(k)} onClick={() => pick(id)}>
-                <span><strong>{itemName(id)}</strong><span className="small muted">{ITEMS[id].examples}</span></span>
-                <span className="chip" style={{ background: bin.color, color: bin.ink }}>{bin.name}</span>
-              </button>
-            )
-          }) : (
-            <div className="small muted" style={{ padding: '12px 14px' }}>
-              Nothing matches “{q.trim()}”. Try a simpler word, or show it with a photo. When in doubt, keep it out of recycling.
-            </div>
-          )}
+      <div className="isearch-field">
+        <div className="search-box">
+          <svg viewBox="0 0 20 20" aria-hidden><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" strokeWidth="2" /><path d="M13 13l4.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+          <input
+            type="search" value={q} placeholder="Search an item: coffee cup, pizza box, batteries…" aria-label="Search an item"
+            role="combobox" aria-expanded={showList} aria-controls="search-list" aria-autocomplete="list" autoComplete="off"
+            onChange={(e) => (setQ(e.target.value), setOpen(true), setActive(0))}
+            onFocus={() => setOpen(true)}
+            onBlur={() => setTimeout(() => setOpen(false), 120)}
+            onKeyDown={(e) => {
+              if (e.key === 'ArrowDown') (e.preventDefault(), setActive((a) => Math.min(a + 1, hits.length - 1)))
+              else if (e.key === 'ArrowUp') (e.preventDefault(), setActive((a) => Math.max(a - 1, 0)))
+              else if (e.key === 'Enter' && hits[active]) (e.preventDefault(), pick(hits[active]))
+              else if (e.key === 'Escape') setOpen(false)
+            }}
+          />
         </div>
-      )}
+        {showList && (
+          <div className="search-list card" id="search-list" role="listbox">
+            {hits.length ? hits.map((id, k) => {
+              const bin = binById(pack, pack.items[id].bin)
+              return (
+                <button key={id} role="option" aria-selected={k === active} className={k === active ? 'on' : ''}
+                  onMouseDown={(e) => e.preventDefault()} onMouseEnter={() => setActive(k)} onClick={() => pick(id)}>
+                  <span><strong>{itemName(id)}</strong><span className="small muted">{ITEMS[id].examples}</span></span>
+                  <span className="chip" style={{ background: bin.color, color: bin.ink }}>{bin.name}</span>
+                </button>
+              )
+            }) : (
+              <div className="small muted" style={{ padding: '12px 14px' }}>
+                Nothing matches “{q.trim()}”. Try a simpler word, or show it with a photo. When in doubt, keep it out of recycling.
+              </div>
+            )}
+          </div>
+        )}
+      </div>
       {popular.length > 0 && (
         <div className="row small" style={{ gap: 6, marginTop: 10 }}>
           <span className="muted">Often asked:</span>
