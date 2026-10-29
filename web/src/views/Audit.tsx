@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react'
 import { itemName } from '../items'
-import { classify, useModel } from '../model/client'
+import { classify, loadModel, useModel } from '../model/client'
 import { belongs, binById, type Pack } from '../rules'
 import { download, thumbnail, today, uid, useAudits, type Audit as AuditT, type AuditItem } from '../store'
 import { BinChip, ItemPicker, pct } from '../ui'
@@ -29,7 +29,7 @@ export default function Audit({ pack, packs }: { pack: Pack; packs: Pack[] }) {
     setOpen(a.id)
   }
 
-  if (current) return <AuditSession audit={current} pack={packOf(current.pack)} ready={model.status === 'ready'} classes={model.classes} close={() => setOpen(null)}
+  if (current) return <AuditSession audit={current} pack={packOf(current.pack)} ready={model.status === 'ready'} idle={model.status === 'idle'} classes={model.classes} close={() => setOpen(null)}
     update={(f) => setAudits((xs) => xs.map((x) => (x.id === current.id ? f(x) : x)))}
     remove={() => (setAudits((xs) => xs.filter((x) => x.id !== current.id)), setOpen(null))} />
 
@@ -133,8 +133,8 @@ function Compare({ audits, packOf }: { audits: AuditT[]; packOf: (id: string) =>
   )
 }
 
-function AuditSession({ audit, pack, ready, classes, close, update, remove }: {
-  audit: AuditT; pack: Pack; ready: boolean; classes: string[]; close: () => void; update: (f: (a: AuditT) => AuditT) => void; remove: () => void
+function AuditSession({ audit, pack, ready, idle, classes, close, update, remove }: {
+  audit: AuditT; pack: Pack; ready: boolean; idle: boolean; classes: string[]; close: () => void; update: (f: (a: AuditT) => AuditT) => void; remove: () => void
 }) {
   const [queue, setQueue] = useState(0)
   const [fixing, setFixing] = useState<string | null>(null)
@@ -191,7 +191,7 @@ function AuditSession({ audit, pack, ready, classes, close, update, remove }: {
             <div className="hint">
               <strong>Add photos of the items you pulled from this bin</strong>
               <span>One item per photo. Drop a whole folder's worth at once.</span>
-              <button className="btn primary" disabled={!ready} onClick={() => input.current?.click()}>{ready ? 'Choose photos' : 'Loading model…'}</button>
+              <button className="btn primary" disabled={!ready && !idle} onClick={() => (idle ? loadModel() : input.current?.click())}>{ready ? 'Choose photos' : idle ? 'Download the photo model (96 MB)' : 'Loading model…'}</button>
               <input ref={input} type="file" accept="image/*" multiple hidden onChange={(e) => (add([...(e.target.files ?? [])]), (e.target.value = ''))} />
             </div>
           </div>

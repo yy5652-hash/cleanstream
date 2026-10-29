@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { itemName } from '../items'
-import { classify, useModel } from '../model/client'
+import { classify, loadModel, useModel } from '../model/client'
 import { answer, binById, type Answer, type Bin, type Pack } from '../rules'
 import { record, today, useStationLog } from '../store'
 import { Can, Logo, sampleUrl, useSamples } from '../ui'
@@ -117,6 +117,10 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
   const total = Object.values(counts).reduce((a, b) => a + b, 0)
   const bins = binIds.map((id) => binById(pack, id))
   const tips = useMemo(() => TIPS.filter((id) => pack.items[id]), [pack])
+
+  useEffect(() => {
+    if (source !== 'off' && model.status === 'idle') loadModel()
+  }, [source, model.status])
 
   const later = (ms: number, f: () => void) => timers.current.push(window.setTimeout(f, ms))
   const clearTimers = () => {

@@ -80,6 +80,9 @@ before: The Recycling Partnership's cart-tagging work cut contamination 31% in A
 - **Choices made on validation data only.** The anchor strength is picked on the validation split plus
   leave-one-dataset-out validation, which rewards generalising to a new photo source. The encoder was picked from four
   open models (OpenAI CLIP, LAION-2B CLIP, DataComp CLIP, SigLIP 2) with the same pipeline.
+- **Tried and not shipped.** Averaging each photo's answer with its mirror image's (`ml/tta_eval.py`, a paired test
+  photo by photo): NYC right-bin accuracy 95.2% to 95.1% on held-out photos and 79.3% to 79.0% on RealWaste, no
+  significant change for any city (McNemar p > 0.35) at twice the compute, so the app runs one pass per photo.
 
 ## Results
 

@@ -2,9 +2,17 @@
 import { useSyncExternalStore } from 'react'
 
 export type Prediction = { probs: Float32Array; ms: number }
-export type ModelState = { status: 'loading' | 'ready' | 'error'; loaded: number; total: number; classes: string[]; error?: string }
+export type ModelState = { status: 'idle' | 'loading' | 'ready' | 'error'; loaded: number; total: number; classes: string[]; error?: string }
 
-let state: ModelState = { status: 'loading', loaded: 0, total: 0, classes: [] }
+// On mobile data or with Data Saver on, the 96 MB model waits until someone asks for a photo answer (idle until then).
+// Search needs no model, and a model cached by an earlier visit loads straight away.
+type Connection = { saveData?: boolean; type?: string; effectiveType?: string }
+const metered = () => {
+  const c = (navigator as Navigator & { connection?: Connection }).connection
+  return !!c && (!!c.saveData || c.type === 'cellular' || ['slow-2g', '2g', '3g'].includes(c.effectiveType ?? ''))
+}
+
+let state: ModelState = { status: metered() ? 'idle' : 'loading', loaded: 0, total: 0, classes: [] }
 const listeners = new Set<() => void>()
 const pending = new Map<number, { resolve: (p: Prediction) => void; reject: (e: Error) => void }>()
 let worker: Promise<Worker> | null = null
@@ -33,6 +41,7 @@ async function controlled() {
 
 function start(): Promise<Worker> {
   if (worker) return worker
+  if (state.status === 'idle') set({ status: 'loading' })
   worker = controlled().then(() => {
     const w = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' })
     w.onmessage = onMessage
@@ -54,8 +63,19 @@ function onMessage(e: MessageEvent) {
   if (m.id) pending.delete(m.id)
 }
 
+let decided = false
+function autoStart() {
+  if (decided) return
+  decided = true
+  if (state.status !== 'idle') return void start()
+  if ('caches' in self) caches.match(`${import.meta.env.BASE_URL}model/encoder.onnx`).then((hit) => hit && start(), () => {})
+}
+
+/** Start the model download now (a button, or the first photo). */
+export const loadModel = () => void start()
+
 export function useModel(): ModelState {
-  start()
+  autoStart()
   return useSyncExternalStore(
     (l) => (listeners.add(l), () => listeners.delete(l)),
     () => state,

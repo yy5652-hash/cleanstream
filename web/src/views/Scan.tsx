@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { ITEMS } from '../items'
-import { classify, useModel } from '../model/client'
+import { classify, loadModel, useModel } from '../model/client'
 import { answer, type Pack } from '../rules'
 import { ItemSearch, PhotoInput, ResultCard } from '../ui'
 
@@ -78,12 +78,17 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
           ) : (
             <div className="card pad" style={{ minHeight: 320, display: 'grid', placeItems: 'center', textAlign: 'center' }}>
               <div className="muted" style={{ maxWidth: 340 }}>
-                {busy ? 'Looking…' : model.status === 'loading' ? (
+                {model.status === 'idle' ? (
+                  <>
+                    To save your data, the photo model (96 MB) downloads only when you ask. Search above works now.
+                    <div style={{ marginTop: 14 }}><button className="btn primary" onClick={loadModel}>Download the photo model</button></div>
+                  </>
+                ) : model.status === 'loading' ? (
                   <>
                     Downloading the model once{model.total ? ` (${Math.round(model.loaded / 1e6)} of ${Math.round(model.total / 1e6)} MB)` : ''}. It runs in this browser, so photos stay on your device, and it works offline after this. Search works already.
                     <div className="meter" style={{ marginTop: 14 }}><i style={{ width: `${model.total ? (model.loaded / model.total) * 100 : 3}%` }} /></div>
                   </>
-                ) : model.status === 'error' ? `The model could not load: ${model.error}` : 'Your answer appears here: the bin, how sure the model is, and what to do before you toss it.'}
+                ) : busy ? 'Looking…' : model.status === 'error' ? `The model could not load: ${model.error}` : 'Your answer appears here: the bin, how sure the model is, and what to do before you toss it.'}
               </div>
             </div>
           )}
