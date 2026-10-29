@@ -130,7 +130,7 @@ export default function Quiz({ pack, packs }: { pack: Pack; packs: Pack[] }) {
 
         {pick !== undefined && (
           <div className={`notice quiz-feedback${ok ? ' ok' : ''}`}>
-            <strong>{ok ? 'Right.' : `Not quite: in ${pack.name} it goes in the ${correct.name.toLowerCase()}.`}</strong> {rule.why}
+            <strong>{ok ? 'Right.' : `Not quite. In ${pack.name}: ${correct.name}.`}</strong> {rule.why}
             {rule.prep.length > 0 && <div className="small" style={{ marginTop: 6 }}>Before you toss it: {rule.prep.join(' · ')}</div>}
             <div className="row" style={{ marginTop: 12 }}>
               <button className="btn primary" autoFocus onClick={() => setRound((r) => r + 1)}>{round + 1 < ROUNDS ? 'Next item' : 'See your score'}</button>
