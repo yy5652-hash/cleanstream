@@ -47,6 +47,7 @@ export function useSamples(): Sample[] {
 }
 
 export const sampleUrl = (s: Sample) => `${import.meta.env.BASE_URL}samples/${s.file}`
+export const thumbUrl = (s: Sample) => `${import.meta.env.BASE_URL}samples/thumbs/${s.file.replace(/\.jpg$/, '.webp')}`
 
 // One photo at a time: drag and drop, file picker, live camera, or a held-out test photo.
 export function PhotoInput({ onImage, preview }: { onImage: (blob: Blob) => void; preview: string | null }) {
@@ -130,7 +131,7 @@ export function PhotoInput({ onImage, preview }: { onImage: (blob: Blob) => void
           <div className="samples">
             {samples.slice(0, 16).map((s) => (
               <button key={s.file} className={picked === s.file ? 'on' : ''} onClick={() => useSample(s)} title={`${s.source} test set`}>
-                <img src={sampleUrl(s)} alt={itemName(s.label)} loading="lazy" />
+                <img src={thumbUrl(s)} alt={itemName(s.label)} width={160} height={160} loading="lazy" />
               </button>
             ))}
           </div>
@@ -271,7 +272,7 @@ export function ResultCard({ ans, pack, packs, override, onOverride }: {
       <div className="binhero" style={{ background: bin.color, color: bin.ink, opacity: unsure ? 0.55 : 1 }}>
         <Can bin={bin} />
         <div>
-          <div className="label" style={{ color: bin.ink, opacity: 0.8 }}>{unsure ? 'Best guess' : 'Goes in'}</div>
+          <div className="label" style={{ color: bin.ink }}>{unsure ? 'Best guess' : 'Goes in'}</div>
           <h2>{bin.name}</h2>
           <div className="sub">{bin.accepts}</div>
         </div>

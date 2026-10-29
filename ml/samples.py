@@ -18,6 +18,14 @@ ORDER = ["plastic_bottle", "metal_can", "plastic_bag_film", "cardboard", "glass_
          "cigarette_butt", "drinking_glass_ceramic", "plastic_cup", "pizza_box"]
 
 
+def thumb(im, name):
+    """Small square WebP for the photo grid; the full photo is what gets classified."""
+    (OUT / "thumbs").mkdir(exist_ok=True)
+    s = min(im.size)
+    sq = im.crop(((im.width - s) // 2, (im.height - s) // 2, (im.width + s) // 2, (im.height + s) // 2))
+    sq.resize((160, 160), Image.LANCZOS).save(OUT / "thumbs" / name.replace(".jpg", ".webp"), quality=80)
+
+
 def main():
     rows = [r for r in csv.DictReader(open(ROOT / "data/manifest.csv")) if r["split"] == "test" and r["label"] and r["source"] in SOURCES]
     rng = random.Random(7)
@@ -34,6 +42,7 @@ def main():
         im = Image.open(ROOT / "data" / r["path"]).convert("RGB")
         im.thumbnail((512, 512))
         im.save(OUT / name, quality=88)
+        thumb(im, name)
         picked.append({"file": name, "label": label, "source": SOURCES[r["source"]], "origin": r["path"]})
     (OUT / "samples.json").write_text(json.dumps(picked, indent=1))
     print(len(picked), "samples:", ", ".join(p["label"] for p in picked))

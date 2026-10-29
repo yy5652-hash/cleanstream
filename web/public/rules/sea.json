@@ -38,7 +38,7 @@
    "id": "compost",
    "name": "Food and yard waste cart",
    "accepts": "Food scraps, yard waste, food-soiled paper",
-   "color": "#3a8f3a",
+   "color": "#33803a",
    "ink": "#ffffff",
    "kind": "compost"
   },

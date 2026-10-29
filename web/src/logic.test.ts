@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { ITEMS, searchItems } from './items'
-import { answer, PACK_IDS, SURE, type Pack } from './rules'
+import { answer, PACK_IDS, PACK_NAMES, SURE, type Pack } from './rules'
 import { lastDays, record, type StationLog } from './store'
 import { contamination } from './views/Audit'
 import { pickQuiz, ROUNDS } from './views/Quiz'
@@ -22,6 +22,10 @@ describe('rule packs', () => {
       expect(r.prep.length).toBeGreaterThan(0)
       expect(r.source).toMatch(/^https:\/\//)
     }
+  })
+
+  it('the city picker names match the packs', () => {
+    for (const p of packs) expect(PACK_NAMES[p.id as keyof typeof PACK_NAMES]).toBe(p.name)
   })
 
   it('model classes and display names agree', () => {
@@ -87,13 +91,15 @@ describe('station log', () => {
     log = record(log, 'nyc', '2026-10-28', { bin: 'blue', item: 'metal_can' })
     log = record(log, 'nyc', '2026-10-29', { bin: 'green', item: 'cardboard' })
     log = record(log, 'nyc', '2026-10-29', null)
+    log = record(log, 'nyc', '2026-10-29', { bin: 'trash', item: 'foam', tapped: true })
     log = record(log, 'sf', '2026-10-29', { bin: 'black', item: 'foam' })
     const s = summarize(log.nyc, lastDays(2, '2026-10-29'))
-    expect(s.total).toBe(3)
+    expect(s.total).toBe(4)
+    expect(s.tapped).toBe(1)
     expect(s.unsure).toBe(1)
-    expect(s.bins).toEqual({ blue: 2, green: 1 })
-    expect(s.perDay.map((d) => d.total)).toEqual([2, 1])
-    expect(summarize(log.nyc, ['2026-10-29']).total).toBe(1)
+    expect(s.bins).toEqual({ blue: 2, green: 1, trash: 1 })
+    expect(s.perDay.map((d) => d.total)).toEqual([2, 2])
+    expect(summarize(log.nyc, ['2026-10-29']).total).toBe(2)
   })
 
   it('lists the last n days oldest first, across a month end', () => {

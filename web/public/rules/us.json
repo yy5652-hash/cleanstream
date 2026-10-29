@@ -30,7 +30,7 @@
    "id": "compost",
    "name": "Compost",
    "accepts": "Food and yard waste, where offered",
-   "color": "#3a8f3a",
+   "color": "#33803a",
    "ink": "#ffffff",
    "kind": "compost"
   },

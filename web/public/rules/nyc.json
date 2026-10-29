@@ -38,7 +38,7 @@
    "id": "green",
    "name": "Green bin",
    "accepts": "Mixed paper & cardboard",
-   "color": "#2f8a3f",
+   "color": "#2b7d3a",
    "ink": "#ffffff",
    "kind": "recycle"
   },

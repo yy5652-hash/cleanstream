@@ -11,14 +11,15 @@ export type Audit = {
   date: string
   items: AuditItem[]
 }
-export type StationDay = { bins: Record<string, number>; items: Record<string, number>; unsure: number }
+export type StationDay = { bins: Record<string, number>; items: Record<string, number>; unsure: number; tapped?: number } // tapped: unsure, settled by a tap
 export type StationLog = Record<string, Record<string, StationDay>> // city pack id -> day -> counts (never pictures)
 
-// One answer at a station: the bin and item it showed, or null when it said it was not sure.
-export function record(log: StationLog, pack: string, day: string, shown: { bin: string; item: string } | null): StationLog {
+// One answer at a station: the bin and item it showed (tapped: the person picked it after the station was unsure),
+// or null when it was not sure and nobody picked.
+export function record(log: StationLog, pack: string, day: string, shown: { bin: string; item: string; tapped?: boolean } | null): StationLog {
   const d = log[pack]?.[day] ?? { bins: {}, items: {}, unsure: 0 }
   const next = shown
-    ? { ...d, bins: { ...d.bins, [shown.bin]: (d.bins[shown.bin] ?? 0) + 1 }, items: { ...d.items, [shown.item]: (d.items[shown.item] ?? 0) + 1 } }
+    ? { ...d, bins: { ...d.bins, [shown.bin]: (d.bins[shown.bin] ?? 0) + 1 }, items: { ...d.items, [shown.item]: (d.items[shown.item] ?? 0) + 1 }, tapped: (d.tapped ?? 0) + (shown.tapped ? 1 : 0) }
     : { ...d, unsure: d.unsure + 1 }
   return { ...log, [pack]: { ...log[pack], [day]: next } }
 }

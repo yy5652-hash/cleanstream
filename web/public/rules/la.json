@@ -42,7 +42,7 @@
    "id": "green",
    "name": "Green bin",
    "accepts": "Organics: food scraps, food-soiled paper, yard trimmings",
-   "color": "#3a8f3a",
+   "color": "#33803a",
    "ink": "#ffffff",
    "kind": "compost"
   },

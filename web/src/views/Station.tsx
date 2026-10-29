@@ -13,6 +13,7 @@ const GREETINGS = ['Hi!', '¡Hola!', '你好!', 'Bonjour!', 'Ciao!', '안녕하�
 // items people most often get wrong, shown as "did you know" tips while the station waits
 const TIPS = ['paper_cup', 'plastic_bag_film', 'pizza_box', 'carton', 'battery', 'foam', 'snack_wrapper', 'aluminum_foil', 'soiled_paper']
 const RESULT_MS = 3600
+const UNSURE_MS = 6000 // time to tap one of the two choices
 const THANKS_MS = 1400
 
 // Small grey thumbnail of a frame, for cheap motion and presence checks.
@@ -103,6 +104,8 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
   const [shot, setShot] = useState<string | null>(null)
   const [frame, setFrame] = useState<string | null>(null)
   const [settings, setSettings] = useState(false)
+  const [chosen, setChosen] = useState<string | null>(null) // item tapped after an unsure answer
+  const unsure = useRef(false) // an unsure answer nobody has settled yet: counted when it times out or the next item comes
   const [binIds, setBinIds] = useStationBins(pack)
   const [log, setLog] = useStationLog()
   const [voice, setVoice] = useVoice()
@@ -132,6 +135,9 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
     if (busy.current || model.status !== 'ready') return
     busy.current = true
     clearTimers()
+    if (unsure.current) setLog((l) => record(l, pack.id, day, null))
+    unsure.current = false
+    setChosen(null)
     setShot(picture)
     setPhase('looking')
     try {
@@ -141,12 +147,22 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
       setPhase('result')
       const bin = a.bins[0].bin.id
       const item = a.items.find((it) => pack.items[it.id]?.bin === bin)!.id // the likeliest item in the bin it shows
-      setLog((l) => record(l, pack.id, day, a.sure ? { bin, item } : null))
-      if (speak.current) say(a.sure ? `${itemName(item)}. ${a.bins[0].bin.name}.` : 'Not sure about this one. Please check the label.')
-      later(RESULT_MS, () => {
-        setPhase(a.sure ? 'thanks' : 'idle')
-        later(THANKS_MS, () => setPhase('idle'))
-      })
+      if (a.sure) {
+        setLog((l) => record(l, pack.id, day, { bin, item }))
+        if (speak.current) say(`${itemName(item)}. ${a.bins[0].bin.name}.`)
+        later(RESULT_MS, () => {
+          setPhase('thanks')
+          later(THANKS_MS, () => setPhase('idle'))
+        })
+      } else {
+        unsure.current = true
+        if (speak.current) say('Not sure. Which one is it? Tap it on the screen.')
+        later(UNSURE_MS, () => {
+          if (unsure.current) setLog((l) => record(l, pack.id, day, null))
+          unsure.current = false
+          setPhase('idle')
+        })
+      }
     } finally {
       busy.current = false
     }
@@ -212,11 +228,25 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
 
   useEffect(() => () => clearTimers(), [])
 
-  const top = ans?.bins[0]
-  const target = phase === 'result' && ans?.sure ? top!.bin : null
-  const here = target && binIds.includes(target.id)
-  const item = ans ? ans.items[0].id : null
+  // the likeliest item in each of the two likeliest bins: what to offer when unsure
+  const options = ans ? ans.bins.slice(0, 2).map(({ bin }) => ans.items.find((it) => pack.items[it.id]?.bin === bin.id)!.id) : []
+  const item = chosen ?? (ans ? options[0] : null)
   const rule = item ? pack.items[item] : null
+  const target = phase === 'result' && rule && (ans?.sure || chosen) ? binById(pack, rule.bin) : null
+  const here = target && binIds.includes(target.id)
+
+  const choose = (id: string) => {
+    clearTimers()
+    unsure.current = false
+    setChosen(id)
+    const bin = pack.items[id].bin
+    setLog((l) => record(l, pack.id, day, { bin, item: id, tapped: true }))
+    if (speak.current) say(`${itemName(id)}. ${binById(pack, bin).name}.`)
+    later(RESULT_MS, () => {
+      setPhase('thanks')
+      later(THANKS_MS, () => setPhase('idle'))
+    })
+  }
 
   const fullscreen = () => kiosk.current?.requestFullscreen?.().catch(() => {})
 
@@ -239,7 +269,8 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
         </div>
       </div>}
 
-      <div className={`kiosk${full ? ' full' : ''}`} ref={kiosk} data-phase={phase}>
+      <div className={`kiosk${full ? ' full' : ''}`} ref={kiosk} data-phase={phase} role={full ? 'main' : undefined}>
+        {full && <h1 className="sr-only">Cleanstream bin station: {pack.name} rules</h1>}
         <div className="k-top">
           <div className="k-brand"><Logo />Cleanstream</div>
           <div className="k-meta">{pack.name} rules · <b>{total}</b> sorted today{full && <button className="k-gear" onClick={() => setSettings(true)}>Bins</button>}</div>
@@ -254,7 +285,7 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
             <div className="k-hint">{source === 'demo' ? 'Demo feed: held-out test photos' : 'Hold your item here'}</div>
           </div>
 
-          <div className={`k-panel k-${phase}${phase === 'result' && !ans?.sure ? ' k-unsure' : ''}`}
+          <div className={`k-panel k-${phase}${phase === 'result' && !target ? ' k-unsure' : ''}`}
             style={target ? { background: target.color, color: target.ink } : undefined}>
             {phase === 'idle' && (
               <div className="k-idle">
@@ -274,7 +305,7 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
             {phase === 'looking' && (
               <div className="k-look"><div className="k-spin" /><div>Let me look…</div></div>
             )}
-            {phase === 'result' && ans && item && rule && (ans.sure ? (
+            {phase === 'result' && ans && item && rule && (target ? (
               <div className="k-res">
                 {shot && <img className="k-shot" src={shot} alt="" />}
                 <div className="k-item">{itemName(item)}</div>
@@ -285,8 +316,19 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
             ) : (
               <div className="k-res">
                 {shot && <img className="k-shot" src={shot} alt="" />}
-                <div className="k-item">Hmm, I’m not sure.</div>
-                <div className="k-prep">It could be {itemName(ans.items[0].id).toLowerCase()} or {itemName(ans.items[1].id).toLowerCase()}. Try showing me the label. When in doubt, keep it out of recycling.</div>
+                <div className="k-item">Hmm, which one is it?</div>
+                <div className="k-choices">
+                  {options.map((id) => {
+                    const b = binById(pack, pack.items[id].bin)
+                    return (
+                      <button key={id} className="k-choice" onClick={() => choose(id)}>
+                        <span>{itemName(id)}</span>
+                        <span className="k-chip" style={{ background: b.color, color: b.ink }}>{b.name}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+                <div className="k-prep">Tap the one you're holding, or show me the label. When in doubt, keep it out of recycling.</div>
               </div>
             ))}
             {phase === 'thanks' && (

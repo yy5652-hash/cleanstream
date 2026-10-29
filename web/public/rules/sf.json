@@ -30,7 +30,7 @@
    "id": "green",
    "name": "Green bin",
    "accepts": "Compost: food, plants, soiled paper",
-   "color": "#3a8f3a",
+   "color": "#33803a",
    "ink": "#ffffff",
    "kind": "compost"
   },

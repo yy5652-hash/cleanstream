@@ -7,7 +7,8 @@ import { pct } from '../ui'
 
 export type Summary = {
   total: number // answers shown with a bin
-  unsure: number // times it said it was not sure
+  unsure: number // times it was not sure and nobody picked
+  tapped: number // times it was not sure and the person tapped the item (counted in total)
   bins: Record<string, number>
   items: [string, number][] // most asked first
   perDay: { day: string; bins: Record<string, number>; total: number }[]
@@ -17,16 +18,19 @@ export function summarize(log: Record<string, StationDay>, days: string[]): Summ
   const bins: Record<string, number> = {}
   const items: Record<string, number> = {}
   let unsure = 0
+  let tapped = 0
   const perDay = days.map((day) => {
     const d = log[day]
     for (const [k, n] of Object.entries(d?.bins ?? {})) bins[k] = (bins[k] ?? 0) + n
     for (const [k, n] of Object.entries(d?.items ?? {})) items[k] = (items[k] ?? 0) + n
     unsure += d?.unsure ?? 0
+    tapped += d?.tapped ?? 0
     return { day, bins: d?.bins ?? {}, total: Object.values(d?.bins ?? {}).reduce((a, b) => a + b, 0) }
   })
   return {
     total: perDay.reduce((a, d) => a + d.total, 0),
     unsure,
+    tapped,
     bins,
     items: Object.entries(items).sort((a, b) => b[1] - a[1]),
     perDay,
@@ -51,6 +55,7 @@ export default function StationReport({ pack, log, onReset }: { pack: Pack; log:
       if (!d) continue
       for (const [id, n] of Object.entries(d.bins)) rows.push([day, pack.name, 'bin', id, pack.bins.find((b) => b.id === id)?.name ?? id, String(n)])
       for (const [id, n] of Object.entries(d.items)) rows.push([day, pack.name, 'item', id, itemName(id), String(n)])
+      if (d.tapped) rows.push([day, pack.name, 'settled_by_tap', '', 'Not sure, person tapped the item', String(d.tapped)])
       if (d.unsure) rows.push([day, pack.name, 'not_sure', '', 'Not sure', String(d.unsure)])
     }
     download(`station-${pack.id}-${days[0]}-to-${days[days.length - 1]}.csv`, rows.map((r) => r.map((v) => `"${v.replace(/"/g, '""')}"`).join(',')).join('\n'))
@@ -78,7 +83,7 @@ export default function StationReport({ pack, log, onReset }: { pack: Pack; log:
         <>
           <div className="metric" style={{ marginTop: 16 }}>
             <div className="card"><span className="label">Items sorted</span><b>{s.total}</b><span className="small muted">answered with a bin</span></div>
-            <div className="card"><span className="label">Sure enough to answer</span><b>{pct(s.total / asked)}</b><span className="small muted">{s.unsure} not sure, asked to check the label</span></div>
+            <div className="card"><span className="label">Sure enough to answer</span><b>{pct((s.total - s.tapped) / asked)}</b><span className="small muted">{s.tapped} settled with a tap, {s.unsure} left unsure</span></div>
             <div className="card"><span className="label">Not for recycling</span><b>{s.total ? pct(notRecycling / s.total) : '–'}</b><span className="small muted">{notRecycling} items whose bin here is compost, trash or drop-off</span></div>
           </div>
 

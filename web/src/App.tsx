@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { useModel } from './model/client'
-import { PACK_IDS, usePacks } from './rules'
+import { PACK_IDS, PACK_NAMES, usePacks } from './rules'
 import { Logo } from './ui'
-import About from './views/About'
-import Audit from './views/Audit'
-import Quiz from './views/Quiz'
-import Rules from './views/Rules'
 import Scan from './views/Scan'
-import Station from './views/Station'
+
+// Tabs other than Scan load when first opened
+const About = lazy(() => import('./views/About'))
+const Audit = lazy(() => import('./views/Audit'))
+const Quiz = lazy(() => import('./views/Quiz'))
+const Rules = lazy(() => import('./views/Rules'))
+const Station = lazy(() => import('./views/Station'))
 
 const TABS = [
   ['scan', 'Scan'],
@@ -77,7 +79,7 @@ export default function App() {
   // ?kiosk: the bin station alone, full window, for a tablet mounted above the bins
   if (params.has('kiosk')) {
     const start = params.get('source') === 'demo' ? 'demo' : 'camera'
-    return pack ? <Station pack={pack} full start={start} wait={Number(params.get('wait')) || 0} /> : null
+    return pack ? <Suspense fallback={null}><Station pack={pack} full start={start} wait={Number(params.get('wait')) || 0} /></Suspense> : null
   }
 
   return (
@@ -99,20 +101,20 @@ export default function App() {
         <label className="city">
           Rules for
           <select value={city} onChange={(e) => setCity(e.target.value)}>
-            {(packs ?? []).map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
+            {PACK_IDS.map((id) => <option key={id} value={id}>{PACK_NAMES[id]}</option>)}
           </select>
         </label>
       </header>
       <main>
-        {!packs || !pack ? <p className="muted">Loading…</p> : (
-          <>
+        {!packs || !pack ? <p className="muted" style={{ minHeight: '70vh' }}>Loading…</p> : (
+          <Suspense fallback={<p className="muted" style={{ minHeight: '70vh' }}>Loading…</p>}>
             {tab === 'scan' && <Scan pack={pack} packs={packs} />}
             {tab === 'station' && <Station pack={pack} />}
             {tab === 'audit' && <Audit pack={pack} packs={packs} />}
             {tab === 'rules' && <Rules pack={pack} packs={packs} />}
             {tab === 'quiz' && <Quiz key={pack.id} pack={pack} packs={packs} />}
             {tab === 'how' && <About packs={packs} />}
-          </>
+          </Suspense>
         )}
         <p className="footer">Cleanstream runs entirely in your browser. Photos never leave your device. Rules link to their official sources.</p>
       </main>
