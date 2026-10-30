@@ -54,7 +54,15 @@ export async function setLang(next: Lang) {
   listeners.forEach((l) => l())
 }
 
-if (typeof window !== 'undefined') void setLang(preferred())
+if (typeof window !== 'undefined') {
+  void setLang(preferred())
+  // On a very slow network, show English rather than an empty page; the translation replaces it when it arrives
+  setTimeout(() => {
+    if (state.ready) return
+    state = { ...state, ready: true }
+    listeners.forEach((l) => l())
+  }, 2500)
+}
 
 /** Re-renders on a language change; `ready` is false until the first language has loaded. */
 export const useLang = () =>
