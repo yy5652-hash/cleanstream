@@ -19,6 +19,14 @@ const CACHE = 'cleanstream-${version}'
 const MODEL_CACHE = 'cleanstream-model-${modelVersion}' // kept across app updates while the model is unchanged
 const BIG = ${RUNTIME_ONLY.toString().replace('^(', '\\/(')}
 const PRECACHE = ${JSON.stringify(precache)}
+// The headers that let the model use several threads. GitHub Pages cannot set them, so the worker adds them.
+const isolated = (res) => {
+  if (!res || res.status === 0) return res
+  const headers = new Headers(res.headers)
+  headers.set('Cross-Origin-Opener-Policy', 'same-origin')
+  headers.set('Cross-Origin-Embedder-Policy', 'require-corp')
+  return new Response(res.body, { status: res.status, statusText: res.statusText, headers })
+}
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()))
 })
@@ -30,13 +38,13 @@ self.addEventListener('fetch', (e) => {
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return
   if (req.mode === 'navigate') {
     // fresh page when online, the cached one when not
-    e.respondWith(fetch(req).catch(() => caches.match('./index.html', { ignoreSearch: true })))
+    e.respondWith(fetch(req).catch(() => caches.match('./index.html', { ignoreSearch: true })).then(isolated))
     return
   }
   e.respondWith(caches.match(req, { ignoreSearch: true }).then((hit) => hit || fetch(req).then((res) => {
     if (res.ok && res.type === 'basic') { const copy = res.clone(); caches.open(BIG.test(req.url) ? MODEL_CACHE : CACHE).then((c) => c.put(req, copy)) }
     return res
-  })))
+  })).then(isolated))
 })
 `
 

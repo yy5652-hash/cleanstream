@@ -39,10 +39,26 @@ async function controlled() {
   }
 }
 
+// The service worker adds the headers that allow several threads, but only to pages it serves, so a first visit loads once
+// more through it. This happens as the page opens, never after someone has picked a photo. Once per tab, in case it can't work.
+let ready: Promise<void> | null = null
+const prepare = () =>
+  (ready ??= controlled().then(() => {
+    if (self.crossOriginIsolated || !navigator.serviceWorker?.controller) return
+    try {
+      if (sessionStorage.getItem('cleanstream.isolating')) return
+      sessionStorage.setItem('cleanstream.isolating', '1')
+    } catch {
+      return
+    }
+    location.reload()
+    return new Promise<void>(() => {}) // the page is going away
+  }))
+
 function start(): Promise<Worker> {
   if (worker) return worker
   if (state.status === 'idle') set({ status: 'loading' })
-  worker = controlled().then(() => {
+  worker = prepare().then(() => {
     const w = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' })
     w.onmessage = onMessage
     w.postMessage({ id: 0 })
@@ -67,6 +83,7 @@ let decided = false
 function autoStart() {
   if (decided) return
   decided = true
+  void prepare()
   if (state.status !== 'idle') return void start()
   if ('caches' in self) caches.match(`${import.meta.env.BASE_URL}model/encoder.onnx`).then((hit) => hit && start(), () => {})
 }
