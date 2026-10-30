@@ -4,6 +4,7 @@ import { ITEMS, searchItems } from './items'
 import { answer, PACK_IDS, PACK_NAMES, SURE, type Pack } from './rules'
 import { lastDays, record, type StationLog } from './store'
 import { contamination } from './views/Audit'
+import { changedCells, focusBox, GRID_H, GRID_W, isPresent, isStill, share } from './views/motion'
 import { pickQuiz, ROUNDS } from './views/Quiz'
 import { summarize } from './views/StationReport'
 
@@ -116,5 +117,50 @@ describe('quiz', () => {
       expect(new Set(q).size).toBe(ROUNDS)
       expect(q.filter((id) => tricky.has(id)).length).toBeGreaterThanOrEqual(Math.min(tricky.size, ROUNDS / 2))
     }
+  })
+})
+
+describe('spotting an item at the station', () => {
+  // a mint wall, with an optional patch of another colour (x, y, w, h in cells)
+  const frame = (patch?: [number, number, number, number], light = 0) => {
+    const f = new Float32Array(GRID_W * GRID_H * 3)
+    for (let y = 0; y < GRID_H; y++) for (let x = 0; x < GRID_W; x++) {
+      const on = patch && x >= patch[0] && x < patch[0] + patch[2] && y >= patch[1] && y < patch[1] + patch[3]
+      const c = on ? [0.25, 0.55, 0.75] : [0.65, 0.85, 0.78]
+      for (let k = 0; k < 3; k++) f[(y * GRID_W + x) * 3 + k] = c[k] + light
+    }
+    return f
+  }
+
+  it('sees a small item that hardly moves the average brightness', () => {
+    expect(isPresent(frame([18, 3, 2, 10]), frame())).toBe(true)
+  })
+
+  it('is not fooled by the lights changing', () => {
+    expect(isPresent(frame(undefined, 0.15), frame())).toBe(false)
+  })
+
+  it('knows when the item is being held still', () => {
+    expect(isStill(frame([18, 3, 2, 10]), frame([18, 3, 2, 10]))).toBe(true)
+    expect(isStill(frame([10, 3, 2, 10]), frame([18, 3, 2, 10]))).toBe(false)
+  })
+
+  it('crops to a square around the item, inside the frame', () => {
+    const cells = changedCells(frame([18, 3, 2, 10]), frame())
+    expect(share(cells)).toBeCloseTo(20 / (GRID_W * GRID_H))
+    const b = focusBox(cells, 640, 480)!
+    expect(b.w).toBe(b.h)
+    expect(b.x).toBeGreaterThanOrEqual(0)
+    expect(b.x + b.w).toBeLessThanOrEqual(640)
+    expect(b.y + b.h).toBeLessThanOrEqual(480)
+    // the item (x 480 to 533, y 80 to 347) is inside the crop
+    expect(b.x).toBeLessThanOrEqual(480)
+    expect(b.x + b.w).toBeGreaterThanOrEqual(533)
+    expect(b.y).toBeLessThanOrEqual(80)
+    expect(b.y + b.h).toBeGreaterThanOrEqual(346)
+  })
+
+  it('leaves the frame alone when the item already fills it', () => {
+    expect(focusBox(changedCells(frame([0, 0, GRID_W, GRID_H - 1]), frame()), 640, 480)).toBeNull()
   })
 })

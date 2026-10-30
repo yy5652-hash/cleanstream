@@ -5,6 +5,7 @@ import { classify, loadModel, useModel } from '../model/client'
 import { answer, binById, type Answer, type Bin, type Pack } from '../rules'
 import { record, today, useStationLog } from '../store'
 import { Can, Logo, sampleUrl, useSamples } from '../ui'
+import { changedCells, focusBox, GRID_H, GRID_W, isPresent, isStill, type Box } from './motion'
 import StationReport from './StationReport'
 
 type Source = 'off' | 'camera' | 'demo'
@@ -22,19 +23,24 @@ const THANKS_MS = 1400
 function signature(v: HTMLVideoElement, c: HTMLCanvasElement): Float32Array | null {
   if (!v.videoWidth) return null
   const ctx = c.getContext('2d', { willReadFrequently: true })!
-  ctx.drawImage(v, 0, 0, 24, 18)
-  const d = ctx.getImageData(0, 0, 24, 18).data
-  const out = new Float32Array(24 * 18)
-  for (let i = 0; i < out.length; i++) out[i] = (d[i * 4] + d[i * 4 + 1] + d[i * 4 + 2]) / 765
+  ctx.drawImage(v, 0, 0, GRID_W, GRID_H)
+  const d = ctx.getImageData(0, 0, GRID_W, GRID_H).data
+  const out = new Float32Array(GRID_W * GRID_H * 3)
+  for (let i = 0; i < GRID_W * GRID_H; i++) for (let k = 0; k < 3; k++) out[i * 3 + k] = d[i * 4 + k] / 255
   return out
 }
-const diff = (a: Float32Array, b: Float32Array) => a.reduce((s, x, i) => s + Math.abs(x - b[i]), 0) / a.length
 
-function snapshot(v: HTMLVideoElement): string {
+// The part of the frame to look at: the box around the item, or a centred square when there is no box.
+function cropFrame(v: HTMLVideoElement, box: Box | null): HTMLCanvasElement {
+  const side = Math.min(v.videoWidth, v.videoHeight)
+  const b = box ?? { x: (v.videoWidth - side) / 2, y: (v.videoHeight - side) / 2, w: side, h: side }
   const c = document.createElement('canvas')
-  const s = Math.min(v.videoWidth, v.videoHeight)
-  c.width = c.height = 320
-  c.getContext('2d')!.drawImage(v, (v.videoWidth - s) / 2, (v.videoHeight - s) / 2, s, s, 0, 0, 320, 320)
+  c.width = c.height = Math.max(256, Math.round(b.w))
+  c.getContext('2d')!.drawImage(v, b.x, b.y, b.w, b.h, 0, 0, c.width, c.height)
+  return c
+}
+
+function snapshot(c: HTMLCanvasElement): string {
   return c.toDataURL('image/jpeg', 0.8)
 }
 
@@ -141,7 +147,7 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
     timers.current = []
   }
 
-  const run = async (src: Blob | HTMLVideoElement, picture: string) => {
+  const run = async (src: Blob | HTMLCanvasElement, picture: string) => {
     if (busy.current || model.status !== 'ready') return
     busy.current = true
     clearTimers()
@@ -184,8 +190,8 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
     let stream: MediaStream | null = null
     let timer = 0
     const c = document.createElement('canvas')
-    c.width = 24
-    c.height = 18
+    c.width = GRID_W
+    c.height = GRID_H
     let empty: Float32Array | null = null
     let prev: Float32Array | null = null
     let still = 0
@@ -198,15 +204,18 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
         const sig = v && signature(v, c)
         if (!v || !sig) return
         if (!empty) empty = sig
-        const present = diff(sig, empty) > 0.06
-        still = prev && diff(sig, prev) < 0.012 ? still + 1 : 0
+        const present = isPresent(sig, empty)
+        still = prev && isStill(sig, prev) ? still + 1 : 0
         prev = sig
         if (!present) {
           shown = false
           if (still > 8) empty = sig // the empty view drifted (light changed): follow it
         } else if (still >= 2 && !shown) {
           shown = true
-          run(v, snapshot(v))
+          // look only at what changed: the item, not the whole room
+          const box = focusBox(changedCells(sig, empty), v.videoWidth, v.videoHeight)
+          const crop = cropFrame(v, box)
+          run(crop, snapshot(crop))
         }
       }, 250)
     }).catch(() => setSource('off'))
