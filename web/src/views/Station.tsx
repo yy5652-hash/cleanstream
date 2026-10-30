@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { LANGS, setLang, speechLang, t, useLang } from '../i18n'
 import { itemName } from '../items'
 import { classify, loadModel, useModel } from '../model/client'
 import { answer, binById, type Answer, type Bin, type Pack } from '../rules'
@@ -14,6 +15,7 @@ const GREETINGS = ['Hi!', '¡Hola!', '你好!', 'Bonjour!', 'Ciao!', '안녕하�
 const TIPS = ['paper_cup', 'plastic_bag_film', 'pizza_box', 'carton', 'battery', 'foam', 'snack_wrapper', 'aluminum_foil', 'soiled_paper']
 const RESULT_MS = 3600
 const UNSURE_MS = 6000 // time to tap one of the two choices
+const LANG_RESET_MS = 45000 // a kiosk goes back to its own language, so the next person doesn't inherit someone else's
 const THANKS_MS = 1400
 
 // Small grey thumbnail of a frame, for cheap motion and presence checks.
@@ -63,7 +65,7 @@ function say(text: string) {
   if (!('speechSynthesis' in window)) return
   speechSynthesis.cancel()
   const u = new SpeechSynthesisUtterance(text)
-  u.lang = 'en-US'
+  u.lang = speechLang()
   speechSynthesis.speak(u)
 }
 
@@ -125,6 +127,14 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
     if (source !== 'off' && model.status === 'idle') loadModel()
   }, [source, model.status])
 
+  const { lang } = useLang()
+  const homeLang = useRef(lang)
+  useEffect(() => {
+    if (!full || lang === homeLang.current || phase !== 'idle') return
+    const timer = setTimeout(() => void setLang(homeLang.current), LANG_RESET_MS)
+    return () => clearTimeout(timer)
+  }, [full, lang, phase])
+
   const later = (ms: number, f: () => void) => timers.current.push(window.setTimeout(f, ms))
   const clearTimers = () => {
     timers.current.forEach(clearTimeout)
@@ -149,14 +159,14 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
       const item = a.items.find((it) => pack.items[it.id]?.bin === bin)!.id // the likeliest item in the bin it shows
       if (a.sure) {
         setLog((l) => record(l, pack.id, day, { bin, item }))
-        if (speak.current) say(`${itemName(item)}. ${a.bins[0].bin.name}.`)
+        if (speak.current) say(t('{item}. {bin}.', { item: itemName(item), bin: a.bins[0].bin.name }))
         later(RESULT_MS, () => {
           setPhase('thanks')
           later(THANKS_MS, () => setPhase('idle'))
         })
       } else {
         unsure.current = true
-        if (speak.current) say('Not sure. Which one is it? Tap it on the screen.')
+        if (speak.current) say(t('Not sure. Which one is it? Tap it on the screen.'))
         later(UNSURE_MS, () => {
           if (unsure.current) setLog((l) => record(l, pack.id, day, null))
           unsure.current = false
@@ -241,7 +251,7 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
     setChosen(id)
     const bin = pack.items[id].bin
     setLog((l) => record(l, pack.id, day, { bin, item: id, tapped: true }))
-    if (speak.current) say(`${itemName(id)}. ${binById(pack, bin).name}.`)
+    if (speak.current) say(t('{item}. {bin}.', { item: itemName(id), bin: binById(pack, bin).name }))
     later(RESULT_MS, () => {
       setPhase('thanks')
       later(THANKS_MS, () => setPhase('idle'))
@@ -254,46 +264,50 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
     <>
       {!full && <div className="lede">
         <div>
-          <h1>Bin station</h1>
-          <p>Put any old tablet or phone above your bins. People hold up an item and the right bin lights up, in your city's rules. It runs offline and keeps counts, never pictures.</p>
+          <h1>{t('Bin station')}</h1>
+          <p>{t('Put any old tablet or phone above your bins. People hold up an item and the right bin lights up, in your city\'s rules. It runs offline and keeps counts, never pictures.')}</p>
         </div>
         <div className="row">
           <div className="seg">
-            <button className={source === 'camera' ? 'on' : ''} onClick={() => setSource('camera')}>Camera</button>
-            <button className={source === 'demo' ? 'on' : ''} onClick={() => setSource('demo')}>Demo feed</button>
-            <button className={source === 'off' ? 'on' : ''} onClick={() => (setSource('off'), setPhase('idle'), setAns(null))}>Off</button>
+            <button className={source === 'camera' ? 'on' : ''} onClick={() => setSource('camera')}>{t('Camera')}</button>
+            <button className={source === 'demo' ? 'on' : ''} onClick={() => setSource('demo')}>{t('Demo feed')}</button>
+            <button className={source === 'off' ? 'on' : ''} onClick={() => (setSource('off'), setPhase('idle'), setAns(null))}>{t('Off')}</button>
           </div>
-          <button className="btn" onClick={() => setSettings(true)}>Set up bins</button>
-          <button className="btn primary" onClick={fullscreen}>Full screen</button>
-          <a className="btn" href={`${import.meta.env.BASE_URL}?kiosk&source=camera#station`} target="_blank" rel="noreferrer">Kiosk link</a>
+          <button className="btn" onClick={() => setSettings(true)}>{t('Set up bins')}</button>
+          <button className="btn primary" onClick={fullscreen}>{t('Full screen')}</button>
+          <a className="btn" href={`${import.meta.env.BASE_URL}?kiosk&source=camera#station`} target="_blank" rel="noreferrer">{t('Kiosk link')}</a>
         </div>
       </div>}
 
       <div className={`kiosk${full ? ' full' : ''}`} ref={kiosk} data-phase={phase} role={full ? 'main' : undefined}>
-        {full && <h1 className="sr-only">Cleanstream bin station: {pack.name} rules</h1>}
+        {full && <h1 className="sr-only">{t('Cleanstream bin station: {city} rules', { city: pack.name })}</h1>}
         <div className="k-top">
           <div className="k-brand"><Logo />Cleanstream</div>
-          <div className="k-meta">{pack.name} rules · <b>{total}</b> sorted today{full && <button className="k-gear" onClick={() => setSettings(true)}>Bins</button>}</div>
+          <div className="k-meta">{t('{city} rules', { city: pack.name })} · <b>{total}</b> {t('sorted today')}{full && <button className="k-gear" onClick={() => setSettings(true)}>{t('Bins')}</button>}
+            <span className="k-langs">
+              {LANGS.map(([id, name]) => <button key={id} className={lang === id ? 'on' : ''} lang={id} onClick={() => void setLang(id)}>{name}</button>)}
+            </span>
+          </div>
         </div>
 
         <div className="k-stage">
           <div className="k-cam">
             {source === 'camera' && <video ref={video} autoPlay playsInline muted />}
             {source === 'demo' && frame && <img src={frame} alt="" />}
-            {source === 'off' && <div className="k-off">Choose Camera to start, or Demo feed to step through test photos.</div>}
+            {source === 'off' && <div className="k-off">{t('Choose Camera to start, or Demo feed to step through test photos.')}</div>}
             <div className="k-frame"><i /><i /><i /><i /></div>
-            <div className="k-hint">{source === 'demo' ? 'Demo feed: held-out test photos' : 'Hold your item here'}</div>
+            <div className="k-hint">{source === 'demo' ? t('Demo feed: held-out test photos') : t('Hold your item here')}</div>
           </div>
 
           <div className={`k-panel k-${phase}${phase === 'result' && !target ? ' k-unsure' : ''}`}
             style={target ? { background: target.color, color: target.ink } : undefined}>
             {phase === 'idle' && (
               <div className="k-idle">
-                <div className="k-hello">{model.status === 'ready' ? <Rotating items={GREETINGS} every={2200} render={(s) => s} /> : 'Hi!'}</div>
-                <div className="k-ask">{model.status === 'ready' ? 'Not sure which bin? Hold it up and I’ll tell you.' : 'Getting ready…'}</div>
+                <div className="k-hello">{model.status === 'ready' ? <Rotating items={GREETINGS} every={2200} render={(s) => s} /> : t('Hi!')}</div>
+                <div className="k-ask">{model.status === 'ready' ? t('Not sure which bin? Hold it up and I’ll tell you.') : t('Getting ready…')}</div>
                 {tips.length > 0 && (
                   <div className="k-tip">
-                    <span className="k-tip-label">Did you know?</span>
+                    <span className="k-tip-label">{t('Did you know?')}</span>
                     <Rotating items={tips} every={5200} render={(id) => {
                       const b = binById(pack, pack.items[id].bin)
                       return <span className="k-tip-row"><b>{itemName(id)}</b><span className="k-arrow-s">→</span><span className="k-chip" style={{ background: b.color, color: b.ink }}>{b.name}</span></span>
@@ -303,20 +317,20 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
               </div>
             )}
             {phase === 'looking' && (
-              <div className="k-look"><div className="k-spin" /><div>Let me look…</div></div>
+              <div className="k-look"><div className="k-spin" /><div>{t('Let me look…')}</div></div>
             )}
             {phase === 'result' && ans && item && rule && (target ? (
               <div className="k-res">
                 {shot && <img className="k-shot" src={shot} alt="" />}
                 <div className="k-item">{itemName(item)}</div>
-                <div className="k-goes">goes in the</div>
+                <div className="k-goes">{t('goes in the')}</div>
                 <div className="k-bin">{target!.name}</div>
-                <div className="k-prep">{here ? rule.prep[0] : `Not in these bins. ${rule.prep[0]}`}</div>
+                <div className="k-prep">{here ? rule.prep[0] : t('Not in these bins. {prep}', { prep: rule.prep[0] })}</div>
               </div>
             ) : (
               <div className="k-res">
                 {shot && <img className="k-shot" src={shot} alt="" />}
-                <div className="k-item">Hmm, which one is it?</div>
+                <div className="k-item">{t('Hmm, which one is it?')}</div>
                 <div className="k-choices">
                   {options.map((id) => {
                     const b = binById(pack, pack.items[id].bin)
@@ -328,11 +342,11 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
                     )
                   })}
                 </div>
-                <div className="k-prep">Tap the one you're holding, or show me the label. When in doubt, keep it out of recycling.</div>
+                <div className="k-prep">{t('Tap the one you\'re holding, or show me the label. When in doubt, keep it out of recycling.')}</div>
               </div>
             ))}
             {phase === 'thanks' && (
-              <div className="k-thanks"><div className="k-check">✓</div><div>Thanks for sorting right!</div><small>{total} items sorted here today</small></div>
+              <div className="k-thanks"><div className="k-check">✓</div><div>{t('Thanks for sorting right!')}</div><small>{t('{count} items sorted here today', { count: total })}</small></div>
             )}
           </div>
         </div>
@@ -356,10 +370,10 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
         <div className="pick" onClick={() => setSettings(false)}>
           <div className="card pad" onClick={(e) => e.stopPropagation()}>
             <div className="row" style={{ justifyContent: 'space-between', marginBottom: 8 }}>
-              <h3>Station setup</h3>
-              <button className="btn small" onClick={() => setSettings(false)}>Done</button>
+              <h3>{t('Station setup')}</h3>
+              <button className="btn small" onClick={() => setSettings(false)}>{t('Done')}</button>
             </div>
-            <p className="small muted" style={{ marginBottom: 12 }}>Tick the bins that stand here and put them in order, left to right, so the arrow points at the right one.</p>
+            <p className="small muted" style={{ marginBottom: 12 }}>{t('Tick the bins that stand here and put them in order, left to right, so the arrow points at the right one.')}</p>
             <div style={{ display: 'grid', gap: 6 }}>
               {[...binIds, ...pack.bins.map((b) => b.id).filter((id) => !binIds.includes(id))].map((id) => {
                 const b = binById(pack, id)
@@ -389,10 +403,10 @@ export default function Station({ pack, full = false, start = 'off', wait = 0 }:
             </div>
             <label className="row" style={{ gap: 10, marginTop: 16, alignItems: 'flex-start', flexWrap: 'nowrap' }}>
               <input type="checkbox" checked={voice} style={{ marginTop: 3 }} onChange={() => {
-                if (!voice) say('Answers will be spoken.') // a tap unlocks speech in most browsers
+                if (!voice) say(t('Answers will be spoken.')) // a tap unlocks speech in most browsers
                 setVoice(!voice)
               }} />
-              <span className="small"><strong>Say the answer out loud</strong><br /><span className="muted">For people who can't read the screen from where they stand. Uses the device's built-in voice.</span></span>
+              <span className="small"><strong>{t('Say the answer out loud')}</strong><br /><span className="muted">{t('For people who can\'t read the screen from where they stand. Uses the device\'s built-in voice.')}</span></span>
             </label>
           </div>
         </div>

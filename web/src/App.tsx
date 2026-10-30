@@ -1,4 +1,5 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+import { LANGS, localizePack, setLang, t, tCity, useLang, type Lang } from './i18n'
 import { useModel } from './model/client'
 import { PACK_IDS, PACK_NAMES, usePacks } from './rules'
 import { Logo } from './ui'
@@ -12,12 +13,12 @@ const Rules = lazy(() => import('./views/Rules'))
 const Station = lazy(() => import('./views/Station'))
 
 const TABS = [
-  ['scan', 'Scan'],
-  ['station', 'Bin station'],
-  ['audit', 'Audit'],
-  ['rules', 'Rules'],
-  ['quiz', 'Quiz'],
-  ['how', 'How it works'],
+  ['scan', () => t('Scan')],
+  ['station', () => t('Bin station')],
+  ['audit', () => t('Audit')],
+  ['rules', () => t('Rules')],
+  ['quiz', () => t('Quiz')],
+  ['how', () => t('How it works')],
 ] as const
 type Tab = (typeof TABS)[number][0]
 
@@ -52,7 +53,10 @@ function storedCity() {
 export default function App() {
   const [tab, setTab] = useState<Tab>(tabFromHash)
   const [city, setCity] = useState(storedCity)
-  const packs = usePacks()
+  const { lang, ready } = useLang()
+  const english = usePacks()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const packs = useMemo(() => english?.map(localizePack) ?? null, [english, lang])
   const model = useModel()
   const install = useInstall()
 
@@ -76,6 +80,8 @@ export default function App() {
   const pack = packs?.find((p) => p.id === city)
   const params = new URLSearchParams(location.search)
 
+  if (!ready) return null // the first language is still loading: no flash of English
+
   // ?kiosk: the bin station alone, full window, for a tablet mounted above the bins
   if (params.has('kiosk')) {
     const start = params.get('source') === 'demo' ? 'demo' : 'camera'
@@ -88,26 +94,29 @@ export default function App() {
         <div className="brand"><Logo />Cleanstream</div>
         <nav className="nav">
           {TABS.map(([id, name]) => (
-            <button key={id} className={tab === id ? 'on' : ''} onClick={() => (location.hash = id)}>{name}</button>
+            <button key={id} className={tab === id ? 'on' : ''} onClick={() => (location.hash = id)}>{name()}</button>
           ))}
         </nav>
         {model.status === 'loading' && (
-          <div className="loadbar" title="The model downloads once, then works offline">
-            <span>Model</span>
+          <div className="loadbar" title={t('The model downloads once, then works offline')}>
+            <span>{t('Model')}</span>
             <span className="meter"><i style={{ width: `${model.total ? (model.loaded / model.total) * 100 : 5}%` }} /></span>
           </div>
         )}
-        {install && <button className="btn small" onClick={install} title="Add Cleanstream to your home screen or dock; it works offline">Install app</button>}
+        {install && <button className="btn small" onClick={install} title={t('Add Cleanstream to your home screen or dock; it works offline')}>{t('Install app')}</button>}
         <label className="city">
-          Rules for
+          {t('Rules for')}
           <select value={city} onChange={(e) => setCity(e.target.value)}>
-            {PACK_IDS.map((id) => <option key={id} value={id}>{PACK_NAMES[id]}</option>)}
+            {PACK_IDS.map((id) => <option key={id} value={id}>{tCity(id) ?? PACK_NAMES[id]}</option>)}
           </select>
         </label>
+        <select className="lang" aria-label={t('Language')} value={lang} onChange={(e) => void setLang(e.target.value as Lang)}>
+          {LANGS.map(([id, name]) => <option key={id} value={id}>{name}</option>)}
+        </select>
       </header>
       <main>
-        {!packs || !pack ? <p className="muted" style={{ minHeight: '70vh' }}>Loading…</p> : (
-          <Suspense fallback={<p className="muted" style={{ minHeight: '70vh' }}>Loading…</p>}>
+        {!packs || !pack ? <p className="muted" style={{ minHeight: '70vh' }}>{t('Loading…')}</p> : (
+          <Suspense fallback={<p className="muted" style={{ minHeight: '70vh' }}>{t('Loading…')}</p>}>
             {tab === 'scan' && <Scan pack={pack} packs={packs} />}
             {tab === 'station' && <Station pack={pack} />}
             {tab === 'audit' && <Audit pack={pack} packs={packs} />}
@@ -116,7 +125,7 @@ export default function App() {
             {tab === 'how' && <About packs={packs} />}
           </Suspense>
         )}
-        <p className="footer">Cleanstream runs entirely in your browser. Photos never leave your device. Rules link to their official sources.</p>
+        <p className="footer">{t('Cleanstream runs entirely in your browser. Photos never leave your device. Rules link to their official sources.')}</p>
       </main>
     </>
   )

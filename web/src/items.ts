@@ -1,4 +1,6 @@
 // Display names for the item types the model knows (ids match ml/taxonomy.py).
+import { tItem } from './i18n'
+
 export const ITEMS: Record<string, { name: string; examples: string; aka?: string[] }> = {
   plastic_bottle: { name: 'Plastic bottle or jug', examples: 'water and soda bottles, milk and detergent jugs', aka: ['water bottle', 'soda bottle', 'pop bottle', 'shampoo bottle', 'detergent bottle', 'laundry detergent', 'milk jug', 'juice bottle', 'plastic jug', 'ketchup bottle', 'sports drink bottle', 'PET bottle'] },
   plastic_container: { name: 'Rigid plastic container', examples: 'tubs, clamshells, takeout containers', aka: ['takeout container', 'take-out box', 'clamshell', 'yogurt cup', 'yogurt tub', 'butter tub', 'deli container', 'salad box', 'berry box', 'plastic tray', 'food container', 'tupperware'] },
@@ -34,7 +36,10 @@ export const ITEMS: Record<string, { name: string; examples: string; aka?: strin
   mask_gloves: { name: 'Mask or gloves', examples: 'disposable masks and gloves', aka: ['face mask', 'mask', 'gloves', 'latex gloves', 'disposable gloves'] },
 }
 
-export const itemName = (id: string) => ITEMS[id]?.name ?? id
+export const itemName = (id: string) => tItem(id)?.name ?? ITEMS[id]?.name ?? id
+export const itemExamples = (id: string) => tItem(id)?.examples ?? ITEMS[id]?.examples ?? ''
+// What the "often asked" shortcuts say: the first everyday name
+export const itemShort = (id: string) => tItem(id)?.aka?.[0] ?? (tItem(id) ? itemName(id) : ITEMS[id]?.aka?.[0] ?? itemName(id))
 
 // How well one name or synonym matches the query. The last word is the head noun ("cup lid" is a lid), so a match
 // there beats a match elsewhere, which beats a word that only starts with the query.
@@ -48,19 +53,28 @@ function termScore(term: string, q: string): number {
   return term.includes(q) ? 40 : 0
 }
 
-const singular = (q: string) => q.replace(/ies$/, 'y').replace(/(x|ch|sh|ss)es$/, '$1').replace(/([^s])s$/, '$1')
+const singular = (q: string) => q.replace(/ies$/, 'y').replace(/(x|ch|sh|ss)es$/, '$1').replace(/ones$/, 'on').replace(/([^s])s$/, '$1')
 
-// Item types matching what someone typed, best first. Display names get a small bonus, the examples line a penalty.
+// Lower case without accents, so "carton" finds "cartón"
+const norm = (s: string) => s.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase()
+
+// Long enough to search on: two letters, or one Chinese character
+export const searchable = (query: string) => query.trim().length >= 2 || /[\u3400-\u9fff]/.test(query)
+
+// Item types matching what someone typed, in English or the current language, best first.
+// Display names get a small bonus, the examples line a penalty.
 export function searchItems(query: string, limit = 6): string[] {
-  const q = query.trim().toLowerCase().replace(/\s+/g, ' ')
-  if (q.length < 2) return []
+  if (!searchable(query)) return []
+  const q = norm(query.trim()).replace(/\s+/g, ' ')
   const qs = singular(q) === q ? [q] : [q, singular(q)]
   const scored: [string, number][] = []
   for (const [id, it] of Object.entries(ITEMS)) {
+    const tr = tItem(id)
     const terms: [string, number][] = [[it.name, 5], ...(it.aka ?? []).map((a): [string, number] => [a, 0]), [it.examples, -15]]
+    if (tr) terms.push([tr.name, 5], ...(tr.aka ?? []).map((a): [string, number] => [a, 0]), [tr.examples, -15])
     let best = 0
     for (const [term, bonus] of terms) for (const [k, v] of qs.entries()) {
-      const sc = termScore(term.toLowerCase(), v)
+      const sc = termScore(norm(term), v)
       if (sc) best = Math.max(best, sc + bonus - 5 * k)
     }
     if (best > 0) scored.push([id, best])

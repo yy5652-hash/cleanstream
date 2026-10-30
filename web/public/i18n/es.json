@@ -1,0 +1,2173 @@
+{
+ "ui": {
+  "Scan": "Escanear",
+  "Bin station": "Estación de contenedores",
+  "Audit": "Auditoría",
+  "Rules": "Reglas",
+  "Quiz": "Cuestionario",
+  "How it works": "Cómo funciona",
+  "The model downloads once, then works offline": "El modelo se descarga una sola vez y luego funciona sin conexión",
+  "Model": "Modelo",
+  "Add Cleanstream to your home screen or dock; it works offline": "Agrega Cleanstream a tu pantalla de inicio o al dock; funciona sin conexión",
+  "Install app": "Instalar app",
+  "Rules for": "Reglas de",
+  "Language": "Idioma",
+  "Loading…": "Cargando…",
+  "Cleanstream runs entirely in your browser. Photos never leave your device. Rules link to their official sources.": "Cleanstream funciona completamente en tu navegador. Las fotos nunca salen de tu dispositivo. Las reglas enlazan a sus fuentes oficiales.",
+  "Item being checked": "Artículo que se está revisando",
+  "Show me the item": "Muéstrame el artículo",
+  "Drop a photo here, upload one, or use your camera.": "Arrastra una foto aquí, sube una o usa tu cámara.",
+  "Capture": "Tomar foto",
+  "Cancel": "Cancelar",
+  "Use camera": "Usar cámara",
+  "Upload photo": "Subir foto",
+  "Or try a test photo the model never saw in training": "O prueba una foto de prueba que el modelo nunca vio durante el entrenamiento",
+  "{source} test set": "Conjunto de prueba de {source}",
+  "Search an item: coffee cup, pizza box, batteries…": "Busca un artículo: vaso de café, caja de pizza, pilas…",
+  "Search an item": "Buscar un artículo",
+  "Nothing matches “{query}”. Try a simpler word, or show it with a photo. When in doubt, keep it out of recycling.": "No hay resultados para «{query}». Prueba una palabra más sencilla o muéstralo en una foto. Si tienes dudas, no lo pongas en el reciclaje.",
+  "Often asked:": "Consultas frecuentes:",
+  "What is it?": "¿Qué es?",
+  "Close": "Cerrar",
+  "Filter: foil, mug, vape…": "Filtrar: aluminio, taza, vapeador…",
+  "Filter item types": "Filtrar tipos de artículos",
+  "{item}: {bin} in {city}.": "{item}: {bin} en {city}.",
+  "Which bin? Cleanstream": "¿Qué contenedor? Cleanstream",
+  "Link copied": "Enlace copiado",
+  "Share": "Compartir",
+  "Not sure about this one.": "No estoy seguro de este.",
+  "It could go more than one way in {city}. Pick what it is below, or check the label. When in doubt, keep it out of recycling.": "En {city} podría ir en distintos contenedores. Elige abajo qué es o revisa la etiqueta. Si tienes dudas, no lo pongas en el reciclaje.",
+  "Best guess": "Mejor estimación",
+  "Goes in": "Va en",
+  "You chose": "Elegiste",
+  "item type": "tipo de artículo",
+  "sure of the bin": "de confianza en el contenedor",
+  "Also accepted in: {bins}": "También se acepta en: {bins}",
+  "Item": "Artículo",
+  "{confidence} sure of the item": "{confidence} de confianza en el artículo",
+  "Before you toss it": "Antes de tirarlo",
+  "Source: {authority}": "Fuente: {authority}",
+  "Translated by Cleanstream. If in doubt, check the official source, which is in English.": "Traducción de Cleanstream. Si tienes dudas, consulta la fuente oficial, que está en inglés.",
+  "Same item in other places": "El mismo artículo en otros lugares",
+  "Model suggestions": "Sugerencias del modelo",
+  "Not right? Tap the correct item": "¿No es correcto? Toca el artículo correcto",
+  "Use model answer": "Usar respuesta del modelo",
+  "Something else…": "Otro artículo…",
+  "Not the item you meant?": "¿No es el artículo que buscabas?",
+  "Browse all items": "Ver todos los artículos",
+  "Which bin does this go in?": "¿En qué contenedor va esto?",
+  "Search an item or show Cleanstream a photo. It answers with the rules for {city}, including how to prep it.": "Busca un artículo o muéstrale una foto a Cleanstream. Responde con las reglas de {city}, incluida la preparación necesaria.",
+  "To save your data, the photo model (96 MB) downloads only when you ask. Search above works now.": "Para ahorrar datos, el modelo de fotos (96 MB) solo se descarga cuando lo pides. La búsqueda de arriba ya funciona.",
+  "Download the photo model": "Descargar el modelo de fotos",
+  "Downloading the model once ({loaded} of {total} MB). It runs in this browser, so photos stay on your device, and it works offline after this. Search works already.": "Descargando el modelo una sola vez ({loaded} de {total} MB). Funciona en este navegador: las fotos se quedan en tu dispositivo y después funciona sin conexión. La búsqueda ya está disponible.",
+  "Downloading the model once. It runs in this browser, so photos stay on your device, and it works offline after this. Search works already.": "Descargando el modelo una sola vez. Funciona en este navegador: las fotos se quedan en tu dispositivo y después funciona sin conexión. La búsqueda ya está disponible.",
+  "Looking…": "Revisando…",
+  "The model could not load: {error}": "No se pudo cargar el modelo: {error}",
+  "Your answer appears here: the bin, how sure the model is, and what to do before you toss it.": "Aquí aparecerá tu respuesta: el contenedor, la confianza del modelo y qué hacer antes de tirarlo.",
+  "Recognised on this device in {ms} ms. Nothing was uploaded.": "Reconocido en este dispositivo en {ms} ms. No se subió nada.",
+  "{item}. {bin}.": "{item}. {bin}.",
+  "Not sure. Which one is it? Tap it on the screen.": "No estoy seguro. ¿Cuál es? Tócalo en la pantalla.",
+  "Put any old tablet or phone above your bins. People hold up an item and the right bin lights up, in your city's rules. It runs offline and keeps counts, never pictures.": "Pon una tableta o un teléfono viejo sobre tus contenedores. Al mostrar un artículo, se ilumina el contenedor correcto según las reglas de tu ciudad. Funciona sin conexión y guarda conteos, nunca fotos.",
+  "Camera": "Cámara",
+  "Demo feed": "Demostración",
+  "Off": "Apagado",
+  "Set up bins": "Configurar contenedores",
+  "Full screen": "Pantalla completa",
+  "Kiosk link": "Enlace de quiosco",
+  "Cleanstream bin station: {city} rules": "Estación de contenedores Cleanstream: reglas de {city}",
+  "{city} rules": "Reglas de {city}",
+  "sorted today": "clasificado(s) hoy",
+  "Bins": "Contenedores",
+  "Choose Camera to start, or Demo feed to step through test photos.": "Elige Cámara para empezar o Demostración para recorrer fotos de prueba.",
+  "Demo feed: held-out test photos": "Demostración: fotos reservadas para pruebas",
+  "Hold your item here": "Sostén tu artículo aquí",
+  "Hi!": "¡Hola!",
+  "Not sure which bin? Hold it up and I’ll tell you.": "¿No sabes qué contenedor usar? Muéstrame el artículo y te digo.",
+  "Getting ready…": "Preparando…",
+  "Did you know?": "¿Sabías que…?",
+  "Let me look…": "Déjame ver…",
+  "goes in the": "va en",
+  "Not in these bins. {prep}": "No va en estos contenedores. {prep}",
+  "Hmm, which one is it?": "Mmm, ¿cuál es?",
+  "Tap the one you're holding, or show me the label. When in doubt, keep it out of recycling.": "Toca el que tienes en la mano o muéstrame la etiqueta. Si tienes dudas, no lo pongas en el reciclaje.",
+  "Thanks for sorting right!": "¡Gracias por separar bien!",
+  "{count} items sorted here today": "{count} artículos clasificados aquí hoy",
+  "Station setup": "Configuración de la estación",
+  "Done": "Listo",
+  "Tick the bins that stand here and put them in order, left to right, so the arrow points at the right one.": "Marca los contenedores que están aquí y ordénalos de izquierda a derecha para que la flecha señale el correcto.",
+  "Answers will be spoken.": "Las respuestas se dirán en voz alta.",
+  "Say the answer out loud": "Decir la respuesta en voz alta",
+  "For people who can't read the screen from where they stand. Uses the device's built-in voice.": "Para quienes no puedan leer la pantalla desde donde están. Usa la voz integrada del dispositivo.",
+  "Today": "Hoy",
+  "7 days": "7 días",
+  "30 days": "30 días",
+  "Station report": "Informe de la estación",
+  "What people held up at this station, in {city} rules. Counts only: no pictures are kept, and nothing leaves this device.": "Lo que las personas mostraron en esta estación, según las reglas de {city}. Solo conteos: no se guardan fotos y nada sale de este dispositivo.",
+  "Export CSV": "Exportar CSV",
+  "Clear this station's counts for {city}?": "¿Borrar los conteos de esta estación para {city}?",
+  "Reset": "Restablecer",
+  "Nothing yet in this period. Start the camera or the demo feed above and counts appear here as people sort.": "Aún no hay datos en este período. Inicia la cámara o la demostración de arriba y aparecerán conteos a medida que se clasifiquen artículos.",
+  "Items sorted": "Artículos clasificados",
+  "answered with a bin": "con un contenedor como respuesta",
+  "Sure enough to answer": "Confianza suficiente para responder",
+  "{tapped} settled with a tap, {unsure} left unsure": "{tapped} resueltos con un toque, {unsure} sin resolver",
+  "Not for recycling": "No van al reciclaje",
+  "{count} items whose bin here is compost, trash or drop-off": "{count} artículos que aquí van a composta, basura o punto de entrega",
+  "Per day": "Por día",
+  "Items sorted per day, last {days} days": "Artículos clasificados por día en los últimos {days} días",
+  "By bin": "Por contenedor",
+  "Most asked about": "Lo más consultado",
+  "Sign idea:": "Idea para un letrero:",
+  "{item} is what people ask about most here. A sign above the bins that says “{item}: {bin}” answers it before anyone has to ask.": "{item} es lo que más se consulta aquí. Un letrero sobre los contenedores que diga «{item}: {bin}» da la respuesta antes de que alguien pregunte.",
+  "I sorted {right} of {total} items into the right bin for {city}. Can you beat it?": "Clasifiqué correctamente {right} de {total} artículos según las reglas de {city}. ¿Puedes superarme?",
+  "Which bin? quiz": "Cuestionario: ¿qué contenedor?",
+  "Which bin? Quiz": "¿Qué contenedor? Cuestionario",
+  "Ten everyday items. Pick the bin each one goes in under {city} rules. Half of them are items that places disagree on.": "Diez artículos cotidianos. Elige el contenedor de cada uno según las reglas de {city}. La mitad son artículos cuyas reglas cambian de un lugar a otro.",
+  "Perfect sorting. Your bins thank you.": "Clasificación perfecta. Tus contenedores te lo agradecen.",
+  "Good sorting. A few tricky ones left.": "Buena clasificación. Quedan unos casos difíciles.",
+  "The rules are tricky. Here is what to remember.": "Las reglas son complicadas. Esto es lo que conviene recordar.",
+  "Worth remembering": "Para recordar",
+  "Play again": "Jugar de nuevo",
+  "Share your score": "Compartir tu puntuación",
+  "Item {number} of {total}": "Artículo {number} de {total}",
+  "{count} right so far": "{count} aciertos hasta ahora",
+  "right bin": "contenedor correcto",
+  "your pick": "tu elección",
+  "Right.": "Correcto.",
+  "Not quite. In {city}: {bin}.": "No exactamente. En {city}: {bin}.",
+  "Before you toss it: {prep}": "Antes de tirarlo: {prep}",
+  "Next item": "Siguiente artículo",
+  "See your score": "Ver tu puntuación",
+  "Every answer Cleanstream gives comes from this table, and every row links to the official source. Rules are plain JSON, so a campus or city can edit its own pack. Checked {date}.": "Todas las respuestas de Cleanstream vienen de esta tabla y cada fila enlaza a la fuente oficial. Las reglas están en JSON sencillo para que un campus o ciudad edite su propio paquete. Revisado el {date}.",
+  "Search items": "Buscar artículos",
+  "Where places differ ({count})": "Diferencias entre lugares ({count})",
+  "Source": "Fuente",
+  "Sources:": "Fuentes:",
+  "Bin audit": "Auditoría de contenedores",
+  "Measure contamination the way waste teams already do: pull items from a bin and photograph each one. Cleanstream sorts them, and you get the contamination rate and the top offenders. Audit before and after a change to see if it worked.": "Mide la contaminación como lo hacen los equipos de residuos: saca artículos de un contenedor y fotografía cada uno. Cleanstream los clasifica y te muestra la tasa de contaminación y los principales artículos mal separados. Haz una auditoría antes y después de un cambio para ver si funcionó.",
+  "Site or station": "Lugar o estación",
+  "e.g. Library lobby": "p. ej., vestíbulo de la biblioteca",
+  "Bin audited": "Contenedor auditado",
+  "Phase": "Fase",
+  "Baseline (before)": "Referencia (antes)",
+  "After change": "Después del cambio",
+  "Date": "Fecha",
+  "Start audit": "Iniciar auditoría",
+  "Site": "Lugar",
+  "Bin": "Contenedor",
+  "Items": "Artículos",
+  "Contamination": "Contaminación",
+  "No audits yet. Start one above.": "Aún no hay auditorías. Inicia una arriba.",
+  "Baseline": "Referencia",
+  "After": "Después",
+  "Before and after": "Antes y después",
+  "{change} points": "{change} puntos",
+  "{count} items": "{count} artículos",
+  "← All audits": "← Todas las auditorías",
+  "Delete this audit?": "¿Eliminar esta auditoría?",
+  "Delete": "Eliminar",
+  "Add photos of the items you pulled from this bin": "Agrega fotos de los artículos que sacaste de este contenedor",
+  "One item per photo. Drop a whole folder's worth at once.": "Un artículo por foto. Arrastra todas las fotos de una carpeta a la vez.",
+  "Choose photos": "Elegir fotos",
+  "Download the photo model (96 MB)": "Descargar el modelo de fotos (96 MB)",
+  "Loading model…": "Cargando modelo…",
+  "Sorting {count} photos…": "Clasificando {count} fotos…",
+  "Sorting {count} photo…": "Clasificando {count} foto…",
+  "Sorting": "Clasificando",
+  "Sorting…": "Clasificando…",
+  "Belongs in {bin}": "Va en {bin}",
+  "Belongs here": "Va aquí",
+  " · corrected": " · corregido",
+  "Don't belong": "No van aquí",
+  "Top contaminants": "Principales contaminantes",
+  "None yet.": "Aún ninguno.",
+  "Where to focus:": "En qué enfocarse:",
+  "{item} makes up {percent} of the contamination here. In {city} it belongs in the {bin}. A sign at this station that names it is the cheapest first fix.": "{item} representa el {percent} de la contaminación aquí. En {city} va en {bin}. Un letrero en esta estación que lo mencione es la primera solución más económica.",
+  "Tap any tile to correct it. Corrections count in the totals and are marked in the export.": "Toca cualquier foto para corregirla. Las correcciones se incluyen en los totales y se marcan en la exportación.",
+  "Untitled site": "Lugar sin título"
+ },
+ "cities": {
+  "nyc": "Nueva York",
+  "sf": "San Francisco",
+  "la": "Los Ángeles",
+  "chi": "Chicago",
+  "sea": "Seattle",
+  "us": "EE. UU. (general)"
+ },
+ "items": {
+  "plastic_bottle": {
+   "name": "Botella o bidón de plástico",
+   "examples": "botellas de agua y refresco, bidones de leche y detergente",
+   "aka": [
+    "botella de agua",
+    "botellas",
+    "botella de refresco",
+    "botella de soda",
+    "botella de champú",
+    "botella de detergente",
+    "detergente de ropa",
+    "galón de leche",
+    "botella de jugo",
+    "bidón de plástico",
+    "botella de kétchup",
+    "botella PET"
+   ]
+  },
+  "plastic_container": {
+   "name": "Envase de plástico rígido",
+   "examples": "recipientes, envases con tapa abatible, envases de comida para llevar",
+   "aka": [
+    "envase de comida",
+    "recipientes de plástico",
+    "envase de comida para llevar",
+    "táper",
+    "tupper",
+    "vaso de yogur",
+    "envase de mantequilla",
+    "caja de ensalada",
+    "caja de fresas",
+    "bandeja de plástico",
+    "lonchera",
+    "tarrina"
+   ]
+  },
+  "plastic_cup": {
+   "name": "Vaso de plástico",
+   "examples": "vasos transparentes para bebidas frías, vasos para fiestas",
+   "aka": [
+    "vaso de plástico",
+    "vasos de plástico",
+    "vaso de café helado",
+    "vaso de refresco",
+    "vaso de fiesta",
+    "vaso de licuado",
+    "vaso de batido",
+    "vaso de boba",
+    "vaso de té de burbujas"
+   ]
+  },
+  "plastic_lid_cap": {
+   "name": "Tapa de plástico",
+   "examples": "tapas de botellas, vasos y recipientes",
+   "aka": [
+    "tapa de plástico",
+    "tapas de plástico",
+    "tapón",
+    "tapones",
+    "tapa de botella",
+    "tapa de vaso",
+    "tapa de café",
+    "tapa de yogur",
+    "tapita"
+   ]
+  },
+  "plastic_bag_film": {
+   "name": "Bolsa o película plástica",
+   "examples": "bolsas de compras, envolturas, sobres de envío",
+   "aka": [
+    "bolsa de plástico",
+    "bolsas de plástico",
+    "bolsa del súper",
+    "bolsa de mandado",
+    "plástico de burbujas",
+    "película plástica",
+    "plástico adherente",
+    "papel film",
+    "bolsa ziploc",
+    "bolsa de pan",
+    "sobre de envío",
+    "bolsa de basura"
+   ]
+  },
+  "snack_wrapper": {
+   "name": "Envoltorio de botanas",
+   "examples": "bolsas de papitas, envoltorios de dulces, bolsas flexibles",
+   "aka": [
+    "bolsa de papitas",
+    "bolsas de papitas",
+    "bolsa de patatas",
+    "envoltorio de dulce",
+    "envolturas de dulces",
+    "envoltorio de caramelo",
+    "envoltura de chocolate",
+    "bolsa de frituras",
+    "bolsa de café",
+    "bolsa de jugo",
+    "envoltura de granola",
+    "bolsa de snacks"
+   ]
+  },
+  "foam": {
+   "name": "Espuma de poliestireno",
+   "examples": "vasos y envases de espuma, espuma de embalaje",
+   "aka": [
+    "unicel",
+    "poliestireno",
+    "espuma",
+    "vaso de unicel",
+    "vasos de unicel",
+    "envase de espuma",
+    "bandeja de espuma",
+    "relleno de embalaje",
+    "telgopor",
+    "icopor",
+    "anime",
+    "foam",
+    "Styrofoam"
+   ]
+  },
+  "plastic_utensil_straw": {
+   "name": "Cubierto o popote de plástico",
+   "examples": "tenedores, cucharas, popotes",
+   "aka": [
+    "cubiertos de plástico",
+    "tenedor de plástico",
+    "tenedores",
+    "cuchara de plástico",
+    "cucharas",
+    "cuchillo de plástico",
+    "popote",
+    "popotes",
+    "pajita",
+    "pajilla",
+    "sorbete",
+    "pitillo",
+    "agitador"
+   ]
+  },
+  "paper": {
+   "name": "Papel",
+   "examples": "papel de oficina, correo, periódicos, revistas",
+   "aka": [
+    "papel",
+    "papeles",
+    "periódico",
+    "periódicos",
+    "revista",
+    "revistas",
+    "papel de oficina",
+    "hoja de impresora",
+    "correo",
+    "sobre",
+    "publicidad",
+    "volante",
+    "hojas de cuaderno"
+   ]
+  },
+  "paper_bag": {
+   "name": "Bolsa de papel",
+   "examples": "bolsas del supermercado y de comida para llevar",
+   "aka": [
+    "bolsa de papel",
+    "bolsas de papel",
+    "bolsa de supermercado",
+    "bolsa de comida para llevar",
+    "bolsa de almuerzo",
+    "bolsa de pan de papel",
+    "bolsa kraft",
+    "bolsa de papel café"
+   ]
+  },
+  "cardboard": {
+   "name": "Cartón",
+   "examples": "cajas de envío, cajas de cereal, tubos",
+   "aka": [
+    "caja de cartón",
+    "cajas de cartón",
+    "caja de Amazon",
+    "cajas de Amazon",
+    "caja de envío",
+    "caja de cereal",
+    "caja de zapatos",
+    "tubo de papel higiénico",
+    "rollo de papel",
+    "cartón de huevos",
+    "cartón corrugado",
+    "cartoncillo"
+   ]
+  },
+  "pizza_box": {
+   "name": "Caja de pizza",
+   "examples": "cajas de pizza limpias o grasosas",
+   "aka": [
+    "caja de pizza",
+    "cajas de pizza",
+    "caja de pizza grasosa",
+    "caja de pizza limpia",
+    "caja de pizzería",
+    "cartón de pizza",
+    "caja para pizza"
+   ]
+  },
+  "soiled_paper": {
+   "name": "Papel sucio de comida",
+   "examples": "servilletas usadas, toallas de papel, pañuelos de papel",
+   "aka": [
+    "servilleta",
+    "servilletas",
+    "toalla de papel",
+    "toallas de papel",
+    "papel de cocina",
+    "pañuelo de papel",
+    "kleenex",
+    "plato de papel",
+    "papel grasoso",
+    "servilleta usada",
+    "papel sucio"
+   ]
+  },
+  "paper_cup": {
+   "name": "Vaso de papel",
+   "examples": "vasos de café caliente",
+   "aka": [
+    "vaso de café",
+    "vasos de café",
+    "vaso de papel",
+    "vasos de papel",
+    "vaso de cartón",
+    "vaso de Starbucks",
+    "vaso para llevar",
+    "vaso de café caliente"
+   ]
+  },
+  "carton": {
+   "name": "Cartón de bebida o caldo",
+   "examples": "cartones de leche, jugo y caldo",
+   "aka": [
+    "cartón de leche",
+    "cartones de leche",
+    "cartón de jugo",
+    "cajita de jugo",
+    "caja de zumo",
+    "cartón de leche de avena",
+    "cartón de leche de almendra",
+    "cartón de sopa",
+    "cartón de caldo",
+    "tetra pak",
+    "tetrabrik"
+   ]
+  },
+  "metal_can": {
+   "name": "Lata de metal",
+   "examples": "latas de refresco, latas de comida",
+   "aka": [
+    "lata",
+    "latas",
+    "lata de refresco",
+    "lata de soda",
+    "lata de cerveza",
+    "lata de aluminio",
+    "lata de sopa",
+    "lata de conserva",
+    "lata de atún",
+    "lata de comida para gato",
+    "bote de hojalata"
+   ]
+  },
+  "aluminum_foil": {
+   "name": "Papel aluminio",
+   "examples": "papel aluminio, bandejas y moldes de aluminio",
+   "aka": [
+    "papel aluminio",
+    "papel de aluminio",
+    "aluminio",
+    "bandeja de aluminio",
+    "bandejas de aluminio",
+    "molde de aluminio",
+    "charola de aluminio",
+    "molde para pay",
+    "papel de plata",
+    "envase de aluminio"
+   ]
+  },
+  "aerosol_can": {
+   "name": "Lata de aerosol",
+   "examples": "latas de spray",
+   "aka": [
+    "aerosol",
+    "aerosoles",
+    "lata de spray",
+    "latas de aerosol",
+    "fijador de cabello",
+    "laca de pelo",
+    "desodorante en aerosol",
+    "crema batida en lata",
+    "pintura en aerosol",
+    "aceite en aerosol"
+   ]
+  },
+  "metal_lid_scrap": {
+   "name": "Objeto metálico pequeño",
+   "examples": "tapas de frascos, tapas de botellas, chatarra",
+   "aka": [
+    "tapa de metal",
+    "tapas de metal",
+    "tapa de frasco",
+    "tapa de botella",
+    "corcholata",
+    "chapita",
+    "chapa de cerveza",
+    "anilla de lata",
+    "chatarra",
+    "gancho de alambre",
+    "olla",
+    "sartén"
+   ]
+  },
+  "glass_bottle_jar": {
+   "name": "Botella o frasco de vidrio",
+   "examples": "botellas de bebidas, frascos de comida",
+   "aka": [
+    "botella de vidrio",
+    "botellas de vidrio",
+    "frasco de vidrio",
+    "frascos",
+    "botella de vino",
+    "botella de cerveza",
+    "tarro de mermelada",
+    "frasco de salsa",
+    "frasco de pepinillos",
+    "bote de vidrio"
+   ]
+  },
+  "drinking_glass_ceramic": {
+   "name": "Vaso, cerámica o vidrio roto",
+   "examples": "tazas, vasos, fragmentos",
+   "aka": [
+    "vaso de vidrio",
+    "vasos",
+    "taza",
+    "tazas",
+    "cerámica",
+    "vidrio roto",
+    "plato de cerámica",
+    "espejo",
+    "vidrio de ventana",
+    "copa",
+    "loza",
+    "cristal roto"
+   ]
+  },
+  "food_scraps": {
+   "name": "Restos de comida",
+   "examples": "cáscaras, corazones de fruta, sobras",
+   "aka": [
+    "restos de comida",
+    "sobras",
+    "cáscara de plátano",
+    "cáscara de banana",
+    "corazón de manzana",
+    "posos de café",
+    "café molido usado",
+    "cáscaras de huevo",
+    "fruta",
+    "verduras",
+    "huesos",
+    "bolsa de té",
+    "desperdicios de comida"
+   ]
+  },
+  "yard_waste": {
+   "name": "Residuos de jardín",
+   "examples": "hojas, plantas, ramas",
+   "aka": [
+    "hojas",
+    "hojas secas",
+    "pasto",
+    "césped",
+    "ramas",
+    "plantas",
+    "flores",
+    "árbol de Navidad",
+    "recortes de jardín",
+    "poda",
+    "residuos de jardín"
+   ]
+  },
+  "battery": {
+   "name": "Pila o batería",
+   "examples": "AA/AAA, ion de litio, pilas de botón",
+   "aka": [
+    "pilas",
+    "baterías",
+    "pila AA",
+    "pila AAA",
+    "batería de litio",
+    "batería de celular",
+    "pila recargable",
+    "pila de botón",
+    "pila de 9V",
+    "vapeador",
+    "cigarrillo electrónico",
+    "vape",
+    "batería recargable"
+   ]
+  },
+  "electronics": {
+   "name": "Aparatos electrónicos",
+   "examples": "teléfonos, cables, audífonos",
+   "aka": [
+    "electrónicos",
+    "celular",
+    "teléfono",
+    "computadora portátil",
+    "laptop",
+    "cargador",
+    "cable",
+    "cables",
+    "audífonos",
+    "auriculares",
+    "tableta",
+    "teclado",
+    "ratón de computadora",
+    "basura electrónica"
+   ]
+  },
+  "textile": {
+   "name": "Ropa y textiles",
+   "examples": "ropa, ropa de cama, tela",
+   "aka": [
+    "ropa",
+    "prendas",
+    "camiseta",
+    "camisetas",
+    "playera",
+    "pantalones de mezclilla",
+    "jeans",
+    "suéter",
+    "toalla",
+    "sábanas",
+    "tela",
+    "calcetines",
+    "medias"
+   ]
+  },
+  "shoes": {
+   "name": "Zapatos",
+   "examples": "tenis, botas",
+   "aka": [
+    "zapatos",
+    "zapato",
+    "tenis",
+    "zapatillas",
+    "botas",
+    "sandalias",
+    "calzado",
+    "zapatos deportivos",
+    "chanclas",
+    "botines"
+   ]
+  },
+  "cigarette_butt": {
+   "name": "Colilla de cigarrillo",
+   "examples": "filtros de cigarrillos",
+   "aka": [
+    "colilla",
+    "colillas",
+    "cigarrillo",
+    "cigarro",
+    "filtro de cigarrillo",
+    "filtros de cigarro",
+    "pucho",
+    "puchos"
+   ]
+  },
+  "blister_pack": {
+   "name": "Blíster",
+   "examples": "blísteres de pastillas, empaques con respaldo de plástico",
+   "aka": [
+    "blíster",
+    "blísteres",
+    "empaque de pastillas",
+    "paquete de pastillas",
+    "envase de medicamento",
+    "empaque de medicina",
+    "tira de pastillas",
+    "plástico de pastillas",
+    "envase alveolado"
+   ]
+  },
+  "rope_string": {
+   "name": "Cuerda o cordel",
+   "examples": "cordeles, cordones",
+   "aka": [
+    "cuerda",
+    "cuerdas",
+    "cordel",
+    "cordeles",
+    "cordón",
+    "cordones",
+    "soga",
+    "hilo",
+    "manguera de jardín",
+    "luces de Navidad",
+    "mecate"
+   ]
+  },
+  "squeezable_tube": {
+   "name": "Tubo flexible",
+   "examples": "pasta dental, cosméticos",
+   "aka": [
+    "tubo de pasta dental",
+    "pasta de dientes",
+    "pasta dental",
+    "tubo de crema",
+    "tubos",
+    "tubo de loción",
+    "envase de cosmético",
+    "tubo exprimible",
+    "tubo de dentífrico"
+   ]
+  },
+  "mask_gloves": {
+   "name": "Mascarilla o guantes",
+   "examples": "mascarillas y guantes desechables",
+   "aka": [
+    "mascarilla",
+    "mascarillas",
+    "cubrebocas",
+    "tapabocas",
+    "barbijo",
+    "guantes",
+    "guante de látex",
+    "guantes de látex",
+    "guantes desechables",
+    "mascarilla desechable"
+   ]
+  }
+ },
+ "packs": {
+  "chi": {
+   "bins": {
+    "blue": {
+     "name": "Carrito azul",
+     "accepts": "Reciclaje: latas, vidrio, botellas y envases de plástico, cartones, papel. Sueltos, sin bolsas"
+    },
+    "black": {
+     "name": "Carrito negro",
+     "accepts": "Basura: lo que no se puede reciclar ni llevar a un punto de entrega"
+    },
+    "dropoff": {
+     "name": "Punto de entrega",
+     "accepts": "Restos de comida, residuos de jardín, pilas, aparatos electrónicos, productos químicos, textiles"
+    }
+   },
+   "items": {
+    "plastic_bottle": {
+     "prep": [
+      "Vacíalo",
+      "Ponlo suelto, sin bolsa"
+     ],
+     "why": "El carrito azul de Chicago acepta botellas y bidones de plástico."
+    },
+    "plastic_container": {
+     "prep": [
+      "Vacíalo",
+      "Ponlo suelto, sin bolsa",
+      "La espuma (#6) va en el carrito negro"
+     ],
+     "why": "Se aceptan envases de plástico rígido marcados del #1 al #5 o #7; el #6 no se acepta."
+    },
+    "plastic_cup": {
+     "prep": [
+      "Vacíalo",
+      "Revisa el número del fondo: el #6 va en el carrito negro"
+     ],
+     "why": "Se acepta plástico rígido marcado del #1 al #5 o #7; no se aceptan vasos de espuma ni otros vasos #6."
+    },
+    "plastic_lid_cap": {
+     "prep": [
+      "Ponlos sueltos, sin bolsa",
+      "Las tapas de #6 o espuma van en el carrito negro"
+     ],
+     "why": "La guía anterior de la ciudad incluye las tapas de botellas de plástico como aceptadas, aunque solo algunas plantas de clasificación las aceptan."
+    },
+    "plastic_bag_film": {
+     "prep": [
+      "Nunca en el carrito azul, ni suelta ni como bolsa interior",
+      "Bolsas y película plástica limpias: usa un contenedor de devolución en una tienda"
+     ],
+     "why": "Las bolsas y la película plástica atascan las máquinas de clasificación y son de los contaminantes más comunes del reciclaje en Chicago."
+    },
+    "snack_wrapper": {
+     "prep": [
+      "Nunca en el carrito azul"
+     ],
+     "why": "La ciudad pide mantener las bolsas y otros plásticos blandos fuera del carrito azul."
+    },
+    "foam": {
+     "prep": [
+      "Nunca en el carrito azul"
+     ],
+     "why": "La espuma es plástico #6, que la ciudad no recicla porque no tiene mercado."
+    },
+    "plastic_utensil_straw": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "El carrito azul acepta botellas y envases de plástico; los cubiertos y popotes no están en la lista de la ciudad."
+    },
+    "paper": {
+     "prep": [
+      "Ponlo suelto, sin bolsa",
+      "No se acepta papel triturado"
+     ],
+     "why": "Se aceptan periódicos, revistas, correo publicitario y papel de oficina."
+    },
+    "paper_bag": {
+     "prep": [
+      "Ponla suelta, no dentro de otra bolsa",
+      "Las bolsas mojadas o sucias de comida van en el carrito negro"
+     ],
+     "why": "Las bolsas de papel están en la lista de papel que acepta la ciudad."
+    },
+    "cardboard": {
+     "prep": [
+      "Desarma y aplana la caja",
+      "Ponlo suelto, sin bolsa"
+     ],
+     "why": "Se acepta cartón; aplana las cajas para ahorrar espacio en el carrito."
+    },
+    "pizza_box": {
+     "prep": [
+      "Retira toda la comida, los revestimientos y las servilletas",
+      "Las manchas de grasa no son problema"
+     ],
+     "why": "La ciudad indica que las cajas de pizza se pueden reciclar si están vacías; los puntos de entrega de restos de comida no las aceptan."
+    },
+    "soiled_paper": {
+     "prep": [
+      "No va en el carrito azul",
+      "No se acepta en los puntos de entrega de restos de comida"
+     ],
+     "why": "Los puntos de entrega de restos de comida de Chicago no aceptan servilletas ni papel, y el papel sucio no se puede reciclar."
+    },
+    "paper_cup": {
+     "prep": [
+      "Vacíalo"
+     ],
+     "why": "Chicago no incluye los vasos de papel entre los artículos aceptados, así que el carrito negro es la opción segura."
+    },
+    "carton": {
+     "prep": [
+      "Vacíalo",
+      "No lo aplastes",
+      "Ponlo suelto, sin bolsa"
+     ],
+     "why": "Se aceptan cartones de leche y jugo; la ciudad pide no aplastarlos."
+    },
+    "metal_can": {
+     "prep": [
+      "Vacíalo",
+      "No lo aplastes"
+     ],
+     "why": "Se aceptan latas de aluminio, acero y hojalata."
+    },
+    "aluminum_foil": {
+     "prep": [
+      "Retira los restos de comida"
+     ],
+     "why": "El papel aluminio y los moldes para pay están en la lista de metales que acepta la ciudad."
+    },
+    "aerosol_can": {
+     "prep": [
+      "Nunca en el carrito azul",
+      "Llévalo a Household Chemicals & Computer Recycling Facility",
+      "Abre martes, jueves y el primer sábado del mes"
+     ],
+     "why": "Los aerosoles son un riesgo de seguridad en las plantas de clasificación; la instalación de productos químicos de la ciudad acepta todos los aerosoles."
+    },
+    "metal_lid_scrap": {
+     "prep": [
+      "Ollas y sartenes utilizables: dónalas o reutilízalas"
+     ],
+     "why": "El carrito azul acepta latas de acero y aluminio y papel aluminio; las tapas y la chatarra no están en la lista de la ciudad."
+    },
+    "glass_bottle_jar": {
+     "prep": [
+      "Vacíalo",
+      "Quita la tapa",
+      "Ponlo suelto, sin bolsa"
+     ],
+     "why": "Se aceptan botellas y frascos de vidrio."
+    },
+    "drinking_glass_ceramic": {
+     "prep": [
+      "Envuelve los pedazos rotos para que no corten a nadie"
+     ],
+     "why": "Solo se aceptan botellas y frascos de vidrio, así que los vasos, la cerámica y el vidrio roto van en el carrito negro."
+    },
+    "food_scraps": {
+     "prep": [
+      "Mejor: llévalo a un punto de entrega de restos de comida de la ciudad (inscríbete primero; no se permiten bolsas de ningún tipo)",
+      "Si no, va en el carrito negro"
+     ],
+     "why": "Chicago no ofrece un carrito de composta con recolección en la acera, así que los restos de comida son basura salvo que uses los puntos gratuitos de la ciudad, que aceptan toda la comida, incluida la carne y los huesos."
+    },
+    "yard_waste": {
+     "prep": [
+      "Embolsa por separado de la basura y los reciclables",
+      "Llama al 311 para pedir la recolección",
+      "Árboles de Navidad: usa el punto de entrega de árboles de la ciudad en enero"
+     ],
+     "why": "La ciudad recoge por separado los residuos de jardín embolsados, previa solicitud, y los convierte en composta; no se aceptan en los puntos de restos de comida."
+    },
+    "battery": {
+     "prep": [
+      "Baterías recargables, de litio y de automóvil: llévalas a Household Chemicals & Computer Recycling Facility",
+      "Nunca en el carrito azul",
+      "Alcalinas (AA, AAA, 9V): la instalación no las acepta; van en el carrito negro"
+     ],
+     "why": "Las baterías de ion de litio provocan incendios en las plantas de clasificación, así que nunca van en el carrito azul."
+    },
+    "electronics": {
+     "prep": [
+      "Llévalo a Household Chemicals & Computer Recycling Facility",
+      "Solo se aceptan los artículos indicados: computadoras, televisores, teléfonos, impresoras y teclados",
+      "Revisa primero el horario (martes, jueves y primer sábado)"
+     ],
+     "why": "La ley de Illinois prohíbe tirar la mayoría de los aparatos electrónicos a la basura, por lo que Chicago los envía a su instalación de reciclaje de computadoras."
+    },
+    "textile": {
+     "prep": [
+      "Dona lo que aún se pueda usar",
+      "Para lo demás, usa un punto de entrega de textiles",
+      "Nunca en el carrito azul"
+     ],
+     "why": "La planta de reciclaje no puede separar los textiles, por lo que la ciudad recomienda opciones de reutilización y puntos de entrega."
+    },
+    "shoes": {
+     "prep": [
+      "Dona los pares que aún se puedan usar",
+      "Nunca en el carrito azul"
+     ],
+     "why": "La guía anterior de la ciudad indica que los zapatos se donan o se llevan a un punto de entrega, no al carrito azul."
+    },
+    "cigarette_butt": {
+     "prep": [
+      "Asegúrate de que esté totalmente apagada"
+     ],
+     "why": "Las colillas no se pueden reciclar; los artículos no reciclables van en el carrito negro."
+    },
+    "blister_pack": {
+     "prep": [
+      "Vacíalo"
+     ],
+     "why": "Los empaques de plástico y aluminio mezclados no son botellas ni envases aceptados en el carrito azul."
+    },
+    "rope_string": {
+     "prep": [
+      "Nunca en el carrito azul"
+     ],
+     "why": "Las mangueras, los cables y otros objetos que se enredan atascan las máquinas de clasificación de la planta de reciclaje."
+    },
+    "squeezable_tube": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "Los tubos no son botellas ni envases aceptados en el carrito azul."
+    },
+    "mask_gloves": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "Las mascarillas y los guantes no se pueden reciclar; van en el carrito negro."
+    }
+   }
+  },
+  "la": {
+   "bins": {
+    "blue": {
+     "name": "Contenedor azul",
+     "accepts": "Reciclaje: papel, cartón, vidrio, metal, plásticos 1, 2 y 5"
+    },
+    "green": {
+     "name": "Contenedor verde",
+     "accepts": "Orgánicos: restos de comida, papel sucio de comida, recortes de jardín"
+    },
+    "black": {
+     "name": "Contenedor negro",
+     "accepts": "Basura: lo que no se puede reciclar, convertir en composta ni donar"
+    },
+    "special": {
+     "name": "Punto de entrega especial",
+     "accepts": "En ningún contenedor: pilas, aparatos electrónicos, aerosoles (S.A.F.E. Centers)"
+    }
+   },
+   "items": {
+    "plastic_bottle": {
+     "prep": [
+      "Vacíalo y enjuágalo hasta que quede limpio",
+      "Revisa el número: 1, 2 o 5",
+      "Vuelve a enroscar la tapa"
+     ],
+     "why": "El contenedor azul acepta botellas y bidones limpios de plásticos 1, 2 y 5."
+    },
+    "plastic_container": {
+     "prep": [
+      "Vacíalo y enjuágalo hasta que quede limpio",
+      "Revisa el número: solo 1, 2 o 5"
+     ],
+     "why": "Se aceptan recipientes limpios, como los de yogur y margarina, si son de plástico 1, 2 o 5."
+    },
+    "plastic_cup": {
+     "prep": [
+      "Vacíalo",
+      "Los vasos etiquetados como compostables también van en el contenedor negro"
+     ],
+     "why": "El contenedor azul solo incluye botellas, bidones y recipientes tipo tarrina de plástico, así que los vasos van en el contenedor negro."
+    },
+    "plastic_lid_cap": {
+     "prep": [
+      "Vuelve a enroscarla en la botella o el recipiente vacío",
+      "Tapas sueltas, endebles o sin marca: contenedor negro"
+     ],
+     "why": "Las tapas de botellas son de plástico 2 o 5, que acepta el contenedor azul, y LASAN indica dejarlas en las botellas."
+    },
+    "plastic_bag_film": {
+     "prep": [
+      "Reutilízala si puedes",
+      "Nunca en el contenedor azul ni en el contenedor verde"
+     ],
+     "why": "El contenedor azul de LA no acepta bolsas ni película plástica, y tampoco se permiten en el contenedor verde."
+    },
+    "snack_wrapper": {
+     "prep": [
+      "Vacíalo",
+      "Nunca en el contenedor azul"
+     ],
+     "why": "Los envoltorios de dulces y botanas son película plástica, que la guía de reciclaje de LA clasifica como basura."
+    },
+    "foam": {
+     "prep": [
+      "Nunca en el contenedor azul"
+     ],
+     "why": "El unicel (Styrofoam) no es reciclable en LA y va en el contenedor negro."
+    },
+    "plastic_utensil_straw": {
+     "prep": [
+      "Cubiertos de madera sin tratar o bambú: contenedor verde",
+      "Plástico etiquetado como compostable: contenedor negro"
+     ],
+     "why": "El contenedor azul solo incluye botellas, bidones y recipientes tipo tarrina de plástico, así que los cubiertos y popotes de plástico van en el contenedor negro."
+    },
+    "paper": {
+     "prep": [
+      "Mantenlo limpio y seco",
+      "Papel grasoso o sucio de comida: contenedor verde"
+     ],
+     "why": "Se aceptan correo publicitario, periódicos y otros papeles limpios y secos."
+    },
+    "paper_bag": {
+     "prep": [
+      "Mantenlo limpio y seco",
+      "Bolsas grasosas o sucias de comida: contenedor verde"
+     ],
+     "why": "El papel limpio va en el contenedor azul y el papel sucio de comida va en el contenedor verde."
+    },
+    "cardboard": {
+     "prep": [
+      "Aplánalo",
+      "Mantenlo limpio y seco"
+     ],
+     "why": "Se aceptan cajas de cereal y cajas de envío aplanadas."
+    },
+    "pizza_box": {
+     "prep": [
+      "Los bordes de pizza sobrantes pueden ir dentro",
+      "Sin bolsas de plástico ni compostables"
+     ],
+     "why": "LASAN incluye las cajas de pizza grasosas como papel sucio de comida para el contenedor verde."
+    },
+    "soiled_paper": {
+     "prep": [
+      "Solo papel, sin recubrimiento de plástico ni cera",
+      "Sin bolsas de plástico ni compostables"
+     ],
+     "why": "El papel sucio de comida, como servilletas, toallas de papel y filtros de café, va en el contenedor verde."
+    },
+    "paper_cup": {
+     "prep": [
+      "Vacíalo",
+      "Vasos sin revestimiento de plástico ni cera: contenedor verde"
+     ],
+     "why": "La guía de reciclaje de LA clasifica los vasos de café desechables como basura porque la mayoría tiene un revestimiento de plástico."
+    },
+    "carton": {
+     "prep": [
+      "Vacíalo y enjuágalo hasta que quede limpio",
+      "Cartones recubiertos de cera: contenedor negro"
+     ],
+     "why": "LASAN incluye los cartones entre los reciclables del contenedor azul."
+    },
+    "metal_can": {
+     "prep": [
+      "Vacíalo y enjuágalo hasta que quede limpio",
+      "Déjalo secar"
+     ],
+     "why": "Se aceptan latas de aluminio y hojalata."
+    },
+    "aluminum_foil": {
+     "prep": [
+      "Raspa los restos de comida",
+      "Mantenlo limpio y seco"
+     ],
+     "why": "Se acepta papel aluminio limpio."
+    },
+    "aerosol_can": {
+     "prep": [
+      "Agota todo el contenido",
+      "Llévalo a un S.A.F.E. Center",
+      "Nunca en el contenedor azul ni en el contenedor negro"
+     ],
+     "why": "LASAN clasifica los aerosoles como residuos domésticos peligrosos para los S.A.F.E. Centers."
+    },
+    "metal_lid_scrap": {
+     "prep": [
+      "Electrodomésticos y metales grandes: reserva una recolección gratuita de objetos voluminosos"
+     ],
+     "why": "La lista del contenedor azul de LA incluye latas de aluminio y hojalata y papel aluminio limpio, no tapas ni chatarra, así que los objetos metálicos pequeños van en el contenedor negro."
+    },
+    "glass_bottle_jar": {
+     "prep": [
+      "Vacíalo y enjuágalo hasta que quede limpio",
+      "Se acepta cualquier color"
+     ],
+     "why": "Se aceptan botellas y frascos de vidrio de cualquier color."
+    },
+    "drinking_glass_ceramic": {
+     "prep": [
+      "Envuelve los pedazos afilados para que nadie se corte"
+     ],
+     "why": "El vidrio roto y la vajilla no se pueden reciclar y van en el contenedor negro."
+    },
+    "food_scraps": {
+     "prep": [
+      "Júntalo en un tazón o cubeta de cocina",
+      "Vacíalo suelto en el contenedor verde",
+      "Sin bolsas de plástico ni compostables"
+     ],
+     "why": "Los restos de comida, incluida la carne, los huesos y los lácteos, van en el contenedor verde."
+    },
+    "yard_waste": {
+     "prep": [
+      "Ponlo suelto, no en bolsas de plástico",
+      "¿Demasiado? Usa la recolección anual gratuita de ramas"
+     ],
+     "why": "Las flores, el pasto cortado, las podas de árboles y arbustos y la madera limpia sin tratar van en el contenedor verde."
+    },
+    "battery": {
+     "prep": [
+      "Cubre los terminales con cinta adhesiva",
+      "Llévalo a un S.A.F.E. Center",
+      "Las pilas domésticas pequeñas pueden ir en un cubo de pilas de una biblioteca"
+     ],
+     "why": "Las pilas y baterías son residuos domésticos peligrosos y pueden provocar incendios, así que nunca van en un contenedor."
+    },
+    "electronics": {
+     "prep": [
+      "Borra tus datos primero",
+      "Saca las baterías si puedes",
+      "Entrégalo en un S.A.F.E. Center"
+     ],
+     "why": "LASAN recoge residuos electrónicos en S.A.F.E. Centers, no en los contenedores de la acera."
+    },
+    "textile": {
+     "prep": [
+      "Dónala si está limpia y aún se puede usar",
+      "Tela desgastada o rota: contenedor negro"
+     ],
+     "why": "El contenedor negro acepta telas desgastadas que no se pueden donar, y los textiles no están en las listas del contenedor azul ni del contenedor verde."
+    },
+    "shoes": {
+     "prep": [
+      "Mejor dona los pares que aún se puedan usar",
+      "Zapatos desgastados: contenedor negro"
+     ],
+     "why": "Los zapatos no están en las listas del contenedor azul ni del contenedor verde, así que los pares desgastados van en el contenedor negro con los demás artículos no reutilizables."
+    },
+    "cigarette_butt": {
+     "prep": [
+      "Apágala por completo",
+      "Deja que se enfríe primero"
+     ],
+     "why": "Las colillas no se pueden reciclar ni convertir en composta, así que van en el contenedor negro."
+    },
+    "blister_pack": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "Los blísteres mezclan plástico y aluminio y no son botellas, bidones ni recipientes tipo tarrina, así que van en el contenedor negro."
+    },
+    "rope_string": {
+     "prep": [
+      "Nunca en el contenedor azul"
+     ],
+     "why": "Los cables, las cuerdas y otros objetos que se enredan atascan las máquinas de clasificación de la planta de reciclaje."
+    },
+    "squeezable_tube": {
+     "prep": [
+      "Vacíalo lo más posible"
+     ],
+     "why": "Los tubos no son botellas, bidones ni recipientes tipo tarrina, que son los únicos plásticos que acepta el contenedor azul."
+    },
+    "mask_gloves": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "Las mascarillas y los guantes desechables no se pueden reciclar ni convertir en composta, así que van en el contenedor negro."
+    }
+   }
+  },
+  "nyc": {
+   "bins": {
+    "blue": {
+     "name": "Contenedor azul",
+     "accepts": "Metal, vidrio, plástico y cartones"
+    },
+    "green": {
+     "name": "Contenedor verde",
+     "accepts": "Papel mixto y cartón"
+    },
+    "brown": {
+     "name": "Contenedor marrón",
+     "accepts": "Restos de comida, residuos de jardín, papel sucio de comida"
+    },
+    "trash": {
+     "name": "Basura",
+     "accepts": "Lo que no se puede reciclar ni convertir en composta"
+    },
+    "dropoff": {
+     "name": "Punto de entrega",
+     "accepts": "Pilas, aparatos electrónicos, ropa: eliminación especial"
+    }
+   },
+   "items": {
+    "plastic_bottle": {
+     "prep": [
+      "Vacía y enjuaga",
+      "Las tapas pueden quedarse puestas"
+     ],
+     "why": "NYC acepta botellas y bidones de plástico rígido sin importar el número del fondo."
+    },
+    "plastic_container": {
+     "prep": [
+      "Vacía y enjuaga"
+     ],
+     "why": "Se aceptan envases rígidos de comida, recipientes y tapas."
+    },
+    "plastic_cup": {
+     "prep": [
+      "Vacía y enjuaga",
+      "Los vasos de espuma van en la basura"
+     ],
+     "why": "Se aceptan vasos y tazones de plástico rígido."
+    },
+    "plastic_lid_cap": {
+     "prep": [
+      "Déjala en el envase o ponla suelta"
+     ],
+     "why": "Se aceptan tapas de plástico rígido."
+    },
+    "plastic_bag_film": {
+     "prep": [
+      "Mejor: devuelve las bolsas y la película plástica limpias en un punto de entrega de una tienda grande",
+      "Nunca pongas los reciclables en bolsas negras"
+     ],
+     "why": "Las bolsas y la película plástica no van en el reciclaje doméstico. Las tiendas de 10,000 pies cuadrados o más deben aceptarlas para devolución."
+    },
+    "snack_wrapper": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "Los plásticos blandos, como envoltorios de dulces y botanas, no se pueden reciclar en NYC."
+    },
+    "foam": {
+     "prep": [
+      "Nunca en el contenedor azul ni en el contenedor marrón"
+     ],
+     "why": "Los productos de espuma, como Styrofoam y el relleno de embalaje, van en la basura."
+    },
+    "plastic_utensil_straw": {
+     "prep": [
+      "Enjuaga"
+     ],
+     "why": "NYC incluye los cubiertos de plástico como plástico rígido reciclable."
+    },
+    "paper": {
+     "prep": [
+      "Mantenlo seco",
+      "Las grapas y los sobres con ventana no son problema"
+     ],
+     "why": "Los periódicos, las revistas, el correo y el papel de oficina van en el reciclaje de papel."
+    },
+    "paper_bag": {
+     "prep": [
+      "Mantenlo limpio y seco",
+      "Las bolsas sucias de comida van en el contenedor marrón"
+     ],
+     "why": "Las reglas de DSNY incluyen las bolsas de papel con el papel mixto."
+    },
+    "cardboard": {
+     "prep": [
+      "Aplana",
+      "Ata los pedazos grandes con cordel; deben medir 18 pulgadas o menos"
+     ],
+     "why": "El cartón aplanado va con el papel mixto."
+    },
+    "pizza_box": {
+     "prep": [
+      "Retira los restos de comida",
+      "¿Caja grasosa? Ponla en el contenedor marrón"
+     ],
+     "why": "Las cajas de pizza ligeramente sucias van con el papel; las grasosas se pueden convertir en composta."
+    },
+    "soiled_paper": {
+     "prep": [
+      "Raspa primero los restos de comida",
+      "Los pañuelos de papel limpios pueden ir en la basura"
+     ],
+     "why": "La composta de NYC acepta papel sucio de comida junto con restos de comida."
+    },
+    "paper_cup": {
+     "prep": [
+      "Vacíalo y sécalo"
+     ],
+     "why": "NYC acepta vasos de papel vacíos y secos con el papel mixto."
+    },
+    "carton": {
+     "prep": [
+      "Vacía y enjuaga",
+      "Contenedor azul, no con el papel"
+     ],
+     "why": "Los cartones de leche, jugo y sopa van con el metal, el vidrio y el plástico."
+    },
+    "metal_can": {
+     "prep": [
+      "Vacía y enjuaga"
+     ],
+     "why": "Se aceptan todo tipo de metales, incluidas latas de comida y bebida."
+    },
+    "aluminum_foil": {
+     "prep": [
+      "Retira los restos de comida"
+     ],
+     "why": "Se aceptan papel aluminio y bandejas de aluminio."
+    },
+    "aerosol_can": {
+     "prep": [
+      "Solo cuando esté completamente vacío",
+      "Si aún tiene contenido, es un residuo especial"
+     ],
+     "why": "Se aceptan aerosoles vacíos con el metal."
+    },
+    "metal_lid_scrap": {
+     "prep": [
+      "Retira los cordones o cables"
+     ],
+     "why": "NYC acepta todo tipo de metales, incluidas tapas y objetos metálicos pequeños."
+    },
+    "glass_bottle_jar": {
+     "prep": [
+      "Enjuaga"
+     ],
+     "why": "Se aceptan botellas y frascos de vidrio."
+    },
+    "drinking_glass_ceramic": {
+     "prep": [
+      "Vidrio roto: séllalo en una caja marcada «vidrio roto» o usa doble bolsa"
+     ],
+     "why": "Los vasos, las tazas y los platos no se pueden reciclar."
+    },
+    "food_scraps": {
+     "prep": [
+      "Usa una bolsa transparente, de papel o compostable, o ponlo suelto",
+      "Sin bolsas negras"
+     ],
+     "why": "La composta es obligatoria en NYC. Se aceptan todos los restos de comida, incluida la carne y los huesos."
+    },
+    "yard_waste": {
+     "prep": [
+      "Usa bolsas de papel para jardín o bolsas transparentes",
+      "Ata las ramitas en manojos"
+     ],
+     "why": "Las hojas y los residuos de jardín deben mantenerse fuera de la basura."
+    },
+    "battery": {
+     "prep": [
+      "Cubre los extremos con cinta adhesiva o embolsa cada pila por separado",
+      "Recargables y de ion de litio: devuélvelas a una tienda que las venda",
+      "Las pilas alcalinas de un solo uso (AA, AAA, 9V) pueden ir en la basura"
+     ],
+     "why": "Las baterías recargables y de ion de litio nunca deben ir en la basura ni en el reciclaje. Provocan incendios en camiones y plantas."
+    },
+    "electronics": {
+     "prep": [
+      "Usa un punto de entrega de una tienda u organización sin fines de lucro, un evento SAFE o ecycleNYC"
+     ],
+     "why": "En Nueva York es ilegal poner aparatos electrónicos en la basura o el reciclaje."
+    },
+    "textile": {
+     "prep": [
+      "Dona o usa un punto de entrega de textiles",
+      "Limpio, seco y embolsado"
+     ],
+     "why": "La ropa se puede donar o llevar a recicladores de textiles en vez de tirarla a la basura."
+    },
+    "shoes": {
+     "prep": [
+      "Dona los pares que aún se puedan usar",
+      "Embolsa los zapatos limpios y secos"
+     ],
+     "why": "Los zapatos se consideran accesorios en la guía de reutilización de ropa de NYC."
+    },
+    "cigarette_butt": {
+     "prep": [
+      "Apágala por completo primero"
+     ],
+     "why": "Los artículos que no se pueden reciclar ni convertir en composta van en la basura."
+    },
+    "blister_pack": {
+     "prep": [
+      "Vacíalo",
+      "Los blísteres de pastillas con respaldo de aluminio van en la basura"
+     ],
+     "why": "Se aceptan empaques «blisterpak» de plástico rígido."
+    },
+    "rope_string": {
+     "prep": [
+      "Nunca en el reciclaje"
+     ],
+     "why": "Los objetos que se enredan, como cables, mangueras y series de luces, atascan las máquinas de clasificación."
+    },
+    "squeezable_tube": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "Los tubos y las bolsas flexibles de plástico, como los tubos de pasta dental, no se pueden reciclar."
+    },
+    "mask_gloves": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "Las mascarillas y los guantes desechables van en la basura."
+    }
+   }
+  },
+  "sea": {
+   "bins": {
+    "recycle": {
+     "name": "Carrito de reciclaje",
+     "accepts": "Papel, cartón, botellas, recipientes, latas, frascos de vidrio"
+    },
+    "compost": {
+     "name": "Carrito de restos de comida y residuos de jardín",
+     "accepts": "Restos de comida, residuos de jardín, papel sucio de comida"
+    },
+    "garbage": {
+     "name": "Carrito de basura",
+     "accepts": "Todo lo demás: sin reciclables, comida, pilas ni aparatos electrónicos"
+    },
+    "dropoff": {
+     "name": "Punto de entrega",
+     "accepts": "Pilas, aparatos electrónicos, residuos peligrosos, ropa: en ningún carrito"
+    }
+   },
+   "items": {
+    "plastic_bottle": {
+     "prep": [
+      "Vacíalo y déjalo secar",
+      "Vuelve a enroscar la tapa",
+      "Ponlo suelto, sin bolsa"
+     ],
+     "why": "Se aceptan botellas y bidones de plástico vacíos y limpios de hasta 5 galones, con la tapa puesta."
+    },
+    "plastic_container": {
+     "prep": [
+      "Vacía, enjuaga y deja secar",
+      "Solo si mide más de 3 pulgadas",
+      "¿No puedes limpiarlo? Carrito de basura"
+     ],
+     "why": "Se aceptan recipientes, bandejas y envases con tapa abatible limpios y secos de más de 3 pulgadas; no se aceptan envases de espuma."
+    },
+    "plastic_cup": {
+     "prep": [
+      "Vacía y enjuaga",
+      "¿Dice «compostable» o «#7 PLA»? Carrito de restos de comida y residuos de jardín",
+      "Los vasos de espuma van en el carrito de basura"
+     ],
+     "why": "Los vasos de plástico vacíos y limpios son reciclables; los vasos sucios y de espuma van en el carrito de basura."
+    },
+    "plastic_lid_cap": {
+     "prep": [
+      "Vuelve a enroscar las tapas en la botella vacía",
+      "Las tapas sueltas deben medir 3 pulgadas o más",
+      "Tapas sueltas más pequeñas: carrito de basura"
+     ],
+     "why": "Se reciclan las tapas puestas en una botella y las tapas sueltas de 3 pulgadas o más; las más pequeñas y sueltas se caen por los huecos del equipo de clasificación."
+    },
+    "plastic_bag_film": {
+     "prep": [
+      "No la pongas en el carrito de reciclaje, ni siquiera agrupada dentro de una bolsa",
+      "La película plástica limpia y seca puede ir a un punto de entrega de una tienda"
+     ],
+     "why": "Desde enero de 2020, Seattle no acepta bolsas ni envolturas plásticas en los carritos de reciclaje porque atascan las máquinas de clasificación."
+    },
+    "snack_wrapper": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "Las bolsas de papitas, los envoltorios de dulces y las bolsas flexibles están hechos de materiales mezclados que no se pueden reciclar."
+    },
+    "foam": {
+     "prep": [
+      "Embolsa el relleno de espuma suelto y ata la bolsa",
+      "Bloques de espuma limpios: Special Item Pickup gratuito o Styro Recycle en Kent"
+     ],
+     "why": "La espuma va en el carrito de basura; solo los bloques limpios de Styrofoam tienen una opción de reciclaje."
+    },
+    "plastic_utensil_straw": {
+     "prep": [
+      "No requiere preparación",
+      "¿Dice «compostable»? Carrito de restos de comida y residuos de jardín"
+     ],
+     "why": "Los cubiertos y popotes de plástico no son reciclables en Seattle."
+    },
+    "paper": {
+     "prep": [
+      "Mantenlo limpio y seco",
+      "Las grapas pueden quedarse",
+      "Papel triturado: carrito de restos de comida y residuos de jardín"
+     ],
+     "why": "El papel de oficina, el correo, los periódicos y las revistas van en el carrito de reciclaje y no pueden ir en el carrito de basura."
+    },
+    "paper_bag": {
+     "prep": [
+      "Mantenlo limpio y seco",
+      "Las calcomanías, la cinta adhesiva y las grapas no son problema",
+      "¿Sucio de comida? Carrito de restos de comida y residuos de jardín"
+     ],
+     "why": "Las bolsas de papel limpias y secas se reciclan; las mojadas o sucias de comida se convierten en composta."
+    },
+    "cardboard": {
+     "prep": [
+      "Aplánalo; la cinta y las etiquetas pueden quedarse",
+      "¿No cabe en el carrito? Ponlo en una caja o átalo junto al carrito, sin costo",
+      "Cartón mojado o grasoso: carrito de restos de comida y residuos de jardín"
+     ],
+     "why": "El cartón limpio y aplanado es reciclable; el cartón encerado va en el carrito de basura."
+    },
+    "pizza_box": {
+     "prep": [
+      "Retira todo el aluminio, plástico y otras partes que no sean de papel"
+     ],
+     "why": "Las cajas de pizza grasosas o sucias de comida van en el carrito de restos de comida y residuos de jardín."
+    },
+    "soiled_paper": {
+     "prep": [
+      "Servilletas, toallas de papel y platos sin recubrimiento con comida o grasa: composta",
+      "Pañuelos de papel o toallas usadas con limpiadores o fluidos corporales: carrito de basura",
+      "Papel con recubrimiento brillante: carrito de basura"
+     ],
+     "why": "El papel sin recubrimiento con comida o grasa se puede convertir en composta, pero los pañuelos de papel y el papel con recubrimiento brillante no."
+    },
+    "paper_cup": {
+     "prep": [
+      "Vacíalo y déjalo secar",
+      "La funda del vaso también puede ir",
+      "¿Dice «compostable»? Carrito de restos de comida y residuos de jardín"
+     ],
+     "why": "Los vasos de papel vacíos, limpios y secos son reciclables en Seattle; los vasos de espuma van en el carrito de basura."
+    },
+    "carton": {
+     "prep": [
+      "Vacíalo y déjalo secar",
+      "Deja la boquilla; pon la tapa en el carrito de basura"
+     ],
+     "why": "Se aceptan cartones de leche, jugo, sopa y otros envases asépticos cuando están limpios, vacíos y secos."
+    },
+    "metal_can": {
+     "prep": [
+      "Vacía, enjuaga y deja secar",
+      "Mete la tapa dentro de la lata o déjala unida",
+      "Deja la etiqueta puesta"
+     ],
+     "why": "Las latas de aluminio y acero de comida y bebida son reciclables."
+    },
+    "aluminum_foil": {
+     "prep": [
+      "Retira toda la comida y deja secar",
+      "Haz una bola de más de 3 pulgadas",
+      "Aluminio sucio o pedacitos: carrito de basura"
+     ],
+     "why": "El papel aluminio y las bandejas de aluminio limpios y secos de más de 3 pulgadas son reciclables."
+    },
+    "aerosol_can": {
+     "prep": [
+      "Úsalo hasta que no quede contenido ni presión",
+      "Completamente vacío y no peligroso (fijador de cabello, aceite en aerosol): carrito de reciclaje",
+      "Pintura, solventes, aerosol contra osos o cualquier aerosol con contenido: instalación de residuos peligrosos, gratis"
+     ],
+     "why": "Seattle solo recicla aerosoles completamente vacíos y no peligrosos; los que aún tienen contenido son residuos peligrosos."
+    },
+    "metal_lid_scrap": {
+     "prep": [
+      "3 pulgadas o más (ollas, sartenes, tapas grandes): carrito de reciclaje",
+      "Piezas sueltas más pequeñas: carrito de basura, o llévalas en una lata al contenedor de chatarra de la estación de transferencia",
+      "Tapa pequeña en su frasco o botella: recíclala junto con el envase"
+     ],
+     "why": "El metal de más de 3 pulgadas se recicla; las piezas sueltas más pequeñas se caen por los huecos del equipo de clasificación."
+    },
+    "glass_bottle_jar": {
+     "prep": [
+      "Vacía, enjuaga y deja secar",
+      "Vuelve a enroscar las tapas pequeñas; las de 3 pulgadas o más pueden ir sueltas",
+      "Sin Pyrex ni vidrio esmerilado"
+     ],
+     "why": "Las botellas y los frascos de vidrio son reciclables; otros vidrios tienen un punto de fusión diferente y no lo son."
+    },
+    "drinking_glass_ceramic": {
+     "prep": [
+      "Dona los artículos enteros en buen estado",
+      "Los pedazos de botellas o frascos rotos de 3 pulgadas o más pueden ir al reciclaje"
+     ],
+     "why": "Los vasos, la cerámica y otros vidrios que no sean de botellas o frascos no son reciclables."
+    },
+    "food_scraps": {
+     "prep": [
+      "Quita las etiquetas de frutas y verduras y cualquier plástico",
+      "Usa solo bolsas compostables aprobadas, o ninguna"
+     ],
+     "why": "Toda la comida, incluida la carne, los lácteos, los huesos y las conchas, va en el carrito de restos de comida y residuos de jardín."
+    },
+    "yard_waste": {
+     "prep": [
+      "Corta las ramas a 4 pies de largo y 4 pulgadas de grosor o menos",
+      "Retira la tierra",
+      "La tapa debe cerrar; los residuos de jardín adicionales tienen un cargo"
+     ],
+     "why": "Las hojas, el pasto, las plantas y las ramas pequeñas van en el carrito de restos de comida y residuos de jardín."
+    },
+    "battery": {
+     "prep": [
+      "Cubre los extremos de cada pila con cinta adhesiva",
+      "Entrega gratuita en una instalación de residuos domésticos peligrosos o estación de transferencia de la ciudad",
+      "Nunca en el carrito de basura ni en el carrito de reciclaje"
+     ],
+     "why": "Seattle prohíbe todas las pilas y baterías, incluso las alcalinas, en la basura y el reciclaje porque provocan incendios en camiones y plantas."
+    },
+    "electronics": {
+     "prep": [
+      "Dónalo si aún funciona",
+      "Llévalo a un reciclador electrónico de King County Take It Back Network",
+      "O reserva un Special Item Pickup de pago"
+     ],
+     "why": "Seattle prohíbe tirar televisores, computadoras, tabletas y cualquier artículo con batería a la basura, aunque SPU indica que los cables y audífonos sin batería sí pueden ir."
+    },
+    "textile": {
+     "prep": [
+      "Dónala si está en buen estado",
+      "Desgastada o manchada: punto de entrega de Threadcycle en tiendas de segunda mano participantes",
+      "Si no, puede ir en el carrito de basura"
+     ],
+     "why": "La ropa y la tela se pueden donar o reciclar mediante Threadcycle; el carrito de basura se permite como último recurso."
+    },
+    "shoes": {
+     "prep": [
+      "Dona los pares que aún se puedan usar",
+      "Desgastados: punto de entrega de Threadcycle en tiendas de segunda mano participantes",
+      "Si no, pueden ir en el carrito de basura"
+     ],
+     "why": "Los zapatos se pueden donar o reciclar mediante Threadcycle; el carrito de basura se permite como último recurso."
+    },
+    "cigarette_butt": {
+     "prep": [
+      "Asegúrate de que esté totalmente apagada"
+     ],
+     "why": "Las colillas van en el carrito de basura; los vapeadores y los líquidos para vapear son residuos peligrosos."
+    },
+    "blister_pack": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "Los blísteres son empaques de plástico duro que no se pueden reciclar."
+    },
+    "rope_string": {
+     "prep": [
+      "Embolsa para que no se enrede",
+      "Dónala o reutilízala si aún sirve"
+     ],
+     "why": "Las cuerdas, los cordeles y los estambres con fibras sintéticas van en el carrito de basura porque enredan las máquinas de clasificación."
+    },
+    "squeezable_tube": {
+     "prep": [
+      "Ignora cualquier etiqueta de «reciclable» en el tubo"
+     ],
+     "why": "Los tubos de plástico blando, como los de pasta dental, van en el carrito de basura aunque digan que son reciclables."
+    },
+    "mask_gloves": {
+     "prep": [
+      "Corta primero las tiras de las orejas de las mascarillas"
+     ],
+     "why": "Todas las mascarillas, los guantes desechables y otros equipos de protección van en el carrito de basura."
+    }
+   }
+  },
+  "sf": {
+   "bins": {
+    "blue": {
+     "name": "Contenedor azul",
+     "accepts": "Reciclaje: envases, papel, cartón"
+    },
+    "green": {
+     "name": "Contenedor verde",
+     "accepts": "Composta: comida, plantas, papel sucio"
+    },
+    "black": {
+     "name": "Contenedor negro",
+     "accepts": "Relleno sanitario"
+    },
+    "special": {
+     "name": "Manejo especial",
+     "accepts": "En ningún contenedor: pilas, aparatos electrónicos, chatarra"
+    }
+   },
+   "items": {
+    "plastic_bottle": {
+     "prep": [
+      "Vacíalo y enjuágalo ligeramente",
+      "Deja la tapa puesta",
+      "Ponlo suelto, sin bolsa"
+     ],
+     "why": "Se aceptan botellas con la tapa puesta."
+    },
+    "plastic_container": {
+     "prep": [
+      "Vacía y enjuaga",
+      "Sin bolsa interior"
+     ],
+     "why": "Se aceptan envases de plástico, recipientes con tapa abatible y tarrinas."
+    },
+    "plastic_cup": {
+     "prep": [
+      "Vacíalo",
+      "¿Dice «compostable»? Contenedor verde"
+     ],
+     "why": "Los vasos de plástico son reciclables; los de espuma no."
+    },
+    "plastic_lid_cap": {
+     "prep": [
+      "Deja las tapas en las botellas"
+     ],
+     "why": "Se aceptan tapas, incluidas las de vasos de café."
+    },
+    "plastic_bag_film": {
+     "prep": [
+      "Mejor: reutilízala o devuélvela en una tienda",
+      "Nunca en el contenedor azul, ni suelta ni como bolsa interior"
+     ],
+     "why": "En SF, las bolsas y la película plástica van al relleno sanitario y son de los principales contaminantes del contenedor azul."
+    },
+    "snack_wrapper": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "Los envoltorios brillantes de comida y las bolsas de papitas van al relleno sanitario."
+    },
+    "foam": {
+     "prep": [
+      "Bloques de espuma limpios: estación de transferencia de Recology"
+     ],
+     "why": "El unicel (Styrofoam) está en la lista de relleno sanitario."
+    },
+    "plastic_utensil_straw": {
+     "prep": [
+      "Enjuaga",
+      "Los cubiertos de madera o bambú van en el contenedor verde"
+     ],
+     "why": "Los cubiertos de plástico pueden ir en el contenedor de reciclaje."
+    },
+    "paper": {
+     "prep": [
+      "Limpio y seco",
+      "Papel triturado: bolsa de papel cerrada y etiquetada"
+     ],
+     "why": "El papel, el correo y las revistas limpios y secos son reciclables."
+    },
+    "paper_bag": {
+     "prep": [
+      "Limpio y seco",
+      "¿Grasosa o manchada de comida? Contenedor verde"
+     ],
+     "why": "Las bolsas de papel limpias son reciclables; las sucias se pueden convertir en composta."
+    },
+    "cardboard": {
+     "prep": [
+      "Aplana",
+      "Cajas de más: desármalas y átalas junto al carrito"
+     ],
+     "why": "El cartón sin cera es reciclable."
+    },
+    "pizza_box": {
+     "prep": [
+      "Raspa los restos de comida del interior"
+     ],
+     "why": "Las cajas de pizza grasosas van a la composta, no al reciclaje."
+    },
+    "soiled_paper": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "Las servilletas, las toallas de papel, los pañuelos de papel y el papel sucio se pueden convertir en composta."
+    },
+    "paper_cup": {
+     "prep": [
+      "Vacíalo",
+      "La funda y la tapa de plástico pueden quedarse"
+     ],
+     "why": "Los vasos de papel para café vacíos son reciclables en SF."
+    },
+    "carton": {
+     "prep": [
+      "Vacíalo"
+     ],
+     "why": "Los cartones de leche, jugo y otros cartones son reciclables."
+    },
+    "metal_can": {
+     "prep": [
+      "Vacío, sin comida ni líquido"
+     ],
+     "why": "Las latas de aluminio y acero son reciclables."
+    },
+    "aluminum_foil": {
+     "prep": [
+      "Retira la comida",
+      "Haz una bola, como máximo del tamaño de una pelota de sóftbol"
+     ],
+     "why": "El papel aluminio y las bandejas de aluminio son reciclables."
+    },
+    "aerosol_can": {
+     "prep": [
+      "Agota todo el contenido",
+      "Revisa la página de aerosoles de SF Environment antes de tirarlo"
+     ],
+     "why": "SF incluye los aerosoles en manejo especial; su lista de reciclables indica que los vacíos son reciclables."
+    },
+    "metal_lid_scrap": {
+     "prep": [
+      "Tapas: contenedor azul",
+      "Ollas, sartenes y otra chatarra: manejo especial"
+     ],
+     "why": "Las tapas de botellas y frascos son reciclables; la chatarra no."
+    },
+    "glass_bottle_jar": {
+     "prep": [
+      "Vacía",
+      "Las tapas de metal pueden quedarse"
+     ],
+     "why": "Solo botellas y frascos de vidrio."
+    },
+    "drinking_glass_ceramic": {
+     "prep": [
+      "Las botellas y los frascos rotos también pueden ir en el contenedor azul"
+     ],
+     "why": "Los vasos, la cerámica y el vidrio templado van al relleno sanitario."
+    },
+    "food_scraps": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "Toda la comida, incluida la carne y los huesos, se puede convertir en composta."
+    },
+    "yard_waste": {
+     "prep": [
+      "Ramas de menos de 6 pulgadas de grosor y 4 pies de largo"
+     ],
+     "why": "Todos los restos de plantas se pueden convertir en composta."
+    },
+    "battery": {
+     "prep": [
+      "Cubre los contactos de las baterías de litio con cinta adhesiva",
+      "Bolsa transparente sobre el contenedor negro, o el cubo naranja en edificios grandes"
+     ],
+     "why": "Las pilas y baterías no van en ningún contenedor. Pueden provocar incendios."
+    },
+    "electronics": {
+     "prep": [
+      "Dónalo si funciona",
+      "Si no, punto de entrega de residuos electrónicos"
+     ],
+     "why": "No se aceptan aparatos electrónicos en ninguno de los tres contenedores."
+    },
+    "textile": {
+     "prep": [
+      "Dona o reutiliza"
+     ],
+     "why": "La ropa no se acepta en el reciclaje ni en la composta."
+    },
+    "shoes": {
+     "prep": [
+      "Dona los pares que aún se puedan usar"
+     ],
+     "why": "Los zapatos utilizables deben reutilizarse o donarse."
+    },
+    "cigarette_butt": {
+     "prep": [
+      "Apágala y pásala bajo el agua"
+     ],
+     "why": "Las colillas van al relleno sanitario."
+    },
+    "blister_pack": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "El plástico mezclado con otros materiales va al relleno sanitario."
+    },
+    "rope_string": {
+     "prep": [
+      "Nunca en el reciclaje"
+     ],
+     "why": "Los artículos que no se pueden reciclar ni convertir en composta van al relleno sanitario."
+    },
+    "squeezable_tube": {
+     "prep": [
+      "Vacíalo"
+     ],
+     "why": "Los tubos de pasta dental y crema están en la lista de relleno sanitario."
+    },
+    "mask_gloves": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "Las mascarillas desechables van al relleno sanitario."
+    }
+   }
+  },
+  "us": {
+   "bins": {
+    "recycling": {
+     "name": "Reciclaje",
+     "accepts": "Carrito de la acera: botellas, latas, papel, cartón"
+    },
+    "compost": {
+     "name": "Composta",
+     "accepts": "Restos de comida y residuos de jardín, donde se ofrezca el servicio"
+    },
+    "trash": {
+     "name": "Basura",
+     "accepts": "Todo lo que tu programa no acepte"
+    },
+    "dropoff": {
+     "name": "Punto de entrega",
+     "accepts": "Devolución en tienda o sitio de residuos peligrosos"
+    }
+   },
+   "items": {
+    "plastic_bottle": {
+     "prep": [
+      "Vacía y enjuaga",
+      "Las tapas y etiquetas pueden quedarse"
+     ],
+     "why": "Las botellas de plástico están entre los artículos que más se reciclan."
+    },
+    "plastic_container": {
+     "prep": [
+      "Enjuaga hasta que quede limpio como después de raspar con una espátula",
+      "Revisa si tu programa acepta este plástico"
+     ],
+     "why": "Muchos programas aceptan envases rígidos; los artículos con restos de comida no se pueden reciclar."
+    },
+    "plastic_cup": {
+     "prep": [
+      "Enjuaga",
+      "Revisa si tu programa acepta vasos"
+     ],
+     "why": "La aceptación depende del programa local."
+    },
+    "plastic_lid_cap": {
+     "prep": [
+      "Déjala en la botella"
+     ],
+     "why": "Las botellas y tapas están en la lista de reciclables comunes de EPA."
+    },
+    "plastic_bag_film": {
+     "prep": [
+      "Devuelve las bolsas limpias y secas a un punto de entrega de una tienda",
+      "Nunca embolses los reciclables"
+     ],
+     "why": "Las bolsas de plástico son reciclables, pero no en el contenedor de reciclaje doméstico."
+    },
+    "snack_wrapper": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "Las envolturas y la película plástica no van en el contenedor de reciclaje de la acera."
+    },
+    "foam": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "Muy pocas localidades aceptan unicel (Styrofoam) en el reciclaje de la acera."
+    },
+    "plastic_utensil_straw": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "EPA indica que los cubiertos de plástico no se pueden reciclar. Algunas ciudades, como NYC, sí los aceptan."
+    },
+    "paper": {
+     "prep": [
+      "Limpio y seco",
+      "Los sobres con ventana no son problema"
+     ],
+     "why": "El papel, el correo y los periódicos son reciclables cuando están limpios y secos."
+    },
+    "paper_bag": {
+     "prep": [
+      "Limpio y seco"
+     ],
+     "why": "El papel debe estar vacío, limpio y seco para reciclarse."
+    },
+    "cardboard": {
+     "prep": [
+      "Aplana las cajas"
+     ],
+     "why": "El cartón es uno de los artículos que más se reciclan."
+    },
+    "pizza_box": {
+     "prep": [
+      "Retira los restos de comida",
+      "¿Muy grasosa? Haz composta si puedes"
+     ],
+     "why": "EPA indica que las cajas de pizza se pueden reciclar, incluso con algo de grasa."
+    },
+    "soiled_paper": {
+     "prep": [
+      "¿No hay composta? Basura"
+     ],
+     "why": "El papel sucio de comida nunca va al reciclaje, pero puede ser compostable."
+    },
+    "paper_cup": {
+     "prep": [
+      "Revisa la lista local: algunos programas los aceptan"
+     ],
+     "why": "Los vasos de papel con recubrimiento no están en la lista de reciclables comunes de EPA."
+    },
+    "carton": {
+     "prep": [
+      "Vacía y enjuaga",
+      "Revisa la lista local"
+     ],
+     "why": "La aceptación de cartones depende del programa local."
+    },
+    "metal_can": {
+     "prep": [
+      "Enjuaga o limpia con un paño",
+      "No aplastes las latas de aluminio"
+     ],
+     "why": "Las latas de refresco y sopa se aceptan en casi todas partes."
+    },
+    "aluminum_foil": {
+     "prep": [
+      "Retira toda la comida",
+      "Solo si tu programa local incluye papel aluminio"
+     ],
+     "why": "EPA indica que el papel aluminio se puede reciclar; los programas varían."
+    },
+    "aerosol_can": {
+     "prep": [
+      "Con contenido: residuos domésticos peligrosos",
+      "Vacío: algunos programas lo aceptan con el metal"
+     ],
+     "why": "Los aerosoles que no estén vacíos nunca deben ir al reciclaje."
+    },
+    "metal_lid_scrap": {
+     "prep": [
+      "Chatarra más grande: reciclador de metales"
+     ],
+     "why": "Los programas de la acera suelen aceptar latas de metal, no objetos metálicos pequeños sueltos."
+    },
+    "glass_bottle_jar": {
+     "prep": [
+      "Enjuaga",
+      "Quita las tapas de metal"
+     ],
+     "why": "Los frascos de vidrio están en la lista de reciclables más comunes de EPA; algunos programas no aceptan vidrio."
+    },
+    "drinking_glass_ceramic": {
+     "prep": [
+      "Envuelve el vidrio roto"
+     ],
+     "why": "El vidrio roto no debe ir en el contenedor de reciclaje."
+    },
+    "food_scraps": {
+     "prep": [
+      "¿No hay composta? Basura"
+     ],
+     "why": "La comida no se puede reciclar, pero sí convertir en composta."
+    },
+    "yard_waste": {
+     "prep": [
+      "Usa la recolección de recortes de jardín si se ofrece"
+     ],
+     "why": "Los residuos del césped no se pueden reciclar, pero sí convertir en composta."
+    },
+    "battery": {
+     "prep": [
+      "Cubre los terminales con cinta adhesiva",
+      "Punto de entrega en tienda o evento de residuos peligrosos"
+     ],
+     "why": "Las pilas y baterías no deben ir en los contenedores domésticos de basura ni reciclaje."
+    },
+    "electronics": {
+     "prep": [
+      "Sitio de recolección o devolución al fabricante o vendedor"
+     ],
+     "why": "Los aparatos electrónicos no se pueden reciclar en la acera."
+    },
+    "textile": {
+     "prep": [
+      "Dona o usa la devolución en tiendas"
+     ],
+     "why": "Los textiles no pueden ir en el contenedor de reciclaje de la acera."
+    },
+    "shoes": {
+     "prep": [
+      "Dona los pares con poco desgaste"
+     ],
+     "why": "Muchas organizaciones benéficas aceptan zapatos con poco desgaste."
+    },
+    "cigarette_butt": {
+     "prep": [
+      "Apágala por completo"
+     ],
+     "why": "No está en ninguna lista de reciclables comunes."
+    },
+    "blister_pack": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "Los empaques de plástico y aluminio mezclados no están en las listas de reciclables comunes."
+    },
+    "rope_string": {
+     "prep": [
+      "Nunca en el reciclaje"
+     ],
+     "why": "Las mangueras y otros objetos similares que se enredan están en la lista de EPA de lo que nunca se debe reciclar."
+    },
+    "squeezable_tube": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "No está en la lista de reciclables comunes de EPA."
+    },
+    "mask_gloves": {
+     "prep": [
+      "No requiere preparación"
+     ],
+     "why": "No está en la lista de reciclables comunes de EPA."
+    }
+   }
+  }
+ }
+}

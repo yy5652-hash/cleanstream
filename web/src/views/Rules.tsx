@@ -1,12 +1,14 @@
 import { useState } from 'react'
-import { ITEMS, itemName, searchItems } from '../items'
+import { t, useLang } from '../i18n'
+import { ITEMS, itemExamples, itemName, searchable, searchItems } from '../items'
 import { binById, type Pack } from '../rules'
 import { BinChip } from '../ui'
 
 export default function Rules({ pack, packs }: { pack: Pack; packs: Pack[] }) {
+  const { lang } = useLang()
   const [q, setQ] = useState('')
   const [onlyDiff, setOnlyDiff] = useState(false)
-  const hits = q.trim().length >= 2 ? new Set(searchItems(q, 32)) : null // same synonyms as the Scan search
+  const hits = searchable(q) ? new Set(searchItems(q, 32)) : null // same synonyms as the Scan search
   const ids = Object.keys(ITEMS).filter((id) => {
     if (hits && !hits.has(id)) return false
     if (onlyDiff) return new Set(packs.map((p) => binById(p, p.items[id].bin).kind)).size > 1
@@ -18,12 +20,12 @@ export default function Rules({ pack, packs }: { pack: Pack; packs: Pack[] }) {
     <>
       <div className="lede">
         <div>
-          <h1>{pack.name} rules</h1>
-          <p>Every answer Cleanstream gives comes from this table, and every row links to the official source. Rules are plain JSON, so a campus or city can edit its own pack. Checked {pack.checked}.</p>
+          <h1>{t('{city} rules', { city: pack.name })}</h1>
+          <p>{t('Every answer Cleanstream gives comes from this table, and every row links to the official source. Rules are plain JSON, so a campus or city can edit its own pack. Checked {date}.', { date: pack.checked })}</p>
         </div>
         <div className="row">
-          <input className="search" placeholder="Search items" value={q} onChange={(e) => setQ(e.target.value)} />
-          <button className={`btn${onlyDiff ? ' primary' : ''}`} onClick={() => setOnlyDiff(!onlyDiff)}>Where places differ ({differ})</button>
+          <input className="search" placeholder={t('Search items')} value={q} onChange={(e) => setQ(e.target.value)} />
+          <button className={`btn${onlyDiff ? ' primary' : ''}`} onClick={() => setOnlyDiff(!onlyDiff)}>{t('Where places differ ({count})', { count: differ })}</button>
         </div>
       </div>
       <div className="row" style={{ marginBottom: 16 }}>
@@ -37,18 +39,18 @@ export default function Rules({ pack, packs }: { pack: Pack; packs: Pack[] }) {
       <div className="card" style={{ overflowX: 'auto' }}>
         <table className="list">
           <thead>
-            <tr><th>Item</th><th>{pack.name}</th><th>Before you toss it</th>{packs.filter((p) => p.id !== pack.id).map((p) => <th key={p.id}>{p.name}</th>)}</tr>
+            <tr><th>{t('Item')}</th><th>{pack.name}</th><th>{t('Before you toss it')}</th>{packs.filter((p) => p.id !== pack.id).map((p) => <th key={p.id}>{p.name}</th>)}</tr>
           </thead>
           <tbody>
             {ids.map((id) => {
               const r = pack.items[id]
               return (
                 <tr key={id}>
-                  <td style={{ minWidth: 180 }}><strong>{itemName(id)}</strong><div className="small faint">{ITEMS[id].examples}</div></td>
+                  <td style={{ minWidth: 180 }}><strong>{itemName(id)}</strong><div className="small faint">{itemExamples(id)}</div></td>
                   <td><BinChip bin={binById(pack, r.bin)} /></td>
                   <td style={{ minWidth: 260 }}>
                     <div className="small">{r.prep.join(' · ')}</div>
-                    <div className="small faint" style={{ marginTop: 4 }}>{r.why} <a href={r.source} target="_blank" rel="noreferrer">Source</a></div>
+                    <div className="small faint" style={{ marginTop: 4 }}>{r.why} <a href={r.source} target="_blank" rel="noreferrer">{t('Source')}</a></div>
                   </td>
                   {packs.filter((p) => p.id !== pack.id).map((p) => <td key={p.id}><BinChip bin={binById(p, p.items[id].bin)} /></td>)}
                 </tr>
@@ -58,8 +60,9 @@ export default function Rules({ pack, packs }: { pack: Pack; packs: Pack[] }) {
         </table>
       </div>
       <div className="small muted" style={{ marginTop: 14 }}>
-        Sources: {pack.sources.map((s, i) => <span key={s.url}>{i ? ' · ' : ''}<a href={s.url} target="_blank" rel="noreferrer">{s.label}</a></span>)}
+        {t('Sources:')} {pack.sources.map((s, i) => <span key={s.url}>{i ? ' · ' : ''}<a href={s.url} target="_blank" rel="noreferrer">{s.label}</a></span>)}
       </div>
+      {lang !== 'en' && <p className="small faint">{t('Translated by Cleanstream. If in doubt, check the official source, which is in English.')}</p>}
     </>
   )
 }

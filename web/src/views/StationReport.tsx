@@ -1,5 +1,6 @@
 // What a bin station saw: items sorted per day and bin, the items people ask about most, and how often it was unsure.
 import { useState } from 'react'
+import { t } from '../i18n'
 import { itemName } from '../items'
 import { binById, type Pack } from '../rules'
 import { download, lastDays, type StationDay } from '../store'
@@ -37,7 +38,7 @@ export function summarize(log: Record<string, StationDay>, days: string[]): Summ
   }
 }
 
-const RANGES = [[1, 'Today'], [7, '7 days'], [30, '30 days']] as const
+const RANGES = [[1, () => t('Today')], [7, () => t('7 days')], [30, () => t('30 days')]] as const
 
 export default function StationReport({ pack, log, onReset }: { pack: Pack; log: Record<string, StationDay>; onReset: () => void }) {
   const [range, setRange] = useState<1 | 7 | 30>(7)
@@ -65,33 +66,33 @@ export default function StationReport({ pack, log, onReset }: { pack: Pack; log:
     <section className="card pad report">
       <div className="row" style={{ justifyContent: 'space-between' }}>
         <div>
-          <h2 style={{ fontSize: 22 }}>Station report</h2>
-          <p className="small muted">What people held up at this station, in {pack.name} rules. Counts only: no pictures are kept, and nothing leaves this device.</p>
+          <h2 style={{ fontSize: 22 }}>{t('Station report')}</h2>
+          <p className="small muted">{t('What people held up at this station, in {city} rules. Counts only: no pictures are kept, and nothing leaves this device.', { city: pack.name })}</p>
         </div>
         <div className="row">
           <div className="seg">
-            {RANGES.map(([n, name]) => <button key={n} className={range === n ? 'on' : ''} onClick={() => setRange(n)}>{name}</button>)}
+            {RANGES.map(([n, name]) => <button key={n} className={range === n ? 'on' : ''} onClick={() => setRange(n)}>{name()}</button>)}
           </div>
-          <button className="btn" onClick={csv} disabled={!asked}>Export CSV</button>
-          <button className="btn" onClick={() => confirm(`Clear this station's counts for ${pack.name}?`) && onReset()} disabled={!Object.keys(log).length}>Reset</button>
+          <button className="btn" onClick={csv} disabled={!asked}>{t('Export CSV')}</button>
+          <button className="btn" onClick={() => confirm(t("Clear this station's counts for {city}?", { city: pack.name })) && onReset()} disabled={!Object.keys(log).length}>{t('Reset')}</button>
         </div>
       </div>
 
       {!asked ? (
-        <p className="muted" style={{ padding: '28px 0 8px' }}>Nothing yet in this period. Start the camera or the demo feed above and counts appear here as people sort.</p>
+        <p className="muted" style={{ padding: '28px 0 8px' }}>{t('Nothing yet in this period. Start the camera or the demo feed above and counts appear here as people sort.')}</p>
       ) : (
         <>
           <div className="metric" style={{ marginTop: 16 }}>
-            <div className="card"><span className="label">Items sorted</span><b>{s.total}</b><span className="small muted">answered with a bin</span></div>
-            <div className="card"><span className="label">Sure enough to answer</span><b>{pct((s.total - s.tapped) / asked)}</b><span className="small muted">{s.tapped} settled with a tap, {s.unsure} left unsure</span></div>
-            <div className="card"><span className="label">Not for recycling</span><b>{s.total ? pct(notRecycling / s.total) : '–'}</b><span className="small muted">{notRecycling} items whose bin here is compost, trash or drop-off</span></div>
+            <div className="card"><span className="label">{t('Items sorted')}</span><b>{s.total}</b><span className="small muted">{t('answered with a bin')}</span></div>
+            <div className="card"><span className="label">{t('Sure enough to answer')}</span><b>{pct((s.total - s.tapped) / asked)}</b><span className="small muted">{t('{tapped} settled with a tap, {unsure} left unsure', { tapped: s.tapped, unsure: s.unsure })}</span></div>
+            <div className="card"><span className="label">{t('Not for recycling')}</span><b>{s.total ? pct(notRecycling / s.total) : '–'}</b><span className="small muted">{t('{count} items whose bin here is compost, trash or drop-off', { count: notRecycling })}</span></div>
           </div>
 
           <div className="report-grid">
             {range > 1 && (
               <div>
-                <div className="label">Per day</div>
-                <div className="report-chart" role="img" aria-label={`Items sorted per day, last ${range} days`}>
+                <div className="label">{t('Per day')}</div>
+                <div className="report-chart" role="img" aria-label={t('Items sorted per day, last {days} days', { days: range })}>
                   {s.perDay.map((d) => (
                     <div key={d.day} className="col" title={`${d.day}: ${d.total}`}>
                       <div className="area">
@@ -106,7 +107,7 @@ export default function StationReport({ pack, log, onReset }: { pack: Pack; log:
               </div>
             )}
             <div>
-              <div className="label">By bin</div>
+              <div className="label">{t('By bin')}</div>
               <div style={{ display: 'grid', gap: 8, marginTop: 10 }}>
                 {known.sort((a, b) => s.bins[b.id] - s.bins[a.id]).map((b) => (
                   <div key={b.id} className="hbar">
@@ -118,7 +119,7 @@ export default function StationReport({ pack, log, onReset }: { pack: Pack; log:
               </div>
             </div>
             <div>
-              <div className="label">Most asked about</div>
+              <div className="label">{t('Most asked about')}</div>
               <div style={{ display: 'grid', gap: 6, marginTop: 10 }}>
                 {s.items.slice(0, 6).map(([id, n]) => {
                   const b = binById(pack, pack.items[id].bin)
@@ -134,7 +135,7 @@ export default function StationReport({ pack, log, onReset }: { pack: Pack; log:
           </div>
           {s.items.length > 0 && (
             <div className="notice" style={{ background: 'var(--accent-soft)', color: '#0b4a3a', marginTop: 18 }}>
-              <strong>Sign idea:</strong> {itemName(s.items[0][0])} is what people ask about most here. A sign above the bins that says “{itemName(s.items[0][0])}: {binById(pack, pack.items[s.items[0][0]].bin).name}” answers it before anyone has to ask.
+              <strong>{t('Sign idea:')}</strong> {t('{item} is what people ask about most here. A sign above the bins that says “{item}: {bin}” answers it before anyone has to ask.', { item: itemName(s.items[0][0]), bin: binById(pack, pack.items[s.items[0][0]].bin).name })}
             </div>
           )}
         </>

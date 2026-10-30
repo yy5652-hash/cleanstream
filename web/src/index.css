@@ -45,6 +45,7 @@ p { margin: 0; }
 .nav button.on { background: var(--ink); color: #fff; }
 .city { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; white-space: nowrap; }
 .city select { border: 1px solid var(--line); background: var(--card); border-radius: 10px; padding: 7px 10px; font-weight: 600; color: var(--ink); }
+.lang { border: 1px solid var(--line); background: var(--card); border-radius: 10px; padding: 7px 10px; font-weight: 600; color: var(--ink); font-size: 14px; }
 
 main { max-width: 1180px; margin: 0 auto; padding: 28px 24px 64px; }
 .lede { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 22px; flex-wrap: wrap; }
@@ -295,3 +296,18 @@ table.list tr.click:hover td { background: #f8f9f6; }
 .k-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2cqw; margin: 1.4cqw 0 1cqw; max-width: 35cqw; }
 .k-choice { display: grid; justify-items: start; gap: 0.7cqw; border: 0; border-radius: 1.2cqw; padding: 1.3cqw 1.4cqw; background: #fffaf0; color: #3d2603; font: inherit; font-size: 1.8cqw; font-weight: 800; text-align: left; cursor: pointer; box-shadow: 0 0.3cqw 1cqw rgba(61, 38, 3, 0.15); }
 .k-choice:hover, .k-choice:focus-visible { outline: 0.3cqw solid #3d2603; }
+
+/* kiosk language buttons */
+.k-langs { display: inline-flex; gap: 0.3cqw; margin-left: 1.2cqw; vertical-align: middle; }
+.k-langs button { border: 0; background: rgba(255, 255, 255, 0.08); color: #cfe0d9; border-radius: 99px; padding: 0.5cqw 0.9cqw; font-size: 1.15cqw; font-weight: 600; cursor: pointer; }
+.k-langs button.on { background: #fff; color: #12201c; }
+
+/* phones: the header scrolls away; language beside the logo, then city, then the tabs on a row of their own */
+@media (max-width: 560px) {
+  .top { position: static; }
+  .brand { margin-right: auto; }
+  .lang { order: 1; }
+  .city { order: 2; width: 100%; }
+  .city select { flex: 1; min-width: 0; }
+  .nav { order: 3; width: 100%; }
+}

@@ -46,6 +46,12 @@ before: The Recycling Partnership's cart-tagging work cut contamination 31% in A
 
 <p><img src="docs/station.jpg" width="49%" alt="Bin station"> <img src="docs/audit.jpg" width="49%" alt="Bin audit"></p>
 
+Every resident-facing screen, rule and search also works in Spanish, Simplified Chinese and Traditional Chinese. The
+language follows the browser, and `?kiosk&lang=es` sets a station's own language. Search understands everyday words in
+the chosen language and in English ("unicel", "pilas", "保麗龍"), and the station speaks in that language. A kiosk returns
+to its own language after 45 idle seconds. The translations are machine-made and say so, with the official source a tap
+away; `web/src/i18n.test.ts` checks that every string, rule and prep step is present.
+
 ## How it works
 
 1. **Photo.** Never uploaded. Everything below runs in a Web Worker with ONNX Runtime Web (WebAssembly).

@@ -1,0 +1,2143 @@
+{
+ "ui": {
+  "Scan": "識別",
+  "Bin station": "分類站",
+  "Audit": "檢查",
+  "Rules": "規則",
+  "Quiz": "測驗",
+  "How it works": "工作原理",
+  "The model downloads once, then works offline": "模型只需下載一次，之後即可離線使用",
+  "Model": "模型",
+  "Add Cleanstream to your home screen or dock; it works offline": "將 Cleanstream 新增到主螢幕或程式塢，可離線使用",
+  "Install app": "安裝應用",
+  "Rules for": "規則地區",
+  "Language": "語言",
+  "Loading…": "載入中…",
+  "Cleanstream runs entirely in your browser. Photos never leave your device. Rules link to their official sources.": "Cleanstream 完全在瀏覽器中執行。照片不會離開你的裝置。規則附有官方來源連結。",
+  "Item being checked": "正在識別的物品",
+  "Show me the item": "讓我看看物品",
+  "Drop a photo here, upload one, or use your camera.": "將照片拖到這裡、上傳照片，或使用相機。",
+  "Capture": "拍照",
+  "Cancel": "取消",
+  "Use camera": "使用相機",
+  "Upload photo": "上傳照片",
+  "Or try a test photo the model never saw in training": "也可以試試模型訓練時從未見過的測試照片",
+  "{source} test set": "{source} 測試集",
+  "Search an item: coffee cup, pizza box, batteries…": "搜尋物品：咖啡杯、披薩盒、電池…",
+  "Search an item": "搜尋物品",
+  "Nothing matches “{query}”. Try a simpler word, or show it with a photo. When in doubt, keep it out of recycling.": "沒有找到“{query}”。試試更簡單的詞，或拍張照片。有疑問時，請勿放入回收桶。",
+  "Often asked:": "常見查詢：",
+  "What is it?": "這是什麼？",
+  "Close": "關閉",
+  "Filter: foil, mug, vape…": "篩選：鋁箔、馬克杯、電子煙…",
+  "Filter item types": "篩選物品型別",
+  "{item}: {bin} in {city}.": "{item}：在{city}應放入{bin}。",
+  "Which bin? Cleanstream": "放哪個桶？Cleanstream",
+  "Link copied": "連結已複製",
+  "Share": "分享",
+  "Not sure about this one.": "這個還不確定。",
+  "It could go more than one way in {city}. Pick what it is below, or check the label. When in doubt, keep it out of recycling.": "在{city}，它可能對應不同的桶。請在下方選擇物品型別，或檢視標籤。有疑問時，請勿放入回收桶。",
+  "Best guess": "最可能的分類",
+  "Goes in": "應放入",
+  "You chose": "你選擇了",
+  "item type": "物品型別",
+  "sure of the bin": "分類置信度",
+  "Also accepted in: {bins}": "也可放入：{bins}",
+  "Item": "物品",
+  "{confidence} sure of the item": "物品識別置信度為 {confidence}",
+  "Before you toss it": "投放前",
+  "Source: {authority}": "來源：{authority}",
+  "Translated by Cleanstream. If in doubt, check the official source, which is in English.": "由 Cleanstream 翻譯。如有疑問，請查閱英文官方來源。",
+  "Same item in other places": "同一物品在其他地區",
+  "Model suggestions": "模型建議",
+  "Not right? Tap the correct item": "識別不對？點選正確的物品",
+  "Use model answer": "使用模型結果",
+  "Something else…": "其他物品…",
+  "Not the item you meant?": "不是你要找的物品？",
+  "Browse all items": "瀏覽所有物品",
+  "Which bin does this go in?": "這個該放哪個桶？",
+  "Search an item or show Cleanstream a photo. It answers with the rules for {city}, including how to prep it.": "搜尋物品或給 Cleanstream 看張照片，即可檢視{city}的分類規則和投放前的處理方法。",
+  "To save your data, the photo model (96 MB) downloads only when you ask. Search above works now.": "為節省流量，照片模型（96 MB）只會在你請求時下載。上方搜尋現在就能使用。",
+  "Download the photo model": "下載照片模型",
+  "Downloading the model once ({loaded} of {total} MB). It runs in this browser, so photos stay on your device, and it works offline after this. Search works already.": "正在進行一次性模型下載（{loaded}/{total} MB）。模型在此瀏覽器中執行，照片會留在你的裝置上，下載後可離線使用。搜尋已可使用。",
+  "Downloading the model once. It runs in this browser, so photos stay on your device, and it works offline after this. Search works already.": "正在進行一次性模型下載。模型在此瀏覽器中執行，照片會留在你的裝置上，下載後可離線使用。搜尋已可使用。",
+  "Looking…": "識別中…",
+  "The model could not load: {error}": "模型載入失敗：{error}",
+  "Your answer appears here: the bin, how sure the model is, and what to do before you toss it.": "這裡會顯示結果：應放入的桶、模型置信度，以及投放前的處理方法。",
+  "Recognised on this device in {ms} ms. Nothing was uploaded.": "在本裝置上用時 {ms} 毫秒完成識別。未上傳任何內容。",
+  "{item}. {bin}.": "{item}。{bin}。",
+  "Not sure. Which one is it? Tap it on the screen.": "還不確定。是哪一種？請在螢幕上點選。",
+  "Put any old tablet or phone above your bins. People hold up an item and the right bin lights up, in your city's rules. It runs offline and keeps counts, never pictures.": "把閒置平板或手機放在分類桶上方。居民舉起物品，符合當地規則的桶就會亮起。可離線執行，只儲存計數，不儲存照片。",
+  "Camera": "相機",
+  "Demo feed": "演示",
+  "Off": "關閉",
+  "Set up bins": "設定分類桶",
+  "Full screen": "全屏",
+  "Kiosk link": "自助終端連結",
+  "Cleanstream bin station: {city} rules": "Cleanstream 分類站：{city}規則",
+  "{city} rules": "{city}規則",
+  "sorted today": "件今日已分類",
+  "Bins": "分類桶",
+  "Choose Camera to start, or Demo feed to step through test photos.": "選擇“相機”開始，或選擇“演示”依次檢視測試照片。",
+  "Demo feed: held-out test photos": "演示：未參與訓練的測試照片",
+  "Hold your item here": "將物品舉到這裡",
+  "Hi!": "你好！",
+  "Not sure which bin? Hold it up and I’ll tell you.": "不知道放哪個桶？舉起物品，我來告訴你。",
+  "Getting ready…": "準備中…",
+  "Did you know?": "你知道嗎？",
+  "Let me look…": "讓我看看…",
+  "goes in the": "應放入",
+  "Not in these bins. {prep}": "不應放入這些桶。{prep}",
+  "Hmm, which one is it?": "嗯，是哪一種？",
+  "Tap the one you're holding, or show me the label. When in doubt, keep it out of recycling.": "點選你手中的物品，或讓我看看標籤。有疑問時，請勿放入回收桶。",
+  "Thanks for sorting right!": "感謝正確分類！",
+  "{count} items sorted here today": "今天這裡已分類 {count} 件物品",
+  "Station setup": "分類站設定",
+  "Done": "完成",
+  "Tick the bins that stand here and put them in order, left to right, so the arrow points at the right one.": "勾選這裡實際擺放的桶，並按從左到右排序，讓箭頭指向正確的桶。",
+  "Answers will be spoken.": "將朗讀分類結果。",
+  "Say the answer out loud": "朗讀分類結果",
+  "For people who can't read the screen from where they stand. Uses the device's built-in voice.": "方便站在遠處看不清螢幕的人。使用裝置內建語音。",
+  "Today": "今天",
+  "7 days": "7 天",
+  "30 days": "30 天",
+  "Station report": "分類站報告",
+  "What people held up at this station, in {city} rules. Counts only: no pictures are kept, and nothing leaves this device.": "記錄居民在此站展示的物品，按{city}規則分類。只保留計數，不儲存照片，任何內容都不會離開本裝置。",
+  "Export CSV": "匯出 CSV",
+  "Clear this station's counts for {city}?": "要清除本站的{city}計數嗎？",
+  "Reset": "重置",
+  "Nothing yet in this period. Start the camera or the demo feed above and counts appear here as people sort.": "此時段暫無資料。開啟上方相機或演示後，分類計數會顯示在這裡。",
+  "Items sorted": "已分類物品",
+  "answered with a bin": "已給出分類桶結果",
+  "Sure enough to answer": "有足夠把握給出結果",
+  "{tapped} settled with a tap, {unsure} left unsure": "{tapped} 次經點選確認，{unsure} 次仍不確定",
+  "Not for recycling": "不應回收",
+  "{count} items whose bin here is compost, trash or drop-off": "{count} 件物品在這裡應堆肥、丟入垃圾桶或送至送交點",
+  "Per day": "按天",
+  "Items sorted per day, last {days} days": "最近 {days} 天的每日分類數量",
+  "By bin": "按桶",
+  "Most asked about": "最常查詢的物品",
+  "Sign idea:": "標牌建議：",
+  "{item} is what people ask about most here. A sign above the bins that says “{item}: {bin}” answers it before anyone has to ask.": "這裡最常被問到的是{item}。在桶上方放一塊寫著“{item}：{bin}”的標牌，大家不用詢問就能知道。",
+  "I sorted {right} of {total} items into the right bin for {city}. Can you beat it?": "按{city}的規則，我將 {total} 件物品中的 {right} 件分對了桶。你能超過我嗎？",
+  "Which bin? quiz": "放哪個桶？測驗",
+  "Which bin? Quiz": "放哪個桶？測驗",
+  "Ten everyday items. Pick the bin each one goes in under {city} rules. Half of them are items that places disagree on.": "十件日常物品。按{city}規則，選出每件物品該放的桶。其中一半在不同地區的分類規則不同。",
+  "Perfect sorting. Your bins thank you.": "全部分對了。感謝你正確分類！",
+  "Good sorting. A few tricky ones left.": "分得不錯，還有幾個容易弄錯的。",
+  "The rules are tricky. Here is what to remember.": "規則有些複雜，下面這些值得記住。",
+  "Worth remembering": "值得記住",
+  "Play again": "再玩一次",
+  "Share your score": "分享成績",
+  "Item {number} of {total}": "第 {number} 件，共 {total} 件",
+  "{count} right so far": "目前答對 {count} 題",
+  "right bin": "正確的桶",
+  "your pick": "你的選擇",
+  "Right.": "正確。",
+  "Not quite. In {city}: {bin}.": "不太對。在{city}應放入{bin}。",
+  "Before you toss it: {prep}": "投放前：{prep}",
+  "Next item": "下一件",
+  "See your score": "檢視成績",
+  "Every answer Cleanstream gives comes from this table, and every row links to the official source. Rules are plain JSON, so a campus or city can edit its own pack. Checked {date}.": "Cleanstream 的每個答案都來自此表，每行都附有官方來源連結。規則採用普通 JSON 格式，方便校園或城市編輯自己的規則包。核查日期：{date}。",
+  "Search items": "搜尋物品",
+  "Where places differ ({count})": "地區差異（{count}）",
+  "Source": "來源",
+  "Sources:": "來源：",
+  "Bin audit": "分類桶檢查",
+  "Measure contamination the way waste teams already do: pull items from a bin and photograph each one. Cleanstream sorts them, and you get the contamination rate and the top offenders. Audit before and after a change to see if it worked.": "像垃圾處理團隊一樣檢查混入雜物的情況：從桶中取出物品，逐件拍照。Cleanstream 會分類並顯示混入比例和主要錯投物品。在採取措施前後各檢查一次，即可判斷是否有效。",
+  "Site or station": "地點或分類站",
+  "e.g. Library lobby": "例如：圖書館大廳",
+  "Bin audited": "檢查的桶",
+  "Phase": "階段",
+  "Baseline (before)": "基線（改進前）",
+  "After change": "改進後",
+  "Date": "日期",
+  "Start audit": "開始檢查",
+  "Site": "地點",
+  "Bin": "分類桶",
+  "Items": "物品",
+  "Contamination": "混入比例",
+  "No audits yet. Start one above.": "暫無檢查記錄。請在上方開始一次檢查。",
+  "Baseline": "基線",
+  "After": "改進後",
+  "Before and after": "前後對比",
+  "{change} points": "{change} 個百分點",
+  "{count} items": "{count} 件物品",
+  "← All audits": "← 所有檢查",
+  "Delete this audit?": "要刪除這次檢查嗎？",
+  "Delete": "刪除",
+  "Add photos of the items you pulled from this bin": "新增從這個桶中取出的物品照片",
+  "One item per photo. Drop a whole folder's worth at once.": "每張照片只拍一件物品。可以一次拖入整個資料夾的照片。",
+  "Choose photos": "選擇照片",
+  "Download the photo model (96 MB)": "下載照片模型（96 MB）",
+  "Loading model…": "模型載入中…",
+  "Sorting {count} photos…": "正在分類 {count} 張照片…",
+  "Sorting {count} photo…": "正在分類 {count} 張照片…",
+  "Sorting": "分類中",
+  "Sorting…": "分類中…",
+  "Belongs in {bin}": "應放入{bin}",
+  "Belongs here": "應放在這裡",
+  " · corrected": " · 已糾正",
+  "Don't belong": "不屬於此桶",
+  "Top contaminants": "主要錯投物品",
+  "None yet.": "暫無。",
+  "Where to focus:": "優先改進：",
+  "{item} makes up {percent} of the contamination here. In {city} it belongs in the {bin}. A sign at this station that names it is the cheapest first fix.": "{item}佔這裡混入雜物的 {percent}。在{city}，它應放入{bin}。先在本站放一塊註明此物品的標牌，是成本最低的改進辦法。",
+  "Tap any tile to correct it. Corrections count in the totals and are marked in the export.": "點選任一照片即可糾正分類。糾正結果會計入總數，並在匯出檔案中標註。",
+  "Untitled site": "未命名地點"
+ },
+ "cities": {
+  "nyc": "紐約",
+  "sf": "舊金山",
+  "la": "洛杉磯",
+  "chi": "芝加哥",
+  "sea": "西雅圖",
+  "us": "美國（通用）"
+ },
+ "items": {
+  "plastic_bottle": {
+   "name": "塑膠瓶或塑膠壺",
+   "examples": "礦泉水瓶、汽水瓶、牛奶壺和洗衣液壺",
+   "aka": [
+    "塑膠瓶",
+    "礦泉水瓶",
+    "飲料瓶",
+    "汽水瓶",
+    "洗髮水瓶",
+    "洗衣液瓶",
+    "牛奶壺",
+    "果汁瓶",
+    "塑膠壺",
+    "醬油瓶",
+    "瓶子",
+    "飲料瓶子"
+   ]
+  },
+  "plastic_container": {
+   "name": "硬塑膠容器",
+   "examples": "塑膠盒、翻蓋盒、外賣盒",
+   "aka": [
+    "外賣盒",
+    "塑膠盒",
+    "飯盒",
+    "打包盒",
+    "酸奶盒",
+    "黃油盒",
+    "沙拉盒",
+    "水果盒",
+    "塑膠托盤",
+    "保鮮盒",
+    "塑膠餐盒",
+    "翻蓋盒"
+   ]
+  },
+  "plastic_cup": {
+   "name": "塑膠杯",
+   "examples": "透明冷飲杯、派對杯",
+   "aka": [
+    "塑膠杯",
+    "冷飲杯",
+    "冰咖啡杯",
+    "奶茶杯",
+    "果汁杯",
+    "一次性塑膠杯",
+    "派對杯",
+    "珍珠奶茶杯"
+   ]
+  },
+  "plastic_lid_cap": {
+   "name": "塑膠蓋",
+   "examples": "瓶蓋、杯蓋和盒蓋",
+   "aka": [
+    "塑膠蓋",
+    "瓶蓋",
+    "杯蓋",
+    "咖啡杯蓋",
+    "塑膠瓶蓋",
+    "盒蓋",
+    "奶茶杯蓋",
+    "酸奶蓋"
+   ]
+  },
+  "plastic_bag_film": {
+   "name": "塑膠袋或薄膜",
+   "examples": "購物袋、包裝膜、快遞袋",
+   "aka": [
+    "塑膠袋",
+    "購物袋",
+    "超市袋",
+    "保鮮膜",
+    "氣泡膜",
+    "密封袋",
+    "快遞袋",
+    "麵包袋",
+    "垃圾袋",
+    "塑膠薄膜",
+    "自封袋",
+    "包裝袋"
+   ]
+  },
+  "snack_wrapper": {
+   "name": "零食包裝",
+   "examples": "薯片袋、糖紙、軟包裝袋",
+   "aka": [
+    "零食袋",
+    "薯片袋",
+    "糖紙",
+    "糖果包裝",
+    "巧克力包裝",
+    "餅乾袋",
+    "咖啡袋",
+    "果汁軟袋",
+    "能量棒包裝",
+    "零食包裝"
+   ]
+  },
+  "foam": {
+   "name": "泡沫塑膠（聚苯乙烯）",
+   "examples": "泡沫杯、泡沫翻蓋盒、包裝泡沫",
+   "aka": [
+    "泡沫塑膠",
+    "保麗龍",
+    "泡沫杯",
+    "泡沫盒",
+    "泡沫餐盒",
+    "泡沫板",
+    "包裝泡沫",
+    "泡沫填充粒",
+    "聚苯乙烯",
+    "泡沫托盤"
+   ]
+  },
+  "plastic_utensil_straw": {
+   "name": "塑膠餐具或吸管",
+   "examples": "叉子、勺子、吸管",
+   "aka": [
+    "塑膠餐具",
+    "塑膠叉",
+    "塑膠勺",
+    "塑膠刀",
+    "一次性餐具",
+    "吸管",
+    "塑膠吸管",
+    "攪拌棒",
+    "叉子",
+    "勺子"
+   ]
+  },
+  "paper": {
+   "name": "紙張",
+   "examples": "辦公用紙、郵件、報紙、雜誌",
+   "aka": [
+    "紙",
+    "紙張",
+    "報紙",
+    "雜誌",
+    "辦公紙",
+    "列印紙",
+    "信封",
+    "廣告單",
+    "傳單",
+    "筆記本紙",
+    "信紙",
+    "郵件"
+   ]
+  },
+  "paper_bag": {
+   "name": "紙袋",
+   "examples": "超市紙袋和外賣紙袋",
+   "aka": [
+    "紙袋",
+    "牛皮紙袋",
+    "外賣紙袋",
+    "購物紙袋",
+    "超市紙袋",
+    "麵包紙袋",
+    "午餐紙袋",
+    "打包紙袋"
+   ]
+  },
+  "cardboard": {
+   "name": "紙板",
+   "examples": "快遞箱、麥片盒、紙筒",
+   "aka": [
+    "快遞盒",
+    "紙箱",
+    "快遞箱",
+    "紙板",
+    "亞馬遜紙箱",
+    "麥片盒",
+    "鞋盒",
+    "紙筒",
+    "衛生紙筒",
+    "雞蛋紙盒",
+    "瓦楞紙",
+    "紙盒"
+   ]
+  },
+  "pizza_box": {
+   "name": "披薩盒",
+   "examples": "乾淨或有油汙的披薩盒",
+   "aka": [
+    "披薩盒",
+    "比薩盒",
+    "披薩紙盒",
+    "比薩紙盒",
+    "油膩披薩盒",
+    "乾淨披薩盒",
+    "披薩包裝盒",
+    "油汙披薩盒"
+   ]
+  },
+  "soiled_paper": {
+   "name": "沾有食物的紙",
+   "examples": "用過的餐巾紙、廚房紙、面巾紙",
+   "aka": [
+    "餐巾紙",
+    "廚房紙",
+    "面巾紙",
+    "紙巾",
+    "髒紙",
+    "油紙巾",
+    "用過的紙巾",
+    "紙盤",
+    "沾油的紙",
+    "擦手紙"
+   ]
+  },
+  "paper_cup": {
+   "name": "紙杯",
+   "examples": "熱咖啡紙杯",
+   "aka": [
+    "咖啡杯",
+    "紙杯",
+    "紙咖啡杯",
+    "熱飲杯",
+    "熱咖啡杯",
+    "星巴克杯",
+    "一次性紙杯",
+    "外帶紙杯"
+   ]
+  },
+  "carton": {
+   "name": "複合紙盒",
+   "examples": "牛奶、果汁和高湯紙盒",
+   "aka": [
+    "牛奶盒",
+    "果汁盒",
+    "飲料紙盒",
+    "燕麥奶盒",
+    "杏仁奶盒",
+    "湯料盒",
+    "高湯紙盒",
+    "利樂包",
+    "紙盒飲料",
+    "豆奶盒"
+   ]
+  },
+  "metal_can": {
+   "name": "金屬罐",
+   "examples": "汽水罐、食品罐頭",
+   "aka": [
+    "易拉罐",
+    "汽水罐",
+    "啤酒罐",
+    "鋁罐",
+    "鐵罐",
+    "罐頭盒",
+    "食品罐",
+    "貓糧罐",
+    "湯罐頭",
+    "飲料罐"
+   ]
+  },
+  "aluminum_foil": {
+   "name": "鋁箔",
+   "examples": "鋁箔、鋁箔托盤和烤盤",
+   "aka": [
+    "錫紙",
+    "鋁箔",
+    "鋁箔紙",
+    "錫箔紙",
+    "錫紙盒",
+    "鋁箔餐盒",
+    "鋁箔托盤",
+    "鋁箔烤盤",
+    "蛋撻錫紙託",
+    "錫紙盤"
+   ]
+  },
+  "aerosol_can": {
+   "name": "氣霧罐",
+   "examples": "噴霧罐",
+   "aka": [
+    "噴霧罐",
+    "氣霧罐",
+    "髮膠罐",
+    "定型噴霧",
+    "除臭噴霧",
+    "奶油噴罐",
+    "噴漆罐",
+    "食用油噴霧",
+    "氣霧劑"
+   ]
+  },
+  "metal_lid_scrap": {
+   "name": "小型金屬物品",
+   "examples": "罐蓋、瓶蓋、廢金屬",
+   "aka": [
+    "金屬蓋",
+    "鐵蓋",
+    "罐頭蓋",
+    "啤酒瓶蓋",
+    "金屬瓶蓋",
+    "易拉環",
+    "廢金屬",
+    "鐵絲衣架",
+    "鍋",
+    "平底鍋"
+   ]
+  },
+  "glass_bottle_jar": {
+   "name": "玻璃瓶或玻璃罐",
+   "examples": "飲料瓶、食品玻璃罐",
+   "aka": [
+    "玻璃瓶",
+    "玻璃罐",
+    "酒瓶",
+    "啤酒瓶",
+    "紅酒瓶",
+    "果醬瓶",
+    "醬料瓶",
+    "泡菜罐",
+    "飲料玻璃瓶",
+    "罐頭玻璃瓶"
+   ]
+  },
+  "drinking_glass_ceramic": {
+   "name": "玻璃水杯、陶瓷或碎玻璃",
+   "examples": "馬克杯、玻璃杯、碎片",
+   "aka": [
+    "玻璃杯",
+    "馬克杯",
+    "陶瓷",
+    "碎玻璃",
+    "陶瓷盤",
+    "鏡子",
+    "窗玻璃",
+    "水杯",
+    "陶瓷杯",
+    "碎瓷片"
+   ]
+  },
+  "food_scraps": {
+   "name": "廚餘",
+   "examples": "果皮、果核、剩飯剩菜",
+   "aka": [
+    "廚餘",
+    "剩飯",
+    "剩菜",
+    "果皮",
+    "香蕉皮",
+    "蘋果核",
+    "咖啡渣",
+    "雞蛋殼",
+    "骨頭",
+    "茶包",
+    "食物殘渣",
+    "蔬菜"
+   ]
+  },
+  "yard_waste": {
+   "name": "庭院垃圾",
+   "examples": "落葉、植物、樹枝",
+   "aka": [
+    "落葉",
+    "草屑",
+    "樹枝",
+    "植物",
+    "花",
+    "聖誕樹",
+    "修剪枝葉",
+    "庭院垃圾",
+    "青草",
+    "枯枝"
+   ]
+  },
+  "battery": {
+   "name": "電池",
+   "examples": "AA/AAA 電池、鋰離子電池、紐扣電池",
+   "aka": [
+    "電池",
+    "五號電池",
+    "七號電池",
+    "鋰電池",
+    "手機電池",
+    "充電電池",
+    "紐扣電池",
+    "9V電池",
+    "電子煙",
+    "電子煙電池",
+    "乾電池",
+    "蓄電池"
+   ]
+  },
+  "electronics": {
+   "name": "電子產品",
+   "examples": "手機、線纜、耳塞式耳機",
+   "aka": [
+    "電子產品",
+    "手機",
+    "膝上型電腦",
+    "充電器",
+    "資料線",
+    "耳機",
+    "耳塞",
+    "電子垃圾",
+    "平板電腦",
+    "鍵盤",
+    "滑鼠",
+    "電線"
+   ]
+  },
+  "textile": {
+   "name": "衣物和紡織品",
+   "examples": "衣服、床上用品、布料",
+   "aka": [
+    "衣服",
+    "衣物",
+    "舊衣服",
+    "T恤",
+    "牛仔褲",
+    "毛衣",
+    "毛巾",
+    "床單",
+    "布料",
+    "襪子",
+    "紡織品"
+   ]
+  },
+  "shoes": {
+   "name": "鞋子",
+   "examples": "運動鞋、靴子",
+   "aka": [
+    "鞋子",
+    "鞋",
+    "運動鞋",
+    "靴子",
+    "涼鞋",
+    "拖鞋",
+    "球鞋",
+    "帆布鞋",
+    "舊鞋"
+   ]
+  },
+  "cigarette_butt": {
+   "name": "菸頭",
+   "examples": "香菸過濾嘴",
+   "aka": [
+    "菸頭",
+    "菸蒂",
+    "香菸",
+    "菸屁股",
+    "香菸過濾嘴",
+    "菸嘴",
+    "香菸頭",
+    "抽完的煙"
+   ]
+  },
+  "blister_pack": {
+   "name": "泡罩包裝",
+   "examples": "藥片板、帶塑膠背板的包裝",
+   "aka": [
+    "藥片板",
+    "藥板",
+    "藥片包裝",
+    "藥品包裝",
+    "泡罩包裝",
+    "膠囊板",
+    "藥片鋁塑板",
+    "吸塑包裝"
+   ]
+  },
+  "rope_string": {
+   "name": "繩子或細繩",
+   "examples": "麻繩、線繩",
+   "aka": [
+    "繩子",
+    "細繩",
+    "麻繩",
+    "線繩",
+    "繩索",
+    "水管",
+    "花園軟管",
+    "聖誕燈串",
+    "尼龍繩",
+    "毛線"
+   ]
+  },
+  "squeezable_tube": {
+   "name": "擠壓軟管",
+   "examples": "牙膏、化妝品",
+   "aka": [
+    "牙膏管",
+    "牙膏",
+    "軟管包裝",
+    "乳霜管",
+    "護膚品軟管",
+    "洗面奶管",
+    "擠壓軟管",
+    "護手霜管"
+   ]
+  },
+  "mask_gloves": {
+   "name": "口罩或手套",
+   "examples": "一次性口罩和手套",
+   "aka": [
+    "口罩",
+    "手套",
+    "一次性口罩",
+    "一次性手套",
+    "乳膠手套",
+    "醫用口罩",
+    "丁腈手套",
+    "防護口罩",
+    "塑膠手套"
+   ]
+  }
+ },
+ "packs": {
+  "chi": {
+   "bins": {
+    "blue": {
+     "name": "藍桶",
+     "accepts": "回收：金屬罐、玻璃、塑膠瓶和容器、複合紙盒、紙張。散放，不裝袋"
+    },
+    "black": {
+     "name": "黑桶",
+     "accepts": "垃圾：無法回收或送交的物品"
+    },
+    "dropoff": {
+     "name": "送交點",
+     "accepts": "廚餘、庭院垃圾、電池、電子廢棄物、化學品、紡織品"
+    }
+   },
+   "items": {
+    "plastic_bottle": {
+     "prep": [
+      "倒空",
+      "散放，不裝袋"
+     ],
+     "why": "芝加哥的藍桶接收塑膠瓶和塑膠壺。"
+    },
+    "plastic_container": {
+     "prep": [
+      "倒空",
+      "散放，不裝袋",
+      "泡沫塑膠（#6）放入黑桶"
+     ],
+     "why": "接收標有 #1 至 #5 或 #7 的硬塑膠容器；不接收 #6。"
+    },
+    "plastic_cup": {
+     "prep": [
+      "倒空",
+      "檢視底部編號：#6 放入黑桶"
+     ],
+     "why": "接收標有 #1 至 #5 或 #7 的硬塑膠；不接收泡沫杯及其他 #6 杯子。"
+    },
+    "plastic_lid_cap": {
+     "prep": [
+      "散放，不裝袋",
+      "#6 或泡沫塑膠蓋放入黑桶"
+     ],
+     "why": "市政府舊版指南將塑膠瓶蓋列為可接收物品，但只有部分分揀廠接收。"
+    },
+    "plastic_bag_film": {
+     "prep": [
+      "絕不放入藍桶，既不能散放，也不能用作內襯袋",
+      "乾淨的塑膠袋和薄膜：送到商店的回收箱"
+     ],
+     "why": "塑膠袋和薄膜會卡住分揀機器，是芝加哥回收物中最常見的雜物之一。"
+    },
+    "snack_wrapper": {
+     "prep": [
+      "絕不放入藍桶"
+     ],
+     "why": "市政府要求居民不要將袋子和其他軟塑膠放入藍桶。"
+    },
+    "foam": {
+     "prep": [
+      "絕不放入藍桶"
+     ],
+     "why": "泡沫塑膠屬於 #6 塑膠，因沒有回收市場，市政府不回收。"
+    },
+    "plastic_utensil_straw": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "藍桶接收塑膠瓶和容器；塑膠餐具和吸管不在市政府接收清單上。"
+    },
+    "paper": {
+     "prep": [
+      "散放，不裝袋",
+      "不接收碎紙"
+     ],
+     "why": "接收報紙、雜誌、廣告郵件和辦公用紙。"
+    },
+    "paper_bag": {
+     "prep": [
+      "散放，不套另一層袋子",
+      "溼袋子或沾有食物的袋子放入黑桶"
+     ],
+     "why": "紙袋列在市政府接收的紙類清單中。"
+    },
+    "cardboard": {
+     "prep": [
+      "拆開並壓平紙箱",
+      "散放，不裝袋"
+     ],
+     "why": "接收紙板；壓平紙箱以節省桶內空間。"
+    },
+    "pizza_box": {
+     "prep": [
+      "去掉所有食物、襯紙和餐巾紙",
+      "有油漬也可以"
+     ],
+     "why": "市政府說明，披薩盒清空後可以回收；廚餘送交點不接收披薩盒。"
+    },
+    "soiled_paper": {
+     "prep": [
+      "不要放入藍桶",
+      "廚餘送交點不接收"
+     ],
+     "why": "芝加哥的廚餘送交點不接收餐巾紙和紙張，髒紙也無法回收。"
+    },
+    "paper_cup": {
+     "prep": [
+      "倒空"
+     ],
+     "why": "芝加哥未將紙杯列為可接收物品，因此放入黑桶更穩妥。"
+    },
+    "carton": {
+     "prep": [
+      "倒空",
+      "不要壓扁",
+      "散放，不裝袋"
+     ],
+     "why": "接收牛奶和果汁紙盒；市政府要求不要壓扁。"
+    },
+    "metal_can": {
+     "prep": [
+      "倒空",
+      "不要壓扁"
+     ],
+     "why": "接收鋁罐、鋼罐和馬口鐵罐。"
+    },
+    "aluminum_foil": {
+     "prep": [
+      "去掉食物殘渣"
+     ],
+     "why": "鋁箔和派盤列在市政府接收的金屬清單中。"
+    },
+    "aerosol_can": {
+     "prep": [
+      "絕不放入藍桶",
+      "送至 Household Chemicals & Computer Recycling Facility",
+      "週二、週四和每月第一個週六開放"
+     ],
+     "why": "氣霧罐在分揀廠存在安全隱患；市政府的化學品處理設施接收所有氣霧罐。"
+    },
+    "metal_lid_scrap": {
+     "prep": [
+      "還能使用的鍋具：捐贈或再利用"
+     ],
+     "why": "藍桶接收鋼罐、鋁罐和鋁箔；蓋子和廢金屬不在市政府接收清單上。"
+    },
+    "glass_bottle_jar": {
+     "prep": [
+      "倒空",
+      "取下蓋子",
+      "散放，不裝袋"
+     ],
+     "why": "接收玻璃瓶和玻璃罐。"
+    },
+    "drinking_glass_ceramic": {
+     "prep": [
+      "包好碎片，避免割傷他人"
+     ],
+     "why": "只接收玻璃瓶和玻璃罐，因此玻璃水杯、陶瓷和碎玻璃應放入黑桶。"
+    },
+    "food_scraps": {
+     "prep": [
+      "更好的選擇：送至市政府廚餘送交點（需先登記，不允許使用任何袋子）",
+      "否則放入黑桶"
+     ],
+     "why": "芝加哥沒有路邊收運的堆肥桶，因此廚餘應作為垃圾處理；也可使用市政府免費送交點，那裡接收所有食物，包括肉和骨頭。"
+    },
+    "yard_waste": {
+     "prep": [
+      "單獨裝袋，不與垃圾和回收物混裝",
+      "撥打 311 預約收運",
+      "聖誕樹：送到市政府一月份的樹木送交點"
+     ],
+     "why": "市政府按預約單獨收運裝袋的庭院垃圾並製成堆肥；廚餘送交點不接收這類垃圾。"
+    },
+    "battery": {
+     "prep": [
+      "充電電池、鋰電池和汽車電池：送至 Household Chemicals & Computer Recycling Facility",
+      "絕不放入藍桶",
+      "鹼性電池（AA、AAA、9V）：該設施不接收，放入黑桶"
+     ],
+     "why": "鋰離子電池會在分揀廠引發火災，因此絕不能放入藍桶。"
+    },
+    "electronics": {
+     "prep": [
+      "送至 Household Chemicals & Computer Recycling Facility",
+      "只接收清單上的物品：電腦、電視、電話、印表機、鍵盤",
+      "先檢視開放時間（週二、週四、每月第一個週六）"
+     ],
+     "why": "伊利諾伊州法律禁止將大多數電子產品丟入垃圾，因此芝加哥將它們送至電腦回收設施。"
+    },
+    "textile": {
+     "prep": [
+      "捐贈還能穿用的物品",
+      "其餘送至紡織品送交點",
+      "絕不放入藍桶"
+     ],
+     "why": "回收廠無法分揀出紡織品，因此市政府引導居民選擇再利用渠道和送交點。"
+    },
+    "shoes": {
+     "prep": [
+      "捐贈還能穿的成雙鞋子",
+      "絕不放入藍桶"
+     ],
+     "why": "市政府舊版指南將鞋子列為捐贈或送交物品，不能放入藍桶。"
+    },
+    "cigarette_butt": {
+     "prep": [
+      "確認完全熄滅"
+     ],
+     "why": "菸頭無法回收；不可回收物放入黑桶。"
+    },
+    "blister_pack": {
+     "prep": [
+      "倒空"
+     ],
+     "why": "塑膠與鋁箔混合包裝不屬於藍桶接收的瓶子或容器。"
+    },
+    "rope_string": {
+     "prep": [
+      "絕不放入藍桶"
+     ],
+     "why": "軟管、電線和其他易纏繞物會卡住回收廠的分揀機器。"
+    },
+    "squeezable_tube": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "軟管包裝不屬於藍桶接收的瓶子或容器。"
+    },
+    "mask_gloves": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "口罩和手套無法回收；放入黑桶。"
+    }
+   }
+  },
+  "la": {
+   "bins": {
+    "blue": {
+     "name": "藍桶",
+     "accepts": "回收：紙張、紙板、玻璃、金屬、1、2 和 5 號塑膠"
+    },
+    "green": {
+     "name": "綠桶",
+     "accepts": "有機垃圾：廚餘、沾有食物的紙、庭院修剪物"
+    },
+    "black": {
+     "name": "黑桶",
+     "accepts": "垃圾：無法回收、堆肥或捐贈的物品"
+    },
+    "special": {
+     "name": "特殊送交點",
+     "accepts": "不能放入任何桶：電池、電子廢棄物、噴霧罐（送至 S.A.F.E. Centers）"
+    }
+   },
+   "items": {
+    "plastic_bottle": {
+     "prep": [
+      "倒空並沖洗乾淨",
+      "檢視編號：1、2 或 5",
+      "把蓋子擰回去"
+     ],
+     "why": "藍桶接收乾淨的 1、2 和 5 號塑膠瓶、塑膠壺。"
+    },
+    "plastic_container": {
+     "prep": [
+      "倒空並沖洗乾淨",
+      "檢視編號：僅限 1、2 或 5"
+     ],
+     "why": "接收乾淨的酸奶盒、人造黃油盒等容器，但須為 1、2 或 5 號塑膠。"
+    },
+    "plastic_cup": {
+     "prep": [
+      "倒空",
+      "標有可堆肥的杯子也放入黑桶"
+     ],
+     "why": "藍桶清單隻包括塑膠瓶、壺和盒狀容器，因此杯子放入黑桶。"
+    },
+    "plastic_lid_cap": {
+     "prep": [
+      "把蓋子擰回空瓶或空盒上",
+      "散落、軟薄或沒有標識的蓋子：放入黑桶"
+     ],
+     "why": "瓶蓋由藍桶接收的 2 或 5 號塑膠製成，LASAN 要求將蓋子留在瓶上。"
+    },
+    "plastic_bag_film": {
+     "prep": [
+      "儘量重複使用",
+      "絕不放入藍桶或綠桶"
+     ],
+     "why": "洛杉磯的藍桶不接收塑膠袋或薄膜，綠桶也不接收。"
+    },
+    "snack_wrapper": {
+     "prep": [
+      "倒空",
+      "絕不放入藍桶"
+     ],
+     "why": "糖果和零食包裝屬於塑膠薄膜，洛杉磯的回收指南將其列為垃圾。"
+    },
+    "foam": {
+     "prep": [
+      "絕不放入藍桶"
+     ],
+     "why": "洛杉磯不回收 Styrofoam 泡沫塑膠，應放入黑桶。"
+    },
+    "plastic_utensil_straw": {
+     "prep": [
+      "未處理木材或竹製餐具：放入綠桶",
+      "標有可堆肥的塑膠：放入黑桶"
+     ],
+     "why": "藍桶清單隻包括塑膠瓶、壺和盒狀容器，因此塑膠餐具和吸管放入黑桶。"
+    },
+    "paper": {
+     "prep": [
+      "保持乾淨、乾燥",
+      "有油汙或沾有食物的紙：放入綠桶"
+     ],
+     "why": "接收廣告郵件、報紙及其他乾淨、乾燥的紙張。"
+    },
+    "paper_bag": {
+     "prep": [
+      "保持乾淨、乾燥",
+      "有油汙或沾有食物的紙袋：放入綠桶"
+     ],
+     "why": "乾淨的紙放入藍桶，沾有食物的紙放入綠桶。"
+    },
+    "cardboard": {
+     "prep": [
+      "壓平",
+      "保持乾淨、乾燥"
+     ],
+     "why": "接收麥片盒和壓平的快遞紙箱。"
+    },
+    "pizza_box": {
+     "prep": [
+      "剩下的披薩邊可以一起放入",
+      "不要使用塑膠袋或可堆肥袋"
+     ],
+     "why": "LASAN 將有油汙的披薩盒列為應放入綠桶的食物汙染紙類。"
+    },
+    "soiled_paper": {
+     "prep": [
+      "僅限紙類，不得有塑膠或蠟塗層",
+      "不要使用塑膠袋或可堆肥袋"
+     ],
+     "why": "沾有食物的紙，如餐巾紙、廚房紙和咖啡濾紙，放入綠桶。"
+    },
+    "paper_cup": {
+     "prep": [
+      "倒空",
+      "沒有塑膠或蠟內襯的杯子：放入綠桶"
+     ],
+     "why": "洛杉磯的回收指南將一次性咖啡杯列為垃圾，因為大多數有塑膠內襯。"
+    },
+    "carton": {
+     "prep": [
+      "倒空並沖洗乾淨",
+      "有蠟塗層的紙盒：放入黑桶"
+     ],
+     "why": "LASAN 將複合紙盒列為藍桶接收的可回收物。"
+    },
+    "metal_can": {
+     "prep": [
+      "倒空並沖洗乾淨",
+      "晾乾"
+     ],
+     "why": "接收鋁罐和馬口鐵罐。"
+    },
+    "aluminum_foil": {
+     "prep": [
+      "刮掉食物殘渣",
+      "保持乾淨、乾燥"
+     ],
+     "why": "接收乾淨的鋁箔。"
+    },
+    "aerosol_can": {
+     "prep": [
+      "完全用盡",
+      "送至 S.A.F.E. Center",
+      "絕不放入藍桶或黑桶"
+     ],
+     "why": "LASAN 將氣霧罐列為應送至 S.A.F.E. Centers 的家庭危險廢物。"
+    },
+    "metal_lid_scrap": {
+     "prep": [
+      "電器和大型金屬物品：預約免費大件收運"
+     ],
+     "why": "洛杉磯的藍桶清單包括鋁罐、馬口鐵罐和乾淨鋁箔，不包括蓋子或廢金屬，因此小型金屬物品放入黑桶。"
+    },
+    "glass_bottle_jar": {
+     "prep": [
+      "倒空並沖洗乾淨",
+      "任何顏色都可以"
+     ],
+     "why": "接收任何顏色的玻璃瓶和玻璃罐。"
+    },
+    "drinking_glass_ceramic": {
+     "prep": [
+      "包好尖銳碎片，避免割傷他人"
+     ],
+     "why": "碎玻璃和餐具無法回收，應放入黑桶。"
+    },
+    "food_scraps": {
+     "prep": [
+      "用碗或廚房小桶收集",
+      "散倒入綠桶",
+      "不要使用塑膠袋或可堆肥袋"
+     ],
+     "why": "廚餘，包括肉、骨頭和乳製品，放入綠桶。"
+    },
+    "yard_waste": {
+     "prep": [
+      "散放，不裝塑膠袋",
+      "太多了？使用每年免費的枝條收運服務"
+     ],
+     "why": "花、草屑、樹木和灌木修剪物以及乾淨的未處理木材放入綠桶。"
+    },
+    "battery": {
+     "prep": [
+      "用膠帶封住電池端子",
+      "送至 S.A.F.E. Center",
+      "小型家用電池可放入圖書館的電池收集桶"
+     ],
+     "why": "電池屬於家庭危險廢物，可能引發火災，因此絕不能放入垃圾或回收桶。"
+    },
+    "electronics": {
+     "prep": [
+      "先清除個人資料",
+      "儘可能取出電池",
+      "送至 S.A.F.E. Center"
+     ],
+     "why": "LASAN 在 S.A.F.E. Centers 接收電子廢棄物，不透過路邊桶收集。"
+    },
+    "textile": {
+     "prep": [
+      "乾淨且還能穿用的，請捐贈",
+      "磨損或破裂的布料：放入黑桶"
+     ],
+     "why": "黑桶接收不適合捐贈的破舊布料，紡織品不在藍桶或綠桶接收清單上。"
+    },
+    "shoes": {
+     "prep": [
+      "還能穿的成雙鞋子，請優先捐贈",
+      "破舊鞋子：放入黑桶"
+     ],
+     "why": "鞋子不在藍桶或綠桶接收清單上，因此破舊鞋子與其他無法再利用的物品一起放入黑桶。"
+    },
+    "cigarette_butt": {
+     "prep": [
+      "徹底熄滅",
+      "先讓它冷卻"
+     ],
+     "why": "菸頭無法回收或堆肥，因此放入黑桶。"
+    },
+    "blister_pack": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "泡罩包裝混合了塑膠和鋁箔，不屬於瓶、壺或盒狀容器，因此放入黑桶。"
+    },
+    "rope_string": {
+     "prep": [
+      "絕不放入藍桶"
+     ],
+     "why": "電線、繩子和其他易纏繞物會卡住回收廠的分揀機器。"
+    },
+    "squeezable_tube": {
+     "prep": [
+      "儘量擠空"
+     ],
+     "why": "軟管包裝不屬於塑膠瓶、壺或盒狀容器，而藍桶只接收這些塑膠製品。"
+    },
+    "mask_gloves": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "一次性口罩和手套無法回收或堆肥，因此放入黑桶。"
+    }
+   }
+  },
+  "nyc": {
+   "bins": {
+    "blue": {
+     "name": "藍桶",
+     "accepts": "金屬、玻璃、塑膠和複合紙盒"
+    },
+    "green": {
+     "name": "綠桶",
+     "accepts": "混合廢紙和紙板"
+    },
+    "brown": {
+     "name": "棕桶",
+     "accepts": "廚餘、庭院垃圾、沾有食物的紙"
+    },
+    "trash": {
+     "name": "垃圾桶",
+     "accepts": "無法回收或堆肥的物品"
+    },
+    "dropoff": {
+     "name": "送交點",
+     "accepts": "電池、電子產品、衣物：特殊處理"
+    }
+   },
+   "items": {
+    "plastic_bottle": {
+     "prep": [
+      "倒空並沖洗",
+      "蓋子可以留在上面"
+     ],
+     "why": "紐約接收硬塑膠瓶和壺，不限底部編號。"
+    },
+    "plastic_container": {
+     "prep": [
+      "倒空並沖洗"
+     ],
+     "why": "接收硬質食品容器、盒子和蓋子。"
+    },
+    "plastic_cup": {
+     "prep": [
+      "倒空並沖洗",
+      "泡沫杯應放入垃圾桶"
+     ],
+     "why": "接收硬塑膠杯和碗。"
+    },
+    "plastic_lid_cap": {
+     "prep": [
+      "留在容器上或散放"
+     ],
+     "why": "接收硬塑膠蓋。"
+    },
+    "plastic_bag_film": {
+     "prep": [
+      "更好的選擇：將乾淨的塑膠袋和薄膜送到大型商店的回收點",
+      "絕不用黑色袋子裝回收物"
+     ],
+     "why": "塑膠袋和薄膜不應放入家庭回收桶。面積為 10,000 平方英尺及以上的商店必須接收退回的塑膠袋和薄膜。"
+    },
+    "snack_wrapper": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "紐約不回收糖果和零食包裝等軟塑膠。"
+    },
+    "foam": {
+     "prep": [
+      "絕不放入藍桶或棕桶"
+     ],
+     "why": "泡沫塑膠製品，如 Styrofoam 和泡沫填充粒，放入垃圾桶。"
+    },
+    "plastic_utensil_straw": {
+     "prep": [
+      "沖洗"
+     ],
+     "why": "紐約將塑膠餐具列為可回收的硬塑膠。"
+    },
+    "paper": {
+     "prep": [
+      "保持乾燥",
+      "訂書釘和帶窗信封都可以"
+     ],
+     "why": "報紙、雜誌、郵件和辦公用紙放入廢紙回收。"
+    },
+    "paper_bag": {
+     "prep": [
+      "保持乾淨、乾燥",
+      "沾有食物的紙袋放入棕桶"
+     ],
+     "why": "DSNY 規則將紙袋歸入混合廢紙。"
+    },
+    "cardboard": {
+     "prep": [
+      "壓平",
+      "大塊紙板用細繩捆好，尺寸須為 18 英寸或以下"
+     ],
+     "why": "壓平的紙板與混合廢紙一起回收。"
+    },
+    "pizza_box": {
+     "prep": [
+      "去掉剩餘食物",
+      "紙盒有油汙？放入棕桶"
+     ],
+     "why": "輕度髒汙的披薩盒與紙類一起回收；油汙較多的可堆肥。"
+    },
+    "soiled_paper": {
+     "prep": [
+      "先刮掉食物殘渣",
+      "乾淨的面巾紙可以放入垃圾桶"
+     ],
+     "why": "紐約堆肥收集接收廚餘以及沾有食物的紙。"
+    },
+    "paper_cup": {
+     "prep": [
+      "倒空並弄乾"
+     ],
+     "why": "紐約接收空且乾燥的紙杯，與混合廢紙一起回收。"
+    },
+    "carton": {
+     "prep": [
+      "倒空並沖洗",
+      "放入藍桶，不與紙類混放"
+     ],
+     "why": "牛奶、果汁和湯料紙盒與金屬、玻璃和塑膠一起回收。"
+    },
+    "metal_can": {
+     "prep": [
+      "倒空並沖洗"
+     ],
+     "why": "接收各種金屬，包括食品罐和飲料罐。"
+    },
+    "aluminum_foil": {
+     "prep": [
+      "去掉食物殘渣"
+     ],
+     "why": "接收鋁箔和鋁箔托盤。"
+    },
+    "aerosol_can": {
+     "prep": [
+      "必須完全排空",
+      "仍有內容物的須按特殊廢物處理"
+     ],
+     "why": "已排空的氣霧罐可與金屬一起回收。"
+    },
+    "metal_lid_scrap": {
+     "prep": [
+      "去掉線纜"
+     ],
+     "why": "紐約接收各種金屬，包括蓋子和小型金屬物品。"
+    },
+    "glass_bottle_jar": {
+     "prep": [
+      "沖洗"
+     ],
+     "why": "接收玻璃瓶和玻璃罐。"
+    },
+    "drinking_glass_ceramic": {
+     "prep": [
+      "碎玻璃：封入標有“碎玻璃”的盒子，或裝入雙層袋子"
+     ],
+     "why": "玻璃水杯、馬克杯和盤子無法回收。"
+    },
+    "food_scraps": {
+     "prep": [
+      "用透明袋、紙袋或可堆肥袋裝好，也可散放",
+      "不要用黑色袋子"
+     ],
+     "why": "紐約強制實行堆肥分類。接收所有廚餘，包括肉和骨頭。"
+    },
+    "yard_waste": {
+     "prep": [
+      "使用庭院垃圾紙袋或透明袋",
+      "將細枝捆成束"
+     ],
+     "why": "落葉和庭院垃圾不得放入垃圾桶。"
+    },
+    "battery": {
+     "prep": [
+      "用膠帶封住兩端，或將每節電池單獨裝袋",
+      "充電電池和鋰離子電池：退回銷售此類電池的商店",
+      "一次性鹼性電池（AA、AAA、9V）可以放入垃圾桶"
+     ],
+     "why": "充電電池和鋰離子電池絕不能放入垃圾桶或回收桶。它們會在收運車輛和處理廠引發火災。"
+    },
+    "electronics": {
+     "prep": [
+      "送到商店或非營利機構的送交點、SAFE 活動，或使用 ecycleNYC"
+     ],
+     "why": "在紐約，將電子產品放入垃圾桶或回收桶屬於違法行為。"
+    },
+    "textile": {
+     "prep": [
+      "捐贈或送至紡織品送交點",
+      "清潔、晾乾並裝袋"
+     ],
+     "why": "衣物可以捐贈或交給紡織品回收機構，不必丟入垃圾桶。"
+    },
+    "shoes": {
+     "prep": [
+      "捐贈還能穿的成雙鞋子",
+      "將乾淨、乾燥的鞋子裝袋"
+     ],
+     "why": "在紐約衣物再利用指南中，鞋子屬於配飾類。"
+    },
+    "cigarette_butt": {
+     "prep": [
+      "先徹底熄滅"
+     ],
+     "why": "無法回收或堆肥的物品放入垃圾桶。"
+    },
+    "blister_pack": {
+     "prep": [
+      "倒空",
+      "背面為鋁箔的藥片包裝放入垃圾桶"
+     ],
+     "why": "接收硬塑膠“blisterpak”泡罩包裝。"
+    },
+    "rope_string": {
+     "prep": [
+      "絕不放入回收桶"
+     ],
+     "why": "電線、軟管和燈串等易纏繞物會卡住分揀機器。"
+    },
+    "squeezable_tube": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "牙膏管等塑膠軟管和軟袋無法回收。"
+    },
+    "mask_gloves": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "口罩和一次性手套放入垃圾桶。"
+    }
+   }
+  },
+  "sea": {
+   "bins": {
+    "recycle": {
+     "name": "回收桶",
+     "accepts": "紙張、紙板、瓶子、盒狀容器、金屬罐、玻璃罐"
+    },
+    "compost": {
+     "name": "廚餘和庭院垃圾桶",
+     "accepts": "廚餘、庭院垃圾、沾有食物的紙"
+    },
+    "garbage": {
+     "name": "垃圾桶",
+     "accepts": "其他垃圾：不得含回收物、食物、電池或電子產品"
+    },
+    "dropoff": {
+     "name": "送交點",
+     "accepts": "電池、電子產品、危險廢物、衣物：不能放入任何桶"
+    }
+   },
+   "items": {
+    "plastic_bottle": {
+     "prep": [
+      "倒空並晾乾",
+      "把蓋子擰回去",
+      "散放，不裝袋"
+     ],
+     "why": "接收空且乾淨、容量不超過 5 加侖的塑膠瓶和壺，蓋子須留在上面。"
+    },
+    "plastic_container": {
+     "prep": [
+      "倒空、沖洗並晾乾",
+      "僅限大於 3 英寸的物品",
+      "洗不乾淨？放入垃圾桶"
+     ],
+     "why": "接收乾淨、乾燥且大於 3 英寸的盒子、托盤和翻蓋容器；不接收泡沫塑膠容器。"
+    },
+    "plastic_cup": {
+     "prep": [
+      "倒空並沖洗",
+      "標有“compostable”（可堆肥）或“#7 PLA”？放入廚餘和庭院垃圾桶",
+      "泡沫杯放入垃圾桶"
+     ],
+     "why": "空且乾淨的塑膠杯可回收；髒杯子和泡沫杯放入垃圾桶。"
+    },
+    "plastic_lid_cap": {
+     "prep": [
+      "把蓋子擰回空瓶上",
+      "散放的蓋子須為 3 英寸或以上",
+      "更小的散落蓋子：放入垃圾桶"
+     ],
+     "why": "留在瓶上的蓋子及 3 英寸或以上的散放蓋子可回收；更小的散落蓋子會從分揀裝置的縫隙掉落。"
+    },
+    "plastic_bag_film": {
+     "prep": [
+      "不要放入回收桶，即使集中裝在袋子裡也不行",
+      "乾淨、乾燥的塑膠薄膜可送至商店送交點"
+     ],
+     "why": "自 2020 年 1 月起，西雅圖回收桶不再接收塑膠袋和塑膠膜，因為它們會卡住分揀機器。"
+    },
+    "snack_wrapper": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "薯片袋、糖果包裝和軟袋由無法回收的混合材料製成。"
+    },
+    "foam": {
+     "prep": [
+      "將散落的泡沫填充粒裝袋並紮緊袋口",
+      "乾淨的泡沫塊：使用免費 Special Item Pickup 服務，或送至 Kent 的 Styro Recycle"
+     ],
+     "why": "泡沫塑膠放入垃圾桶；只有乾淨的 Styrofoam 泡沫塊有回收渠道。"
+    },
+    "plastic_utensil_straw": {
+     "prep": [
+      "無需預處理",
+      "標有“compostable”（可堆肥）？放入廚餘和庭院垃圾桶"
+     ],
+     "why": "西雅圖不回收塑膠餐具和吸管。"
+    },
+    "paper": {
+     "prep": [
+      "保持乾淨、乾燥",
+      "訂書釘可以保留",
+      "碎紙：放入廚餘和庭院垃圾桶"
+     ],
+     "why": "辦公用紙、郵件、報紙和雜誌應放入回收桶，不得放入垃圾桶。"
+    },
+    "paper_bag": {
+     "prep": [
+      "保持乾淨、乾燥",
+      "貼紙、膠帶和訂書釘都可以保留",
+      "沾有食物？放入廚餘和庭院垃圾桶"
+     ],
+     "why": "乾淨、乾燥的紙袋可回收；溼紙袋或沾有食物的紙袋可堆肥。"
+    },
+    "cardboard": {
+     "prep": [
+      "壓平；膠帶和標籤可以保留",
+      "桶裡放不下？裝箱或捆好放在桶旁，免費收運",
+      "溼紙板或有油汙的紙板：放入廚餘和庭院垃圾桶"
+     ],
+     "why": "乾淨、壓平的紙板可回收；塗蠟紙板放入垃圾桶。"
+    },
+    "pizza_box": {
+     "prep": [
+      "去掉所有鋁箔、塑膠和其他非紙部件"
+     ],
+     "why": "有油汙或沾有食物的披薩盒放入廚餘和庭院垃圾桶。"
+    },
+    "soiled_paper": {
+     "prep": [
+      "沾有食物或油汙的餐巾紙、廚房紙和無塗層紙盤：堆肥",
+      "面巾紙，或沾有清潔劑、體液的紙巾：放入垃圾桶",
+      "有亮面塗層的紙：放入垃圾桶"
+     ],
+     "why": "沾有食物或油汙的無塗層紙可堆肥，但面巾紙和亮面塗層紙不可以。"
+    },
+    "paper_cup": {
+     "prep": [
+      "倒空並晾乾",
+      "杯套也可以一起放入",
+      "標有“compostable”（可堆肥）？放入廚餘和庭院垃圾桶"
+     ],
+     "why": "西雅圖回收空、乾淨且乾燥的紙杯；泡沫杯放入垃圾桶。"
+    },
+    "carton": {
+     "prep": [
+      "倒空並晾乾",
+      "保留倒口；蓋子放入垃圾桶"
+     ],
+     "why": "接收乾淨、空且乾燥的牛奶、果汁、湯料及其他無菌紙盒。"
+    },
+    "metal_can": {
+     "prep": [
+      "倒空、沖洗並晾乾",
+      "將蓋子壓入罐內，或讓蓋子保持連線",
+      "保留標籤"
+     ],
+     "why": "鋁製和鋼製食品罐、飲料罐可回收。"
+    },
+    "aluminum_foil": {
+     "prep": [
+      "去掉所有食物並晾乾",
+      "揉成大於 3 英寸的球",
+      "髒鋁箔或小碎片：放入垃圾桶"
+     ],
+     "why": "乾淨、乾燥且大於 3 英寸的鋁箔和鋁箔托盤可回收。"
+    },
+    "aerosol_can": {
+     "prep": [
+      "用盡，直到沒有內容物和壓力",
+      "完全排空且無危險性（定型噴霧、食用油噴霧）：放入回收桶",
+      "油漆、溶劑、防熊噴霧或任何未完全排空的罐子：免費送至危險廢物處理設施"
+     ],
+     "why": "西雅圖只回收完全排空且無危險性的氣霧罐；仍有內容物的屬於危險廢物。"
+    },
+    "metal_lid_scrap": {
+     "prep": [
+      "3 英寸或以上（鍋、平底鍋、大蓋子）：放入回收桶",
+      "更小的散落金屬件：放入垃圾桶，或裝在金屬罐裡送至轉運站的廢金屬箱",
+      "小蓋子留在瓶罐上：連同容器回收"
+     ],
+     "why": "大於 3 英寸的金屬可回收；更小的散落金屬件會從分揀裝置的縫隙掉落。"
+    },
+    "glass_bottle_jar": {
+     "prep": [
+      "倒空、沖洗並晾乾",
+      "把小蓋子擰回去；3 英寸或以上的蓋子可以散放",
+      "不接收 Pyrex 或磨砂玻璃"
+     ],
+     "why": "玻璃瓶和玻璃罐可回收；其他玻璃熔點不同，無法回收。"
+    },
+    "drinking_glass_ceramic": {
+     "prep": [
+      "捐贈完好、狀態良好的物品",
+      "3 英寸或以上的瓶罐玻璃碎片可以回收"
+     ],
+     "why": "玻璃水杯、陶瓷及其他非瓶罐玻璃不可回收。"
+    },
+    "food_scraps": {
+     "prep": [
+      "去掉果蔬貼紙及所有塑膠",
+      "只使用獲准的可堆肥袋，或不裝袋"
+     ],
+     "why": "所有食物，包括肉、乳製品、骨頭和殼，放入廚餘和庭院垃圾桶。"
+    },
+    "yard_waste": {
+     "prep": [
+      "將樹枝剪至不超過 4 英尺長、4 英寸粗",
+      "去掉泥土",
+      "桶蓋必須能蓋上，否則額外庭院垃圾需收費"
+     ],
+     "why": "落葉、草、植物和細樹枝放入廚餘和庭院垃圾桶。"
+    },
+    "battery": {
+     "prep": [
+      "用膠帶封住每節電池的兩端",
+      "免費送至家庭危險廢物處理設施或市政府轉運站",
+      "絕不放入垃圾桶或回收桶"
+     ],
+     "why": "西雅圖禁止將任何電池（包括鹼性電池）放入垃圾桶或回收桶，因為它們會在收運車輛和處理廠引發火災。"
+    },
+    "electronics": {
+     "prep": [
+      "還能用的，請捐贈",
+      "送至 King County Take It Back Network 的電子產品回收機構",
+      "或預約付費 Special Item Pickup 服務"
+     ],
+     "why": "西雅圖禁止將電視、電腦、平板及任何帶電池物品丟入垃圾，不過 SPU 說明普通線纜和耳機可以放入。"
+    },
+    "textile": {
+     "prep": [
+      "狀態良好的，請捐贈",
+      "磨損或有汙漬：送至合作二手商店的 Threadcycle 送交點",
+      "否則可以放入垃圾桶"
+     ],
+     "why": "衣物和布料可以捐贈或透過 Threadcycle 回收；最後無其他選擇時允許放入垃圾桶。"
+    },
+    "shoes": {
+     "prep": [
+      "捐贈還能穿的成雙鞋子",
+      "破舊鞋子：送至合作二手商店的 Threadcycle 送交點",
+      "否則可以放入垃圾桶"
+     ],
+     "why": "鞋子可以捐贈或透過 Threadcycle 回收；最後無其他選擇時允許放入垃圾桶。"
+    },
+    "cigarette_butt": {
+     "prep": [
+      "確認完全熄滅"
+     ],
+     "why": "菸頭放入垃圾桶；電子煙裝置和煙油則屬於危險廢物。"
+    },
+    "blister_pack": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "泡罩包裝屬於不可回收的硬塑膠包裝。"
+    },
+    "rope_string": {
+     "prep": [
+      "裝袋，避免纏繞",
+      "還能用的，請捐贈或再利用"
+     ],
+     "why": "含合成纖維的繩子、細繩和毛線放入垃圾桶，因為它們會纏住分揀機器。"
+    },
+    "squeezable_tube": {
+     "prep": [
+      "即使軟管標有“可回收”，也不要按此處理"
+     ],
+     "why": "牙膏管等軟塑膠管即使標有可回收，也應放入垃圾桶。"
+    },
+    "mask_gloves": {
+     "prep": [
+      "先剪斷口罩耳帶"
+     ],
+     "why": "所有口罩、一次性手套和其他防護用品放入垃圾桶。"
+    }
+   }
+  },
+  "sf": {
+   "bins": {
+    "blue": {
+     "name": "藍桶",
+     "accepts": "回收：容器、紙張、紙板"
+    },
+    "green": {
+     "name": "綠桶",
+     "accepts": "堆肥：食物、植物、髒紙"
+    },
+    "black": {
+     "name": "黑桶",
+     "accepts": "填埋垃圾"
+    },
+    "special": {
+     "name": "特殊處理",
+     "accepts": "不能放入任何桶：電池、電子廢棄物、廢金屬"
+    }
+   },
+   "items": {
+    "plastic_bottle": {
+     "prep": [
+      "倒空並稍作沖洗",
+      "保留蓋子",
+      "散放，不裝袋"
+     ],
+     "why": "接收帶蓋的瓶子。"
+    },
+    "plastic_container": {
+     "prep": [
+      "倒空並沖洗",
+      "不要用內襯袋"
+     ],
+     "why": "接收塑膠容器、翻蓋盒和盒狀容器。"
+    },
+    "plastic_cup": {
+     "prep": [
+      "倒空",
+      "標有“compostable”（可堆肥）？放入綠桶"
+     ],
+     "why": "塑膠杯可回收，泡沫杯不可回收。"
+    },
+    "plastic_lid_cap": {
+     "prep": [
+      "蓋子留在瓶上"
+     ],
+     "why": "接收蓋子，包括咖啡杯蓋。"
+    },
+    "plastic_bag_film": {
+     "prep": [
+      "更好的選擇：重複使用或送到商店回收",
+      "絕不放入藍桶，既不能散放，也不能用作內襯袋"
+     ],
+     "why": "在舊金山，塑膠袋和薄膜屬於填埋垃圾，也是藍桶中的主要雜物。"
+    },
+    "snack_wrapper": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "亮麵食品包裝和薯片袋屬於填埋垃圾。"
+    },
+    "foam": {
+     "prep": [
+      "乾淨的泡沫塊：送至 Recology 轉運站"
+     ],
+     "why": "Styrofoam 泡沫塑膠列在填埋垃圾清單上。"
+    },
+    "plastic_utensil_straw": {
+     "prep": [
+      "沖洗",
+      "木製或竹製餐具放入綠桶"
+     ],
+     "why": "塑膠餐具可以放入回收桶。"
+    },
+    "paper": {
+     "prep": [
+      "保持乾淨、乾燥",
+      "碎紙：裝入封好並標註的紙袋"
+     ],
+     "why": "乾淨、乾燥的紙張、郵件和雜誌可回收。"
+    },
+    "paper_bag": {
+     "prep": [
+      "保持乾淨、乾燥",
+      "有油汙或食物汙漬？放入綠桶"
+     ],
+     "why": "乾淨的紙袋可回收，髒紙袋可堆肥。"
+    },
+    "cardboard": {
+     "prep": [
+      "壓平",
+      "多餘紙箱：拆開捆好，放在桶旁"
+     ],
+     "why": "無蠟塗層的紙板可回收。"
+    },
+    "pizza_box": {
+     "prep": [
+      "刮掉裡面的食物殘渣"
+     ],
+     "why": "有油汙的披薩盒應堆肥，不應放入回收桶。"
+    },
+    "soiled_paper": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "餐巾紙、廚房紙、面巾紙和髒紙可堆肥。"
+    },
+    "paper_cup": {
+     "prep": [
+      "倒空",
+      "杯套和塑膠蓋可以保留"
+     ],
+     "why": "舊金山回收空的紙咖啡杯。"
+    },
+    "carton": {
+     "prep": [
+      "倒空"
+     ],
+     "why": "牛奶、果汁及其他複合紙盒可回收。"
+    },
+    "metal_can": {
+     "prep": [
+      "倒空，不留食物或液體"
+     ],
+     "why": "鋁罐和鋼罐可回收。"
+    },
+    "aluminum_foil": {
+     "prep": [
+      "去掉食物",
+      "揉成球，最大不超過壘球大小"
+     ],
+     "why": "鋁箔和鋁箔托盤可回收。"
+    },
+    "aerosol_can": {
+     "prep": [
+      "完全用盡",
+      "丟棄前檢視 SF Environment 的噴霧罐頁面"
+     ],
+     "why": "舊金山將噴霧罐列為特殊處理物品；其可回收物清單又將空罐列為可回收物。"
+    },
+    "metal_lid_scrap": {
+     "prep": [
+      "蓋子：放入藍桶",
+      "鍋、平底鍋及其他廢金屬：特殊處理"
+     ],
+     "why": "瓶罐蓋可回收，廢金屬不可回收。"
+    },
+    "glass_bottle_jar": {
+     "prep": [
+      "倒空",
+      "金屬蓋可以保留"
+     ],
+     "why": "僅限玻璃瓶和玻璃罐。"
+    },
+    "drinking_glass_ceramic": {
+     "prep": [
+      "破碎的玻璃瓶罐仍可放入藍桶"
+     ],
+     "why": "玻璃水杯、陶瓷和鋼化玻璃屬於填埋垃圾。"
+    },
+    "food_scraps": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "所有食物，包括肉和骨頭，都可堆肥。"
+    },
+    "yard_waste": {
+     "prep": [
+      "樹枝須小於 6 英寸粗、4 英尺長"
+     ],
+     "why": "所有植物殘餘都可堆肥。"
+    },
+    "battery": {
+     "prep": [
+      "用膠帶封住鋰電池觸點",
+      "裝入透明袋，放在黑桶頂部；大型樓宇可放入橙色收集桶"
+     ],
+     "why": "電池不能放入任何桶，可能引發火災。"
+    },
+    "electronics": {
+     "prep": [
+      "還能用的，請捐贈",
+      "否則送至電子廢棄物送交點"
+     ],
+     "why": "三個桶都不接收電子產品。"
+    },
+    "textile": {
+     "prep": [
+      "捐贈或再利用"
+     ],
+     "why": "回收和堆肥均不接收衣物。"
+    },
+    "shoes": {
+     "prep": [
+      "捐贈還能穿的成雙鞋子"
+     ],
+     "why": "還能穿的鞋子應再利用或捐贈。"
+    },
+    "cigarette_butt": {
+     "prep": [
+      "熄滅並用水衝透"
+     ],
+     "why": "菸頭屬於填埋垃圾。"
+    },
+    "blister_pack": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "與其他材料混合的塑膠屬於填埋垃圾。"
+    },
+    "rope_string": {
+     "prep": [
+      "絕不放入回收桶"
+     ],
+     "why": "無法回收或堆肥的物品屬於填埋垃圾。"
+    },
+    "squeezable_tube": {
+     "prep": [
+      "倒空"
+     ],
+     "why": "牙膏管和乳霜軟管列在填埋垃圾清單上。"
+    },
+    "mask_gloves": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "一次性口罩屬於填埋垃圾。"
+    }
+   }
+  },
+  "us": {
+   "bins": {
+    "recycling": {
+     "name": "回收",
+     "accepts": "路邊收運桶：瓶子、金屬罐、紙張、紙板"
+    },
+    "compost": {
+     "name": "堆肥",
+     "accepts": "廚餘和庭院垃圾（限提供此服務的地區）"
+    },
+    "trash": {
+     "name": "垃圾桶",
+     "accepts": "當地收運專案不接收的其他物品"
+    },
+    "dropoff": {
+     "name": "送交點",
+     "accepts": "商店回收點或危險廢物處理點"
+    }
+   },
+   "items": {
+    "plastic_bottle": {
+     "prep": [
+      "倒空並沖洗",
+      "蓋子和標籤可以保留"
+     ],
+     "why": "塑膠瓶是最常見的可回收物之一。"
+    },
+    "plastic_container": {
+     "prep": [
+      "沖洗至像用刮刀刮淨後的程度",
+      "確認當地專案是否接收這種塑膠"
+     ],
+     "why": "許多專案接收硬質容器；沾有食物的物品無法回收。"
+    },
+    "plastic_cup": {
+     "prep": [
+      "沖洗",
+      "確認當地專案是否接收杯子"
+     ],
+     "why": "是否接收取決於當地專案。"
+    },
+    "plastic_lid_cap": {
+     "prep": [
+      "蓋子留在瓶上"
+     ],
+     "why": "瓶子和瓶蓋列在 EPA 的常見可回收物清單上。"
+    },
+    "plastic_bag_film": {
+     "prep": [
+      "將乾淨、乾燥的袋子送至商店送交點",
+      "回收物絕不裝袋"
+     ],
+     "why": "塑膠袋可以回收，但不能放入家庭回收桶。"
+    },
+    "snack_wrapper": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "塑膠包裝膜和薄膜不能放入路邊回收桶。"
+    },
+    "foam": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "只有極少數地區透過路邊回收接收 Styrofoam 泡沫塑膠。"
+    },
+    "plastic_utensil_straw": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "EPA 說明塑膠餐具無法回收，但紐約等部分城市接收。"
+    },
+    "paper": {
+     "prep": [
+      "保持乾淨、乾燥",
+      "帶窗信封可以回收"
+     ],
+     "why": "乾淨、乾燥的紙張、郵件和報紙可回收。"
+    },
+    "paper_bag": {
+     "prep": [
+      "保持乾淨、乾燥"
+     ],
+     "why": "紙類須清空、保持乾淨和乾燥，才能回收。"
+    },
+    "cardboard": {
+     "prep": [
+      "壓平紙箱"
+     ],
+     "why": "紙板是最常見的可回收物之一。"
+    },
+    "pizza_box": {
+     "prep": [
+      "去掉剩餘食物",
+      "油汙很重？有條件時用於堆肥"
+     ],
+     "why": "EPA 說明披薩盒即使有少量油汙也可以回收。"
+    },
+    "soiled_paper": {
+     "prep": [
+      "沒有堆肥服務？放入垃圾桶"
+     ],
+     "why": "沾有食物的紙絕不能放入回收桶，但可能可以堆肥。"
+    },
+    "paper_cup": {
+     "prep": [
+      "檢視當地清單：有些專案接收"
+     ],
+     "why": "有塗層的紙杯不在 EPA 常見可回收物清單上。"
+    },
+    "carton": {
+     "prep": [
+      "倒空並沖洗",
+      "檢視當地清單"
+     ],
+     "why": "是否接收復合紙盒取決於當地專案。"
+    },
+    "metal_can": {
+     "prep": [
+      "沖洗或擦淨",
+      "不要壓扁鋁罐"
+     ],
+     "why": "幾乎所有地區都接收汽水罐和湯罐頭。"
+    },
+    "aluminum_foil": {
+     "prep": [
+      "去掉所有食物",
+      "僅限當地專案清單列有鋁箔時"
+     ],
+     "why": "EPA 說明鋁箔可以回收，但各地專案不同。"
+    },
+    "aerosol_can": {
+     "prep": [
+      "未排空：按家庭危險廢物處理",
+      "已排空：有些專案可隨金屬一起接收"
+     ],
+     "why": "未排空的氣霧罐絕不能放入回收桶。"
+    },
+    "metal_lid_scrap": {
+     "prep": [
+      "較大的廢金屬：交給廢金屬回收機構"
+     ],
+     "why": "路邊回收專案通常接收金屬罐，不接收散落的小型金屬物品。"
+    },
+    "glass_bottle_jar": {
+     "prep": [
+      "沖洗",
+      "取下金屬蓋"
+     ],
+     "why": "玻璃罐列在 EPA 最常見可回收物清單上；少數專案不接收玻璃。"
+    },
+    "drinking_glass_ceramic": {
+     "prep": [
+      "包好碎玻璃"
+     ],
+     "why": "碎玻璃不應放入回收桶。"
+    },
+    "food_scraps": {
+     "prep": [
+      "沒有堆肥服務？放入垃圾桶"
+     ],
+     "why": "食物無法回收，但可以堆肥。"
+    },
+    "yard_waste": {
+     "prep": [
+      "如有庭院修剪物收運服務，請使用"
+     ],
+     "why": "草坪廢物無法回收，但可以堆肥。"
+    },
+    "battery": {
+     "prep": [
+      "用膠帶封住電池端子",
+      "送至零售店送交點或危險廢物收集活動"
+     ],
+     "why": "電池不應放入家庭垃圾桶或回收桶。"
+    },
+    "electronics": {
+     "prep": [
+      "送至收集點，或交回製造商、零售商"
+     ],
+     "why": "電子產品無法透過路邊回收處理。"
+    },
+    "textile": {
+     "prep": [
+      "捐贈或送至商店回收點"
+     ],
+     "why": "紡織品不能放入路邊回收桶。"
+    },
+    "shoes": {
+     "prep": [
+      "捐贈輕度磨損的成雙鞋子"
+     ],
+     "why": "輕度磨損的鞋子可捐贈給許多慈善機構。"
+    },
+    "cigarette_butt": {
+     "prep": [
+      "徹底熄滅"
+     ],
+     "why": "不在任何常見可回收物清單上。"
+    },
+    "blister_pack": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "塑膠與鋁箔混合包裝不在常見可回收物清單上。"
+    },
+    "rope_string": {
+     "prep": [
+      "絕不放入回收桶"
+     ],
+     "why": "軟管及類似易纏繞物列在 EPA 的禁止回收清單上。"
+    },
+    "squeezable_tube": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "不在 EPA 常見可回收物清單上。"
+    },
+    "mask_gloves": {
+     "prep": [
+      "無需預處理"
+     ],
+     "why": "不在 EPA 常見可回收物清單上。"
+    }
+   }
+  }
+ }
+}

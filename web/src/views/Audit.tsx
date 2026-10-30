@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from 'react'
+import { t } from '../i18n'
 import { itemName } from '../items'
 import { classify, loadModel, useModel } from '../model/client'
 import { belongs, binById, type Pack } from '../rules'
@@ -24,7 +25,7 @@ export default function Audit({ pack, packs }: { pack: Pack; packs: Pack[] }) {
   const current = audits.find((a) => a.id === open)
 
   const start = () => {
-    const a: AuditT = { id: uid(), site: form.site.trim() || 'Untitled site', pack: pack.id, bin: form.bin, phase: form.phase, date: form.date, items: [] }
+    const a: AuditT = { id: uid(), site: form.site.trim() || t('Untitled site'), pack: pack.id, bin: form.bin, phase: form.phase, date: form.date, items: [] }
     setAudits((xs) => [a, ...xs])
     setOpen(a.id)
   }
@@ -37,34 +38,34 @@ export default function Audit({ pack, packs }: { pack: Pack; packs: Pack[] }) {
     <>
       <div className="lede">
         <div>
-          <h1>Bin audit</h1>
-          <p>Measure contamination the way waste teams already do: pull items from a bin and photograph each one. Cleanstream sorts them, and you get the contamination rate and the top offenders. Audit before and after a change to see if it worked.</p>
+          <h1>{t('Bin audit')}</h1>
+          <p>{t('Measure contamination the way waste teams already do: pull items from a bin and photograph each one. Cleanstream sorts them, and you get the contamination rate and the top offenders. Audit before and after a change to see if it worked.')}</p>
         </div>
       </div>
       <div className="card pad" style={{ marginBottom: 20 }}>
         <div className="form">
-          <label className="field">Site or station<input value={form.site} placeholder="e.g. Library lobby" onChange={(e) => setForm({ ...form, site: e.target.value })} /></label>
-          <label className="field">Bin audited
+          <label className="field">{t('Site or station')}<input value={form.site} placeholder={t('e.g. Library lobby')} onChange={(e) => setForm({ ...form, site: e.target.value })} /></label>
+          <label className="field">{t('Bin audited')}
             <select value={form.bin} onChange={(e) => setForm({ ...form, bin: e.target.value })}>
               {pack.bins.filter((b) => b.kind !== 'special').map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
             </select>
           </label>
-          <label className="field">Phase
+          <label className="field">{t('Phase')}
             <select value={form.phase} onChange={(e) => setForm({ ...form, phase: e.target.value as AuditT['phase'] })}>
-              <option value="baseline">Baseline (before)</option>
-              <option value="after">After change</option>
+              <option value="baseline">{t('Baseline (before)')}</option>
+              <option value="after">{t('After change')}</option>
             </select>
           </label>
-          <label className="field">Date<input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} /></label>
-          <button className="btn primary" onClick={start}>Start audit</button>
+          <label className="field">{t('Date')}<input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} /></label>
+          <button className="btn primary" onClick={start}>{t('Start audit')}</button>
         </div>
       </div>
       <Compare audits={audits} packOf={packOf} />
       <div className="card">
         <table className="list">
-          <thead><tr><th>Site</th><th>Bin</th><th>Phase</th><th>Date</th><th>Items</th><th>Contamination</th></tr></thead>
+          <thead><tr><th>{t('Site')}</th><th>{t('Bin')}</th><th>{t('Phase')}</th><th>{t('Date')}</th><th>{t('Items')}</th><th>{t('Contamination')}</th></tr></thead>
           <tbody>
-            {audits.length === 0 && <tr><td colSpan={6} className="muted">No audits yet. Start one above.</td></tr>}
+            {audits.length === 0 && <tr><td colSpan={6} className="muted">{t('No audits yet. Start one above.')}</td></tr>}
             {audits.map((a) => {
               const p = packOf(a.pack)
               const c = contamination(a, p)
@@ -72,7 +73,7 @@ export default function Audit({ pack, packs }: { pack: Pack; packs: Pack[] }) {
                 <tr key={a.id} className="click" onClick={() => setOpen(a.id)}>
                   <td><strong>{a.site}</strong><div className="small faint">{p.name}</div></td>
                   <td><BinChip bin={binById(p, a.bin)} /></td>
-                  <td>{a.phase === 'baseline' ? 'Baseline' : 'After'}</td>
+                  <td>{a.phase === 'baseline' ? t('Baseline') : t('After')}</td>
                   <td>{a.date}</td>
                   <td>{c.n}</td>
                   <td><strong style={{ color: c.rate > 0.15 ? 'var(--bad)' : 'var(--good)' }}>{c.n ? pct(c.rate) : '–'}</strong></td>
@@ -101,7 +102,7 @@ function Compare({ audits, packOf }: { audits: AuditT[]; packOf: (id: string) =>
   if (!pairs.length) return null
   return (
     <div className="card pad" style={{ marginBottom: 20 }}>
-      <div className="label" style={{ marginBottom: 12 }}>Before and after</div>
+      <div className="label" style={{ marginBottom: 12 }}>{t('Before and after')}</div>
       <div style={{ display: 'grid', gap: 18 }}>
         {pairs.map(({ base, after }) => {
           const p = packOf(base.pack)
@@ -113,13 +114,13 @@ function Compare({ audits, packOf }: { audits: AuditT[]; packOf: (id: string) =>
             <div key={base.id} style={{ display: 'grid', gap: 8 }}>
               <div className="row" style={{ justifyContent: 'space-between' }}>
                 <div className="row"><strong>{base.site}</strong><BinChip bin={binById(p, base.bin)} /></div>
-                <strong style={{ color: change <= 0 ? 'var(--good)' : 'var(--bad)' }}>{change <= 0 ? '−' : '+'}{Math.abs(Math.round(change * 100))} points</strong>
+                <strong style={{ color: change <= 0 ? 'var(--good)' : 'var(--bad)' }}>{t('{change} points', { change: `${change <= 0 ? '−' : '+'}${Math.abs(Math.round(change * 100))}` })}</strong>
               </div>
-              {[['Baseline', base.date, b], ['After', after.date, a]].map(([name, date, c]) => {
+              {[[t('Baseline'), base.date, b], [t('After'), after.date, a]].map(([name, date, c]) => {
                 const cc = c as ReturnType<typeof contamination>
                 return (
                   <div key={name as string} className="hbar">
-                    <span className="small">{name as string} <span className="faint">{date as string} · {cc.n} items</span></span>
+                    <span className="small">{name as string} <span className="faint">{date as string} · {t('{count} items', { count: cc.n })}</span></span>
                     <span className="track"><i style={{ width: `${(cc.rate / max) * 100}%` }} /></span>
                     <strong className="small">{pct(cc.rate)}</strong>
                   </div>
@@ -174,13 +175,13 @@ function AuditSession({ audit, pack, ready, idle, classes, close, update, remove
     <>
       <div className="lede">
         <div>
-          <button className="btn small" onClick={close} style={{ marginBottom: 12 }}>← All audits</button>
+          <button className="btn small" onClick={close} style={{ marginBottom: 12 }}>{t('← All audits')}</button>
           <h1>{audit.site}</h1>
-          <div className="row" style={{ marginTop: 8 }}><BinChip bin={bin} /><span className="muted">{audit.phase === 'baseline' ? 'Baseline' : 'After change'} · {audit.date} · {pack.name} rules</span></div>
+          <div className="row" style={{ marginTop: 8 }}><BinChip bin={bin} /><span className="muted">{audit.phase === 'baseline' ? t('Baseline') : t('After change')} · {audit.date} · {t('{city} rules', { city: pack.name })}</span></div>
         </div>
         <div className="row">
-          <button className="btn" onClick={csv} disabled={!c.n}>Export CSV</button>
-          <button className="btn" onClick={() => confirm('Delete this audit?') && remove()}>Delete</button>
+          <button className="btn" onClick={csv} disabled={!c.n}>{t('Export CSV')}</button>
+          <button className="btn" onClick={() => confirm(t('Delete this audit?')) && remove()}>{t('Delete')}</button>
         </div>
       </div>
       <div className="grid2" style={{ gridTemplateColumns: 'minmax(0, 1.4fr) minmax(0, 1fr)' }}>
@@ -189,23 +190,23 @@ function AuditSession({ audit, pack, ready, idle, classes, close, update, remove
             onDragOver={(e) => (e.preventDefault(), setOver(true))} onDragLeave={() => setOver(false)}
             onDrop={(e) => (e.preventDefault(), setOver(false), add([...e.dataTransfer.files]))}>
             <div className="hint">
-              <strong>Add photos of the items you pulled from this bin</strong>
-              <span>One item per photo. Drop a whole folder's worth at once.</span>
-              <button className="btn primary" disabled={!ready && !idle} onClick={() => (idle ? loadModel() : input.current?.click())}>{ready ? 'Choose photos' : idle ? 'Download the photo model (96 MB)' : 'Loading model…'}</button>
+              <strong>{t('Add photos of the items you pulled from this bin')}</strong>
+              <span>{t('One item per photo. Drop a whole folder\'s worth at once.')}</span>
+              <button className="btn primary" disabled={!ready && !idle} onClick={() => (idle ? loadModel() : input.current?.click())}>{ready ? t('Choose photos') : idle ? t('Download the photo model (96 MB)') : t('Loading model…')}</button>
               <input ref={input} type="file" accept="image/*" multiple hidden onChange={(e) => (add([...(e.target.files ?? [])]), (e.target.value = ''))} />
             </div>
           </div>
-          {queue > 0 && <p className="small muted" style={{ marginBottom: 10 }}>Sorting {queue} photo{queue > 1 ? 's' : ''}…</p>}
+          {queue > 0 && <p className="small muted" style={{ marginBottom: 10 }}>{queue > 1 ? t('Sorting {count} photos…', { count: queue }) : t('Sorting {count} photo…', { count: queue })}</p>}
           <div className="tiles">
             {audit.items.map((i) => {
               const l = i.pred ? label(i) : ''
               const bad = l && !belongs(pack, l, audit.bin)
               return (
                 <button key={i.id} className={`tile${bad ? ' bad' : ''}${i.pred ? '' : ' pending'}`} onClick={() => i.pred && setFixing(i.id)}>
-                  <img src={i.thumb} alt={l ? itemName(l) : 'Sorting'} />
+                  <img src={i.thumb} alt={l ? itemName(l) : t('Sorting')} />
                   <span className="cap">
-                    <strong>{l ? itemName(l) : 'Sorting…'}</strong>
-                    {l && <span className={bad ? '' : 'faint'}>{bad ? `Belongs in ${binById(pack, pack.items[l].bin).name}` : 'Belongs here'}{i.fixed ? ' · corrected' : ''}</span>}
+                    <strong>{l ? itemName(l) : t('Sorting…')}</strong>
+                    {l && <span className={bad ? '' : 'faint'}>{bad ? t('Belongs in {bin}', { bin: binById(pack, pack.items[l].bin).name }) : t('Belongs here')}{i.fixed ? t(' · corrected') : ''}</span>}
                   </span>
                 </button>
               )
@@ -214,13 +215,13 @@ function AuditSession({ audit, pack, ready, idle, classes, close, update, remove
         </div>
         <div className="card pad" style={{ display: 'grid', gap: 18 }}>
           <div className="stats">
-            <div className="stat"><span className="label">Items</span><b>{c.n}</b></div>
-            <div className="stat"><span className="label">Don't belong</span><b>{c.bad}</b></div>
-            <div className="stat"><span className="label">Contamination</span><b style={{ color: c.rate > 0.15 ? 'var(--bad)' : 'var(--good)' }}>{c.n ? pct(c.rate) : '–'}</b></div>
+            <div className="stat"><span className="label">{t('Items')}</span><b>{c.n}</b></div>
+            <div className="stat"><span className="label">{t('Don\'t belong')}</span><b>{c.bad}</b></div>
+            <div className="stat"><span className="label">{t('Contamination')}</span><b style={{ color: c.rate > 0.15 ? 'var(--bad)' : 'var(--good)' }}>{c.n ? pct(c.rate) : '–'}</b></div>
           </div>
           <div style={{ display: 'grid', gap: 8 }}>
-            <div className="label">Top contaminants</div>
-            {c.top.length === 0 && <p className="small muted">None yet.</p>}
+            <div className="label">{t('Top contaminants')}</div>
+            {c.top.length === 0 && <p className="small muted">{t('None yet.')}</p>}
             {c.top.slice(0, 6).map(([id, n]) => (
               <div key={id} className="hbar">
                 <span className="small">{itemName(id)}</span>
@@ -231,10 +232,10 @@ function AuditSession({ audit, pack, ready, idle, classes, close, update, remove
           </div>
           {c.top.length > 0 && (
             <div className="notice" style={{ background: 'var(--accent-soft)', color: '#0b4a3a' }}>
-              <strong>Where to focus:</strong> {itemName(c.top[0][0])} makes up {pct(c.top[0][1] / Math.max(1, c.bad))} of the contamination here. In {pack.name} it belongs in the {binById(pack, pack.items[c.top[0][0]].bin).name.toLowerCase()}. A sign at this station that names it is the cheapest first fix.
+              <strong>{t('Where to focus:')}</strong> {t('{item} makes up {percent} of the contamination here. In {city} it belongs in the {bin}. A sign at this station that names it is the cheapest first fix.', { item: itemName(c.top[0][0]), percent: pct(c.top[0][1] / Math.max(1, c.bad)), city: pack.name, bin: binById(pack, pack.items[c.top[0][0]].bin).name.toLowerCase() })}
             </div>
           )}
-          <p className="small faint">Tap any tile to correct it. Corrections count in the totals and are marked in the export.</p>
+          <p className="small faint">{t('Tap any tile to correct it. Corrections count in the totals and are marked in the export.')}</p>
         </div>
       </div>
       {fixing && <ItemPicker pack={pack} onClose={() => setFixing(null)} onPick={(id) => (update((a) => ({ ...a, items: a.items.map((i) => (i.id === fixing ? { ...i, fixed: id === i.pred ? undefined : id } : i)) })), setFixing(null))} />}

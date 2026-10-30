@@ -1,6 +1,7 @@
 // Shared pieces: logo, bin icon and chip, photo input (drop, upload, camera, samples), item search and picker, result card.
 import { useEffect, useRef, useState } from 'react'
-import { ITEMS, itemName, searchItems } from './items'
+import { t, useLang } from './i18n'
+import { ITEMS, itemExamples, itemName, itemShort, searchable, searchItems } from './items'
 import { binById, type Answer, type Bin, type Pack } from './rules'
 
 export const pct = (p: number) => `${Math.round(p * 100)}%`
@@ -100,23 +101,23 @@ export function PhotoInput({ onImage, preview }: { onImage: (blob: Blob) => void
           if (f) (setPicked(null), onImage(f))
         }}
       >
-        {camera ? <video ref={video} autoPlay playsInline muted /> : preview ? <img src={preview} alt="Item being checked" /> : (
+        {camera ? <video ref={video} autoPlay playsInline muted /> : preview ? <img src={preview} alt={t('Item being checked')} /> : (
           <div className="hint">
-            <strong>Show me the item</strong>
-            <span>Drop a photo here, upload one, or use your camera.</span>
+            <strong>{t('Show me the item')}</strong>
+            <span>{t('Drop a photo here, upload one, or use your camera.')}</span>
           </div>
         )}
       </div>
       <div className="row" style={{ marginTop: 12 }}>
         {camera ? (
           <>
-            <button className="btn primary" onClick={snap}>Capture</button>
-            <button className="btn" onClick={() => setCamera(false)}>Cancel</button>
+            <button className="btn primary" onClick={snap}>{t('Capture')}</button>
+            <button className="btn" onClick={() => setCamera(false)}>{t('Cancel')}</button>
           </>
         ) : (
           <>
-            <button className="btn primary" onClick={() => setCamera(true)}>Use camera</button>
-            <button className="btn" onClick={() => file.current?.click()}>Upload photo</button>
+            <button className="btn primary" onClick={() => setCamera(true)}>{t('Use camera')}</button>
+            <button className="btn" onClick={() => file.current?.click()}>{t('Upload photo')}</button>
           </>
         )}
         <input ref={file} type="file" accept="image/*" hidden onChange={(e) => {
@@ -127,10 +128,10 @@ export function PhotoInput({ onImage, preview }: { onImage: (blob: Blob) => void
       </div>
       {samples.length > 0 && (
         <>
-          <p className="label" style={{ marginTop: 18 }}>Or try a test photo the model never saw in training</p>
+          <p className="label" style={{ marginTop: 18 }}>{t('Or try a test photo the model never saw in training')}</p>
           <div className="samples">
             {samples.slice(0, 16).map((s) => (
-              <button key={s.file} className={picked === s.file ? 'on' : ''} onClick={() => useSample(s)} title={`${s.source} test set`}>
+              <button key={s.file} className={picked === s.file ? 'on' : ''} onClick={() => useSample(s)} title={t('{source} test set', { source: s.source })}>
                 <img src={thumbUrl(s)} alt={itemName(s.label)} width={160} height={160} loading="lazy" />
               </button>
             ))}
@@ -152,7 +153,7 @@ export function ItemSearch({ pack, onPick, popular = [] }: { pack: Pack; onPick:
     setQ(itemName(id))
     setOpen(false)
   }
-  const showList = open && q.trim().length >= 2
+  const showList = open && searchable(q)
 
   return (
     <div className="isearch">
@@ -160,7 +161,7 @@ export function ItemSearch({ pack, onPick, popular = [] }: { pack: Pack; onPick:
         <div className="search-box">
           <svg viewBox="0 0 20 20" aria-hidden><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" strokeWidth="2" /><path d="M13 13l4.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
           <input
-            type="search" value={q} placeholder="Search an item: coffee cup, pizza box, batteries…" aria-label="Search an item"
+            type="search" value={q} placeholder={t('Search an item: coffee cup, pizza box, batteries…')} aria-label={t('Search an item')}
             role="combobox" aria-expanded={showList} aria-controls="search-list" aria-autocomplete="list" autoComplete="off"
             onChange={(e) => (setQ(e.target.value), setOpen(true), setActive(0))}
             onFocus={() => setOpen(true)}
@@ -180,13 +181,13 @@ export function ItemSearch({ pack, onPick, popular = [] }: { pack: Pack; onPick:
               return (
                 <button key={id} role="option" aria-selected={k === active} className={k === active ? 'on' : ''}
                   onMouseDown={(e) => e.preventDefault()} onMouseEnter={() => setActive(k)} onClick={() => pick(id)}>
-                  <span><strong>{itemName(id)}</strong><span className="small muted">{ITEMS[id].examples}</span></span>
+                  <span><strong>{itemName(id)}</strong><span className="small muted">{itemExamples(id)}</span></span>
                   <span className="chip" style={{ background: bin.color, color: bin.ink }}>{bin.name}</span>
                 </button>
               )
             }) : (
               <div className="small muted" style={{ padding: '12px 14px' }}>
-                Nothing matches “{q.trim()}”. Try a simpler word, or show it with a photo. When in doubt, keep it out of recycling.
+                {t('Nothing matches “{query}”. Try a simpler word, or show it with a photo. When in doubt, keep it out of recycling.', { query: q.trim() })}
               </div>
             )}
           </div>
@@ -194,8 +195,8 @@ export function ItemSearch({ pack, onPick, popular = [] }: { pack: Pack; onPick:
       </div>
       {popular.length > 0 && (
         <div className="row small" style={{ gap: 6, marginTop: 10 }}>
-          <span className="muted">Often asked:</span>
-          {popular.map((id) => <button key={id} className="tag" onClick={() => pick(id)}>{ITEMS[id].aka?.[0] ?? itemName(id)}</button>)}
+          <span className="muted">{t('Often asked:')}</span>
+          {popular.map((id) => <button key={id} className="tag" onClick={() => pick(id)}>{itemShort(id)}</button>)}
         </div>
       )}
     </div>
@@ -204,15 +205,15 @@ export function ItemSearch({ pack, onPick, popular = [] }: { pack: Pack; onPick:
 
 export function ItemPicker({ onPick, onClose, pack }: { onPick: (id: string) => void; onClose: () => void; pack: Pack }) {
   const [q, setQ] = useState('')
-  const ids = q.trim().length >= 2 ? searchItems(q, 32) : Object.keys(ITEMS)
+  const ids = searchable(q) ? searchItems(q, 32) : Object.keys(ITEMS)
   return (
     <div className="pick" onClick={onClose}>
       <div className="card pad" onClick={(e) => e.stopPropagation()}>
         <div className="row" style={{ justifyContent: 'space-between', marginBottom: 12 }}>
-          <h3>What is it?</h3>
-          <button className="btn small" onClick={onClose}>Close</button>
+          <h3>{t('What is it?')}</h3>
+          <button className="btn small" onClick={onClose}>{t('Close')}</button>
         </div>
-        <input className="filter" type="search" autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="Filter: foil, mug, vape…" aria-label="Filter item types" />
+        <input className="filter" type="search" autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder={t('Filter: foil, mug, vape…')} aria-label={t('Filter item types')} />
         <div className="opts">
           {ids.map((id) => {
             const bin = binById(pack, pack.items[id].bin)
@@ -236,9 +237,9 @@ function ShareButton({ pack, item, bin }: { pack: Pack; item: string; bin: Bin }
   const [copied, setCopied] = useState(false)
   const share = async () => {
     const url = answerLink(pack, item)
-    const text = `${itemName(item)}: ${bin.name} in ${pack.name}.`
+    const text = t('{item}: {bin} in {city}.', { item: itemName(item), bin: bin.name, city: pack.name })
     try {
-      if (navigator.share) return await navigator.share({ title: 'Which bin? Cleanstream', text, url })
+      if (navigator.share) return await navigator.share({ title: t('Which bin? Cleanstream'), text, url })
       await navigator.clipboard.writeText(`${text} ${url}`)
       setCopied(true)
       setTimeout(() => setCopied(false), 1800)
@@ -246,13 +247,14 @@ function ShareButton({ pack, item, bin }: { pack: Pack; item: string; bin: Bin }
       /* share sheet dismissed */
     }
   }
-  return <button className="btn small" onClick={share}>{copied ? 'Link copied' : 'Share'}</button>
+  return <button className="btn small" onClick={share}>{copied ? t('Link copied') : t('Share')}</button>
 }
 
 // ans is the model's answer for a photo; null when the item came from search or a shared link (then `override` is the item).
 export function ResultCard({ ans, pack, packs, override, onOverride }: {
   ans: Answer | null; pack: Pack; packs: Pack[]; override: string | null; onOverride: (id: string | null) => void
 }) {
+  const { lang } = useLang()
   const [picking, setPicking] = useState(false)
   const item = override ?? ans!.items[0].id
   const rule = pack.items[item]
@@ -265,44 +267,44 @@ export function ResultCard({ ans, pack, packs, override, onOverride }: {
     <div className="card pad">
       {unsure ? (
         <div className="notice" style={{ marginBottom: 16 }}>
-          <strong>Not sure about this one.</strong> It could go more than one way in {pack.name}. Pick what it is below,
-          or check the label. When in doubt, keep it out of recycling.
+          <strong>{t('Not sure about this one.')}</strong> {t('It could go more than one way in {city}. Pick what it is below, or check the label. When in doubt, keep it out of recycling.', { city: pack.name })}
         </div>
       ) : null}
       <div className="binhero" style={{ background: bin.color, color: bin.ink, opacity: unsure ? 0.55 : 1 }}>
         <Can bin={bin} />
         <div>
-          <div className="label" style={{ color: bin.ink }}>{unsure ? 'Best guess' : 'Goes in'}</div>
+          <div className="label" style={{ color: bin.ink }}>{unsure ? t('Best guess') : t('Goes in')}</div>
           <h2>{bin.name}</h2>
           <div className="sub">{bin.accepts}</div>
         </div>
-        {ans && <div className="conf">{override ? 'You chose' : pct(ans.bins[0].p)}<small>{override ? 'item type' : 'sure of the bin'}</small></div>}
+        {ans && <div className="conf">{override ? t('You chose') : pct(ans.bins[0].p)}<small>{override ? t('item type') : t('sure of the bin')}</small></div>}
       </div>
-      {also.length > 0 && <p className="small muted" style={{ marginTop: 8 }}>Also accepted in: {also.map((b) => b.name).join(', ')}</p>}
+      {also.length > 0 && <p className="small muted" style={{ marginTop: 8 }}>{t('Also accepted in: {bins}', { bins: also.map((b) => b.name).join(', ') })}</p>}
 
       <div style={{ marginTop: 16 }}>
         <div className="row" style={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
-            <div className="label">Item</div>
+            <div className="label">{t('Item')}</div>
             <h3 style={{ fontSize: 20 }}>{itemName(item)}</h3>
-            <div className="small muted">{ITEMS[item]?.examples}</div>
+            <div className="small muted">{itemExamples(item)}</div>
           </div>
           <div style={{ display: 'grid', justifyItems: 'end', gap: 6 }}>
-            {ans && !override && <div className="small muted">{pct(ans.items[0].p)} sure of the item</div>}
+            {ans && !override && <div className="small muted">{t('{confidence} sure of the item', { confidence: pct(ans.items[0].p) })}</div>}
             <ShareButton pack={pack} item={item} bin={bin} />
           </div>
         </div>
       </div>
 
       <div className="section">
-        <div className="label">Before you toss it</div>
+        <div className="label">{t('Before you toss it')}</div>
         <ul className="steps">{rule.prep.map((s) => <li key={s}>{s}</li>)}</ul>
-        <p className="small muted">{rule.why} <a href={rule.source} target="_blank" rel="noreferrer">Source: {pack.authority}</a></p>
+        <p className="small muted">{rule.why} <a href={rule.source} target="_blank" rel="noreferrer">{t('Source: {authority}', { authority: pack.authority })}</a></p>
+        {lang !== 'en' && <p className="small faint">{t('Translated by Cleanstream. If in doubt, check the official source, which is in English.')}</p>}
       </div>
 
       {others.length > 0 && (
         <div className="section">
-          <div className="label">Same item in other places</div>
+          <div className="label">{t('Same item in other places')}</div>
           <div className="compare">
             {others.map((p) => {
               const b = binById(p, p.items[item].bin)
@@ -320,8 +322,8 @@ export function ResultCard({ ans, pack, packs, override, onOverride }: {
       {ans ? (
         <div className="section">
           <div className="row" style={{ justifyContent: 'space-between' }}>
-            <div className="label">{override ? 'Model suggestions' : 'Not right? Tap the correct item'}</div>
-            {override ? <button className="btn small" onClick={() => onOverride(null)}>Use model answer</button> : null}
+            <div className="label">{override ? t('Model suggestions') : t('Not right? Tap the correct item')}</div>
+            {override ? <button className="btn small" onClick={() => onOverride(null)}>{t('Use model answer')}</button> : null}
           </div>
           <div className="alts">
             {ans.items.slice(0, override ? 3 : 4).map((it) => {
@@ -334,14 +336,14 @@ export function ResultCard({ ans, pack, packs, override, onOverride }: {
                 </button>
               )
             })}
-            <button className="btn small" style={{ justifySelf: 'start' }} onClick={() => setPicking(true)}>Something else…</button>
+            <button className="btn small" style={{ justifySelf: 'start' }} onClick={() => setPicking(true)}>{t('Something else…')}</button>
           </div>
         </div>
       ) : (
         <div className="section">
           <div className="row" style={{ justifyContent: 'space-between' }}>
-            <div className="label">Not the item you meant?</div>
-            <button className="btn small" onClick={() => setPicking(true)}>Browse all items</button>
+            <div className="label">{t('Not the item you meant?')}</div>
+            <button className="btn small" onClick={() => setPicking(true)}>{t('Browse all items')}</button>
           </div>
         </div>
       )}

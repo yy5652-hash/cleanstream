@@ -1,0 +1,2143 @@
+{
+  "ui": {
+    "Scan": "识别",
+    "Bin station": "分类站",
+    "Audit": "检查",
+    "Rules": "规则",
+    "Quiz": "测验",
+    "How it works": "工作原理",
+    "The model downloads once, then works offline": "模型只需下载一次，之后即可离线使用",
+    "Model": "模型",
+    "Add Cleanstream to your home screen or dock; it works offline": "将 Cleanstream 添加到主屏幕或程序坞，可离线使用",
+    "Install app": "安装应用",
+    "Rules for": "规则地区",
+    "Language": "语言",
+    "Loading…": "加载中…",
+    "Cleanstream runs entirely in your browser. Photos never leave your device. Rules link to their official sources.": "Cleanstream 完全在浏览器中运行。照片不会离开你的设备。规则附有官方来源链接。",
+    "Item being checked": "正在识别的物品",
+    "Show me the item": "让我看看物品",
+    "Drop a photo here, upload one, or use your camera.": "将照片拖到这里、上传照片，或使用相机。",
+    "Capture": "拍照",
+    "Cancel": "取消",
+    "Use camera": "使用相机",
+    "Upload photo": "上传照片",
+    "Or try a test photo the model never saw in training": "也可以试试模型训练时从未见过的测试照片",
+    "{source} test set": "{source} 测试集",
+    "Search an item: coffee cup, pizza box, batteries…": "搜索物品：咖啡杯、披萨盒、电池…",
+    "Search an item": "搜索物品",
+    "Nothing matches “{query}”. Try a simpler word, or show it with a photo. When in doubt, keep it out of recycling.": "没有找到“{query}”。试试更简单的词，或拍张照片。有疑问时，请勿放入回收桶。",
+    "Often asked:": "常见查询：",
+    "What is it?": "这是什么？",
+    "Close": "关闭",
+    "Filter: foil, mug, vape…": "筛选：铝箔、马克杯、电子烟…",
+    "Filter item types": "筛选物品类型",
+    "{item}: {bin} in {city}.": "{item}：在{city}应放入{bin}。",
+    "Which bin? Cleanstream": "放哪个桶？Cleanstream",
+    "Link copied": "链接已复制",
+    "Share": "分享",
+    "Not sure about this one.": "这个还不确定。",
+    "It could go more than one way in {city}. Pick what it is below, or check the label. When in doubt, keep it out of recycling.": "在{city}，它可能对应不同的桶。请在下方选择物品类型，或查看标签。有疑问时，请勿放入回收桶。",
+    "Best guess": "最可能的分类",
+    "Goes in": "应放入",
+    "You chose": "你选择了",
+    "item type": "物品类型",
+    "sure of the bin": "分类置信度",
+    "Also accepted in: {bins}": "也可放入：{bins}",
+    "Item": "物品",
+    "{confidence} sure of the item": "物品识别置信度为 {confidence}",
+    "Before you toss it": "投放前",
+    "Source: {authority}": "来源：{authority}",
+    "Translated by Cleanstream. If in doubt, check the official source, which is in English.": "由 Cleanstream 翻译。如有疑问，请查阅英文官方来源。",
+    "Same item in other places": "同一物品在其他地区",
+    "Model suggestions": "模型建议",
+    "Not right? Tap the correct item": "识别不对？点击正确的物品",
+    "Use model answer": "使用模型结果",
+    "Something else…": "其他物品…",
+    "Not the item you meant?": "不是你要找的物品？",
+    "Browse all items": "浏览所有物品",
+    "Which bin does this go in?": "这个该放哪个桶？",
+    "Search an item or show Cleanstream a photo. It answers with the rules for {city}, including how to prep it.": "搜索物品或给 Cleanstream 看张照片，即可查看{city}的分类规则和投放前的处理方法。",
+    "To save your data, the photo model (96 MB) downloads only when you ask. Search above works now.": "为节省流量，照片模型（96 MB）只会在你请求时下载。上方搜索现在就能使用。",
+    "Download the photo model": "下载照片模型",
+    "Downloading the model once ({loaded} of {total} MB). It runs in this browser, so photos stay on your device, and it works offline after this. Search works already.": "正在进行一次性模型下载（{loaded}/{total} MB）。模型在此浏览器中运行，照片会留在你的设备上，下载后可离线使用。搜索已可使用。",
+    "Downloading the model once. It runs in this browser, so photos stay on your device, and it works offline after this. Search works already.": "正在进行一次性模型下载。模型在此浏览器中运行，照片会留在你的设备上，下载后可离线使用。搜索已可使用。",
+    "Looking…": "识别中…",
+    "The model could not load: {error}": "模型加载失败：{error}",
+    "Your answer appears here: the bin, how sure the model is, and what to do before you toss it.": "这里会显示结果：应放入的桶、模型置信度，以及投放前的处理方法。",
+    "Recognised on this device in {ms} ms. Nothing was uploaded.": "在本设备上用时 {ms} 毫秒完成识别。未上传任何内容。",
+    "{item}. {bin}.": "{item}。{bin}。",
+    "Not sure. Which one is it? Tap it on the screen.": "还不确定。是哪一种？请在屏幕上点击。",
+    "Put any old tablet or phone above your bins. People hold up an item and the right bin lights up, in your city's rules. It runs offline and keeps counts, never pictures.": "把闲置平板或手机放在分类桶上方。居民举起物品，符合当地规则的桶就会亮起。可离线运行，只保存计数，不保存照片。",
+    "Camera": "相机",
+    "Demo feed": "演示",
+    "Off": "关闭",
+    "Set up bins": "设置分类桶",
+    "Full screen": "全屏",
+    "Kiosk link": "自助终端链接",
+    "Cleanstream bin station: {city} rules": "Cleanstream 分类站：{city}规则",
+    "{city} rules": "{city}规则",
+    "sorted today": "件今日已分类",
+    "Bins": "分类桶",
+    "Choose Camera to start, or Demo feed to step through test photos.": "选择“相机”开始，或选择“演示”依次查看测试照片。",
+    "Demo feed: held-out test photos": "演示：未参与训练的测试照片",
+    "Hold your item here": "将物品举到这里",
+    "Hi!": "你好！",
+    "Not sure which bin? Hold it up and I’ll tell you.": "不知道放哪个桶？举起物品，我来告诉你。",
+    "Getting ready…": "准备中…",
+    "Did you know?": "你知道吗？",
+    "Let me look…": "让我看看…",
+    "goes in the": "应放入",
+    "Not in these bins. {prep}": "不应放入这些桶。{prep}",
+    "Hmm, which one is it?": "嗯，是哪一种？",
+    "Tap the one you're holding, or show me the label. When in doubt, keep it out of recycling.": "点击你手中的物品，或让我看看标签。有疑问时，请勿放入回收桶。",
+    "Thanks for sorting right!": "感谢正确分类！",
+    "{count} items sorted here today": "今天这里已分类 {count} 件物品",
+    "Station setup": "分类站设置",
+    "Done": "完成",
+    "Tick the bins that stand here and put them in order, left to right, so the arrow points at the right one.": "勾选这里实际摆放的桶，并按从左到右排序，让箭头指向正确的桶。",
+    "Answers will be spoken.": "将朗读分类结果。",
+    "Say the answer out loud": "朗读分类结果",
+    "For people who can't read the screen from where they stand. Uses the device's built-in voice.": "方便站在远处看不清屏幕的人。使用设备内置语音。",
+    "Today": "今天",
+    "7 days": "7 天",
+    "30 days": "30 天",
+    "Station report": "分类站报告",
+    "What people held up at this station, in {city} rules. Counts only: no pictures are kept, and nothing leaves this device.": "记录居民在此站展示的物品，按{city}规则分类。只保留计数，不保存照片，任何内容都不会离开本设备。",
+    "Export CSV": "导出 CSV",
+    "Clear this station's counts for {city}?": "要清除本站的{city}计数吗？",
+    "Reset": "重置",
+    "Nothing yet in this period. Start the camera or the demo feed above and counts appear here as people sort.": "此时段暂无数据。开启上方相机或演示后，分类计数会显示在这里。",
+    "Items sorted": "已分类物品",
+    "answered with a bin": "已给出分类桶结果",
+    "Sure enough to answer": "有足够把握给出结果",
+    "{tapped} settled with a tap, {unsure} left unsure": "{tapped} 次经点击确认，{unsure} 次仍不确定",
+    "Not for recycling": "不应回收",
+    "{count} items whose bin here is compost, trash or drop-off": "{count} 件物品在这里应堆肥、丢入垃圾桶或送至送交点",
+    "Per day": "按天",
+    "Items sorted per day, last {days} days": "最近 {days} 天的每日分类数量",
+    "By bin": "按桶",
+    "Most asked about": "最常查询的物品",
+    "Sign idea:": "标牌建议：",
+    "{item} is what people ask about most here. A sign above the bins that says “{item}: {bin}” answers it before anyone has to ask.": "这里最常被问到的是{item}。在桶上方放一块写着“{item}：{bin}”的标牌，大家不用询问就能知道。",
+    "I sorted {right} of {total} items into the right bin for {city}. Can you beat it?": "按{city}的规则，我将 {total} 件物品中的 {right} 件分对了桶。你能超过我吗？",
+    "Which bin? quiz": "放哪个桶？测验",
+    "Which bin? Quiz": "放哪个桶？测验",
+    "Ten everyday items. Pick the bin each one goes in under {city} rules. Half of them are items that places disagree on.": "十件日常物品。按{city}规则，选出每件物品该放的桶。其中一半在不同地区的分类规则不同。",
+    "Perfect sorting. Your bins thank you.": "全部分对了。感谢你正确分类！",
+    "Good sorting. A few tricky ones left.": "分得不错，还有几个容易弄错的。",
+    "The rules are tricky. Here is what to remember.": "规则有些复杂，下面这些值得记住。",
+    "Worth remembering": "值得记住",
+    "Play again": "再玩一次",
+    "Share your score": "分享成绩",
+    "Item {number} of {total}": "第 {number} 件，共 {total} 件",
+    "{count} right so far": "目前答对 {count} 题",
+    "right bin": "正确的桶",
+    "your pick": "你的选择",
+    "Right.": "正确。",
+    "Not quite. In {city}: {bin}.": "不太对。在{city}应放入{bin}。",
+    "Before you toss it: {prep}": "投放前：{prep}",
+    "Next item": "下一件",
+    "See your score": "查看成绩",
+    "Every answer Cleanstream gives comes from this table, and every row links to the official source. Rules are plain JSON, so a campus or city can edit its own pack. Checked {date}.": "Cleanstream 的每个答案都来自此表，每行都附有官方来源链接。规则采用普通 JSON 格式，方便校园或城市编辑自己的规则包。核查日期：{date}。",
+    "Search items": "搜索物品",
+    "Where places differ ({count})": "地区差异（{count}）",
+    "Source": "来源",
+    "Sources:": "来源：",
+    "Bin audit": "分类桶检查",
+    "Measure contamination the way waste teams already do: pull items from a bin and photograph each one. Cleanstream sorts them, and you get the contamination rate and the top offenders. Audit before and after a change to see if it worked.": "像垃圾处理团队一样检查混入杂物的情况：从桶中取出物品，逐件拍照。Cleanstream 会分类并显示混入比例和主要错投物品。在采取措施前后各检查一次，即可判断是否有效。",
+    "Site or station": "地点或分类站",
+    "e.g. Library lobby": "例如：图书馆大厅",
+    "Bin audited": "检查的桶",
+    "Phase": "阶段",
+    "Baseline (before)": "基线（改进前）",
+    "After change": "改进后",
+    "Date": "日期",
+    "Start audit": "开始检查",
+    "Site": "地点",
+    "Bin": "分类桶",
+    "Items": "物品",
+    "Contamination": "混入比例",
+    "No audits yet. Start one above.": "暂无检查记录。请在上方开始一次检查。",
+    "Baseline": "基线",
+    "After": "改进后",
+    "Before and after": "前后对比",
+    "{change} points": "{change} 个百分点",
+    "{count} items": "{count} 件物品",
+    "← All audits": "← 所有检查",
+    "Delete this audit?": "要删除这次检查吗？",
+    "Delete": "删除",
+    "Add photos of the items you pulled from this bin": "添加从这个桶中取出的物品照片",
+    "One item per photo. Drop a whole folder's worth at once.": "每张照片只拍一件物品。可以一次拖入整个文件夹的照片。",
+    "Choose photos": "选择照片",
+    "Download the photo model (96 MB)": "下载照片模型（96 MB）",
+    "Loading model…": "模型加载中…",
+    "Sorting {count} photos…": "正在分类 {count} 张照片…",
+    "Sorting {count} photo…": "正在分类 {count} 张照片…",
+    "Sorting": "分类中",
+    "Sorting…": "分类中…",
+    "Belongs in {bin}": "应放入{bin}",
+    "Belongs here": "应放在这里",
+    " · corrected": " · 已纠正",
+    "Don't belong": "不属于此桶",
+    "Top contaminants": "主要错投物品",
+    "None yet.": "暂无。",
+    "Where to focus:": "优先改进：",
+    "{item} makes up {percent} of the contamination here. In {city} it belongs in the {bin}. A sign at this station that names it is the cheapest first fix.": "{item}占这里混入杂物的 {percent}。在{city}，它应放入{bin}。先在本站放一块注明此物品的标牌，是成本最低的改进办法。",
+    "Tap any tile to correct it. Corrections count in the totals and are marked in the export.": "点击任一照片即可纠正分类。纠正结果会计入总数，并在导出文件中标注。",
+    "Untitled site": "未命名地点"
+  },
+  "cities": {
+    "nyc": "纽约",
+    "sf": "旧金山",
+    "la": "洛杉矶",
+    "chi": "芝加哥",
+    "sea": "西雅图",
+    "us": "美国（通用）"
+  },
+  "items": {
+    "plastic_bottle": {
+      "name": "塑料瓶或塑料壶",
+      "examples": "矿泉水瓶、汽水瓶、牛奶壶和洗衣液壶",
+      "aka": [
+        "塑料瓶",
+        "矿泉水瓶",
+        "饮料瓶",
+        "汽水瓶",
+        "洗发水瓶",
+        "洗衣液瓶",
+        "牛奶壶",
+        "果汁瓶",
+        "塑料壶",
+        "酱油瓶",
+        "瓶子",
+        "饮料瓶子"
+      ]
+    },
+    "plastic_container": {
+      "name": "硬塑料容器",
+      "examples": "塑料盒、翻盖盒、外卖盒",
+      "aka": [
+        "外卖盒",
+        "塑料盒",
+        "饭盒",
+        "打包盒",
+        "酸奶盒",
+        "黄油盒",
+        "沙拉盒",
+        "水果盒",
+        "塑料托盘",
+        "保鲜盒",
+        "塑料餐盒",
+        "翻盖盒"
+      ]
+    },
+    "plastic_cup": {
+      "name": "塑料杯",
+      "examples": "透明冷饮杯、派对杯",
+      "aka": [
+        "塑料杯",
+        "冷饮杯",
+        "冰咖啡杯",
+        "奶茶杯",
+        "果汁杯",
+        "一次性塑料杯",
+        "派对杯",
+        "珍珠奶茶杯"
+      ]
+    },
+    "plastic_lid_cap": {
+      "name": "塑料盖",
+      "examples": "瓶盖、杯盖和盒盖",
+      "aka": [
+        "塑料盖",
+        "瓶盖",
+        "杯盖",
+        "咖啡杯盖",
+        "塑料瓶盖",
+        "盒盖",
+        "奶茶杯盖",
+        "酸奶盖"
+      ]
+    },
+    "plastic_bag_film": {
+      "name": "塑料袋或薄膜",
+      "examples": "购物袋、包装膜、快递袋",
+      "aka": [
+        "塑料袋",
+        "购物袋",
+        "超市袋",
+        "保鲜膜",
+        "气泡膜",
+        "密封袋",
+        "快递袋",
+        "面包袋",
+        "垃圾袋",
+        "塑料薄膜",
+        "自封袋",
+        "包装袋"
+      ]
+    },
+    "snack_wrapper": {
+      "name": "零食包装",
+      "examples": "薯片袋、糖纸、软包装袋",
+      "aka": [
+        "零食袋",
+        "薯片袋",
+        "糖纸",
+        "糖果包装",
+        "巧克力包装",
+        "饼干袋",
+        "咖啡袋",
+        "果汁软袋",
+        "能量棒包装",
+        "零食包装"
+      ]
+    },
+    "foam": {
+      "name": "泡沫塑料（聚苯乙烯）",
+      "examples": "泡沫杯、泡沫翻盖盒、包装泡沫",
+      "aka": [
+        "泡沫塑料",
+        "保丽龙",
+        "泡沫杯",
+        "泡沫盒",
+        "泡沫餐盒",
+        "泡沫板",
+        "包装泡沫",
+        "泡沫填充粒",
+        "聚苯乙烯",
+        "泡沫托盘"
+      ]
+    },
+    "plastic_utensil_straw": {
+      "name": "塑料餐具或吸管",
+      "examples": "叉子、勺子、吸管",
+      "aka": [
+        "塑料餐具",
+        "塑料叉",
+        "塑料勺",
+        "塑料刀",
+        "一次性餐具",
+        "吸管",
+        "塑料吸管",
+        "搅拌棒",
+        "叉子",
+        "勺子"
+      ]
+    },
+    "paper": {
+      "name": "纸张",
+      "examples": "办公用纸、邮件、报纸、杂志",
+      "aka": [
+        "纸",
+        "纸张",
+        "报纸",
+        "杂志",
+        "办公纸",
+        "打印纸",
+        "信封",
+        "广告单",
+        "传单",
+        "笔记本纸",
+        "信纸",
+        "邮件"
+      ]
+    },
+    "paper_bag": {
+      "name": "纸袋",
+      "examples": "超市纸袋和外卖纸袋",
+      "aka": [
+        "纸袋",
+        "牛皮纸袋",
+        "外卖纸袋",
+        "购物纸袋",
+        "超市纸袋",
+        "面包纸袋",
+        "午餐纸袋",
+        "打包纸袋"
+      ]
+    },
+    "cardboard": {
+      "name": "纸板",
+      "examples": "快递箱、麦片盒、纸筒",
+      "aka": [
+        "快递盒",
+        "纸箱",
+        "快递箱",
+        "纸板",
+        "亚马逊纸箱",
+        "麦片盒",
+        "鞋盒",
+        "纸筒",
+        "卫生纸筒",
+        "鸡蛋纸盒",
+        "瓦楞纸",
+        "纸盒"
+      ]
+    },
+    "pizza_box": {
+      "name": "披萨盒",
+      "examples": "干净或有油污的披萨盒",
+      "aka": [
+        "披萨盒",
+        "比萨盒",
+        "披萨纸盒",
+        "比萨纸盒",
+        "油腻披萨盒",
+        "干净披萨盒",
+        "披萨包装盒",
+        "油污披萨盒"
+      ]
+    },
+    "soiled_paper": {
+      "name": "沾有食物的纸",
+      "examples": "用过的餐巾纸、厨房纸、面巾纸",
+      "aka": [
+        "餐巾纸",
+        "厨房纸",
+        "面巾纸",
+        "纸巾",
+        "脏纸",
+        "油纸巾",
+        "用过的纸巾",
+        "纸盘",
+        "沾油的纸",
+        "擦手纸"
+      ]
+    },
+    "paper_cup": {
+      "name": "纸杯",
+      "examples": "热咖啡纸杯",
+      "aka": [
+        "咖啡杯",
+        "纸杯",
+        "纸咖啡杯",
+        "热饮杯",
+        "热咖啡杯",
+        "星巴克杯",
+        "一次性纸杯",
+        "外带纸杯"
+      ]
+    },
+    "carton": {
+      "name": "复合纸盒",
+      "examples": "牛奶、果汁和高汤纸盒",
+      "aka": [
+        "牛奶盒",
+        "果汁盒",
+        "饮料纸盒",
+        "燕麦奶盒",
+        "杏仁奶盒",
+        "汤料盒",
+        "高汤纸盒",
+        "利乐包",
+        "纸盒饮料",
+        "豆奶盒"
+      ]
+    },
+    "metal_can": {
+      "name": "金属罐",
+      "examples": "汽水罐、食品罐头",
+      "aka": [
+        "易拉罐",
+        "汽水罐",
+        "啤酒罐",
+        "铝罐",
+        "铁罐",
+        "罐头盒",
+        "食品罐",
+        "猫粮罐",
+        "汤罐头",
+        "饮料罐"
+      ]
+    },
+    "aluminum_foil": {
+      "name": "铝箔",
+      "examples": "铝箔、铝箔托盘和烤盘",
+      "aka": [
+        "锡纸",
+        "铝箔",
+        "铝箔纸",
+        "锡箔纸",
+        "锡纸盒",
+        "铝箔餐盒",
+        "铝箔托盘",
+        "铝箔烤盘",
+        "蛋挞锡纸托",
+        "锡纸盘"
+      ]
+    },
+    "aerosol_can": {
+      "name": "气雾罐",
+      "examples": "喷雾罐",
+      "aka": [
+        "喷雾罐",
+        "气雾罐",
+        "发胶罐",
+        "定型喷雾",
+        "除臭喷雾",
+        "奶油喷罐",
+        "喷漆罐",
+        "食用油喷雾",
+        "气雾剂"
+      ]
+    },
+    "metal_lid_scrap": {
+      "name": "小型金属物品",
+      "examples": "罐盖、瓶盖、废金属",
+      "aka": [
+        "金属盖",
+        "铁盖",
+        "罐头盖",
+        "啤酒瓶盖",
+        "金属瓶盖",
+        "易拉环",
+        "废金属",
+        "铁丝衣架",
+        "锅",
+        "平底锅"
+      ]
+    },
+    "glass_bottle_jar": {
+      "name": "玻璃瓶或玻璃罐",
+      "examples": "饮料瓶、食品玻璃罐",
+      "aka": [
+        "玻璃瓶",
+        "玻璃罐",
+        "酒瓶",
+        "啤酒瓶",
+        "红酒瓶",
+        "果酱瓶",
+        "酱料瓶",
+        "泡菜罐",
+        "饮料玻璃瓶",
+        "罐头玻璃瓶"
+      ]
+    },
+    "drinking_glass_ceramic": {
+      "name": "玻璃水杯、陶瓷或碎玻璃",
+      "examples": "马克杯、玻璃杯、碎片",
+      "aka": [
+        "玻璃杯",
+        "马克杯",
+        "陶瓷",
+        "碎玻璃",
+        "陶瓷盘",
+        "镜子",
+        "窗玻璃",
+        "水杯",
+        "陶瓷杯",
+        "碎瓷片"
+      ]
+    },
+    "food_scraps": {
+      "name": "厨余",
+      "examples": "果皮、果核、剩饭剩菜",
+      "aka": [
+        "厨余",
+        "剩饭",
+        "剩菜",
+        "果皮",
+        "香蕉皮",
+        "苹果核",
+        "咖啡渣",
+        "鸡蛋壳",
+        "骨头",
+        "茶包",
+        "食物残渣",
+        "蔬菜"
+      ]
+    },
+    "yard_waste": {
+      "name": "庭院垃圾",
+      "examples": "落叶、植物、树枝",
+      "aka": [
+        "落叶",
+        "草屑",
+        "树枝",
+        "植物",
+        "花",
+        "圣诞树",
+        "修剪枝叶",
+        "庭院垃圾",
+        "青草",
+        "枯枝"
+      ]
+    },
+    "battery": {
+      "name": "电池",
+      "examples": "AA/AAA 电池、锂离子电池、纽扣电池",
+      "aka": [
+        "电池",
+        "五号电池",
+        "七号电池",
+        "锂电池",
+        "手机电池",
+        "充电电池",
+        "纽扣电池",
+        "9V电池",
+        "电子烟",
+        "电子烟电池",
+        "干电池",
+        "蓄电池"
+      ]
+    },
+    "electronics": {
+      "name": "电子产品",
+      "examples": "手机、线缆、耳塞式耳机",
+      "aka": [
+        "电子产品",
+        "手机",
+        "笔记本电脑",
+        "充电器",
+        "数据线",
+        "耳机",
+        "耳塞",
+        "电子垃圾",
+        "平板电脑",
+        "键盘",
+        "鼠标",
+        "电线"
+      ]
+    },
+    "textile": {
+      "name": "衣物和纺织品",
+      "examples": "衣服、床上用品、布料",
+      "aka": [
+        "衣服",
+        "衣物",
+        "旧衣服",
+        "T恤",
+        "牛仔裤",
+        "毛衣",
+        "毛巾",
+        "床单",
+        "布料",
+        "袜子",
+        "纺织品"
+      ]
+    },
+    "shoes": {
+      "name": "鞋子",
+      "examples": "运动鞋、靴子",
+      "aka": [
+        "鞋子",
+        "鞋",
+        "运动鞋",
+        "靴子",
+        "凉鞋",
+        "拖鞋",
+        "球鞋",
+        "帆布鞋",
+        "旧鞋"
+      ]
+    },
+    "cigarette_butt": {
+      "name": "烟头",
+      "examples": "香烟过滤嘴",
+      "aka": [
+        "烟头",
+        "烟蒂",
+        "香烟",
+        "烟屁股",
+        "香烟过滤嘴",
+        "烟嘴",
+        "香烟头",
+        "抽完的烟"
+      ]
+    },
+    "blister_pack": {
+      "name": "泡罩包装",
+      "examples": "药片板、带塑料背板的包装",
+      "aka": [
+        "药片板",
+        "药板",
+        "药片包装",
+        "药品包装",
+        "泡罩包装",
+        "胶囊板",
+        "药片铝塑板",
+        "吸塑包装"
+      ]
+    },
+    "rope_string": {
+      "name": "绳子或细绳",
+      "examples": "麻绳、线绳",
+      "aka": [
+        "绳子",
+        "细绳",
+        "麻绳",
+        "线绳",
+        "绳索",
+        "水管",
+        "花园软管",
+        "圣诞灯串",
+        "尼龙绳",
+        "毛线"
+      ]
+    },
+    "squeezable_tube": {
+      "name": "挤压软管",
+      "examples": "牙膏、化妆品",
+      "aka": [
+        "牙膏管",
+        "牙膏",
+        "软管包装",
+        "乳霜管",
+        "护肤品软管",
+        "洗面奶管",
+        "挤压软管",
+        "护手霜管"
+      ]
+    },
+    "mask_gloves": {
+      "name": "口罩或手套",
+      "examples": "一次性口罩和手套",
+      "aka": [
+        "口罩",
+        "手套",
+        "一次性口罩",
+        "一次性手套",
+        "乳胶手套",
+        "医用口罩",
+        "丁腈手套",
+        "防护口罩",
+        "塑料手套"
+      ]
+    }
+  },
+  "packs": {
+    "chi": {
+      "bins": {
+        "blue": {
+          "name": "蓝桶",
+          "accepts": "回收：金属罐、玻璃、塑料瓶和容器、复合纸盒、纸张。散放，不装袋"
+        },
+        "black": {
+          "name": "黑桶",
+          "accepts": "垃圾：无法回收或送交的物品"
+        },
+        "dropoff": {
+          "name": "送交点",
+          "accepts": "厨余、庭院垃圾、电池、电子废弃物、化学品、纺织品"
+        }
+      },
+      "items": {
+        "plastic_bottle": {
+          "prep": [
+            "倒空",
+            "散放，不装袋"
+          ],
+          "why": "芝加哥的蓝桶接收塑料瓶和塑料壶。"
+        },
+        "plastic_container": {
+          "prep": [
+            "倒空",
+            "散放，不装袋",
+            "泡沫塑料（#6）放入黑桶"
+          ],
+          "why": "接收标有 #1 至 #5 或 #7 的硬塑料容器；不接收 #6。"
+        },
+        "plastic_cup": {
+          "prep": [
+            "倒空",
+            "查看底部编号：#6 放入黑桶"
+          ],
+          "why": "接收标有 #1 至 #5 或 #7 的硬塑料；不接收泡沫杯及其他 #6 杯子。"
+        },
+        "plastic_lid_cap": {
+          "prep": [
+            "散放，不装袋",
+            "#6 或泡沫塑料盖放入黑桶"
+          ],
+          "why": "市政府旧版指南将塑料瓶盖列为可接收物品，但只有部分分拣厂接收。"
+        },
+        "plastic_bag_film": {
+          "prep": [
+            "绝不放入蓝桶，既不能散放，也不能用作内衬袋",
+            "干净的塑料袋和薄膜：送到商店的回收箱"
+          ],
+          "why": "塑料袋和薄膜会卡住分拣机器，是芝加哥回收物中最常见的杂物之一。"
+        },
+        "snack_wrapper": {
+          "prep": [
+            "绝不放入蓝桶"
+          ],
+          "why": "市政府要求居民不要将袋子和其他软塑料放入蓝桶。"
+        },
+        "foam": {
+          "prep": [
+            "绝不放入蓝桶"
+          ],
+          "why": "泡沫塑料属于 #6 塑料，因没有回收市场，市政府不回收。"
+        },
+        "plastic_utensil_straw": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "蓝桶接收塑料瓶和容器；塑料餐具和吸管不在市政府接收清单上。"
+        },
+        "paper": {
+          "prep": [
+            "散放，不装袋",
+            "不接收碎纸"
+          ],
+          "why": "接收报纸、杂志、广告邮件和办公用纸。"
+        },
+        "paper_bag": {
+          "prep": [
+            "散放，不套另一层袋子",
+            "湿袋子或沾有食物的袋子放入黑桶"
+          ],
+          "why": "纸袋列在市政府接收的纸类清单中。"
+        },
+        "cardboard": {
+          "prep": [
+            "拆开并压平纸箱",
+            "散放，不装袋"
+          ],
+          "why": "接收纸板；压平纸箱以节省桶内空间。"
+        },
+        "pizza_box": {
+          "prep": [
+            "去掉所有食物、衬纸和餐巾纸",
+            "有油渍也可以"
+          ],
+          "why": "市政府说明，披萨盒清空后可以回收；厨余送交点不接收披萨盒。"
+        },
+        "soiled_paper": {
+          "prep": [
+            "不要放入蓝桶",
+            "厨余送交点不接收"
+          ],
+          "why": "芝加哥的厨余送交点不接收餐巾纸和纸张，脏纸也无法回收。"
+        },
+        "paper_cup": {
+          "prep": [
+            "倒空"
+          ],
+          "why": "芝加哥未将纸杯列为可接收物品，因此放入黑桶更稳妥。"
+        },
+        "carton": {
+          "prep": [
+            "倒空",
+            "不要压扁",
+            "散放，不装袋"
+          ],
+          "why": "接收牛奶和果汁纸盒；市政府要求不要压扁。"
+        },
+        "metal_can": {
+          "prep": [
+            "倒空",
+            "不要压扁"
+          ],
+          "why": "接收铝罐、钢罐和马口铁罐。"
+        },
+        "aluminum_foil": {
+          "prep": [
+            "去掉食物残渣"
+          ],
+          "why": "铝箔和派盘列在市政府接收的金属清单中。"
+        },
+        "aerosol_can": {
+          "prep": [
+            "绝不放入蓝桶",
+            "送至 Household Chemicals & Computer Recycling Facility",
+            "周二、周四和每月第一个周六开放"
+          ],
+          "why": "气雾罐在分拣厂存在安全隐患；市政府的化学品处理设施接收所有气雾罐。"
+        },
+        "metal_lid_scrap": {
+          "prep": [
+            "还能使用的锅具：捐赠或再利用"
+          ],
+          "why": "蓝桶接收钢罐、铝罐和铝箔；盖子和废金属不在市政府接收清单上。"
+        },
+        "glass_bottle_jar": {
+          "prep": [
+            "倒空",
+            "取下盖子",
+            "散放，不装袋"
+          ],
+          "why": "接收玻璃瓶和玻璃罐。"
+        },
+        "drinking_glass_ceramic": {
+          "prep": [
+            "包好碎片，避免割伤他人"
+          ],
+          "why": "只接收玻璃瓶和玻璃罐，因此玻璃水杯、陶瓷和碎玻璃应放入黑桶。"
+        },
+        "food_scraps": {
+          "prep": [
+            "更好的选择：送至市政府厨余送交点（需先登记，不允许使用任何袋子）",
+            "否则放入黑桶"
+          ],
+          "why": "芝加哥没有路边收运的堆肥桶，因此厨余应作为垃圾处理；也可使用市政府免费送交点，那里接收所有食物，包括肉和骨头。"
+        },
+        "yard_waste": {
+          "prep": [
+            "单独装袋，不与垃圾和回收物混装",
+            "拨打 311 预约收运",
+            "圣诞树：送到市政府一月份的树木送交点"
+          ],
+          "why": "市政府按预约单独收运装袋的庭院垃圾并制成堆肥；厨余送交点不接收这类垃圾。"
+        },
+        "battery": {
+          "prep": [
+            "充电电池、锂电池和汽车电池：送至 Household Chemicals & Computer Recycling Facility",
+            "绝不放入蓝桶",
+            "碱性电池（AA、AAA、9V）：该设施不接收，放入黑桶"
+          ],
+          "why": "锂离子电池会在分拣厂引发火灾，因此绝不能放入蓝桶。"
+        },
+        "electronics": {
+          "prep": [
+            "送至 Household Chemicals & Computer Recycling Facility",
+            "只接收清单上的物品：电脑、电视、电话、打印机、键盘",
+            "先查看开放时间（周二、周四、每月第一个周六）"
+          ],
+          "why": "伊利诺伊州法律禁止将大多数电子产品丢入垃圾，因此芝加哥将它们送至电脑回收设施。"
+        },
+        "textile": {
+          "prep": [
+            "捐赠还能穿用的物品",
+            "其余送至纺织品送交点",
+            "绝不放入蓝桶"
+          ],
+          "why": "回收厂无法分拣出纺织品，因此市政府引导居民选择再利用渠道和送交点。"
+        },
+        "shoes": {
+          "prep": [
+            "捐赠还能穿的成双鞋子",
+            "绝不放入蓝桶"
+          ],
+          "why": "市政府旧版指南将鞋子列为捐赠或送交物品，不能放入蓝桶。"
+        },
+        "cigarette_butt": {
+          "prep": [
+            "确认完全熄灭"
+          ],
+          "why": "烟头无法回收；不可回收物放入黑桶。"
+        },
+        "blister_pack": {
+          "prep": [
+            "倒空"
+          ],
+          "why": "塑料与铝箔混合包装不属于蓝桶接收的瓶子或容器。"
+        },
+        "rope_string": {
+          "prep": [
+            "绝不放入蓝桶"
+          ],
+          "why": "软管、电线和其他易缠绕物会卡住回收厂的分拣机器。"
+        },
+        "squeezable_tube": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "软管包装不属于蓝桶接收的瓶子或容器。"
+        },
+        "mask_gloves": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "口罩和手套无法回收；放入黑桶。"
+        }
+      }
+    },
+    "la": {
+      "bins": {
+        "blue": {
+          "name": "蓝桶",
+          "accepts": "回收：纸张、纸板、玻璃、金属、1、2 和 5 号塑料"
+        },
+        "green": {
+          "name": "绿桶",
+          "accepts": "有机垃圾：厨余、沾有食物的纸、庭院修剪物"
+        },
+        "black": {
+          "name": "黑桶",
+          "accepts": "垃圾：无法回收、堆肥或捐赠的物品"
+        },
+        "special": {
+          "name": "特殊送交点",
+          "accepts": "不能放入任何桶：电池、电子废弃物、喷雾罐（送至 S.A.F.E. Centers）"
+        }
+      },
+      "items": {
+        "plastic_bottle": {
+          "prep": [
+            "倒空并冲洗干净",
+            "查看编号：1、2 或 5",
+            "把盖子拧回去"
+          ],
+          "why": "蓝桶接收干净的 1、2 和 5 号塑料瓶、塑料壶。"
+        },
+        "plastic_container": {
+          "prep": [
+            "倒空并冲洗干净",
+            "查看编号：仅限 1、2 或 5"
+          ],
+          "why": "接收干净的酸奶盒、人造黄油盒等容器，但须为 1、2 或 5 号塑料。"
+        },
+        "plastic_cup": {
+          "prep": [
+            "倒空",
+            "标有可堆肥的杯子也放入黑桶"
+          ],
+          "why": "蓝桶清单只包括塑料瓶、壶和盒状容器，因此杯子放入黑桶。"
+        },
+        "plastic_lid_cap": {
+          "prep": [
+            "把盖子拧回空瓶或空盒上",
+            "散落、软薄或没有标识的盖子：放入黑桶"
+          ],
+          "why": "瓶盖由蓝桶接收的 2 或 5 号塑料制成，LASAN 要求将盖子留在瓶上。"
+        },
+        "plastic_bag_film": {
+          "prep": [
+            "尽量重复使用",
+            "绝不放入蓝桶或绿桶"
+          ],
+          "why": "洛杉矶的蓝桶不接收塑料袋或薄膜，绿桶也不接收。"
+        },
+        "snack_wrapper": {
+          "prep": [
+            "倒空",
+            "绝不放入蓝桶"
+          ],
+          "why": "糖果和零食包装属于塑料薄膜，洛杉矶的回收指南将其列为垃圾。"
+        },
+        "foam": {
+          "prep": [
+            "绝不放入蓝桶"
+          ],
+          "why": "洛杉矶不回收 Styrofoam 泡沫塑料，应放入黑桶。"
+        },
+        "plastic_utensil_straw": {
+          "prep": [
+            "未处理木材或竹制餐具：放入绿桶",
+            "标有可堆肥的塑料：放入黑桶"
+          ],
+          "why": "蓝桶清单只包括塑料瓶、壶和盒状容器，因此塑料餐具和吸管放入黑桶。"
+        },
+        "paper": {
+          "prep": [
+            "保持干净、干燥",
+            "有油污或沾有食物的纸：放入绿桶"
+          ],
+          "why": "接收广告邮件、报纸及其他干净、干燥的纸张。"
+        },
+        "paper_bag": {
+          "prep": [
+            "保持干净、干燥",
+            "有油污或沾有食物的纸袋：放入绿桶"
+          ],
+          "why": "干净的纸放入蓝桶，沾有食物的纸放入绿桶。"
+        },
+        "cardboard": {
+          "prep": [
+            "压平",
+            "保持干净、干燥"
+          ],
+          "why": "接收麦片盒和压平的快递纸箱。"
+        },
+        "pizza_box": {
+          "prep": [
+            "剩下的披萨边可以一起放入",
+            "不要使用塑料袋或可堆肥袋"
+          ],
+          "why": "LASAN 将有油污的披萨盒列为应放入绿桶的食物污染纸类。"
+        },
+        "soiled_paper": {
+          "prep": [
+            "仅限纸类，不得有塑料或蜡涂层",
+            "不要使用塑料袋或可堆肥袋"
+          ],
+          "why": "沾有食物的纸，如餐巾纸、厨房纸和咖啡滤纸，放入绿桶。"
+        },
+        "paper_cup": {
+          "prep": [
+            "倒空",
+            "没有塑料或蜡内衬的杯子：放入绿桶"
+          ],
+          "why": "洛杉矶的回收指南将一次性咖啡杯列为垃圾，因为大多数有塑料内衬。"
+        },
+        "carton": {
+          "prep": [
+            "倒空并冲洗干净",
+            "有蜡涂层的纸盒：放入黑桶"
+          ],
+          "why": "LASAN 将复合纸盒列为蓝桶接收的可回收物。"
+        },
+        "metal_can": {
+          "prep": [
+            "倒空并冲洗干净",
+            "晾干"
+          ],
+          "why": "接收铝罐和马口铁罐。"
+        },
+        "aluminum_foil": {
+          "prep": [
+            "刮掉食物残渣",
+            "保持干净、干燥"
+          ],
+          "why": "接收干净的铝箔。"
+        },
+        "aerosol_can": {
+          "prep": [
+            "完全用尽",
+            "送至 S.A.F.E. Center",
+            "绝不放入蓝桶或黑桶"
+          ],
+          "why": "LASAN 将气雾罐列为应送至 S.A.F.E. Centers 的家庭危险废物。"
+        },
+        "metal_lid_scrap": {
+          "prep": [
+            "电器和大型金属物品：预约免费大件收运"
+          ],
+          "why": "洛杉矶的蓝桶清单包括铝罐、马口铁罐和干净铝箔，不包括盖子或废金属，因此小型金属物品放入黑桶。"
+        },
+        "glass_bottle_jar": {
+          "prep": [
+            "倒空并冲洗干净",
+            "任何颜色都可以"
+          ],
+          "why": "接收任何颜色的玻璃瓶和玻璃罐。"
+        },
+        "drinking_glass_ceramic": {
+          "prep": [
+            "包好尖锐碎片，避免割伤他人"
+          ],
+          "why": "碎玻璃和餐具无法回收，应放入黑桶。"
+        },
+        "food_scraps": {
+          "prep": [
+            "用碗或厨房小桶收集",
+            "散倒入绿桶",
+            "不要使用塑料袋或可堆肥袋"
+          ],
+          "why": "厨余，包括肉、骨头和乳制品，放入绿桶。"
+        },
+        "yard_waste": {
+          "prep": [
+            "散放，不装塑料袋",
+            "太多了？使用每年免费的枝条收运服务"
+          ],
+          "why": "花、草屑、树木和灌木修剪物以及干净的未处理木材放入绿桶。"
+        },
+        "battery": {
+          "prep": [
+            "用胶带封住电池端子",
+            "送至 S.A.F.E. Center",
+            "小型家用电池可放入图书馆的电池收集桶"
+          ],
+          "why": "电池属于家庭危险废物，可能引发火灾，因此绝不能放入垃圾或回收桶。"
+        },
+        "electronics": {
+          "prep": [
+            "先清除个人数据",
+            "尽可能取出电池",
+            "送至 S.A.F.E. Center"
+          ],
+          "why": "LASAN 在 S.A.F.E. Centers 接收电子废弃物，不通过路边桶收集。"
+        },
+        "textile": {
+          "prep": [
+            "干净且还能穿用的，请捐赠",
+            "磨损或破裂的布料：放入黑桶"
+          ],
+          "why": "黑桶接收不适合捐赠的破旧布料，纺织品不在蓝桶或绿桶接收清单上。"
+        },
+        "shoes": {
+          "prep": [
+            "还能穿的成双鞋子，请优先捐赠",
+            "破旧鞋子：放入黑桶"
+          ],
+          "why": "鞋子不在蓝桶或绿桶接收清单上，因此破旧鞋子与其他无法再利用的物品一起放入黑桶。"
+        },
+        "cigarette_butt": {
+          "prep": [
+            "彻底熄灭",
+            "先让它冷却"
+          ],
+          "why": "烟头无法回收或堆肥，因此放入黑桶。"
+        },
+        "blister_pack": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "泡罩包装混合了塑料和铝箔，不属于瓶、壶或盒状容器，因此放入黑桶。"
+        },
+        "rope_string": {
+          "prep": [
+            "绝不放入蓝桶"
+          ],
+          "why": "电线、绳子和其他易缠绕物会卡住回收厂的分拣机器。"
+        },
+        "squeezable_tube": {
+          "prep": [
+            "尽量挤空"
+          ],
+          "why": "软管包装不属于塑料瓶、壶或盒状容器，而蓝桶只接收这些塑料制品。"
+        },
+        "mask_gloves": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "一次性口罩和手套无法回收或堆肥，因此放入黑桶。"
+        }
+      }
+    },
+    "nyc": {
+      "bins": {
+        "blue": {
+          "name": "蓝桶",
+          "accepts": "金属、玻璃、塑料和复合纸盒"
+        },
+        "green": {
+          "name": "绿桶",
+          "accepts": "混合废纸和纸板"
+        },
+        "brown": {
+          "name": "棕桶",
+          "accepts": "厨余、庭院垃圾、沾有食物的纸"
+        },
+        "trash": {
+          "name": "垃圾桶",
+          "accepts": "无法回收或堆肥的物品"
+        },
+        "dropoff": {
+          "name": "送交点",
+          "accepts": "电池、电子产品、衣物：特殊处理"
+        }
+      },
+      "items": {
+        "plastic_bottle": {
+          "prep": [
+            "倒空并冲洗",
+            "盖子可以留在上面"
+          ],
+          "why": "纽约接收硬塑料瓶和壶，不限底部编号。"
+        },
+        "plastic_container": {
+          "prep": [
+            "倒空并冲洗"
+          ],
+          "why": "接收硬质食品容器、盒子和盖子。"
+        },
+        "plastic_cup": {
+          "prep": [
+            "倒空并冲洗",
+            "泡沫杯应放入垃圾桶"
+          ],
+          "why": "接收硬塑料杯和碗。"
+        },
+        "plastic_lid_cap": {
+          "prep": [
+            "留在容器上或散放"
+          ],
+          "why": "接收硬塑料盖。"
+        },
+        "plastic_bag_film": {
+          "prep": [
+            "更好的选择：将干净的塑料袋和薄膜送到大型商店的回收点",
+            "绝不用黑色袋子装回收物"
+          ],
+          "why": "塑料袋和薄膜不应放入家庭回收桶。面积为 10,000 平方英尺及以上的商店必须接收退回的塑料袋和薄膜。"
+        },
+        "snack_wrapper": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "纽约不回收糖果和零食包装等软塑料。"
+        },
+        "foam": {
+          "prep": [
+            "绝不放入蓝桶或棕桶"
+          ],
+          "why": "泡沫塑料制品，如 Styrofoam 和泡沫填充粒，放入垃圾桶。"
+        },
+        "plastic_utensil_straw": {
+          "prep": [
+            "冲洗"
+          ],
+          "why": "纽约将塑料餐具列为可回收的硬塑料。"
+        },
+        "paper": {
+          "prep": [
+            "保持干燥",
+            "订书钉和带窗信封都可以"
+          ],
+          "why": "报纸、杂志、邮件和办公用纸放入废纸回收。"
+        },
+        "paper_bag": {
+          "prep": [
+            "保持干净、干燥",
+            "沾有食物的纸袋放入棕桶"
+          ],
+          "why": "DSNY 规则将纸袋归入混合废纸。"
+        },
+        "cardboard": {
+          "prep": [
+            "压平",
+            "大块纸板用细绳捆好，尺寸须为 18 英寸或以下"
+          ],
+          "why": "压平的纸板与混合废纸一起回收。"
+        },
+        "pizza_box": {
+          "prep": [
+            "去掉剩余食物",
+            "纸盒有油污？放入棕桶"
+          ],
+          "why": "轻度脏污的披萨盒与纸类一起回收；油污较多的可堆肥。"
+        },
+        "soiled_paper": {
+          "prep": [
+            "先刮掉食物残渣",
+            "干净的面巾纸可以放入垃圾桶"
+          ],
+          "why": "纽约堆肥收集接收厨余以及沾有食物的纸。"
+        },
+        "paper_cup": {
+          "prep": [
+            "倒空并弄干"
+          ],
+          "why": "纽约接收空且干燥的纸杯，与混合废纸一起回收。"
+        },
+        "carton": {
+          "prep": [
+            "倒空并冲洗",
+            "放入蓝桶，不与纸类混放"
+          ],
+          "why": "牛奶、果汁和汤料纸盒与金属、玻璃和塑料一起回收。"
+        },
+        "metal_can": {
+          "prep": [
+            "倒空并冲洗"
+          ],
+          "why": "接收各种金属，包括食品罐和饮料罐。"
+        },
+        "aluminum_foil": {
+          "prep": [
+            "去掉食物残渣"
+          ],
+          "why": "接收铝箔和铝箔托盘。"
+        },
+        "aerosol_can": {
+          "prep": [
+            "必须完全排空",
+            "仍有内容物的须按特殊废物处理"
+          ],
+          "why": "已排空的气雾罐可与金属一起回收。"
+        },
+        "metal_lid_scrap": {
+          "prep": [
+            "去掉线缆"
+          ],
+          "why": "纽约接收各种金属，包括盖子和小型金属物品。"
+        },
+        "glass_bottle_jar": {
+          "prep": [
+            "冲洗"
+          ],
+          "why": "接收玻璃瓶和玻璃罐。"
+        },
+        "drinking_glass_ceramic": {
+          "prep": [
+            "碎玻璃：封入标有“碎玻璃”的盒子，或装入双层袋子"
+          ],
+          "why": "玻璃水杯、马克杯和盘子无法回收。"
+        },
+        "food_scraps": {
+          "prep": [
+            "用透明袋、纸袋或可堆肥袋装好，也可散放",
+            "不要用黑色袋子"
+          ],
+          "why": "纽约强制实行堆肥分类。接收所有厨余，包括肉和骨头。"
+        },
+        "yard_waste": {
+          "prep": [
+            "使用庭院垃圾纸袋或透明袋",
+            "将细枝捆成束"
+          ],
+          "why": "落叶和庭院垃圾不得放入垃圾桶。"
+        },
+        "battery": {
+          "prep": [
+            "用胶带封住两端，或将每节电池单独装袋",
+            "充电电池和锂离子电池：退回销售此类电池的商店",
+            "一次性碱性电池（AA、AAA、9V）可以放入垃圾桶"
+          ],
+          "why": "充电电池和锂离子电池绝不能放入垃圾桶或回收桶。它们会在收运车辆和处理厂引发火灾。"
+        },
+        "electronics": {
+          "prep": [
+            "送到商店或非营利机构的送交点、SAFE 活动，或使用 ecycleNYC"
+          ],
+          "why": "在纽约，将电子产品放入垃圾桶或回收桶属于违法行为。"
+        },
+        "textile": {
+          "prep": [
+            "捐赠或送至纺织品送交点",
+            "清洁、晾干并装袋"
+          ],
+          "why": "衣物可以捐赠或交给纺织品回收机构，不必丢入垃圾桶。"
+        },
+        "shoes": {
+          "prep": [
+            "捐赠还能穿的成双鞋子",
+            "将干净、干燥的鞋子装袋"
+          ],
+          "why": "在纽约衣物再利用指南中，鞋子属于配饰类。"
+        },
+        "cigarette_butt": {
+          "prep": [
+            "先彻底熄灭"
+          ],
+          "why": "无法回收或堆肥的物品放入垃圾桶。"
+        },
+        "blister_pack": {
+          "prep": [
+            "倒空",
+            "背面为铝箔的药片包装放入垃圾桶"
+          ],
+          "why": "接收硬塑料“blisterpak”泡罩包装。"
+        },
+        "rope_string": {
+          "prep": [
+            "绝不放入回收桶"
+          ],
+          "why": "电线、软管和灯串等易缠绕物会卡住分拣机器。"
+        },
+        "squeezable_tube": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "牙膏管等塑料软管和软袋无法回收。"
+        },
+        "mask_gloves": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "口罩和一次性手套放入垃圾桶。"
+        }
+      }
+    },
+    "sea": {
+      "bins": {
+        "recycle": {
+          "name": "回收桶",
+          "accepts": "纸张、纸板、瓶子、盒状容器、金属罐、玻璃罐"
+        },
+        "compost": {
+          "name": "厨余和庭院垃圾桶",
+          "accepts": "厨余、庭院垃圾、沾有食物的纸"
+        },
+        "garbage": {
+          "name": "垃圾桶",
+          "accepts": "其他垃圾：不得含回收物、食物、电池或电子产品"
+        },
+        "dropoff": {
+          "name": "送交点",
+          "accepts": "电池、电子产品、危险废物、衣物：不能放入任何桶"
+        }
+      },
+      "items": {
+        "plastic_bottle": {
+          "prep": [
+            "倒空并晾干",
+            "把盖子拧回去",
+            "散放，不装袋"
+          ],
+          "why": "接收空且干净、容量不超过 5 加仑的塑料瓶和壶，盖子须留在上面。"
+        },
+        "plastic_container": {
+          "prep": [
+            "倒空、冲洗并晾干",
+            "仅限大于 3 英寸的物品",
+            "洗不干净？放入垃圾桶"
+          ],
+          "why": "接收干净、干燥且大于 3 英寸的盒子、托盘和翻盖容器；不接收泡沫塑料容器。"
+        },
+        "plastic_cup": {
+          "prep": [
+            "倒空并冲洗",
+            "标有“compostable”（可堆肥）或“#7 PLA”？放入厨余和庭院垃圾桶",
+            "泡沫杯放入垃圾桶"
+          ],
+          "why": "空且干净的塑料杯可回收；脏杯子和泡沫杯放入垃圾桶。"
+        },
+        "plastic_lid_cap": {
+          "prep": [
+            "把盖子拧回空瓶上",
+            "散放的盖子须为 3 英寸或以上",
+            "更小的散落盖子：放入垃圾桶"
+          ],
+          "why": "留在瓶上的盖子及 3 英寸或以上的散放盖子可回收；更小的散落盖子会从分拣设备的缝隙掉落。"
+        },
+        "plastic_bag_film": {
+          "prep": [
+            "不要放入回收桶，即使集中装在袋子里也不行",
+            "干净、干燥的塑料薄膜可送至商店送交点"
+          ],
+          "why": "自 2020 年 1 月起，西雅图回收桶不再接收塑料袋和塑料膜，因为它们会卡住分拣机器。"
+        },
+        "snack_wrapper": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "薯片袋、糖果包装和软袋由无法回收的混合材料制成。"
+        },
+        "foam": {
+          "prep": [
+            "将散落的泡沫填充粒装袋并扎紧袋口",
+            "干净的泡沫块：使用免费 Special Item Pickup 服务，或送至 Kent 的 Styro Recycle"
+          ],
+          "why": "泡沫塑料放入垃圾桶；只有干净的 Styrofoam 泡沫块有回收渠道。"
+        },
+        "plastic_utensil_straw": {
+          "prep": [
+            "无需预处理",
+            "标有“compostable”（可堆肥）？放入厨余和庭院垃圾桶"
+          ],
+          "why": "西雅图不回收塑料餐具和吸管。"
+        },
+        "paper": {
+          "prep": [
+            "保持干净、干燥",
+            "订书钉可以保留",
+            "碎纸：放入厨余和庭院垃圾桶"
+          ],
+          "why": "办公用纸、邮件、报纸和杂志应放入回收桶，不得放入垃圾桶。"
+        },
+        "paper_bag": {
+          "prep": [
+            "保持干净、干燥",
+            "贴纸、胶带和订书钉都可以保留",
+            "沾有食物？放入厨余和庭院垃圾桶"
+          ],
+          "why": "干净、干燥的纸袋可回收；湿纸袋或沾有食物的纸袋可堆肥。"
+        },
+        "cardboard": {
+          "prep": [
+            "压平；胶带和标签可以保留",
+            "桶里放不下？装箱或捆好放在桶旁，免费收运",
+            "湿纸板或有油污的纸板：放入厨余和庭院垃圾桶"
+          ],
+          "why": "干净、压平的纸板可回收；涂蜡纸板放入垃圾桶。"
+        },
+        "pizza_box": {
+          "prep": [
+            "去掉所有铝箔、塑料和其他非纸部件"
+          ],
+          "why": "有油污或沾有食物的披萨盒放入厨余和庭院垃圾桶。"
+        },
+        "soiled_paper": {
+          "prep": [
+            "沾有食物或油污的餐巾纸、厨房纸和无涂层纸盘：堆肥",
+            "面巾纸，或沾有清洁剂、体液的纸巾：放入垃圾桶",
+            "有亮面涂层的纸：放入垃圾桶"
+          ],
+          "why": "沾有食物或油污的无涂层纸可堆肥，但面巾纸和亮面涂层纸不可以。"
+        },
+        "paper_cup": {
+          "prep": [
+            "倒空并晾干",
+            "杯套也可以一起放入",
+            "标有“compostable”（可堆肥）？放入厨余和庭院垃圾桶"
+          ],
+          "why": "西雅图回收空、干净且干燥的纸杯；泡沫杯放入垃圾桶。"
+        },
+        "carton": {
+          "prep": [
+            "倒空并晾干",
+            "保留倒口；盖子放入垃圾桶"
+          ],
+          "why": "接收干净、空且干燥的牛奶、果汁、汤料及其他无菌纸盒。"
+        },
+        "metal_can": {
+          "prep": [
+            "倒空、冲洗并晾干",
+            "将盖子压入罐内，或让盖子保持连接",
+            "保留标签"
+          ],
+          "why": "铝制和钢制食品罐、饮料罐可回收。"
+        },
+        "aluminum_foil": {
+          "prep": [
+            "去掉所有食物并晾干",
+            "揉成大于 3 英寸的球",
+            "脏铝箔或小碎片：放入垃圾桶"
+          ],
+          "why": "干净、干燥且大于 3 英寸的铝箔和铝箔托盘可回收。"
+        },
+        "aerosol_can": {
+          "prep": [
+            "用尽，直到没有内容物和压力",
+            "完全排空且无危险性（定型喷雾、食用油喷雾）：放入回收桶",
+            "油漆、溶剂、防熊喷雾或任何未完全排空的罐子：免费送至危险废物处理设施"
+          ],
+          "why": "西雅图只回收完全排空且无危险性的气雾罐；仍有内容物的属于危险废物。"
+        },
+        "metal_lid_scrap": {
+          "prep": [
+            "3 英寸或以上（锅、平底锅、大盖子）：放入回收桶",
+            "更小的散落金属件：放入垃圾桶，或装在金属罐里送至转运站的废金属箱",
+            "小盖子留在瓶罐上：连同容器回收"
+          ],
+          "why": "大于 3 英寸的金属可回收；更小的散落金属件会从分拣设备的缝隙掉落。"
+        },
+        "glass_bottle_jar": {
+          "prep": [
+            "倒空、冲洗并晾干",
+            "把小盖子拧回去；3 英寸或以上的盖子可以散放",
+            "不接收 Pyrex 或磨砂玻璃"
+          ],
+          "why": "玻璃瓶和玻璃罐可回收；其他玻璃熔点不同，无法回收。"
+        },
+        "drinking_glass_ceramic": {
+          "prep": [
+            "捐赠完好、状态良好的物品",
+            "3 英寸或以上的瓶罐玻璃碎片可以回收"
+          ],
+          "why": "玻璃水杯、陶瓷及其他非瓶罐玻璃不可回收。"
+        },
+        "food_scraps": {
+          "prep": [
+            "去掉果蔬贴纸及所有塑料",
+            "只使用获准的可堆肥袋，或不装袋"
+          ],
+          "why": "所有食物，包括肉、乳制品、骨头和壳，放入厨余和庭院垃圾桶。"
+        },
+        "yard_waste": {
+          "prep": [
+            "将树枝剪至不超过 4 英尺长、4 英寸粗",
+            "去掉泥土",
+            "桶盖必须能盖上，否则额外庭院垃圾需收费"
+          ],
+          "why": "落叶、草、植物和细树枝放入厨余和庭院垃圾桶。"
+        },
+        "battery": {
+          "prep": [
+            "用胶带封住每节电池的两端",
+            "免费送至家庭危险废物处理设施或市政府转运站",
+            "绝不放入垃圾桶或回收桶"
+          ],
+          "why": "西雅图禁止将任何电池（包括碱性电池）放入垃圾桶或回收桶，因为它们会在收运车辆和处理厂引发火灾。"
+        },
+        "electronics": {
+          "prep": [
+            "还能用的，请捐赠",
+            "送至 King County Take It Back Network 的电子产品回收机构",
+            "或预约付费 Special Item Pickup 服务"
+          ],
+          "why": "西雅图禁止将电视、电脑、平板及任何带电池物品丢入垃圾，不过 SPU 说明普通线缆和耳机可以放入。"
+        },
+        "textile": {
+          "prep": [
+            "状态良好的，请捐赠",
+            "磨损或有污渍：送至合作二手商店的 Threadcycle 送交点",
+            "否则可以放入垃圾桶"
+          ],
+          "why": "衣物和布料可以捐赠或通过 Threadcycle 回收；最后无其他选择时允许放入垃圾桶。"
+        },
+        "shoes": {
+          "prep": [
+            "捐赠还能穿的成双鞋子",
+            "破旧鞋子：送至合作二手商店的 Threadcycle 送交点",
+            "否则可以放入垃圾桶"
+          ],
+          "why": "鞋子可以捐赠或通过 Threadcycle 回收；最后无其他选择时允许放入垃圾桶。"
+        },
+        "cigarette_butt": {
+          "prep": [
+            "确认完全熄灭"
+          ],
+          "why": "烟头放入垃圾桶；电子烟设备和烟油则属于危险废物。"
+        },
+        "blister_pack": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "泡罩包装属于不可回收的硬塑料包装。"
+        },
+        "rope_string": {
+          "prep": [
+            "装袋，避免缠绕",
+            "还能用的，请捐赠或再利用"
+          ],
+          "why": "含合成纤维的绳子、细绳和毛线放入垃圾桶，因为它们会缠住分拣机器。"
+        },
+        "squeezable_tube": {
+          "prep": [
+            "即使软管标有“可回收”，也不要按此处理"
+          ],
+          "why": "牙膏管等软塑料管即使标有可回收，也应放入垃圾桶。"
+        },
+        "mask_gloves": {
+          "prep": [
+            "先剪断口罩耳带"
+          ],
+          "why": "所有口罩、一次性手套和其他防护用品放入垃圾桶。"
+        }
+      }
+    },
+    "sf": {
+      "bins": {
+        "blue": {
+          "name": "蓝桶",
+          "accepts": "回收：容器、纸张、纸板"
+        },
+        "green": {
+          "name": "绿桶",
+          "accepts": "堆肥：食物、植物、脏纸"
+        },
+        "black": {
+          "name": "黑桶",
+          "accepts": "填埋垃圾"
+        },
+        "special": {
+          "name": "特殊处理",
+          "accepts": "不能放入任何桶：电池、电子废弃物、废金属"
+        }
+      },
+      "items": {
+        "plastic_bottle": {
+          "prep": [
+            "倒空并稍作冲洗",
+            "保留盖子",
+            "散放，不装袋"
+          ],
+          "why": "接收带盖的瓶子。"
+        },
+        "plastic_container": {
+          "prep": [
+            "倒空并冲洗",
+            "不要用内衬袋"
+          ],
+          "why": "接收塑料容器、翻盖盒和盒状容器。"
+        },
+        "plastic_cup": {
+          "prep": [
+            "倒空",
+            "标有“compostable”（可堆肥）？放入绿桶"
+          ],
+          "why": "塑料杯可回收，泡沫杯不可回收。"
+        },
+        "plastic_lid_cap": {
+          "prep": [
+            "盖子留在瓶上"
+          ],
+          "why": "接收盖子，包括咖啡杯盖。"
+        },
+        "plastic_bag_film": {
+          "prep": [
+            "更好的选择：重复使用或送到商店回收",
+            "绝不放入蓝桶，既不能散放，也不能用作内衬袋"
+          ],
+          "why": "在旧金山，塑料袋和薄膜属于填埋垃圾，也是蓝桶中的主要杂物。"
+        },
+        "snack_wrapper": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "亮面食品包装和薯片袋属于填埋垃圾。"
+        },
+        "foam": {
+          "prep": [
+            "干净的泡沫块：送至 Recology 转运站"
+          ],
+          "why": "Styrofoam 泡沫塑料列在填埋垃圾清单上。"
+        },
+        "plastic_utensil_straw": {
+          "prep": [
+            "冲洗",
+            "木制或竹制餐具放入绿桶"
+          ],
+          "why": "塑料餐具可以放入回收桶。"
+        },
+        "paper": {
+          "prep": [
+            "保持干净、干燥",
+            "碎纸：装入封好并标注的纸袋"
+          ],
+          "why": "干净、干燥的纸张、邮件和杂志可回收。"
+        },
+        "paper_bag": {
+          "prep": [
+            "保持干净、干燥",
+            "有油污或食物污渍？放入绿桶"
+          ],
+          "why": "干净的纸袋可回收，脏纸袋可堆肥。"
+        },
+        "cardboard": {
+          "prep": [
+            "压平",
+            "多余纸箱：拆开捆好，放在桶旁"
+          ],
+          "why": "无蜡涂层的纸板可回收。"
+        },
+        "pizza_box": {
+          "prep": [
+            "刮掉里面的食物残渣"
+          ],
+          "why": "有油污的披萨盒应堆肥，不应放入回收桶。"
+        },
+        "soiled_paper": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "餐巾纸、厨房纸、面巾纸和脏纸可堆肥。"
+        },
+        "paper_cup": {
+          "prep": [
+            "倒空",
+            "杯套和塑料盖可以保留"
+          ],
+          "why": "旧金山回收空的纸咖啡杯。"
+        },
+        "carton": {
+          "prep": [
+            "倒空"
+          ],
+          "why": "牛奶、果汁及其他复合纸盒可回收。"
+        },
+        "metal_can": {
+          "prep": [
+            "倒空，不留食物或液体"
+          ],
+          "why": "铝罐和钢罐可回收。"
+        },
+        "aluminum_foil": {
+          "prep": [
+            "去掉食物",
+            "揉成球，最大不超过垒球大小"
+          ],
+          "why": "铝箔和铝箔托盘可回收。"
+        },
+        "aerosol_can": {
+          "prep": [
+            "完全用尽",
+            "丢弃前查看 SF Environment 的喷雾罐页面"
+          ],
+          "why": "旧金山将喷雾罐列为特殊处理物品；其可回收物清单又将空罐列为可回收物。"
+        },
+        "metal_lid_scrap": {
+          "prep": [
+            "盖子：放入蓝桶",
+            "锅、平底锅及其他废金属：特殊处理"
+          ],
+          "why": "瓶罐盖可回收，废金属不可回收。"
+        },
+        "glass_bottle_jar": {
+          "prep": [
+            "倒空",
+            "金属盖可以保留"
+          ],
+          "why": "仅限玻璃瓶和玻璃罐。"
+        },
+        "drinking_glass_ceramic": {
+          "prep": [
+            "破碎的玻璃瓶罐仍可放入蓝桶"
+          ],
+          "why": "玻璃水杯、陶瓷和钢化玻璃属于填埋垃圾。"
+        },
+        "food_scraps": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "所有食物，包括肉和骨头，都可堆肥。"
+        },
+        "yard_waste": {
+          "prep": [
+            "树枝须小于 6 英寸粗、4 英尺长"
+          ],
+          "why": "所有植物残余都可堆肥。"
+        },
+        "battery": {
+          "prep": [
+            "用胶带封住锂电池触点",
+            "装入透明袋，放在黑桶顶部；大型楼宇可放入橙色收集桶"
+          ],
+          "why": "电池不能放入任何桶，可能引发火灾。"
+        },
+        "electronics": {
+          "prep": [
+            "还能用的，请捐赠",
+            "否则送至电子废弃物送交点"
+          ],
+          "why": "三个桶都不接收电子产品。"
+        },
+        "textile": {
+          "prep": [
+            "捐赠或再利用"
+          ],
+          "why": "回收和堆肥均不接收衣物。"
+        },
+        "shoes": {
+          "prep": [
+            "捐赠还能穿的成双鞋子"
+          ],
+          "why": "还能穿的鞋子应再利用或捐赠。"
+        },
+        "cigarette_butt": {
+          "prep": [
+            "熄灭并用水冲透"
+          ],
+          "why": "烟头属于填埋垃圾。"
+        },
+        "blister_pack": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "与其他材料混合的塑料属于填埋垃圾。"
+        },
+        "rope_string": {
+          "prep": [
+            "绝不放入回收桶"
+          ],
+          "why": "无法回收或堆肥的物品属于填埋垃圾。"
+        },
+        "squeezable_tube": {
+          "prep": [
+            "倒空"
+          ],
+          "why": "牙膏管和乳霜软管列在填埋垃圾清单上。"
+        },
+        "mask_gloves": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "一次性口罩属于填埋垃圾。"
+        }
+      }
+    },
+    "us": {
+      "bins": {
+        "recycling": {
+          "name": "回收",
+          "accepts": "路边收运桶：瓶子、金属罐、纸张、纸板"
+        },
+        "compost": {
+          "name": "堆肥",
+          "accepts": "厨余和庭院垃圾（限提供此服务的地区）"
+        },
+        "trash": {
+          "name": "垃圾桶",
+          "accepts": "当地收运项目不接收的其他物品"
+        },
+        "dropoff": {
+          "name": "送交点",
+          "accepts": "商店回收点或危险废物处理点"
+        }
+      },
+      "items": {
+        "plastic_bottle": {
+          "prep": [
+            "倒空并冲洗",
+            "盖子和标签可以保留"
+          ],
+          "why": "塑料瓶是最常见的可回收物之一。"
+        },
+        "plastic_container": {
+          "prep": [
+            "冲洗至像用刮刀刮净后的程度",
+            "确认当地项目是否接收这种塑料"
+          ],
+          "why": "许多项目接收硬质容器；沾有食物的物品无法回收。"
+        },
+        "plastic_cup": {
+          "prep": [
+            "冲洗",
+            "确认当地项目是否接收杯子"
+          ],
+          "why": "是否接收取决于当地项目。"
+        },
+        "plastic_lid_cap": {
+          "prep": [
+            "盖子留在瓶上"
+          ],
+          "why": "瓶子和瓶盖列在 EPA 的常见可回收物清单上。"
+        },
+        "plastic_bag_film": {
+          "prep": [
+            "将干净、干燥的袋子送至商店送交点",
+            "回收物绝不装袋"
+          ],
+          "why": "塑料袋可以回收，但不能放入家庭回收桶。"
+        },
+        "snack_wrapper": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "塑料包装膜和薄膜不能放入路边回收桶。"
+        },
+        "foam": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "只有极少数地区通过路边回收接收 Styrofoam 泡沫塑料。"
+        },
+        "plastic_utensil_straw": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "EPA 说明塑料餐具无法回收，但纽约等部分城市接收。"
+        },
+        "paper": {
+          "prep": [
+            "保持干净、干燥",
+            "带窗信封可以回收"
+          ],
+          "why": "干净、干燥的纸张、邮件和报纸可回收。"
+        },
+        "paper_bag": {
+          "prep": [
+            "保持干净、干燥"
+          ],
+          "why": "纸类须清空、保持干净和干燥，才能回收。"
+        },
+        "cardboard": {
+          "prep": [
+            "压平纸箱"
+          ],
+          "why": "纸板是最常见的可回收物之一。"
+        },
+        "pizza_box": {
+          "prep": [
+            "去掉剩余食物",
+            "油污很重？有条件时用于堆肥"
+          ],
+          "why": "EPA 说明披萨盒即使有少量油污也可以回收。"
+        },
+        "soiled_paper": {
+          "prep": [
+            "没有堆肥服务？放入垃圾桶"
+          ],
+          "why": "沾有食物的纸绝不能放入回收桶，但可能可以堆肥。"
+        },
+        "paper_cup": {
+          "prep": [
+            "查看当地清单：有些项目接收"
+          ],
+          "why": "有涂层的纸杯不在 EPA 常见可回收物清单上。"
+        },
+        "carton": {
+          "prep": [
+            "倒空并冲洗",
+            "查看当地清单"
+          ],
+          "why": "是否接收复合纸盒取决于当地项目。"
+        },
+        "metal_can": {
+          "prep": [
+            "冲洗或擦净",
+            "不要压扁铝罐"
+          ],
+          "why": "几乎所有地区都接收汽水罐和汤罐头。"
+        },
+        "aluminum_foil": {
+          "prep": [
+            "去掉所有食物",
+            "仅限当地项目清单列有铝箔时"
+          ],
+          "why": "EPA 说明铝箔可以回收，但各地项目不同。"
+        },
+        "aerosol_can": {
+          "prep": [
+            "未排空：按家庭危险废物处理",
+            "已排空：有些项目可随金属一起接收"
+          ],
+          "why": "未排空的气雾罐绝不能放入回收桶。"
+        },
+        "metal_lid_scrap": {
+          "prep": [
+            "较大的废金属：交给废金属回收机构"
+          ],
+          "why": "路边回收项目通常接收金属罐，不接收散落的小型金属物品。"
+        },
+        "glass_bottle_jar": {
+          "prep": [
+            "冲洗",
+            "取下金属盖"
+          ],
+          "why": "玻璃罐列在 EPA 最常见可回收物清单上；少数项目不接收玻璃。"
+        },
+        "drinking_glass_ceramic": {
+          "prep": [
+            "包好碎玻璃"
+          ],
+          "why": "碎玻璃不应放入回收桶。"
+        },
+        "food_scraps": {
+          "prep": [
+            "没有堆肥服务？放入垃圾桶"
+          ],
+          "why": "食物无法回收，但可以堆肥。"
+        },
+        "yard_waste": {
+          "prep": [
+            "如有庭院修剪物收运服务，请使用"
+          ],
+          "why": "草坪废物无法回收，但可以堆肥。"
+        },
+        "battery": {
+          "prep": [
+            "用胶带封住电池端子",
+            "送至零售店送交点或危险废物收集活动"
+          ],
+          "why": "电池不应放入家庭垃圾桶或回收桶。"
+        },
+        "electronics": {
+          "prep": [
+            "送至收集点，或交回制造商、零售商"
+          ],
+          "why": "电子产品无法通过路边回收处理。"
+        },
+        "textile": {
+          "prep": [
+            "捐赠或送至商店回收点"
+          ],
+          "why": "纺织品不能放入路边回收桶。"
+        },
+        "shoes": {
+          "prep": [
+            "捐赠轻度磨损的成双鞋子"
+          ],
+          "why": "轻度磨损的鞋子可捐赠给许多慈善机构。"
+        },
+        "cigarette_butt": {
+          "prep": [
+            "彻底熄灭"
+          ],
+          "why": "不在任何常见可回收物清单上。"
+        },
+        "blister_pack": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "塑料与铝箔混合包装不在常见可回收物清单上。"
+        },
+        "rope_string": {
+          "prep": [
+            "绝不放入回收桶"
+          ],
+          "why": "软管及类似易缠绕物列在 EPA 的禁止回收清单上。"
+        },
+        "squeezable_tube": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "不在 EPA 常见可回收物清单上。"
+        },
+        "mask_gloves": {
+          "prep": [
+            "无需预处理"
+          ],
+          "why": "不在 EPA 常见可回收物清单上。"
+        }
+      }
+    }
+  }
+}
