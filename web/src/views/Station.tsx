@@ -103,7 +103,7 @@ function Rotating({ items, every, render }: { items: string[]; every: number; re
 }
 
 // `full`: the kiosk alone, filling the window (the ?kiosk URL a station tablet keeps open)
-export default function Station({ pack, full = false, start = 'off', wait = 0 }: { pack: Pack; full?: boolean; start?: Source; wait?: number }) {
+export default function Station({ pack, full = true, start = 'off', wait = 0 }: { pack: Pack; full?: boolean; start?: Source; wait?: number }) {
   const model = useModel()
   const samples = useSamples()
   const [source, setSource] = useState<Source>(start)

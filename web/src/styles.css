@@ -1,0 +1,99 @@
+@layer theme, base, legacy, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "./index.css" layer(legacy);
+@import "@fontsource-variable/inter/wght.css";
+
+:root {
+  color-scheme: light dark;
+  --c-paper: #fbfbf7;
+  --c-card: #ffffff;
+  --c-well: #f1f2ec;
+  --c-ink: #0f1512;
+  --c-ink-2: #47514b;
+  --c-ink-3: #66706a;
+  --c-line: #e1e3dc;
+  --c-danger: #b42318;
+  --c-ok: #17693a;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c-paper: #0b0e0c;
+    --c-card: #131714;
+    --c-well: #191e1a;
+    --c-ink: #f4f5f1;
+    --c-ink-2: #b7bfb9;
+    --c-ink-3: #929c95;
+    --c-line: #272d29;
+    --c-danger: #f97066;
+    --c-ok: #6fcf97;
+  }
+}
+
+/* shadcn/ui component colours map onto our tokens. The bins carry the colour; the interface stays neutral. */
+@theme inline {
+  --color-background: var(--c-paper);
+  --color-foreground: var(--c-ink);
+  --color-card: var(--c-card);
+  --color-card-foreground: var(--c-ink);
+  --color-popover: var(--c-card);
+  --color-popover-foreground: var(--c-ink);
+  --color-primary: var(--c-ink);
+  --color-primary-foreground: var(--c-paper);
+  --color-secondary: var(--c-well);
+  --color-secondary-foreground: var(--c-ink);
+  --color-muted: var(--c-well);
+  --color-muted-foreground: var(--c-ink-2);
+  --color-accent: var(--c-well);
+  --color-accent-foreground: var(--c-ink);
+  --color-destructive: var(--c-danger);
+  --color-destructive-foreground: #ffffff;
+  --color-border: var(--c-line);
+  --color-input: var(--c-line);
+  --color-ring: var(--c-ink);
+  --color-paper: var(--c-paper);
+  --color-well: var(--c-well);
+  --color-ink: var(--c-ink);
+  --color-ink-2: var(--c-ink-2);
+  --color-ink-3: var(--c-ink-3);
+  --color-line: var(--c-line);
+  --color-ok: var(--c-ok);
+  --color-danger: var(--c-danger);
+}
+
+@theme {
+  --font-sans: "Inter Variable", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Microsoft YaHei", system-ui, sans-serif;
+  --text-display: clamp(2.5rem, 1.7rem + 3.4vw, 4.5rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.035em;
+  --text-display--font-weight: 650;
+  --text-title: clamp(1.5rem, 1.3rem + 0.8vw, 2rem);
+  --text-title--line-height: 1.15;
+  --text-title--letter-spacing: -0.022em;
+  --text-title--font-weight: 650;
+  --radius-xl: 0.875rem;
+  --radius-2xl: 1.125rem;
+  --radius-3xl: 1.75rem;
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-flood: flood 520ms var(--ease-out-soft) both;
+  --animate-rise: rise 360ms var(--ease-out-soft) both;
+  --animate-breathe: breathe 1.6s ease-in-out infinite;
+  --animate-sheet: sheet 280ms var(--ease-out-soft) both;
+  @keyframes flood { from { clip-path: circle(0% at 50% 100%); } to { clip-path: circle(150% at 50% 100%); } }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes breathe { 50% { opacity: 0.45; } }
+  @keyframes sheet { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+}
+
+@layer base {
+  html { font-family: var(--font-sans); -webkit-text-size-adjust: 100%; }
+  body { background: var(--c-paper); color: var(--c-ink); font-feature-settings: "cv11", "ss03"; -webkit-font-smoothing: antialiased; }
+  :focus-visible { outline: 2px solid var(--c-ink); outline-offset: 2px; }
+  button { cursor: pointer; }
+  ::selection { background: color-mix(in srgb, var(--c-ink) 18%, transparent); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
+}

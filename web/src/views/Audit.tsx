@@ -4,7 +4,9 @@ import { itemName } from '../items'
 import { classify, loadModel, useModel } from '../model/client'
 import { belongs, binById, type Pack } from '../rules'
 import { download, thumbnail, today, uid, useAudits, type Audit as AuditT, type AuditItem } from '../store'
-import { BinChip, ItemPicker, pct } from '../ui'
+import { ItemPicker } from '../components/Search'
+import { Sheet } from '../components/Sheet'
+import { BinChip, pct } from '../ui'
 
 const label = (it: AuditItem) => it.fixed ?? it.pred
 
@@ -238,7 +240,7 @@ function AuditSession({ audit, pack, ready, idle, classes, close, update, remove
           <p className="small faint">{t('Tap any tile to correct it. Corrections count in the totals and are marked in the export.')}</p>
         </div>
       </div>
-      {fixing && <ItemPicker pack={pack} onClose={() => setFixing(null)} onPick={(id) => (update((a) => ({ ...a, items: a.items.map((i) => (i.id === fixing ? { ...i, fixed: id === i.pred ? undefined : id } : i)) })), setFixing(null))} />}
+      <Sheet open={!!fixing} onClose={() => setFixing(null)} title={t('What is it?')}><ItemPicker pack={pack} onPick={(id) => (update((a) => ({ ...a, items: a.items.map((i) => (i.id === fixing ? { ...i, fixed: id === i.pred ? undefined : id } : i)) })), setFixing(null))} /></Sheet>
     </>
   )
 }
