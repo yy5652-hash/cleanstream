@@ -99,3 +99,28 @@ REALWASTE = {"Cardboard": "cardboard", "Food Organics": "food_scraps", "Glass": 
 GARBAGE_V2 = {"battery": "battery", "biological": "food_scraps", "cardboard": "cardboard", "clothes": "textile",
               "glass": "glass_bottle_jar", "metal": None, "paper": "paper", "plastic": None, "shoes": "shoes",
               "trash": None}
+
+# Recyclable and Household Waste Classification (MIT, Kaggle: alistairking): 30 folders, each with studio and real-world photos
+HOUSEHOLD = {
+    "aerosol_cans": "aerosol_can", "aluminum_food_cans": "metal_can", "aluminum_soda_cans": "metal_can", "steel_food_cans": "metal_can",
+    "cardboard_boxes": "cardboard", "cardboard_packaging": "cardboard", "clothing": "textile", "shoes": "shoes",
+    "coffee_grounds": "food_scraps", "eggshells": "food_scraps", "food_waste": "food_scraps", "tea_bags": "food_scraps",
+    "disposable_plastic_cutlery": "plastic_utensil_straw", "plastic_straws": "plastic_utensil_straw",
+    "glass_beverage_bottles": "glass_bottle_jar", "glass_cosmetic_containers": "glass_bottle_jar", "glass_food_jars": "glass_bottle_jar",
+    "magazines": "paper", "newspaper": "paper", "office_paper": "paper", "paper_cups": "paper_cup", "plastic_cup_lids": "plastic_lid_cap",
+    "plastic_detergent_bottles": "plastic_bottle", "plastic_soda_bottles": "plastic_bottle", "plastic_water_bottles": "plastic_bottle",
+    "plastic_food_containers": "plastic_container", "plastic_shopping_bags": "plastic_bag_film", "plastic_trash_bags": "plastic_bag_film",
+    "styrofoam_cups": "foam", "styrofoam_food_containers": "foam",
+}
+# E-Waste Image Dataset (Apache 2.0, Kaggle: akshat103). Microwaves and washing machines are left out: nobody holds those up to a bin.
+EWASTE = {"Battery": "battery", "Keyboard": "electronics", "Mobile": "electronics", "Mouse": "electronics", "PCB": "electronics",
+          "Player": "electronics", "Printer": "electronics", "Television": "electronics"}
+
+# Wikimedia Commons photos (CC0, public domain, CC BY; ml/fetch_commons.py) sit in folders named after the item type, kept if ml/commons_keep.txt lists them
+COMMONS = ["pizza_box", "drinking_glass_ceramic", "mask_gloves", "paper_bag", "aluminum_foil", "squeezable_tube", "blister_pack", "rope_string", "soiled_paper", "yard_waste", "snack_wrapper", "plastic_cup", "metal_lid_scrap", "carton", "paper_cup", "plastic_container", "plastic_bag_film", "battery", "aerosol_can"]
+
+# WaRP, Waste Recycling Plant (CC0, Kaggle: parohod): object crops from an industrial sorting line, Warp-C only
+WARP = {**{f"bottle-{c}{f}": "plastic_bottle" for c in ["blue", "blue5l", "dark", "green", "milk", "multicolor", "multicolorv", "oil", "transp"] for f in ["", "-full"]},
+        "bottle-yogurt": "plastic_bottle", "canister": "plastic_bottle", "cans": "metal_can", "juice-cardboard": "carton", "milk-cardboard": "carton",
+        "detergent-box": "cardboard", "detergent-color": "plastic_bottle", "detergent-transparent": "plastic_bottle", "detergent-white": "plastic_bottle",
+        "glass-dark": "glass_bottle_jar", "glass-green": "glass_bottle_jar", "glass-transp": "glass_bottle_jar"}

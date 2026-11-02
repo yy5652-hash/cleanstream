@@ -43,13 +43,15 @@ def drop_near_duplicates(rows, X, train_mask, thr=0.97):
     return keep, int(train_mask.sum() - keep.sum())
 
 
-def fit_head(X, y, T, lam, Xc=None, Mc=None, epochs=300, seed=0):
+def fit_head(X, y, T, lam, Xc=None, Mc=None, epochs=300, seed=0, wy=None, wc=None):
     """Xc/Mc: images labelled only by material and, per image, a mask of the item types of that material.
     They add a partial-label loss: -log of the probability summed over the allowed item types.
     Item types with no labelled photo keep their zero-shot weights (frozen): otherwise they only ever see negatives
     and learn to reject whatever backgrounds the other datasets happen to have (e.g. grass behind litter)."""
     torch.manual_seed(seed)
     X, y = torch.tensor(X), torch.tensor(y)
+    wy = torch.ones(len(y)) if wy is None else torch.tensor(wy)  # per-photo weights: see --balance
+    wc = torch.ones(len(Xc)) if wc is None or Xc is None else torch.tensor(wc)
     W0 = torch.tensor(T) * SCALE
     W = W0.clone().requires_grad_(True)
     b = torch.zeros(len(NAMES), requires_grad=True)
@@ -57,10 +59,12 @@ def fit_head(X, y, T, lam, Xc=None, Mc=None, epochs=300, seed=0):
     opt = torch.optim.Adam([W, b], lr=0.05)
     for _ in range(epochs):
         opt.zero_grad()
-        loss = torch.nn.functional.cross_entropy(X @ W.T + b, y) + lam * ((W - W0) ** 2).sum() / SCALE
+        ce = torch.nn.functional.cross_entropy(X @ W.T + b, y, reduction="none")
+        loss = (ce * wy).sum() / wy.sum() + lam * ((W - W0) ** 2).sum() / SCALE
         if Xc is not None and len(Xc):
             lp = torch.log_softmax(torch.tensor(Xc) @ W.T + b, 1)
-            loss = loss - torch.logsumexp(lp.masked_fill(~torch.tensor(Mc), -1e9), 1).mean()
+            nl = -torch.logsumexp(lp.masked_fill(~torch.tensor(Mc), -1e9), 1)
+            loss = loss + (nl * wc).sum() / wc.sum()
         loss.backward()
         opt.step()
         with torch.no_grad():
@@ -111,7 +115,7 @@ def scores(P, rows, idx, packs):
     return out
 
 
-TRAIN_SOURCES = ["trashnet", "garbage_v2", "taco"]  # permissive licences (MIT, MIT, CC BY 4.0)
+TRAIN_SOURCES = ["trashnet", "garbage_v2", "taco", "household", "ewaste", "commons", "warp"]  # MIT, MIT, CC BY 4.0, MIT, Apache 2.0, CC0 or CC BY, CC0
 EXTERNAL = "realwaste"  # never trained on or tuned with: an outside test set (CC BY-NC-SA 4.0, evaluation only)
 LAMBDAS = [0.0, 0.0003, 0.001, 0.003, 0.01, 0.03]
 
@@ -132,6 +136,8 @@ def main():
     ap.add_argument("key")
     ap.add_argument("--export")
     ap.add_argument("--aug", action="store_true", help="add augmented views of training photos (ml/embed_aug.py)")
+    ap.add_argument("--balance", type=float, default=0, help="1 gives every photo source the same total weight in the loss")
+    ap.add_argument("--lam", type=float, help="use this anchor strength instead of searching for one")
     a = ap.parse_args()
     rows, X, T = load(a.key)
     packs = {p.stem: json.loads(p.read_text()) for p in sorted((ROOT / "web/public/rules").glob("*.json"))}
@@ -153,11 +159,19 @@ def main():
         Xa = np.load(CACHE / f"{a.key}.aug.npy").astype(np.float32)
         ia = np.array([where[p] for p in (CACHE / f"{a.key}.aug.paths.txt").read_text().splitlines()])
 
+    # weight per photo: with --balance 1 each source sums to the same total, so one large source does not set the decision boundaries
+    weight = np.ones(len(rows), np.float32)
+    for s in TRAIN_SOURCES:
+        m = pool & (src == s)
+        if a.balance and m.any():
+            weight[m] = (pool.sum() / (len(TRAIN_SOURCES) * m.sum())) ** a.balance
+
     def fit(mask, lam):
         """Head trained on the rows in mask, plus their augmented views when --aug is on."""
         la, ca = mask[ia] & has[ia], mask[ia] & coarse[ia]
         return fit_head(np.concatenate([X[mask & has], Xa[la]]), np.concatenate([y_all[mask & has], y_all[ia[la]]]), T, lam,
-                        np.concatenate([X[mask & coarse], Xa[ca]]), np.concatenate([Mall[mask & coarse], Mall[ia[ca]]]))
+                        np.concatenate([X[mask & coarse], Xa[ca]]), np.concatenate([Mall[mask & coarse], Mall[ia[ca]]]),
+                        wy=np.concatenate([weight[mask & has], weight[ia[la]]]), wc=np.concatenate([weight[mask & coarse], weight[ia[ca]]]))
 
     def item_acc(Wm, bm, mask):
         j = np.where(mask & has)[0]
@@ -165,7 +179,7 @@ def main():
 
     # anchor strength: half in-distribution val, half leave-one-source-out val (rewards generalising to new photo sources)
     grid = {}
-    for lam in LAMBDAS:
+    for lam in ([a.lam] if a.lam else LAMBDAS):
         W, b = fit(pool, lam)
         lodo = [item_acc(*fit(pool & (src != s), lam), val & (src == s)) for s in TRAIN_SOURCES if (val & (src == s) & has).any()]
         grid[lam] = {"val": item_acc(W, b, val), "lodo_val": float(np.mean(lodo))}
@@ -241,6 +255,10 @@ def main():
                 {"name": "TrashNet", "url": "https://github.com/garythung/trashnet", "license": "MIT", "role": "train / test", "images": n_src["trashnet"]},
                 {"name": "Garbage Dataset (v2)", "url": "https://www.kaggle.com/datasets/sumn2u/garbage-classification-v2", "license": "MIT", "role": "train / test", "images": n_src["garbage_v2"]},
                 {"name": "TACO (object crops)", "url": "http://tacodataset.org", "license": "CC BY 4.0", "role": "train / test", "images": n_src["taco"]},
+                {"name": "Recyclable and Household Waste", "url": "https://www.kaggle.com/datasets/alistairking/recyclable-and-household-waste-classification", "license": "MIT", "role": "train / test", "images": n_src["household"]},
+                {"name": "WaRP (recycling plant crops)", "url": "https://www.kaggle.com/datasets/parohod/warp-waste-recycling-plant-dataset", "license": "CC0", "role": "train / test", "images": n_src["warp"]},
+                {"name": "E-Waste Image Dataset", "url": "https://www.kaggle.com/datasets/akshat103/e-waste-image-dataset", "license": "Apache 2.0", "role": "train / test", "images": n_src["ewaste"]},
+                {"name": "Wikimedia Commons (checked by eye)", "url": "https://commons.wikimedia.org", "license": "CC0, public domain or CC BY; list in ml/commons_credits.csv", "role": "train / test", "images": n_src["commons"]},
                 {"name": "RealWaste", "url": "https://archive.ics.uci.edu/dataset/908/realwaste", "license": "CC BY-NC-SA 4.0", "role": "outside test only", "images": n_src["realwaste"]},
             ]}, indent=1))
         print("exported head and metrics to", d)

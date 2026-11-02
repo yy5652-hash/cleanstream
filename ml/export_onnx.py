@@ -31,7 +31,11 @@ def main(spec, out):
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
     arch, tag = spec.split(":")
-    model, _, preprocess = open_clip.create_model_and_transforms(arch, pretrained=tag)
+    extra = {}
+    if tag.endswith(".safetensors"):  # weights on disk come without the published preprocessing
+        c = open_clip.get_pretrained_cfg(arch, "webli")
+        extra = dict(image_mean=c["mean"], image_std=c["std"], image_interpolation=c["interpolation"], image_resize_mode=c["resize_mode"])
+    model, _, preprocess = open_clip.create_model_and_transforms(arch, pretrained=tag, **extra)
     model.eval()
     cfg = model.visual.preprocess_cfg
     size = cfg["size"] if isinstance(cfg["size"], int) else cfg["size"][0]

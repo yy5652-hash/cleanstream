@@ -25,7 +25,11 @@ DEV = "mps" if torch.backends.mps.is_available() else "cpu"
 
 def load(spec):
     arch, tag = spec.split(":")
-    model, _, preprocess = open_clip.create_model_and_transforms(arch, pretrained=tag, device=DEV)
+    extra = {}
+    if tag.endswith(".safetensors"):  # weights on disk come without the published preprocessing, which matters a lot for SigLIP
+        cfg = open_clip.get_pretrained_cfg(arch, "webli")
+        extra = dict(image_mean=cfg["mean"], image_std=cfg["std"], image_interpolation=cfg["interpolation"], image_resize_mode=cfg["resize_mode"])
+    model, _, preprocess = open_clip.create_model_and_transforms(arch, pretrained=tag, device=DEV, **extra)
     return model.eval(), preprocess, open_clip.get_tokenizer(arch)
 
 

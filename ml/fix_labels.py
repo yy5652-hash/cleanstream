@@ -29,7 +29,7 @@ def main(key):
     d = T[NAMES.index("carton")] - T[NAMES.index("cardboard")]
     out = []
     for i, r in enumerate(rows):
-        if r["source"] in ("trashnet", "garbage_v2", "realwaste") and r["label"] in ("cardboard", "carton"):
+        if r["source"] in ("trashnet", "garbage_v2", "realwaste", "household") and r["label"] in ("cardboard", "carton"):
             m = float(X[i] @ d)
             if m >= MARGIN:
                 out.append({"path": r["path"], "label": "carton", "was": "cardboard", "margin": round(m, 4)})

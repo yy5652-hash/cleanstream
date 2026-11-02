@@ -81,7 +81,7 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
               <div className="muted" style={{ maxWidth: 340 }}>
                 {model.status === 'idle' ? (
                   <>
-                    {t('To save your data, the photo model (96 MB) downloads only when you ask. Search above works now.')}
+                    {t('To save your data, the photo model (95 MB) downloads only when you ask. Search above works now.')}
                     <div style={{ marginTop: 14 }}><button className="btn primary" onClick={loadModel}>{t('Download the photo model')}</button></div>
                   </>
                 ) : model.status === 'loading' ? (

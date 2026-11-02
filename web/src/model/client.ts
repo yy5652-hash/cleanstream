@@ -4,7 +4,7 @@ import { useSyncExternalStore } from 'react'
 export type Prediction = { probs: Float32Array; ms: number }
 export type ModelState = { status: 'idle' | 'loading' | 'ready' | 'error'; loaded: number; total: number; classes: string[]; error?: string }
 
-// On mobile data or with Data Saver on, the 96 MB model waits until someone asks for a photo answer (idle until then).
+// On mobile data or with Data Saver on, the 95 MB model waits until someone asks for a photo answer (idle until then).
 // Search needs no model, and a model cached by an earlier visit loads straight away.
 type Connection = { saveData?: boolean; type?: string; effectiveType?: string }
 const metered = () => {

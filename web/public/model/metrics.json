@@ -1,138 +1,126 @@
 {
- "backbone": "ViT-B-32-SigLIP2-256__webli__onnx",
+ "backbone": "ViT-B-16-SigLIP2-256__int8__onnx",
  "classes": 32,
- "n_train": 12458,
- "n_test": 2661,
- "model_mb": 96,
+ "n_train": 29095,
+ "n_test": 7072,
+ "model_mb": 95,
  "test": {
-  "item_acc": 0.9066859066859067,
-  "material_acc": 0.9496319256102286,
-  "n_item": 2079,
-  "n_material": 2581,
+  "item_acc": 0.927426810477658,
+  "material_acc": 0.9496567505720824,
+  "n_item": 6490,
+  "n_material": 6992,
   "bin_acc": {
-   "nyc": 0.9523809523809523,
-   "sf": 0.9567099567099567,
-   "us": 0.9605579605579606,
-   "chi": 0.9629629629629629,
-   "la": 0.9600769600769601,
-   "sea": 0.9648869648869649
+   "chi": 0.9765793528505393,
+   "la": 0.9741140215716487,
+   "nyc": 0.9710323574730354,
+   "sea": 0.9790446841294299,
+   "sf": 0.9751926040061634,
+   "us": 0.9778120184899846
   }
  },
  "external": {
-  "item_acc": 0.6555380989787902,
-  "material_acc": 0.8099600657740192,
+  "item_acc": 0.5593087195600943,
+  "material_acc": 0.8188865398167724,
   "n_item": 2546,
   "n_material": 4257,
   "bin_acc": {
-   "nyc": 0.7930086410054988,
-   "sf": 0.8153967007069913,
-   "us": 0.8377847604084839,
-   "chi": 0.8224666142969363,
-   "la": 0.8079340141398271,
-   "sea": 0.8134328358208955
+   "chi": 0.7325216025137471,
+   "la": 0.7175962293794187,
+   "nyc": 0.7097407698350353,
+   "sea": 0.7234878240377062,
+   "sf": 0.7215239591516104,
+   "us": 0.7478397486252946
   }
  },
  "zero_shot": {
   "test": {
-   "item_acc": 0.7306397306397306,
-   "material_acc": 0.8616815187911662,
-   "n_item": 2079,
-   "n_material": 2581,
+   "item_acc": 0.698613251155624,
+   "material_acc": 0.8369565217391305,
+   "n_item": 6490,
+   "n_material": 6992,
    "bin_acc": {
-    "nyc": 0.8460798460798461,
-    "sf": 0.8518518518518519,
-    "us": 0.8773448773448773,
-    "chi": 0.8797498797498797,
-    "la": 0.8494468494468495,
-    "sea": 0.8706108706108706
+    "chi": 0.8220338983050848,
+    "la": 0.7832049306625578,
+    "nyc": 0.800462249614792,
+    "sea": 0.7959938366718028,
+    "sf": 0.8035439137134053,
+    "us": 0.8439137134052388
    }
   },
   "external": {
-   "item_acc": 0.3935585231736057,
-   "material_acc": 0.704721634954193,
+   "item_acc": 0.45836606441476824,
+   "material_acc": 0.7643880667136481,
    "n_item": 2546,
    "n_material": 4257,
    "bin_acc": {
-    "nyc": 0.6111547525530243,
-    "sf": 0.6437549096622153,
-    "us": 0.6724273369992144,
-    "chi": 0.6716417910447762,
-    "la": 0.6052631578947368,
-    "sea": 0.6343283582089553
+    "chi": 0.680675569520817,
+    "la": 0.6237234878240377,
+    "nyc": 0.6154752553024352,
+    "sea": 0.6437549096622153,
+    "sf": 0.6441476826394344,
+    "us": 0.6696779261586803
    }
   }
  },
  "answered": {
-  "nyc": {
-   "val": {
-    "coverage": 0.9663072776280324,
-    "accuracy_answered": 0.9725708972570897
-   },
-   "test": {
-    "coverage": 0.9706589706589707,
-    "accuracy_answered": 0.964816650148662
-   },
-   "external": {
-    "coverage": 0.8095051060487038,
-    "accuracy_answered": 0.8655992236778263
-   }
-  },
-  "sf": {
-   "val": {
-    "coverage": 0.9757412398921833,
-    "accuracy_answered": 0.9691528545119705
-   },
-   "test": {
-    "coverage": 0.9788359788359788,
-    "accuracy_answered": 0.9670761670761671
-   },
-   "external": {
-    "coverage": 0.8472113118617439,
-    "accuracy_answered": 0.8720445062586927
-   }
-  },
-  "us": {
-   "val": {
-    "coverage": 0.9550763701707098,
-    "accuracy_answered": 0.9666039510818438
-   },
-   "test": {
-    "coverage": 0.9562289562289562,
-    "accuracy_answered": 0.9748490945674044
-   },
-   "external": {
-    "coverage": 0.8236449332285939,
-    "accuracy_answered": 0.894134477825465
-   }
-  },
   "chi": {
    "test": {
-    "coverage": 0.9778739778739779,
-    "accuracy_answered": 0.970978848991638
+    "coverage": 0.9869029275808937,
+    "accuracy_answered": 0.9832943013270882
    },
    "external": {
-    "coverage": 0.8727415553809897,
-    "accuracy_answered": 0.8622862286228623
+    "coverage": 0.9096622152395916,
+    "accuracy_answered": 0.7525906735751295
    }
   },
   "la": {
    "test": {
-    "coverage": 0.9773929773929774,
-    "accuracy_answered": 0.96998031496063
+    "coverage": 0.9833590138674885,
+    "accuracy_answered": 0.9827640238169852
    },
    "external": {
-    "coverage": 0.8593872741555381,
-    "accuracy_answered": 0.8596892138939671
+    "coverage": 0.8892380204241949,
+    "accuracy_answered": 0.7491166077738516
+   }
+  },
+  "nyc": {
+   "test": {
+    "coverage": 0.9804314329738059,
+    "accuracy_answered": 0.9805123369479806
+   },
+   "external": {
+    "coverage": 0.8570306362922231,
+    "accuracy_answered": 0.7516040329972502
    }
   },
   "sea": {
    "test": {
-    "coverage": 0.9759499759499759,
-    "accuracy_answered": 0.9728930507639231
+    "coverage": 0.9835130970724191,
+    "accuracy_answered": 0.9865267115776281
    },
    "external": {
-    "coverage": 0.8440691280439906,
-    "accuracy_answered": 0.8673801768264309
+    "coverage": 0.8747054202670856,
+    "accuracy_answered": 0.7570722945666817
+   }
+  },
+  "sf": {
+   "test": {
+    "coverage": 0.984899845916795,
+    "accuracy_answered": 0.9827909887359199
+   },
+   "external": {
+    "coverage": 0.8692065985860172,
+    "accuracy_answered": 0.7596023497514686
+   }
+  },
+  "us": {
+   "test": {
+    "coverage": 0.9801232665639446,
+    "accuracy_answered": 0.986008489231253
+   },
+   "external": {
+    "coverage": 0.8554595443833464,
+    "accuracy_answered": 0.783287419651056
    }
   }
  },
@@ -159,11 +147,67 @@
    "images": 3670
   },
   {
+   "name": "Recyclable and Household Waste",
+   "url": "https://www.kaggle.com/datasets/alistairking/recyclable-and-household-waste-classification",
+   "license": "MIT",
+   "role": "train / test",
+   "images": 15000
+  },
+  {
+   "name": "WaRP (recycling plant crops)",
+   "url": "https://www.kaggle.com/datasets/parohod/warp-waste-recycling-plant-dataset",
+   "license": "CC0",
+   "role": "train / test",
+   "images": 11213
+  },
+  {
+   "name": "E-Waste Image Dataset",
+   "url": "https://www.kaggle.com/datasets/akshat103/e-waste-image-dataset",
+   "license": "Apache 2.0",
+   "role": "train / test",
+   "images": 2400
+  },
+  {
+   "name": "Wikimedia Commons (checked by eye)",
+   "url": "https://commons.wikimedia.org",
+   "license": "CC0, public domain or CC BY; list in ml/commons_credits.csv",
+   "role": "train / test",
+   "images": 390
+  },
+  {
    "name": "RealWaste",
    "url": "https://archive.ics.uci.edu/dataset/908/realwaste",
    "license": "CC BY-NC-SA 4.0",
    "role": "outside test only",
    "images": 4752
   }
- ]
+ ],
+ "test_original": {
+  "item_acc": 0.9071669071669072,
+  "material_acc": 0.9535063928709803,
+  "n_item": 2079,
+  "n_material": 2581,
+  "bin_acc": {
+   "chi": 0.9562289562289562,
+   "la": 0.94997594997595,
+   "nyc": 0.948051948051948,
+   "sea": 0.961038961038961,
+   "sf": 0.9518999518999519,
+   "us": 0.9567099567099567
+  }
+ },
+ "field": {
+  "item_acc": 0.8977272727272727,
+  "material_acc": null,
+  "n_item": 88,
+  "n_material": 0,
+  "bin_acc": {
+   "chi": 0.9090909090909091,
+   "la": 0.9204545454545454,
+   "nyc": 0.9545454545454546,
+   "sea": 0.9318181818181818,
+   "sf": 0.9318181818181818,
+   "us": 0.9545454545454546
+  }
+ }
 }

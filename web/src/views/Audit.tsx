@@ -192,7 +192,7 @@ function AuditSession({ audit, pack, ready, idle, classes, close, update, remove
             <div className="hint">
               <strong>{t('Add photos of the items you pulled from this bin')}</strong>
               <span>{t('One item per photo. Drop a whole folder\'s worth at once.')}</span>
-              <button className="btn primary" disabled={!ready && !idle} onClick={() => (idle ? loadModel() : input.current?.click())}>{ready ? t('Choose photos') : idle ? t('Download the photo model (96 MB)') : t('Loading model…')}</button>
+              <button className="btn primary" disabled={!ready && !idle} onClick={() => (idle ? loadModel() : input.current?.click())}>{ready ? t('Choose photos') : idle ? t('Download the photo model (95 MB)') : t('Loading model…')}</button>
               <input ref={input} type="file" accept="image/*" multiple hidden onChange={(e) => (add([...(e.target.files ?? [])]), (e.target.value = ''))} />
             </div>
           </div>

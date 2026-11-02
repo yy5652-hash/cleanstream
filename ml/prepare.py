@@ -10,7 +10,7 @@ from pathlib import Path
 from PIL import Image, ImageOps
 
 sys.path.insert(0, str(Path(__file__).parent))
-from taxonomy import GARBAGE_V2, MATERIAL, REALWASTE, TACO, TRASHNET  # noqa: E402
+from taxonomy import COMMONS, EWASTE, GARBAGE_V2, HOUSEHOLD, WARP, MATERIAL, REALWASTE, TACO, TRASHNET  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -73,6 +73,17 @@ def taco_crops(top):
     return rows
 
 
+def nested_dataset(name, top, mapping):
+    """Rows for a dataset with images anywhere below its class folders; file names repeat, so the split key is the whole path."""
+    rows = []
+    for d in sorted(p for p in top.rglob("*") if p.is_dir() and p.name in mapping and "__MACOSX" not in str(p)):
+        for f in sorted(d.rglob("*")):
+            if f.suffix.lower() in IMG:
+                key = str(f.relative_to(DATA))
+                rows.append({"path": key, "source": name, "label": mapping[d.name], "material": MATERIAL[mapping[d.name]], "split": split_of(key)})
+    return rows
+
+
 def main():
     rows = folder_dataset("trashnet", DATA / "trashnet", TRASHNET)
     for name, sub, mapping in [("realwaste", "realwaste", REALWASTE), ("garbage_v2", "garbage_v2/standardized_384", GARBAGE_V2)]:
@@ -80,6 +91,20 @@ def main():
             rows += folder_dataset(name, DATA / sub, mapping)
     if (DATA / "taco").exists():
         rows += taco_crops(DATA / "taco")
+    for name, mapping in [("household", HOUSEHOLD), ("ewaste", EWASTE)]:
+        if (DATA / name).exists():
+            rows += nested_dataset(name, DATA / name, mapping)
+    if (DATA / "warp/Warp-C").exists():
+        rows += nested_dataset("warp", DATA / "warp/Warp-C", WARP)
+    if (DATA / "commons").exists():
+        keep = ROOT / "ml/commons_keep.txt"  # written by ml/filter_commons.py: photos that really show the item type
+        kept = set(keep.read_text().splitlines()) if keep.exists() else None
+        rescued = {r["path"]: r["label"] for r in csv.DictReader(open(ROOT / "ml/commons_rescue.csv"))}  # picked by eye from what the filter removed
+        commons = nested_dataset("commons", DATA / "commons", {c: c for c in COMMONS})
+        for r in commons:
+            if r["path"] in rescued:
+                r["label"], r["material"] = rescued[r["path"]], MATERIAL[rescued[r["path"]]]
+        rows += [r for r in commons if kept is None or r["path"] in kept or r["path"] in rescued]
     fixes = ROOT / "ml/relabel.csv"  # label corrections from ml/fix_labels.py (cartons filed as cardboard)
     if fixes.exists():
         new = {r["path"]: r["label"] for r in csv.DictReader(open(fixes))}

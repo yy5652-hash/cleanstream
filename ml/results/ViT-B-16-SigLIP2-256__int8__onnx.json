@@ -1,0 +1,855 @@
+{
+ "backbone": "ViT-B-16-SigLIP2-256__int8__onnx",
+ "augmented_views": 0,
+ "train_sources": [
+  "trashnet",
+  "garbage_v2",
+  "taco",
+  "household",
+  "ewaste",
+  "commons",
+  "warp"
+ ],
+ "external_test": "realwaste",
+ "dropped_duplicates": 3721,
+ "train_counts": {
+  "cardboard": 1314,
+  "carton": 1044,
+  "glass_bottle_jar": 2737,
+  "metal*": 923,
+  "paper": 2305,
+  "plastic*": 1425,
+  "battery": 700,
+  "food_scraps": 1326,
+  "textile": 1659,
+  "shoes": 1333,
+  "plastic_bottle": 6871,
+  "plastic_lid_cap": 416,
+  "aerosol_can": 251,
+  "metal_can": 1722,
+  "drinking_glass_ceramic": 144,
+  "metal_lid_scrap": 154,
+  "foam": 486,
+  "plastic_bag_film": 818,
+  "plastic_container": 246,
+  "paper_cup": 303,
+  "snack_wrapper": 230,
+  "cigarette_butt": 368,
+  "plastic_utensil_straw": 592,
+  "paper_bag": 42,
+  "aluminum_foil": 48,
+  "blister_pack": 29,
+  "squeezable_tube": 10,
+  "rope_string": 35,
+  "soiled_paper": 33,
+  "plastic_cup": 82,
+  "mask_gloves": 24,
+  "pizza_box": 9,
+  "electronics": 1410,
+  "yard_waste": 6
+ },
+ "n_train": 29095,
+ "n_val": 7154,
+ "n_test": 7072,
+ "n_external": 4752,
+ "lambda_grid": {
+  "0.001": {
+   "val": 0.9257395547422995,
+   "lodo_val": 0.671518230444922
+  }
+ },
+ "lam": 0.001,
+ "temperature": 0.8,
+ "test": {
+  "zero_shot": {
+   "all": {
+    "n_item": 6490,
+    "item_acc": 0.6992295839753467,
+    "n_material": 6992,
+    "material_acc": 0.8375286041189931,
+    "bin_acc_chi": 0.8218798151001541,
+    "bin_acc_la": 0.7832049306625578,
+    "bin_acc_nyc": 0.8015408320493066,
+    "bin_acc_sea": 0.7950693374422187,
+    "bin_acc_sf": 0.8026194144838212,
+    "bin_acc_us": 0.8442218798151001
+   },
+   "commons": {
+    "n_item": 63,
+    "item_acc": 0.8095238095238095,
+    "n_material": 63,
+    "material_acc": 0.8571428571428571,
+    "bin_acc_chi": 0.8571428571428571,
+    "bin_acc_la": 0.9206349206349206,
+    "bin_acc_nyc": 0.8412698412698413,
+    "bin_acc_sea": 0.8571428571428571,
+    "bin_acc_sf": 0.8253968253968254,
+    "bin_acc_us": 0.9047619047619048
+   },
+   "ewaste": {
+    "n_item": 373,
+    "item_acc": 0.7613941018766756,
+    "n_material": 373,
+    "material_acc": 0.7908847184986595,
+    "bin_acc_chi": 0.7855227882037533,
+    "bin_acc_la": 0.7184986595174263,
+    "bin_acc_nyc": 0.8096514745308311,
+    "bin_acc_sea": 0.7855227882037533,
+    "bin_acc_sf": 0.7935656836461126,
+    "bin_acc_us": 0.8042895442359249
+   },
+   "garbage_v2": {
+    "n_item": 1445,
+    "item_acc": 0.8470588235294118,
+    "n_material": 1830,
+    "material_acc": 0.9306010928961749,
+    "bin_acc_chi": 0.9211072664359862,
+    "bin_acc_la": 0.8948096885813149,
+    "bin_acc_nyc": 0.8975778546712803,
+    "bin_acc_sea": 0.9038062283737024,
+    "bin_acc_sf": 0.9058823529411765,
+    "bin_acc_us": 0.9217993079584775
+   },
+   "household": {
+    "n_item": 2255,
+    "item_acc": 0.7574279379157428,
+    "n_material": 2255,
+    "material_acc": 0.8505543237250555,
+    "bin_acc_chi": 0.9090909090909091,
+    "bin_acc_la": 0.8390243902439024,
+    "bin_acc_nyc": 0.8385809312638581,
+    "bin_acc_sea": 0.835920177383592,
+    "bin_acc_sf": 0.8390243902439024,
+    "bin_acc_us": 0.903769401330377
+   },
+   "taco": {
+    "n_item": 416,
+    "item_acc": 0.5288461538461539,
+    "n_material": 416,
+    "material_acc": 0.6754807692307693,
+    "bin_acc_chi": 0.8149038461538461,
+    "bin_acc_la": 0.8076923076923077,
+    "bin_acc_nyc": 0.7139423076923077,
+    "bin_acc_sea": 0.8221153846153846,
+    "bin_acc_sf": 0.7283653846153846,
+    "bin_acc_us": 0.8173076923076923
+   },
+   "trashnet": {
+    "n_item": 218,
+    "item_acc": 0.7064220183486238,
+    "n_material": 335,
+    "material_acc": 0.8716417910447761,
+    "bin_acc_chi": 0.8165137614678899,
+    "bin_acc_la": 0.8073394495412844,
+    "bin_acc_nyc": 0.8256880733944955,
+    "bin_acc_sea": 0.8302752293577982,
+    "bin_acc_sf": 0.8348623853211009,
+    "bin_acc_us": 0.8440366972477065
+   },
+   "warp": {
+    "n_item": 1720,
+    "item_acc": 0.5215116279069767,
+    "n_material": 1720,
+    "material_acc": 0.7633720930232558,
+    "bin_acc_chi": 0.6331395348837209,
+    "bin_acc_la": 0.6162790697674418,
+    "bin_acc_nyc": 0.6872093023255814,
+    "bin_acc_sea": 0.638953488372093,
+    "bin_acc_sf": 0.6831395348837209,
+    "bin_acc_us": 0.713953488372093
+   }
+  },
+  "cleanstream": {
+   "all": {
+    "n_item": 6490,
+    "item_acc": 0.9277349768875193,
+    "n_material": 6992,
+    "material_acc": 0.9499427917620137,
+    "bin_acc_chi": 0.977657935285054,
+    "bin_acc_la": 0.9750385208012327,
+    "bin_acc_nyc": 0.9714946070878274,
+    "bin_acc_sea": 0.9801232665639446,
+    "bin_acc_sf": 0.975808936825886,
+    "bin_acc_us": 0.9784283513097073
+   },
+   "commons": {
+    "n_item": 63,
+    "item_acc": 0.9047619047619048,
+    "n_material": 63,
+    "material_acc": 0.9682539682539683,
+    "bin_acc_chi": 0.9365079365079365,
+    "bin_acc_la": 0.9365079365079365,
+    "bin_acc_nyc": 0.9365079365079365,
+    "bin_acc_sea": 0.9523809523809523,
+    "bin_acc_sf": 0.9365079365079365,
+    "bin_acc_us": 0.9365079365079365
+   },
+   "ewaste": {
+    "n_item": 373,
+    "item_acc": 1.0,
+    "n_material": 373,
+    "material_acc": 1.0,
+    "bin_acc_chi": 1.0,
+    "bin_acc_la": 1.0,
+    "bin_acc_nyc": 1.0,
+    "bin_acc_sea": 1.0,
+    "bin_acc_sf": 1.0,
+    "bin_acc_us": 1.0
+   },
+   "garbage_v2": {
+    "n_item": 1445,
+    "item_acc": 0.9598615916955018,
+    "n_material": 1830,
+    "material_acc": 0.9819672131147541,
+    "bin_acc_chi": 0.9854671280276817,
+    "bin_acc_la": 0.9847750865051903,
+    "bin_acc_nyc": 0.9854671280276817,
+    "bin_acc_sea": 0.9882352941176471,
+    "bin_acc_sf": 0.9896193771626297,
+    "bin_acc_us": 0.986159169550173
+   },
+   "household": {
+    "n_item": 2255,
+    "item_acc": 0.964079822616408,
+    "n_material": 2255,
+    "material_acc": 0.976940133037694,
+    "bin_acc_chi": 0.9840354767184035,
+    "bin_acc_la": 0.9818181818181818,
+    "bin_acc_nyc": 0.9796008869179601,
+    "bin_acc_sea": 0.9853658536585366,
+    "bin_acc_sf": 0.9813747228381374,
+    "bin_acc_us": 0.9835920177383592
+   },
+   "taco": {
+    "n_item": 416,
+    "item_acc": 0.7139423076923077,
+    "n_material": 416,
+    "material_acc": 0.8149038461538461,
+    "bin_acc_chi": 0.8485576923076923,
+    "bin_acc_la": 0.8221153846153846,
+    "bin_acc_nyc": 0.8052884615384616,
+    "bin_acc_sea": 0.8629807692307693,
+    "bin_acc_sf": 0.8052884615384616,
+    "bin_acc_us": 0.8461538461538461
+   },
+   "trashnet": {
+    "n_item": 218,
+    "item_acc": 0.9174311926605505,
+    "n_material": 335,
+    "material_acc": 0.9641791044776119,
+    "bin_acc_chi": 0.9770642201834863,
+    "bin_acc_la": 0.9724770642201835,
+    "bin_acc_nyc": 0.9770642201834863,
+    "bin_acc_sea": 0.9770642201834863,
+    "bin_acc_sf": 0.981651376146789,
+    "bin_acc_us": 0.9770642201834863
+   },
+   "warp": {
+    "n_item": 1720,
+    "item_acc": 0.8912790697674419,
+    "n_material": 1720,
+    "material_acc": 0.8988372093023256,
+    "bin_acc_chi": 0.9906976744186047,
+    "bin_acc_la": 0.9912790697674418,
+    "bin_acc_nyc": 0.9837209302325581,
+    "bin_acc_sea": 0.9918604651162791,
+    "bin_acc_sf": 0.9936046511627907,
+    "bin_acc_us": 0.9941860465116279
+   }
+  }
+ },
+ "external": {
+  "zero_shot": {
+   "all": {
+    "n_item": 2546,
+    "item_acc": 0.4591516103692066,
+    "n_material": 4257,
+    "material_acc": 0.7657975099835564,
+    "bin_acc_chi": 0.6814611154752553,
+    "bin_acc_la": 0.6268656716417911,
+    "bin_acc_nyc": 0.6146897093479968,
+    "bin_acc_sea": 0.6445404556166536,
+    "bin_acc_sf": 0.6441476826394344,
+    "bin_acc_us": 0.6704634721131186
+   },
+   "realwaste": {
+    "n_item": 2546,
+    "item_acc": 0.4591516103692066,
+    "n_material": 4257,
+    "material_acc": 0.7657975099835564,
+    "bin_acc_chi": 0.6814611154752553,
+    "bin_acc_la": 0.6268656716417911,
+    "bin_acc_nyc": 0.6146897093479968,
+    "bin_acc_sea": 0.6445404556166536,
+    "bin_acc_sf": 0.6441476826394344,
+    "bin_acc_us": 0.6704634721131186
+   }
+  },
+  "cleanstream": {
+   "all": {
+    "n_item": 2546,
+    "item_acc": 0.5577376276512176,
+    "n_material": 4257,
+    "material_acc": 0.8179469109701668,
+    "bin_acc_chi": 0.7305577376276512,
+    "bin_acc_la": 0.7175962293794187,
+    "bin_acc_nyc": 0.7105263157894737,
+    "bin_acc_sea": 0.7254516889238021,
+    "bin_acc_sf": 0.7219167321288296,
+    "bin_acc_us": 0.7494108405341713
+   },
+   "realwaste": {
+    "n_item": 2546,
+    "item_acc": 0.5577376276512176,
+    "n_material": 4257,
+    "material_acc": 0.8179469109701668,
+    "bin_acc_chi": 0.7305577376276512,
+    "bin_acc_la": 0.7175962293794187,
+    "bin_acc_nyc": 0.7105263157894737,
+    "bin_acc_sea": 0.7254516889238021,
+    "bin_acc_sf": 0.7219167321288296,
+    "bin_acc_us": 0.7494108405341713
+   }
+  }
+ },
+ "thresholds": {
+  "chi": {
+   "val": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.9784995425434584
+    },
+    "0.5": {
+     "coverage": 0.9986276303751144,
+     "accuracy_answered": 0.9787753855550466
+    },
+    "0.6": {
+     "coverage": 0.986581274778896,
+     "accuracy_answered": 0.9828438948995363
+    },
+    "0.7": {
+     "coverage": 0.9717901799329064,
+     "accuracy_answered": 0.9874470422093206
+    },
+    "0.8": {
+     "coverage": 0.9559316864897834,
+     "accuracy_answered": 0.9907481256978784
+    }
+   },
+   "test": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.977657935285054
+    },
+    "0.5": {
+     "coverage": 0.998613251155624,
+     "accuracy_answered": 0.9782440981330042
+    },
+    "0.6": {
+     "coverage": 0.9869029275808937,
+     "accuracy_answered": 0.9828259172521467
+    },
+    "0.7": {
+     "coverage": 0.9750385208012327,
+     "accuracy_answered": 0.9868836915297092
+    },
+    "0.8": {
+     "coverage": 0.9548536209553159,
+     "accuracy_answered": 0.9922543166048088
+    }
+   },
+   "external": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.7305577376276512
+    },
+    "0.5": {
+     "coverage": 0.9780047132757266,
+     "accuracy_answered": 0.736144578313253
+    },
+    "0.6": {
+     "coverage": 0.9069128043990573,
+     "accuracy_answered": 0.7535729753139887
+    },
+    "0.7": {
+     "coverage": 0.842890809112333,
+     "accuracy_answered": 0.7618825722273999
+    },
+    "0.8": {
+     "coverage": 0.7592301649646505,
+     "accuracy_answered": 0.7749612002069323
+    }
+   }
+  },
+  "la": {
+   "val": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.9757548032936871
+    },
+    "0.5": {
+     "coverage": 0.9975602317779811,
+     "accuracy_answered": 0.9767655151329868
+    },
+    "0.6": {
+     "coverage": 0.984141506556877,
+     "accuracy_answered": 0.9818717074682367
+    },
+    "0.7": {
+     "coverage": 0.9685879841415066,
+     "accuracy_answered": 0.9866183879093199
+    },
+    "0.8": {
+     "coverage": 0.9498322659347362,
+     "accuracy_answered": 0.9903676352544549
+    }
+   },
+   "test": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.9750385208012327
+    },
+    "0.5": {
+     "coverage": 0.9967642526964561,
+     "accuracy_answered": 0.9766579069407946
+    },
+    "0.6": {
+     "coverage": 0.9833590138674885,
+     "accuracy_answered": 0.9826073331244124
+    },
+    "0.7": {
+     "coverage": 0.9716486902927581,
+     "accuracy_answered": 0.9866793529971456
+    },
+    "0.8": {
+     "coverage": 0.9489984591679507,
+     "accuracy_answered": 0.9931807111544082
+    }
+   },
+   "external": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.7175962293794187
+    },
+    "0.5": {
+     "coverage": 0.9685781618224666,
+     "accuracy_answered": 0.7278994322789943
+    },
+    "0.6": {
+     "coverage": 0.8876669285153181,
+     "accuracy_answered": 0.7491150442477876
+    },
+    "0.7": {
+     "coverage": 0.802827965435978,
+     "accuracy_answered": 0.7705479452054794
+    },
+    "0.8": {
+     "coverage": 0.7144540455616654,
+     "accuracy_answered": 0.7861462341946124
+    }
+   }
+  },
+  "nyc": {
+   "val": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.9730100640439159
+    },
+    "0.5": {
+     "coverage": 0.9926806953339433,
+     "accuracy_answered": 0.9763440860215054
+    },
+    "0.6": {
+     "coverage": 0.981549252820982,
+     "accuracy_answered": 0.9808917197452229
+    },
+    "0.7": {
+     "coverage": 0.9678255565721257,
+     "accuracy_answered": 0.9845596344729793
+    },
+    "0.8": {
+     "coverage": 0.9499847514486124,
+     "accuracy_answered": 0.9878009630818619
+    }
+   },
+   "test": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.9714946070878274
+    },
+    "0.5": {
+     "coverage": 0.9932203389830508,
+     "accuracy_answered": 0.9757989450822215
+    },
+    "0.6": {
+     "coverage": 0.9807395993836672,
+     "accuracy_answered": 0.9808326787117047
+    },
+    "0.7": {
+     "coverage": 0.9674884437596302,
+     "accuracy_answered": 0.9848702022615066
+    },
+    "0.8": {
+     "coverage": 0.947919876733436,
+     "accuracy_answered": 0.9895968790637191
+    }
+   },
+   "external": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.7105263157894737
+    },
+    "0.5": {
+     "coverage": 0.9418695993715632,
+     "accuracy_answered": 0.7293577981651376
+    },
+    "0.6": {
+     "coverage": 0.8554595443833464,
+     "accuracy_answered": 0.7529843893480257
+    },
+    "0.7": {
+     "coverage": 0.7670856245090337,
+     "accuracy_answered": 0.7772657450076805
+    },
+    "0.8": {
+     "coverage": 0.6759622937941869,
+     "accuracy_answered": 0.7977919814061593
+    }
+   }
+  },
+  "sea": {
+   "val": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.9817017383348582
+    },
+    "0.5": {
+     "coverage": 0.9969502897224763,
+     "accuracy_answered": 0.9830223309880698
+    },
+    "0.6": {
+     "coverage": 0.9844464775846294,
+     "accuracy_answered": 0.9865241635687733
+    },
+    "0.7": {
+     "coverage": 0.9704178103080208,
+     "accuracy_answered": 0.990100565681961
+    },
+    "0.8": {
+     "coverage": 0.9518145776151266,
+     "accuracy_answered": 0.993431592438321
+    }
+   },
+   "test": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.9801232665639446
+    },
+    "0.5": {
+     "coverage": 0.9964560862865948,
+     "accuracy_answered": 0.981598886655327
+    },
+    "0.6": {
+     "coverage": 0.9836671802773498,
+     "accuracy_answered": 0.9862155388471178
+    },
+    "0.7": {
+     "coverage": 0.9716486902927581,
+     "accuracy_answered": 0.9898509356168729
+    },
+    "0.8": {
+     "coverage": 0.9506933744221879,
+     "accuracy_answered": 0.9941653160453808
+    }
+   },
+   "external": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.7254516889238021
+    },
+    "0.5": {
+     "coverage": 0.9556166535742341,
+     "accuracy_answered": 0.7365392519523223
+    },
+    "0.6": {
+     "coverage": 0.8727415553809897,
+     "accuracy_answered": 0.7574257425742574
+    },
+    "0.7": {
+     "coverage": 0.7875098193244304,
+     "accuracy_answered": 0.7785536159600998
+    },
+    "0.8": {
+     "coverage": 0.6975648075412412,
+     "accuracy_answered": 0.795045045045045
+    }
+   }
+  },
+  "sf": {
+   "val": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.9783470570295821
+    },
+    "0.5": {
+     "coverage": 0.9969502897224763,
+     "accuracy_answered": 0.9801162434995412
+    },
+    "0.6": {
+     "coverage": 0.9861238182372675,
+     "accuracy_answered": 0.9843822483377146
+    },
+    "0.7": {
+     "coverage": 0.9733150350716682,
+     "accuracy_answered": 0.9880933730220899
+    },
+    "0.8": {
+     "coverage": 0.9576090271424215,
+     "accuracy_answered": 0.9917197452229299
+    }
+   },
+   "test": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.975808936825886
+    },
+    "0.5": {
+     "coverage": 0.9967642526964561,
+     "accuracy_answered": 0.9780491575204823
+    },
+    "0.6": {
+     "coverage": 0.984899845916795,
+     "accuracy_answered": 0.9826345431789737
+    },
+    "0.7": {
+     "coverage": 0.9730354391371341,
+     "accuracy_answered": 0.9865399841646872
+    },
+    "0.8": {
+     "coverage": 0.9554699537750385,
+     "accuracy_answered": 0.9912917271407837
+    }
+   },
+   "external": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.7219167321288296
+    },
+    "0.5": {
+     "coverage": 0.950510604870385,
+     "accuracy_answered": 0.7380165289256199
+    },
+    "0.6": {
+     "coverage": 0.8664571877454831,
+     "accuracy_answered": 0.7606527651858568
+    },
+    "0.7": {
+     "coverage": 0.7824037706205813,
+     "accuracy_answered": 0.7836345381526104
+    },
+    "0.8": {
+     "coverage": 0.6940298507462687,
+     "accuracy_answered": 0.8030560271646859
+    }
+   }
+  },
+  "us": {
+   "val": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.9792619701128393
+    },
+    "0.5": {
+     "coverage": 0.9929856663616956,
+     "accuracy_answered": 0.9824938574938575
+    },
+    "0.6": {
+     "coverage": 0.9800243976822202,
+     "accuracy_answered": 0.9861521705305741
+    },
+    "0.7": {
+     "coverage": 0.9646233607807259,
+     "accuracy_answered": 0.989566866898514
+    },
+    "0.8": {
+     "coverage": 0.9469350411710887,
+     "accuracy_answered": 0.9927536231884058
+    }
+   },
+   "test": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.9784283513097073
+    },
+    "0.5": {
+     "coverage": 0.9938366718027735,
+     "accuracy_answered": 0.9809302325581395
+    },
+    "0.6": {
+     "coverage": 0.9808936825885979,
+     "accuracy_answered": 0.9855482249450204
+    },
+    "0.7": {
+     "coverage": 0.9676425269645609,
+     "accuracy_answered": 0.9896496815286624
+    },
+    "0.8": {
+     "coverage": 0.9462249614791988,
+     "accuracy_answered": 0.9934864028659828
+    }
+   },
+   "external": {
+    "0.0": {
+     "coverage": 1.0,
+     "accuracy_answered": 0.7494108405341713
+    },
+    "0.5": {
+     "coverage": 0.9328358208955224,
+     "accuracy_answered": 0.7654736842105263
+    },
+    "0.6": {
+     "coverage": 0.8550667714061273,
+     "accuracy_answered": 0.7845659163987139
+    },
+    "0.7": {
+     "coverage": 0.7725844461901021,
+     "accuracy_answered": 0.797153024911032
+    },
+    "0.8": {
+     "coverage": 0.6857816182246661,
+     "accuracy_answered": 0.8104238258877434
+    }
+   }
+  }
+ },
+ "per_class_test": {
+  "plastic_bottle": {
+   "n": 1549,
+   "acc": 0.9561007101355713
+  },
+  "plastic_container": {
+   "n": 89,
+   "acc": 0.9101123595505618
+  },
+  "plastic_cup": {
+   "n": 17,
+   "acc": 0.8235294117647058
+  },
+  "plastic_lid_cap": {
+   "n": 106,
+   "acc": 0.8679245283018868
+  },
+  "plastic_bag_film": {
+   "n": 219,
+   "acc": 0.8858447488584474
+  },
+  "snack_wrapper": {
+   "n": 29,
+   "acc": 0.5172413793103449
+  },
+  "foam": {
+   "n": 177,
+   "acc": 0.9209039548022598
+  },
+  "plastic_utensil_straw": {
+   "n": 207,
+   "acc": 0.9033816425120773
+  },
+  "paper": {
+   "n": 515,
+   "acc": 0.9184466019417475
+  },
+  "paper_bag": {
+   "n": 4,
+   "acc": 0.5
+  },
+  "cardboard": {
+   "n": 370,
+   "acc": 0.9135135135135135
+  },
+  "pizza_box": {
+   "n": 2,
+   "acc": 0.5
+  },
+  "soiled_paper": {
+   "n": 11,
+   "acc": 0.36363636363636365
+  },
+  "paper_cup": {
+   "n": 74,
+   "acc": 0.972972972972973
+  },
+  "carton": {
+   "n": 215,
+   "acc": 0.7906976744186046
+  },
+  "metal_can": {
+   "n": 454,
+   "acc": 0.8876651982378855
+  },
+  "aluminum_foil": {
+   "n": 12,
+   "acc": 0.5
+  },
+  "aerosol_can": {
+   "n": 70,
+   "acc": 0.9571428571428572
+  },
+  "metal_lid_scrap": {
+   "n": 17,
+   "acc": 0.8235294117647058
+  },
+  "glass_bottle_jar": {
+   "n": 665,
+   "acc": 0.8796992481203008
+  },
+  "drinking_glass_ceramic": {
+   "n": 19,
+   "acc": 0.7368421052631579
+  },
+  "food_scraps": {
+   "n": 409,
+   "acc": 0.9779951100244498
+  },
+  "yard_waste": {
+   "n": 2,
+   "acc": 1.0
+  },
+  "battery": {
+   "n": 196,
+   "acc": 0.9897959183673469
+  },
+  "electronics": {
+   "n": 323,
+   "acc": 1.0
+  },
+  "textile": {
+   "n": 379,
+   "acc": 0.9868073878627969
+  },
+  "shoes": {
+   "n": 299,
+   "acc": 0.9966555183946488
+  },
+  "cigarette_butt": {
+   "n": 39,
+   "acc": 0.9230769230769231
+  },
+  "blister_pack": {
+   "n": 4,
+   "acc": 1.0
+  },
+  "rope_string": {
+   "n": 8,
+   "acc": 0.625
+  },
+  "squeezable_tube": {
+   "n": 2,
+   "acc": 1.0
+  },
+  "mask_gloves": {
+   "n": 8,
+   "acc": 0.875
+  }
+ }
+}
