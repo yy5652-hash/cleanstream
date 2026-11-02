@@ -57,7 +57,7 @@ export default function App() {
   const [route, setRoute] = useState<Route>(routeFromHash)
   const [city, setCity] = useState(storedCity)
   const { lang, ready } = useLang()
-  const english = usePacks()
+  const english = usePacks(city)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const packs = useMemo(() => english?.map(localizePack) ?? null, [english, lang])
   const install = useInstall()
@@ -94,7 +94,7 @@ export default function App() {
   const loading = <p className="min-h-[70vh] text-ink-2">{t('Loading…')}</p>
   return (
     <Shell section={ROUTES[route]} city={city} setCity={setCity} install={install}>
-      {!packs || !pack ? loading : (
+      {!packs || !pack || (route !== 'scan' && packs.length < PACK_IDS.length) ? loading : (
         <Suspense fallback={loading}>
           {route === 'scan' && <Scan pack={pack} packs={packs} />}
           {(route === 'rules' || route === 'quiz') && <Learn key={pack.id} sub={route} pack={pack} packs={packs} />}

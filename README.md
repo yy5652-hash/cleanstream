@@ -47,7 +47,7 @@ The app has three sections: **Sort** for anyone at a bin, **Learn** for the rule
 | **Poster** (For sites) | A printable sign for the bins, built from what people ask about most at that station, in the bins' order on site, with a QR code to the phone version. A bin with no tablet can still use it. |
 | **How it works** | The model, the evaluation numbers below, data sources and licences. |
 
-<p><img src="docs/station.jpg" width="49%" alt="Bin station"> <img src="docs/audit.jpg" width="49%" alt="Bin audit"></p>
+<p><img src="docs/station.jpg" width="49%" alt="Bin station"> <img src="docs/audit.jpg" width="49%" alt="Pilot report, with example data"></p>
 
 Every resident-facing screen, rule and search also works in Spanish, Simplified Chinese and Traditional Chinese. The
 language follows the browser, and `?kiosk&lang=es` sets a station's own language. Search understands everyday words in
@@ -206,7 +206,7 @@ uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python torch to
 Code: MIT licence (see `LICENSE`).
 
 Interface: [shadcn/ui](https://github.com/shadcn-ui/ui) components (MIT), [Radix Primitives](https://github.com/radix-ui/primitives) (MIT),
-[Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) (MIT), [cmdk](https://github.com/dip/cmdk) (MIT),
+[Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) (MIT),
 [Lucide](https://github.com/lucide-icons/lucide) icons (ISC), [uqr](https://github.com/unjs/uqr) (MIT) and the
 [Inter](https://github.com/rsms/inter) typeface (SIL OFL 1.1).
 

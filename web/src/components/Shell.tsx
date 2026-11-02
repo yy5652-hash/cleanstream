@@ -1,10 +1,11 @@
 // App frame: three destinations (top bar on wide screens, tab bar on phones) and one place to set city and language.
 import { BookOpen, Building2, Camera, Check, ChevronDown, Download, Globe } from 'lucide-react'
-import { useState, type ReactNode } from 'react'
+import { lazy, Suspense, useState, type ReactNode } from 'react'
 import { LANGS, setLang, t, tCity, useLang, type Lang } from '../i18n'
 import { PACK_IDS, PACK_NAMES } from '../rules'
 import { Logo } from '../ui'
-import { Sheet } from './Sheet'
+
+const Sheet = lazy(() => import('./Sheet'))
 
 export type Section = 'sort' | 'learn' | 'sites'
 
@@ -32,7 +33,7 @@ function PlaceButton({ city, setCity, install }: { city: string; setCity: (c: st
         className="flex h-10 min-w-0 items-center gap-1.5 rounded-full bg-well pl-3.5 pr-2.5 text-sm font-medium hover:bg-line">
         <span className="truncate">{cityName(city)}</span><Globe className="size-4 shrink-0 text-ink-2" aria-hidden /><ChevronDown className="size-4 shrink-0 text-ink-2" aria-hidden />
       </button>
-      <Sheet open={open} onClose={() => setOpen(false)} title={t('Your place')}>
+      {open && <Suspense fallback={null}><Sheet open onClose={() => setOpen(false)} title={t('Your place')}>
         <h3 className="mb-1 px-3 text-sm font-medium text-ink-2">{t('Rules for')}</h3>
         <div role="radiogroup" aria-label={t('Rules for')} className="grid">
           {PACK_IDS.map((id) => <Row key={id} on={id === city} onClick={() => (setCity(id), setOpen(false))}>{cityName(id)}</Row>)}
@@ -46,7 +47,7 @@ function PlaceButton({ city, setCity, install }: { city: string; setCity: (c: st
             <Download className="size-5" aria-hidden />{t('Install app')}
           </button>
         )}
-      </Sheet>
+      </Sheet></Suspense>}
     </>
   )
 }

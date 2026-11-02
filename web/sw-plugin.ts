@@ -38,7 +38,7 @@ self.addEventListener('fetch', (e) => {
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return
   if (req.mode === 'navigate') {
     // fresh page when online, the cached one when not
-    e.respondWith(fetch(req).catch(() => caches.match('./index.html', { ignoreSearch: true })).then(isolated))
+    e.respondWith(fetch(req).catch(() => caches.match('./', { ignoreSearch: true })).then(isolated))
     return
   }
   e.respondWith(caches.match(req, { ignoreSearch: true }).then((hit) => hit || fetch(req).then((res) => {

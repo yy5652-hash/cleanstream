@@ -1,13 +1,14 @@
 // The answer: conclusion first in the bin's own colour, then the parts, how to prep it, the official source and how to correct it.
 import { ArrowUpRight, Check, Lock, Share2 } from 'lucide-react'
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { t, useLang } from '../i18n'
 import { itemName } from '../items'
 import { partsOf } from '../parts'
 import { binById, type Answer as Ans, type Bin, type Pack } from '../rules'
 import { answerLink, BinChip, pct } from '../ui'
-import { Sheet } from './Sheet'
 import { ItemPicker } from './Search'
+
+const Sheet = lazy(() => import('./Sheet'))
 
 function Share({ pack, item, bin }: { pack: Pack; item: string; bin: Bin }) {
   const [copied, setCopied] = useState(false)
@@ -51,7 +52,7 @@ export function Answer({ ans, ms, pack, packs, item: chosen, preview, onChoose }
   const [picking, setPicking] = useState(false)
   const item = chosen ?? ans!.items[0].id
   const unsure = !!ans && !chosen && !ans.sure
-  const picker = <Sheet open={picking} onClose={() => setPicking(false)} title={t('What is it?')}><ItemPicker pack={pack} onPick={(id) => (onChoose(id), setPicking(false))} /></Sheet>
+  const picker = picking && <Suspense fallback={null}><Sheet open onClose={() => setPicking(false)} title={t('What is it?')}><ItemPicker pack={pack} onPick={(id) => (onChoose(id), setPicking(false))} /></Sheet></Suspense>
 
   if (unsure) {
     return (

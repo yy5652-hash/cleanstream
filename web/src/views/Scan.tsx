@@ -1,13 +1,14 @@
 import { Camera, ImageUp } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { Answer } from '../components/Answer'
-import { CameraSheet } from '../components/Camera'
 import { ItemSearch } from '../components/Search'
 import { t } from '../i18n'
 import { ITEMS, itemName } from '../items'
 import { classify, loadModel, useModel } from '../model/client'
 import { answer, type Pack } from '../rules'
 import { sampleUrl, thumbUrl, useSamples, type Sample } from '../ui'
+
+const CameraSheet = lazy(() => import('../components/Camera').then((m) => ({ default: m.CameraSheet })))
 
 // The item in a shared link: #scan?item=pizza_box&city=sf
 const linkedItem = () => {
@@ -155,7 +156,7 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
         )}
       </div>
 
-      <CameraSheet open={camera} onClose={() => setCamera(false)} onImage={onImage} onUpload={() => file.current?.click()} status={progress} />
+      {camera && <Suspense fallback={null}><CameraSheet open onClose={() => setCamera(false)} onImage={onImage} onUpload={() => file.current?.click()} status={progress} /></Suspense>}
     </div>
   )
 }
