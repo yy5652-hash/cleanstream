@@ -35,13 +35,16 @@ before: The Recycling Partnership's cart-tagging work cut contamination 31% in A
 
 ## What it does
 
-| Tab | What you get |
+The app has three sections: **Sort** for anyone at a bin, **Learn** for the rules, and **For sites** for a campus or office.
+
+| Section | What you get |
 | --- | --- |
-| **Scan** | Camera, upload or a held-out test photo. The bin for your city, how sure the model is, prep steps, the reason, the official source, and what the same item gets in other cities. One tap corrects it. Or type the item: search knows everyday names (tin foil, Amazon box, styrofoam). Every answer has a share link (`#scan?item=pizza_box&city=sf`), and the app installs to a home screen and works offline. |
-| **Bin station** | Kiosk for a tablet above a set of bins, modelled on commercial sorting stations. While idle it greets people in several languages and shows the items most often binned wrong; when an item is held still it fills the screen with that bin's colour and points at the right lid. It notices an item by the share of the view that changed (changes in light are ignored) and classifies a crop around it, so small items count. Set which bins stand there and in what order; open `?kiosk` on the tablet for a full-screen station. When it is not sure it offers the two likeliest items as big buttons to tap. It can say the answer out loud. It keeps counts, never pictures, and a station report shows items per day and bin, the items people ask about most and how often it was unsure, with CSV export. |
-| **Audit** | Photograph each item pulled from a bin (drop a whole batch). It sorts them, flags what doesn't belong, gives the contamination rate and top contaminants, compares baseline and after audits, and exports CSV. |
-| **Rules** | The full rule table for New York, San Francisco, Los Angeles, Chicago, Seattle and US general guidance (EPA and The Recycling Partnership), with a source link on every row and a filter for items where places disagree. |
-| **Quiz** | Ten everyday items, pick the bin under your city's rules; half are items places disagree on. Ends with what to remember and a score to share. Built for campus orientation and classrooms. |
+| **Sort** | Point the camera, upload a photo, or try a held-out test photo. The answer comes first, in the bin's colour, with the first prep step. Below it: each part of a cup (cup, lid, sleeve or straw) with its own bin, the reason, the official source, and what the same item gets in other cities. One tap corrects it, and when it isn't sure it asks. Or type the item: search knows everyday names (tin foil, Amazon box, styrofoam). Every answer has a share link (`#scan?item=pizza_box&city=sf`), and the app installs to a home screen and works offline. |
+| **Learn** | The rule table for New York, San Francisco, Los Angeles, Chicago, Seattle and US general guidance (EPA and The Recycling Partnership), one column per bin, with a source link on every item and a filter for items where places disagree. Today's three is a daily challenge, the same for everyone in a city, with a streak kept on the device. There is also a ten-item quiz, half of it items places disagree on. |
+| **Bin station** (For sites) | A three-step setup: choose the city, switch on the bins and drag them into their order on site, then scan a QR code with the tablet. No account. The kiosk shows a tip and a live count while idle. When an item is held still, the whole screen fills with that bin's colour, an arrow points at the physical bin, and it can say the answer out loud. It notices an item by the share of the view that changed (changes in light are ignored) and classifies a crop around it, so small items count. When it isn't sure, it offers the likeliest items as big buttons. It keeps counts, never pictures, and a station report shows items per day and bin, the items people ask about most and how often it was unsure, with CSV export. |
+| **Audit** (For sites) | Photograph each item pulled from a bin, or drop a whole batch. It flags what doesn't belong, gives the contamination rate and the worst offenders, and exports CSV. |
+| **Pilot** (For sites) | The measurement plan below as a tool: audit before and after, at stations with tablets and comparison stations without, with weights when you have them. The report gives the net effect with a 95% interval and a plain verdict, including "Not enough to tell yet", and prints on one page. Sites can merge their results as JSON, with no pictures in the file. |
+| **Poster** (For sites) | A printable sign for the bins, built from what people ask about most at that station, in the bins' order on site, with a QR code to the phone version. A bin with no tablet can still use it. |
 | **How it works** | The model, the evaluation numbers below, data sources and licences. |
 
 <p><img src="docs/station.jpg" width="49%" alt="Bin station"> <img src="docs/audit.jpg" width="49%" alt="Bin audit"></p>
@@ -182,7 +185,7 @@ uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python torch to
 
 | Path | What |
 | --- | --- |
-| `web/` | The app: React + TypeScript + Vite, ONNX Runtime Web in a worker, no backend |
+| `web/` | The app: React + TypeScript + Vite + Tailwind, ONNX Runtime Web in a worker, no backend |
 | `web/public/rules/` | Rule packs (New York, San Francisco, Los Angeles, Chicago, Seattle, US general) with sources |
 | `web/public/model/` | `encoder.onnx`, the trained head, preprocessing and evaluation metrics |
 | `ml/` | Dataset preparation, Commons photo fetching, embedding (`embed_int8.py` for the shipped 8-bit weights), training, paired comparison (`compare.py`), final evaluation (`final_eval.py`), export and parity checks |
@@ -192,7 +195,7 @@ uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python torch to
 ## What's next
 
 - A pilot at campus bin stations with the measurement plan above.
-- More rule packs. A pack is one JSON file, and the Rules tab shows what a city would need to fill in. Adding a city
+- More rule packs. A pack is one JSON file, and the rules page shows what a city would need to fill in. Adding a city
   needs no retraining: `ml/eval_packs.py` scores the shipped model under the new rules on the same held-out photos.
 - More training photos for the item types that have the fewest today (yard waste, pizza box, squeezable tube), and photos
   taken at bin stations, which are the closest match to real use.
@@ -201,6 +204,11 @@ uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python torch to
 ## Credits
 
 Code: MIT licence (see `LICENSE`).
+
+Interface: [shadcn/ui](https://github.com/shadcn-ui/ui) components (MIT), [Radix Primitives](https://github.com/radix-ui/primitives) (MIT),
+[Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) (MIT), [cmdk](https://github.com/dip/cmdk) (MIT),
+[Lucide](https://github.com/lucide-icons/lucide) icons (ISC), [uqr](https://github.com/unjs/uqr) (MIT) and the
+[Inter](https://github.com/rsms/inter) typeface (SIL OFL 1.1).
 
 Datasets: [TrashNet](https://github.com/garythung/trashnet) (MIT),
 [Garbage Dataset v2](https://www.kaggle.com/datasets/sumn2u/garbage-classification-v2) (MIT),
@@ -214,5 +222,5 @@ page of each in [`ml/commons_credits.csv`](ml/commons_credits.csv)), and for eva
 photos from [Pexels](https://www.pexels.com) (listed in `ml/field.csv`, not redistributed). Encoder: SigLIP 2 (Google, Apache 2.0) via
 [open_clip](https://github.com/mlfoundations/open_clip). Rules: DSNY and NYC311; Recology and SF Environment; LA Sanitation; Chicago Streets and Sanitation; Seattle Public
 Utilities; US EPA and
-The Recycling Partnership (links on every row of the Rules tab). Sample photos in the app are held-out test photos from
+The Recycling Partnership (links on every item of the rules page). Sample photos in the app are held-out test photos from
 TrashNet, the Garbage Dataset and TACO.

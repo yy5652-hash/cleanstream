@@ -77,3 +77,6 @@ export function download(name: string, text: string, type = 'text/csv') {
   a.click()
   setTimeout(() => URL.revokeObjectURL(a.href), 1000)
 }
+
+// Pilots keep count summaries, never photographs.
+export const usePilots = () => useStored<import('./pilot').Pilot[]>('cleanstream.pilots', [])

@@ -9,10 +9,10 @@ export default function Learn({ sub, pack, packs }: { sub: 'rules' | 'quiz'; pac
     <>
       <div role="tablist" aria-label={t('Learn')} className="mb-8 inline-flex rounded-full bg-well p-1">
         {([['rules', t('Rules')], ['quiz', t('Quiz')]] as const).map(([id, name]) => (
-          <a key={id} role="tab" aria-selected={sub === id} href={`#${id}`} className={`rounded-full px-4 py-2 text-[15px] font-medium ${sub === id ? 'bg-card text-ink shadow-sm' : 'text-ink-2'}`}>{name}</a>
+          <a key={id} role="tab" aria-selected={sub === id} href={`#${id}`} className={`inline-flex min-h-11 items-center rounded-full px-4 py-2 text-[15px] font-medium ${sub === id ? 'bg-card text-ink' : 'text-ink-2'}`}>{name}</a>
         ))}
       </div>
-      {sub === 'rules' ? <Rules pack={pack} packs={packs} /> : <Quiz pack={pack} packs={packs} />}
+      {sub === 'rules' ? <Rules pack={pack} packs={packs} /> : <Quiz key={pack.id} pack={pack} packs={packs} />}
     </>
   )
 }

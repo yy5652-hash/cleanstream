@@ -4,7 +4,9 @@ import { t } from '../i18n'
 import { itemName } from '../items'
 import { binById, type Pack } from '../rules'
 import { download, lastDays, type StationDay } from '../store'
-import { pct } from '../ui'
+import { BinChip, pct } from '../ui'
+import { Button } from '../components/ui/button'
+import { Sheet } from '../components/Sheet'
 
 export type Summary = {
   total: number // answers shown with a bin
@@ -41,6 +43,7 @@ export function summarize(log: Record<string, StationDay>, days: string[]): Summ
 const RANGES = [[1, () => t('Today')], [7, () => t('7 days')], [30, () => t('30 days')]] as const
 
 export default function StationReport({ pack, log, onReset }: { pack: Pack; log: Record<string, StationDay>; onReset: () => void }) {
+  const [resetting, setResetting] = useState(false)
   const [range, setRange] = useState<1 | 7 | 30>(7)
   const days = lastDays(range)
   const s = summarize(log, days)
@@ -62,84 +65,21 @@ export default function StationReport({ pack, log, onReset }: { pack: Pack; log:
     download(`station-${pack.id}-${days[0]}-to-${days[days.length - 1]}.csv`, rows.map((r) => r.map((v) => `"${v.replace(/"/g, '""')}"`).join(',')).join('\n'))
   }
 
-  return (
-    <section className="card pad report">
-      <div className="row" style={{ justifyContent: 'space-between' }}>
-        <div>
-          <h2 style={{ fontSize: 22 }}>{t('Station report')}</h2>
-          <p className="small muted">{t('What people held up at this station, in {city} rules. Counts only: no pictures are kept, and nothing leaves this device.', { city: pack.name })}</p>
-        </div>
-        <div className="row">
-          <div className="seg">
-            {RANGES.map(([n, name]) => <button key={n} className={range === n ? 'on' : ''} onClick={() => setRange(n)}>{name()}</button>)}
-          </div>
-          <button className="btn" onClick={csv} disabled={!asked}>{t('Export CSV')}</button>
-          <button className="btn" onClick={() => confirm(t("Clear this station's counts for {city}?", { city: pack.name })) && onReset()} disabled={!Object.keys(log).length}>{t('Reset')}</button>
-        </div>
-      </div>
-
-      {!asked ? (
-        <p className="muted" style={{ padding: '28px 0 8px' }}>{t('Nothing yet in this period. Start the camera or the demo feed above and counts appear here as people sort.')}</p>
-      ) : (
-        <>
-          <div className="metric" style={{ marginTop: 16 }}>
-            <div className="card"><span className="label">{t('Items sorted')}</span><b>{s.total}</b><span className="small muted">{t('answered with a bin')}</span></div>
-            <div className="card"><span className="label">{t('Sure enough to answer')}</span><b>{pct((s.total - s.tapped) / asked)}</b><span className="small muted">{t('{tapped} settled with a tap, {unsure} left unsure', { tapped: s.tapped, unsure: s.unsure })}</span></div>
-            <div className="card"><span className="label">{t('Not for recycling')}</span><b>{s.total ? pct(notRecycling / s.total) : '–'}</b><span className="small muted">{t('{count} items whose bin here is compost, trash or drop-off', { count: notRecycling })}</span></div>
-          </div>
-
-          <div className="report-grid">
-            {range > 1 && (
-              <div>
-                <div className="label">{t('Per day')}</div>
-                <div className="report-chart" role="img" aria-label={t('Items sorted per day, last {days} days', { days: range })}>
-                  {s.perDay.map((d) => (
-                    <div key={d.day} className="col" title={`${d.day}: ${d.total}`}>
-                      <div className="area">
-                        <div className="stack" style={{ height: `${(d.total / peak) * 100}%` }}>
-                          {pack.bins.filter((b) => d.bins[b.id]).map((b) => <i key={b.id} style={{ flex: d.bins[b.id], background: b.color }} />)}
-                        </div>
-                      </div>
-                      <span>{range === 7 ? new Date(`${d.day}T12:00:00Z`).toLocaleDateString(undefined, { weekday: 'narrow', timeZone: 'UTC' }) : Number(d.day.slice(8)) % 5 === 0 ? Number(d.day.slice(8)) : ''}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-            <div>
-              <div className="label">{t('By bin')}</div>
-              <div style={{ display: 'grid', gap: 8, marginTop: 10 }}>
-                {known.sort((a, b) => s.bins[b.id] - s.bins[a.id]).map((b) => (
-                  <div key={b.id} className="hbar">
-                    <span className="small">{b.name}</span>
-                    <span className="track"><i style={{ width: `${(s.bins[b.id] / s.total) * 100}%`, background: b.color }} /></span>
-                    <strong className="small">{s.bins[b.id]}</strong>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div>
-              <div className="label">{t('Most asked about')}</div>
-              <div style={{ display: 'grid', gap: 6, marginTop: 10 }}>
-                {s.items.slice(0, 6).map(([id, n]) => {
-                  const b = binById(pack, pack.items[id].bin)
-                  return (
-                    <div key={id} className="row" style={{ justifyContent: 'space-between', gap: 8 }}>
-                      <span className="small">{itemName(id)}</span>
-                      <span className="row" style={{ gap: 8 }}><span className="chip" style={{ background: b.color, color: b.ink }}>{b.name}</span><strong className="small">{n}</strong></span>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          </div>
-          {s.items.length > 0 && (
-            <div className="notice" style={{ background: 'var(--accent-soft)', color: '#0b4a3a', marginTop: 18 }}>
-              <strong>{t('Sign idea:')}</strong> {t('{item} is what people ask about most here. A sign above the bins that says “{item}: {bin}” answers it before anyone has to ask.', { item: itemName(s.items[0][0]), bin: binById(pack, pack.items[s.items[0][0]].bin).name })}
-            </div>
-          )}
-        </>
-      )}
-    </section>
-  )
+  return <section className="space-y-8">
+    <header><h2 className="text-title">{t('Station report')}</h2><p className="mt-2 max-w-2xl text-ink-2">{t('What people held up at this station, in {city} rules. Counts only: no pictures are kept, and nothing leaves this device.', { city: pack.name })}</p></header>
+    <div className="flex flex-wrap gap-2"><div className="flex rounded-2xl bg-well p-1" aria-label={t('Report period')}>{RANGES.map(([n, name]) => <Button key={n} variant={range === n ? 'default' : 'ghost'} aria-pressed={range === n} onClick={() => setRange(n)}>{name()}</Button>)}</div><Button variant="outline" onClick={csv} disabled={!asked}>{t('Export CSV')}</Button><Button variant="ghost" onClick={() => setResetting(true)} disabled={!Object.keys(log).length}>{t('Reset')}</Button></div>
+    <div className="grid gap-6 border-y border-line py-6 sm:grid-cols-3">{[
+      [t('Items sorted'), s.total, t('Answered with a bin')],
+      [t('Sure enough to answer'), asked ? pct((s.total - s.tapped) / asked) : t('No data'), t('{tapped} settled with a tap, {unsure} left unsure', { tapped: s.tapped, unsure: s.unsure })],
+      [t('Not for recycling'), s.total ? pct(notRecycling / s.total) : t('No data'), t('{count} items whose bin here is compost, trash or drop-off', { count: notRecycling })],
+    ].map(([name, value, note]) => <div key={name}><h3 className="text-ink-2">{name}</h3><p className="mt-3 text-display">{value}</p><p className="mt-2 text-sm text-ink-2">{note}</p></div>)}</div>
+    {!asked && <p className="text-ink-2">{t('Nothing yet in this period. Counts appear here as people sort.')}</p>}
+    {asked > 0 && <div className="grid gap-8 lg:grid-cols-2">
+      {range > 1 && <section><h3 className="font-semibold">{t('Per day')}</h3><div className="mt-4 flex h-48 gap-1" role="img" aria-label={t('Items sorted per day, last {days} days', { days: range })}>{s.perDay.map((d) => <div key={d.day} className="flex min-w-0 flex-1 flex-col" title={t('{date}: {count} items', { date: d.day, count: d.total })}><div className="flex flex-1 items-end"><div className="flex w-full flex-col overflow-hidden rounded-t-sm" style={{ height: `${d.total / peak * 100}%` }}>{pack.bins.filter((b) => d.bins[b.id]).map((b) => <div key={b.id} style={{ flex: d.bins[b.id], background: b.color }} />)}</div></div><span className="mt-2 text-center text-xs text-ink-3">{range === 7 ? new Date(`${d.day}T12:00:00Z`).toLocaleDateString(undefined, { weekday: 'narrow', timeZone: 'UTC' }) : Number(d.day.slice(8)) % 5 === 0 ? Number(d.day.slice(8)) : ''}</span></div>)}</div><details className="mt-3"><summary className="min-h-11 cursor-pointer py-3 text-sm text-ink-2">{t('Daily counts')}</summary>{s.perDay.map((d) => <p key={d.day} className="py-1 text-sm">{t('{date}: {count} items', { date: d.day, count: d.total })}</p>)}</details></section>}
+      <section><h3 className="font-semibold">{t('By bin')}</h3><div className="mt-4 space-y-4">{known.sort((a, b) => s.bins[b.id] - s.bins[a.id]).map((b) => <div key={b.id}><div className="mb-2 flex items-center justify-between gap-3"><BinChip bin={b} /><strong>{s.bins[b.id]}</strong></div><div className="h-2 overflow-hidden rounded-full bg-well"><div className="h-full rounded-full" style={{ width: `${s.bins[b.id] / s.total * 100}%`, background: b.color }} /></div></div>)}</div></section>
+      <section className="lg:col-span-2"><h3 className="font-semibold">{t('Most asked about')}</h3><ol className="mt-3 divide-y divide-line">{s.items.filter(([id]) => pack.items[id]).slice(0, 6).map(([id, n], k) => <li key={id} className="flex flex-wrap items-center gap-3 py-4"><span className="text-ink-3">{k + 1}</span><span className="flex-1">{itemName(id)}</span><BinChip bin={binById(pack, pack.items[id].bin)} /><strong>{n}</strong></li>)}</ol></section>
+    </div>}
+    <Button asChild variant="outline" className="h-auto min-h-11 whitespace-normal py-3"><a href="#poster">{t('Print a poster with these items')}</a></Button>
+    <Sheet open={resetting} onClose={() => setResetting(false)} title={t('Reset station counts?')}><p className="mb-5 text-ink-2">{t("Clear this station's counts for {city}?", { city: pack.name })}</p><Button onClick={() => { onReset(); setResetting(false) }}>{t('Reset')}</Button></Sheet>
+  </section>
 }

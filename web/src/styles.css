@@ -1,9 +1,15 @@
-@layer theme, base, legacy, components, utilities;
+@layer theme, base, components, utilities;
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
-@import "./index.css" layer(legacy);
-@import "@fontsource-variable/inter/wght.css";
+
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("@fontsource-variable/inter/files/inter-latin-wght-normal.woff2") format("woff2-variations");
+}
 
 :root {
   color-scheme: light dark;
@@ -96,4 +102,21 @@
 
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
+}
+
+/* Measuring reports and bin signs share a single-page print surface. */
+@media print {
+  @page { size: auto; margin: 10mm; }
+  body:has(.measure-print) { background: var(--c-paper); }
+  body:has(.measure-print) #main > div > :not(.measure-print) { display: none !important; }
+  .measure-print { display: block !important; border: 0 !important; border-radius: 0 !important; padding: 0 !important; margin: 0 !important; break-inside: avoid; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .measure-print * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .pilot-print { font-size: 10pt; }
+  .pilot-print .text-display { font-size: 28pt; }
+  .pilot-print .text-title { font-size: 20pt; }
+  .pilot-print th, .pilot-print td { padding-top: 6pt; padding-bottom: 6pt; }
+  .poster-print .poster-columns { gap: 8pt; }
+  .poster-print .poster-columns h3 { font-size: 18pt; padding: 12pt 8pt; }
+  .poster-print .poster-columns ul { font-size: 14pt; padding: 12pt 8pt; }
+  .poster-print footer { margin-top: 18pt; }
 }

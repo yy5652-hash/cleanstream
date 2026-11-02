@@ -77,7 +77,7 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
     loadModel()
     setCamera(true)
   }
-  const useSample = async (s: Sample) => {
+  const trySample = async (s: Sample) => {
     setPicked(s.file)
     loadModel()
     onImage(await fetch(sampleUrl(s)).then((r) => r.blob()))
@@ -146,7 +146,7 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
             <p className="mt-0.5 text-sm text-ink-2">{t('Test photos the model never saw in training.')}</p>
             <div className="mt-3 grid grid-cols-4 gap-2">
               {samples.slice(0, 12).map((s) => (
-                <button key={s.file} onClick={() => useSample(s)} title={itemName(s.label)} className={`overflow-hidden rounded-xl transition-transform hover:scale-[1.03] ${picked === s.file ? 'ring-2 ring-ink' : ''}`}>
+                <button key={s.file} onClick={() => trySample(s)} title={itemName(s.label)} className={`overflow-hidden rounded-xl transition-transform hover:scale-[1.03] ${picked === s.file ? 'ring-2 ring-ink' : ''}`}>
                   <img src={thumbUrl(s)} alt={itemName(s.label)} width={160} height={160} loading="lazy" className="aspect-square w-full object-cover" />
                 </button>
               ))}

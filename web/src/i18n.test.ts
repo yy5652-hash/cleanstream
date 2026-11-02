@@ -12,7 +12,7 @@ const dicts: [string, Dict][] = langs.map((l) => [l, JSON.parse(readFileSync(new
 
 // Every t('...') in the app's source, except the technical How it works page, which stays in English
 function uiStrings(): string[] {
-  const files = ['App.tsx', 'ui.tsx', 'parts.ts', ...readdirSync(new URL('components/', here)).filter((f) => f.endsWith('.tsx')).map((f) => `components/${f}`), ...readdirSync(new URL('views/', here)).map((f) => `views/${f}`)].filter((f) => !f.endsWith('About.tsx'))
+  const files = ['App.tsx', 'ui.tsx', 'parts.ts', ...readdirSync(new URL('components/', here)).filter((f) => f.endsWith('.tsx')).map((f) => `components/${f}`), ...readdirSync(new URL('views/', here)).map((f) => `views/${f}`)]
   const out = new Set<string>()
   for (const f of files) {
     const src = readFileSync(new URL(f, here), 'utf8')
