@@ -87,7 +87,7 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
   const ans = probs && model.classes.length && !fromSearch ? answer(pack, model.classes, probs) : null
   const loading = model.status === 'loading'
   const progress = loading
-    ? model.total ? t('Getting photo recognition ready: {loaded} of {total} MB', { loaded: Math.round(model.loaded / 1e6), total: Math.round(model.total / 1e6) }) : t('Getting photo recognition ready…')
+    ? model.total && model.loaded <= model.total ? t('Getting photo recognition ready: {loaded} of {total} MB', { loaded: Math.round(model.loaded / 1e6), total: Math.round(model.total / 1e6) }) : t('Getting photo recognition ready…')
     : undefined
   const hasAnswer = !!(chosen || ans)
   const showing = hasAnswer || busy || failed
@@ -117,7 +117,7 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
           <span className="min-w-0">{model.status === 'idle' ? t('Downloads once (95 MB), then works offline.') : progress ?? t('Photos stay on this device.')}</span>
           <button onClick={() => (loadModel(), file.current?.click())} className="flex shrink-0 items-center gap-1.5 font-medium text-ink underline decoration-line underline-offset-4 hover:decoration-ink"><ImageUp className="size-4" aria-hidden />{t('Upload a photo')}</button>
         </div>
-        {loading && model.total > 0 && <div className="mt-2 h-1 overflow-hidden rounded-full bg-well"><div className="h-full rounded-full bg-ink transition-[width]" style={{ width: `${(model.loaded / model.total) * 100}%` }} /></div>}
+        {loading && model.total > 0 && <div className="mt-2 h-1 overflow-hidden rounded-full bg-well"><div className="h-full rounded-full bg-ink transition-[width]" style={{ width: `${Math.min(1, model.loaded / model.total) * 100}%` }} /></div>}
         <input ref={file} type="file" accept="image/*" hidden onChange={(e) => {
           const f = e.target.files?.[0]
           if (f) (setPicked(null), setCamera(false), onImage(f))
