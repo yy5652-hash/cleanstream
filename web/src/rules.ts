@@ -23,11 +23,19 @@ export function loadPack(id: string): Promise<Pack> {
   return cache.get(id)!
 }
 
-export function usePacks(): Pack[] | null {
+// The current city first, so the first screen need not wait for the others; the rest follow straight after.
+export function usePacks(first: string): Pack[] | null {
   const [packs, setPacks] = useState<Pack[] | null>(null)
   useEffect(() => {
-    Promise.all(PACK_IDS.map(loadPack)).then(setPacks)
-  }, [])
+    let live = true
+    const add = (p: Pack) => {
+      if (live) setPacks((cur) => (cur?.some((x) => x.id === p.id) ? cur : [...(cur ?? []), p].sort((a, b) => PACK_IDS.indexOf(a.id as never) - PACK_IDS.indexOf(b.id as never))))
+    }
+    loadPack(first).then(add).then(() => PACK_IDS.forEach((id) => loadPack(id).then(add)))
+    return () => {
+      live = false
+    }
+  }, [first])
   return packs
 }
 

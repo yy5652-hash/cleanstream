@@ -6,8 +6,8 @@
   "start_url": "./#scan",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f5f6f1",
-  "theme_color": "#f5f6f1",
+  "background_color": "#fbfbf7",
+  "theme_color": "#0f1512",
   "categories": ["utilities", "education", "lifestyle"],
   "icons": [
     { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },

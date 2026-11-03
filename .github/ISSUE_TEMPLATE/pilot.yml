@@ -1,0 +1,33 @@
+name: Managed Cleanstream for my site
+description: Tell us about your site if you would want shared dashboards, your branding and support.
+title: "Managed Cleanstream: "
+labels: ["managed-interest"]
+body:
+  - type: markdown
+    attributes:
+      value: This issue is public, so please leave out personal details.
+  - type: dropdown
+    id: organisation
+    attributes:
+      label: What kind of organisation is this for?
+      options:
+        - University or school
+        - Office or workplace
+        - Airport, venue or public building
+        - City or waste authority
+        - Something else
+    validations:
+      required: true
+  - type: input
+    id: sites
+    attributes:
+      label: How many sites or bin stations?
+      placeholder: "6"
+    validations:
+      required: true
+  - type: textarea
+    id: needs
+    attributes:
+      label: What would you need that the free version doesn't do?
+    validations:
+      required: true
