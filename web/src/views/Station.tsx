@@ -361,6 +361,7 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
             </p>}
           </>}
           {target && item && rule && <div className="animate-rise">
+            {shot && <img src={shot} alt={t('What the camera saw')} className="mx-auto mb-[2.5vmin] size-[16vmin] min-h-20 min-w-20 rounded-[2.5vmin] object-cover shadow-2xl ring-4 ring-white/50" />}
             <p className="text-[max(1.25rem,4vmin)] font-medium">{itemName(item)}</p>
             <h2 className="my-[3vmin] min-h-[10dvh] text-[18vmin] leading-[0.95] font-semibold tracking-[-0.04em]">{target.name}</h2>
             <p className="mx-auto max-w-5xl text-[max(1.125rem,3.5vmin)] leading-snug">{here ? rule.prep[0] : t('Not in these bins. {prep}', { prep: rule.prep[0] ?? '' })}</p>
@@ -372,6 +373,7 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
             </ul>}
           </div>}
           {choosing && <div className="mx-auto w-full max-w-5xl animate-rise">
+            {shot && <img src={shot} alt={t('What the camera saw')} className="mx-auto mb-[2.5vmin] size-[13vmin] min-h-16 min-w-16 rounded-[2vmin] object-cover ring-4 ring-white/30" />}
             <h2 className="text-[max(2rem,7vmin)] leading-tight font-semibold tracking-tight">{t('Hmm, which one is it?')}</h2>
             <div className="my-[4vmin] grid gap-3 sm:grid-cols-2">
               {options.map((id) => {

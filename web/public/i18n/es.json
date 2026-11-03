@@ -457,7 +457,8 @@
   "{role}": "{role}",
   "{set}, {model}": "{set}, {model}",
   "{source}": "{source}",
-  "—": "—"
+  "—": "—",
+  "What the camera saw": "Lo que vio la cámara"
  },
  "cities": {
   "nyc": "Nueva York",

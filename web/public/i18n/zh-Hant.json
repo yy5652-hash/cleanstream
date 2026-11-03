@@ -457,7 +457,8 @@
   "{role}": "{role}",
   "{set}, {model}": "{set}，{model}",
   "{source}": "{source}",
-  "—": "—"
+  "—": "—",
+  "What the camera saw": "攝像頭看到的物品"
  },
  "cities": {
   "nyc": "紐約",
