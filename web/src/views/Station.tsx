@@ -335,7 +335,7 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
   const iconButton = 'shrink-0 border-current/30 text-inherit hover:bg-transparent hover:text-inherit hover:opacity-80 focus-visible:ring-current'
 
   return (
-    <div data-phase={phase} role="main" style={rootStyle} className="relative isolate flex min-h-dvh w-full min-w-0 flex-col overflow-x-clip [overflow-wrap:anywhere]">
+    <div data-phase={phase} role="main" translate="no" style={rootStyle} className="relative isolate flex min-h-dvh w-full min-w-0 flex-col overflow-x-clip [overflow-wrap:anywhere]">
       {target && <div key={`${item}-${target.id}`} className="pointer-events-none absolute inset-0 -z-10 animate-flood" style={{ background: target.color }} />}
       <h1 className="sr-only">{t('Cleanstream bin station: {city} rules', { city: pack.name })}</h1>
       <header className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 pb-2 pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-6">

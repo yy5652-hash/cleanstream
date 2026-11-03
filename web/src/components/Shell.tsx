@@ -58,7 +58,7 @@ export function Shell({ section, city, setCity, install, children }: { section: 
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-lg focus:bg-card focus:px-3 focus:py-2">{t('Skip to content')}</a>
       <header className="sticky top-0 z-30 border-b print:hidden border-line bg-paper/90 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-4 sm:px-6">
-          <a href="#scan" className="flex shrink-0 items-center gap-2.5 text-lg font-semibold tracking-tight text-ink [&_svg]:size-7"><Logo />Cleanstream</a>
+          <a href="#scan" className="flex shrink-0 items-center gap-2.5 text-lg font-semibold tracking-tight text-ink [&_svg]:size-7"><Logo /><span translate="no">Cleanstream</span></a>
           <nav aria-label={t('Main')} className="hidden flex-1 items-center gap-1 md:flex">
             {SECTIONS.map(([id, href, name]) => (
               <a key={id} href={href} aria-current={section === id ? 'page' : undefined} className={`rounded-full px-3.5 py-2 text-[15px] font-medium ${section === id ? 'bg-well text-ink' : 'text-ink-2 hover:text-ink'}`}>{name()}</a>
