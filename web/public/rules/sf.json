@@ -137,13 +137,38 @@
   "paper_bag": {
    "bin": "blue",
    "prep": [
-    "Clean and dry",
-    "Greasy or food-stained? Green bin"
+    "Clean and dry"
    ],
    "why": "Clean paper bags are recyclable; soiled ones are compostable.",
    "source": "https://sfenvironment.org/sfrecycles/item/paper-bags",
-   "also": [
-    "green"
+   "cases": [
+    {
+     "id": "soiled",
+     "label": "Food-soiled or greasy",
+     "bin": "green",
+     "prep": [
+      "Greasy or food-stained? Green bin"
+     ],
+     "match": [
+      "greasy",
+      "oily",
+      "grease",
+      "food stuck",
+      "food-stained"
+     ]
+    },
+    {
+     "id": "clean",
+     "label": "Clean and dry",
+     "bin": "blue",
+     "prep": [
+      "Clean and dry"
+     ],
+     "match": [
+      "clean",
+      "dry"
+     ]
+    }
    ]
   },
   "cardboard": {

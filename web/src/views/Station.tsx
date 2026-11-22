@@ -7,7 +7,7 @@ import { LANGS, setLang, speechLang, t, useLang } from '../i18n'
 import { itemName } from '../items'
 import { classify, loadModel, useModel } from '../model/client'
 import { partsOf } from '../parts'
-import { answer, binById, type Answer, type Pack } from '../rules'
+import { answer, binById, caseRule, shownItem, type Answer, type Pack } from '../rules'
 import { cameraConstraints, readConfig, useStationBins, useStationCamera } from '../station-config'
 import { lastDays, record, stationLogWriter, today, useStationLog } from '../store'
 import { BinChip, pct, sampleUrl, useSamples } from '../ui'
@@ -103,6 +103,7 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
   const [source, setSource] = useState<Source>(start)
   const [phase, setPhase] = useState<Phase>('idle')
   const [ans, setAns] = useState<Answer | null>(null)
+  const [conditionId, setConditionId] = useState<string | null>(null)
   const [shot, setShot] = useState<string | null>(null)
   const [frame, setFrame] = useState<string | null>(null)
   const [settings, setSettings] = useState(false)
@@ -144,7 +145,7 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
   const day = today()
   const total = lastDays(7, day).reduce((sum, date) => sum + Object.values(log[pack.id]?.[date]?.bins ?? {}).reduce((a, b) => a + b, 0), 0)
   const bins = binIds.map((id) => binById(pack, id))
-  const tips = useMemo(() => TIPS.filter((id) => pack.items[id]), [pack])
+  const tips = useMemo(() => TIPS.filter((id) => pack.items[id] && !pack.items[id].cases?.length), [pack])
   const { lang } = useLang()
   const homeLang = useRef(lang)
   const paused = useRef(false)
@@ -202,6 +203,7 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
     if (unsure.current) setLog((l) => record(l, pack.id, today(), null))
     unsure.current = false
     setChosen(null)
+    setConditionId(null)
     setShot(picture)
     setScanFailed(false)
     setPhase('looking')
@@ -212,8 +214,8 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
       setAns(a)
       setPhase('result')
       const bin = a.bins[0].bin.id
-      const item = a.items.find((it) => pack.items[it.id]?.bin === bin)!.id
-      if (a.sure) {
+      const item = shownItem(pack, a).id
+      if (a.sure && !pack.items[item].cases?.length) {
         setLog((l) => record(l, pack.id, today(), { bin, item }))
         if (speak.current) say(t('{item}. {bin}.', { item: itemName(item), bin: a.bins[0].bin.name }))
         later(RESULT_MS, () => { setPhase('thanks'); later(THANKS_MS, () => setPhase('idle')) })
@@ -314,9 +316,13 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
   }, [source, samples, pack.id, model.status, wait])
 
   const options = ans ? ans.bins.slice(0, 2).map(({ bin }) => ans.items.find((it) => pack.items[it.id]?.bin === bin.id)!.id) : []
-  const item = chosen ?? (ans ? options[0] : null)
-  const rule = item ? pack.items[item] : null
-  const target = phase === 'result' && rule && (ans?.sure || chosen) ? binById(pack, rule.bin) : null
+  const item = chosen ?? (ans ? shownItem(pack, ans).id : null)
+  const baseRule = item ? pack.items[item] : null
+  // Only items whose rule asks a question stop for a condition; the rest light the case for their main bin.
+  const condition = baseRule?.cases?.find((c) => c.id === conditionId) ?? (baseRule && !baseRule.ask ? baseRule.cases?.find((c) => c.bin === baseRule.bin) : undefined)
+  const rule = baseRule && condition ? caseRule(baseRule, condition) : baseRule
+  const needsCondition = !!baseRule?.ask && !!baseRule?.cases?.length && !condition && (ans?.sure || !!chosen)
+  const target = phase === 'result' && rule && !needsCondition && (ans?.sure || chosen) ? binById(pack, rule.bin) : null
   const here = target && binIds.includes(target.id)
   const parts = target && item ? partsOf(pack, item).slice(1) : []
   const choosing = phase === 'result' && ans && !target
@@ -327,12 +333,18 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
     'Only if it is 3 inches or bigger.': t('Only if it is 3 inches or bigger.'),
     'Rules for loose lids vary. Check your town.': t('Rules for loose lids vary. Check your town.'),
   }
-  const choose = (id: string) => {
+  const choose = (id: string, caseId?: string) => {
     if (!unsure.current) return
+    if (pack.items[id].cases?.length && !caseId) {
+      setChosen(id)
+      setConditionId(null)
+      return
+    }
     clearTimers()
     unsure.current = false
     setChosen(id)
-    const bin = pack.items[id].bin
+    setConditionId(caseId ?? null)
+    const bin = pack.items[id].cases?.find((c) => c.id === caseId)?.bin ?? pack.items[id].bin
     setLog((l) => record(l, pack.id, today(), { bin, item: id, tapped: true }))
     if (speak.current) say(t('{item}. {bin}.', { item: itemName(id), bin: binById(pack, bin).name }))
     later(RESULT_MS, () => { setPhase('thanks'); later(THANKS_MS, () => setPhase('idle')) })
@@ -397,9 +409,14 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
           </div>}
           {choosing && <div className="mx-auto w-full max-w-5xl animate-rise">
             {shot && <img src={shot} alt={t('What the camera saw')} className="mx-auto mb-[2.5vmin] size-[13vmin] min-h-16 min-w-16 rounded-[2vmin] object-cover ring-4 ring-white/30" />}
-            <h2 className="text-[max(2rem,7vmin)] leading-tight font-semibold tracking-tight">{t('Hmm, which one is it?')}</h2>
+            <h2 className="text-[max(2rem,7vmin)] leading-tight font-semibold tracking-tight">{needsCondition ? baseRule?.ask ?? t('Which condition applies?') : t('Hmm, which one is it?')}</h2>
             <div className="my-[4vmin] grid gap-3 sm:grid-cols-2">
-              {options.map((id) => {
+              {needsCondition ? baseRule!.cases!.map((c) => {
+                const bin = binById(pack, c.bin)
+                return <button key={c.id} onClick={() => choose(item!, c.id)} className="flex min-h-[22vmin] flex-col justify-between gap-4 rounded-3xl p-[4vmin] text-left focus-visible:outline-ink" style={{ background: bin.color, color: bin.ink }}>
+                  <span className="text-[max(1.5rem,5vmin)] leading-tight font-semibold">{c.label}</span><BinChip bin={bin} />
+                </button>
+              }) : options.map((id) => {
                 const bin = binById(pack, pack.items[id].bin)
                 return <button key={id} onClick={() => choose(id)} className="flex min-h-[22vmin] flex-col justify-between gap-4 rounded-3xl p-[4vmin] text-left focus-visible:outline-ink" style={{ background: bin.color, color: bin.ink }}>
                   <span className="text-[max(1.5rem,5vmin)] leading-tight font-semibold">{itemName(id)}</span><span className="text-[max(1rem,3vmin)]">{bin.name}</span>

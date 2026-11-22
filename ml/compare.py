@@ -71,7 +71,7 @@ def main():
                 bm = {k: v["bin"] for k, v in pack["items"].items()}
                 names = sorted(set(bm.values()))
                 M = np.stack([P[:, [c for c, n in enumerate(NAMES) if bm[n] == bn]].sum(1) for bn in names], 1)
-                ok[pid] = np.array([names[k] == pack["items"][l]["bin"] or names[k] in pack["items"][l].get("also", []) for k, l in zip(M.argmax(1), y)])
+                ok[pid] = np.array([names[k] == pack["items"][l]["bin"] or names[k] in pack["items"][l].get("also", []) or names[k] in [c["bin"] for c in pack["items"][l].get("cases", [])] for k, l in zip(M.argmax(1), y)])
             res[name] = ok
         print(f"\n{title} ({len(j)} photos with an item label)")
         for name, ok in res.items():

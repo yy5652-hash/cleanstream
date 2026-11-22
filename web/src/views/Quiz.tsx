@@ -1,11 +1,12 @@
 import { Check, Share2, X } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { Button } from '../components/ui/button'
+import { RuleDestination } from '../components/RuleDestination'
 import { dailyDate, dailyItems, dailyShare, readDaily, saveDaily, type DailyStorage } from '../daily'
 import { t } from '../i18n'
 import { itemExamples, itemName } from '../items'
 import { belongs, binById, type Pack } from '../rules'
-import { BinChip, sampleUrl, useSamples, type Sample } from '../ui'
+import { sampleUrl, useSamples, type Sample } from '../ui'
 
 export const ROUNDS = 10
 
@@ -85,7 +86,7 @@ function Game({ pack, photos, date, items, daily = false, initialPicks, onExit }
     <p className="text-display tabular-nums">{t('{right} of {total}', { right, total: items.length })}</p>
     <h2 className="mt-4 text-title">{right === items.length ? t('Perfect sorting. Your bins thank you.') : t('A little clearer for next time.')}</h2>
     {daily && <p className="mt-3 text-ink-2">{t('{count} consecutive days played', { count: result?.streak ?? 1 })}</p>}
-    <ul className="mt-6 divide-y divide-line">{items.map((id, i) => <li key={id} className="flex items-start gap-3 py-4">{belongs(pack, id, picks[i]) ? <Check className="mt-1 size-5 shrink-0 text-ok" aria-label={t('Correct')} /> : <X className="mt-1 size-5 shrink-0 text-danger" aria-label={t('Incorrect')} />}<div className="min-w-0 flex-1"><p className="font-semibold">{t('{item}', { item: itemName(id) })}</p><p className="mt-1 text-sm text-ink-2">{t('{reason}', { reason: pack.items[id].why })}</p><div className="mt-2"><BinChip bin={binById(pack, pack.items[id].bin)} /></div></div></li>)}</ul>
+    <ul className="mt-6 divide-y divide-line">{items.map((id, i) => <li key={id} className="flex items-start gap-3 py-4">{belongs(pack, id, picks[i]) ? <Check className="mt-1 size-5 shrink-0 text-ok" aria-label={t('Correct')} /> : <X className="mt-1 size-5 shrink-0 text-danger" aria-label={t('Incorrect')} />}<div className="min-w-0 flex-1"><p className="font-semibold">{t('{item}', { item: itemName(id) })}</p><p className="mt-1 text-sm text-ink-2">{t('{reason}', { reason: pack.items[id].why })}</p><div className="mt-2"><RuleDestination pack={pack} item={id} /></div></div></li>)}</ul>
     <div className="mt-6 flex flex-wrap gap-3"><Button onClick={() => void share()}><Share2 aria-hidden />{shared ? t('Link copied') : t('Share your score')}</Button>{!daily && <Button variant="outline" onClick={onExit}>{t('Play again')}</Button>}</div>
     {storageError && <p role="status" className="mt-3 text-danger">{t('This result could not be saved on your device.')}</p>}
     {shareError && <p role="status" className="mt-3 text-danger">{t('Could not share. Try again.')}</p>}
@@ -107,7 +108,7 @@ function Game({ pack, photos, date, items, daily = false, initialPicks, onExit }
     }} className="flex min-h-20 items-center justify-between gap-3 rounded-2xl px-5 py-4 text-left text-lg font-semibold disabled:cursor-default" style={{ background: bin.color, color: bin.ink }}>
       {t('{bin}', { bin: bin.name })}{pick !== undefined && (belongs(pack, id, bin.id) ? <Check className="size-6 shrink-0" aria-label={t('Correct bin')} /> : pick === bin.id ? <X className="size-6 shrink-0" aria-label={t('Your pick')} /> : null)}
     </button>)}</div>
-    {pick !== undefined && <div role="status" className="mt-6 rounded-3xl border border-line bg-card p-6 animate-rise"><h3 className={`text-title ${belongs(pack, id, pick) ? 'text-ok' : 'text-ink'}`}>{belongs(pack, id, pick) ? t('Right.') : t('Not quite. In {city}: {bin}.', { city: pack.name, bin: correct.name })}</h3><p className="mt-3 text-ink-2">{t('{reason}', { reason: rule.why })}</p><p className="mt-3 text-ink-2">{t('Before you toss it: {prep}', { prep: rule.prep.join(' · ') })}</p><Button size="lg" className="mt-5" autoFocus onClick={() => setRound((r) => r + 1)}>{round + 1 < items.length ? t('Next item') : t('See your score')}</Button></div>}
+    {pick !== undefined && <div role="status" className="mt-6 rounded-3xl border border-line bg-card p-6 animate-rise"><h3 className={`text-title ${belongs(pack, id, pick) ? 'text-ok' : 'text-ink'}`}>{belongs(pack, id, pick) ? t('Right.') : rule.cases?.length ? t('The bin depends on the condition.') : t('Not quite. In {city}: {bin}.', { city: pack.name, bin: correct.name })}</h3>{!!rule.cases?.length && <div className="mt-3"><RuleDestination pack={pack} item={id} /></div>}<p className="mt-3 text-ink-2">{t('{reason}', { reason: rule.why })}</p><p className="mt-3 text-ink-2">{t('Before you toss it: {prep}', { prep: rule.prep.join(' · ') })}</p><Button size="lg" className="mt-5" autoFocus onClick={() => setRound((r) => r + 1)}>{round + 1 < items.length ? t('Next item') : t('See your score')}</Button></div>}
     {storageError && <p role="status" className="mt-3 text-danger">{t('Progress cannot be saved on this device. Keep this page open to finish.')}</p>}
   </section>
 }

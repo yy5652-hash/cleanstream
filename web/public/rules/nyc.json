@@ -147,13 +147,38 @@
   "paper_bag": {
    "bin": "green",
    "prep": [
-    "Keep it clean and dry",
-    "Food-soiled bags go in the brown bin"
+    "Keep it clean and dry"
    ],
    "why": "DSNY rules list paper bags with mixed paper.",
    "source": "https://www.nyc.gov/assets/dsny/downloads/pdf/about/laws/DSNY_rules_regs_2015.pdf",
-   "also": [
-    "brown"
+   "cases": [
+    {
+     "id": "soiled",
+     "label": "Food-soiled or greasy",
+     "bin": "brown",
+     "prep": [
+      "Food-soiled bags go in the brown bin"
+     ],
+     "match": [
+      "greasy",
+      "oily",
+      "grease",
+      "food stuck",
+      "food-soiled"
+     ]
+    },
+    {
+     "id": "clean",
+     "label": "Clean and dry",
+     "bin": "green",
+     "prep": [
+      "Keep it clean and dry"
+     ],
+     "match": [
+      "clean",
+      "dry"
+     ]
+    }
    ]
   },
   "cardboard": {
@@ -168,25 +193,68 @@
   "pizza_box": {
    "bin": "green",
    "prep": [
-    "Remove leftover food",
-    "Greasy box? Put it in the brown bin"
+    "Remove leftover food"
    ],
    "why": "Lightly-soiled pizza boxes go with paper; greasy ones are compostable.",
    "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/mixed-paper-cardboard.page",
-   "also": [
-    "brown"
+   "ask": "Is the box greasy, or is food stuck to it?",
+   "cases": [
+    {
+     "id": "clean",
+     "label": "Clean or lightly soiled",
+     "bin": "green",
+     "prep": [
+      "Remove leftover food"
+     ],
+     "match": [
+      "clean",
+      "lightly soiled"
+     ]
+    },
+    {
+     "id": "greasy",
+     "label": "Greasy, or food stuck to it",
+     "bin": "brown",
+     "prep": [
+      "Remove leftover food"
+     ],
+     "match": [
+      "greasy",
+      "oily",
+      "grease",
+      "food stuck"
+     ]
+    }
    ]
   },
   "soiled_paper": {
    "bin": "brown",
    "prep": [
-    "Scrape off food first",
-    "Clean tissues can go in the trash"
+    "Scrape off food first"
    ],
    "why": "NYC composting takes food-soiled paper along with food scraps.",
    "source": "https://www.nyc.gov/site/dsny/collection/residents/curbside-composting.page",
-   "also": [
-    "trash"
+   "cases": [
+    {
+     "id": "tissue",
+     "label": "Clean tissues",
+     "bin": "trash",
+     "prep": [
+      "Clean tissues can go in the trash"
+     ],
+     "match": [
+      "clean tissue",
+      "clean tissues"
+     ]
+    },
+    {
+     "id": "soiled",
+     "label": "Food-soiled paper",
+     "bin": "brown",
+     "prep": [
+      "Scrape off food first"
+     ]
+    }
    ]
   },
   "paper_cup": {
@@ -276,14 +344,48 @@
   "battery": {
    "bin": "dropoff",
    "prep": [
-    "Tape the ends or bag each battery",
-    "Rechargeable and lithium-ion: take back to a store that sells them",
-    "Single-use alkaline (AA, AAA, 9V) may go in the trash"
+    "Tape the ends or bag each battery"
    ],
    "why": "Rechargeable and lithium-ion batteries must never go in trash or recycling. They start fires in trucks and plants.",
    "source": "https://www.nyc.gov/site/dsny/collection/get-rid-of/batteries.page",
-   "also": [
-    "trash"
+   "cases": [
+    {
+     "id": "rechargeable",
+     "label": "Rechargeable, lithium-ion, or inside a vape or device",
+     "bin": "dropoff",
+     "prep": [
+      "Tape the ends or bag each battery",
+      "Rechargeable and lithium-ion: take back to a store that sells them"
+     ],
+     "match": [
+      "vape",
+      "e-cigarette",
+      "e-cig",
+      "lithium",
+      "li-ion",
+      "rechargeable",
+      "phone battery",
+      "laptop battery",
+      "power bank"
+     ]
+    },
+    {
+     "id": "alkaline",
+     "label": "Single-use alkaline (AA, AAA, C, D, 9V)",
+     "bin": "trash",
+     "prep": [
+      "Tape the ends or bag each battery",
+      "Single-use alkaline (AA, AAA, 9V) may go in the trash"
+     ],
+     "match": [
+      "alkaline",
+      "aa",
+      "aaa",
+      "9v",
+      "c battery",
+      "d battery"
+     ]
+    }
    ]
   },
   "electronics": {
@@ -329,13 +431,32 @@
   "blister_pack": {
    "bin": "blue",
    "prep": [
-    "Empty it",
-    "Pill packs with a foil back go in the trash"
+    "Empty it"
    ],
    "why": "Rigid plastic 'blisterpak' packaging is accepted.",
    "source": "https://portal.311.nyc.gov/article/?kanumber=KA-02013",
-   "also": [
-    "trash"
+   "cases": [
+    {
+     "id": "foil",
+     "label": "Pill pack with a foil back",
+     "bin": "trash",
+     "prep": [
+      "Empty it",
+      "Pill packs with a foil back go in the trash"
+     ],
+     "match": [
+      "foil back",
+      "pill pack"
+     ]
+    },
+    {
+     "id": "plastic",
+     "label": "Rigid plastic packaging",
+     "bin": "blue",
+     "prep": [
+      "Empty it"
+     ]
+    }
    ]
   },
   "rope_string": {

@@ -195,7 +195,6 @@
   "Held-out test, TrashNet, Garbage Dataset and TACO only": "预留集测试，仅含 TrashNet、Garbage Dataset 和 TACO",
   "Higher with stations": "有分类站组更高",
   "Hold it up": "举起物品",
-  "Hold up an item. The right bin lights up, using {city} rules. No account, no hardware budget. No photos leave the device.": "举起物品，符合{city}规则的分类桶就会亮起。无需账号，无需硬件预算。照片不会离开设备。",
   "How Cleanstream works": "Cleanstream 如何工作",
   "If it is #6 or foam, the black cart.": "如果是 #6 塑料或泡沫塑料，放入黑色桶。",
   "Image encoder: SigLIP 2 ViT-B/16 at 256 px (Google, Apache 2.0), loaded through open_clip and exported to ONNX. Runtime: ONNX Runtime Web. Rule sources are linked on the Rules tab. Photo credits for the Wikimedia Commons images are in {file}.": "图像编码器：SigLIP 2 ViT-B/16，256 px（Google，Apache 2.0），通过 open_clip 加载并导出为 ONNX。运行环境：ONNX Runtime Web。规则来源链接见“规则”页。Wikimedia Commons 图片的来源信息见 {file}。",
@@ -384,7 +383,6 @@
   "Try again, or type the item instead.": "请重试，或输入物品名称。",
   "Try camera again": "重试相机",
   "Try the demo feed": "试试演示",
-  "Turn an old tablet into a sorting station.": "把旧平板变成分类站。",
   "Turn voice off": "关闭语音",
   "Turn voice on": "开启语音",
   "Unavailable": "不可用",
@@ -500,7 +498,16 @@
   "{count} answers shown here in the last 7 days": "最近 7 天本站显示了 {count} 个答案",
   "{count} of {total} checked": "已核对 {count}／{total} 件",
   "{date}: {count} answers": "{date}：{count} 个答案",
-  "Pooled item counts are descriptive only. Weight totals cover only weighed audits; the primary interval uses stations as the units.": "合并件数仅作描述。重量汇总仅涵盖已称重审计；主要区间以站点为单位。"
+  "Pooled item counts are descriptive only. Weight totals cover only weighed audits; the primary interval uses stations as the units.": "合并件数仅作描述。重量汇总仅涵盖已称重审计；主要区间以站点为单位。",
+  "Choose condition": "选择状态",
+  "Which condition applies?": "物品是哪种状态？",
+  "Change condition": "更改状态",
+  "If {condition}:": "如果{condition}：",
+  "Or is it a {item}? →": "或者是{item}？→",
+  "The bin depends on the condition.": "应使用哪个垃圾桶取决于物品状态。",
+  "{condition}? →": "{condition}？→",
+  "Turn a spare tablet into a sorting station.": "把闲置平板变成分类投放屏。",
+  "Hold up an item. The right bin lights up, using {city} rules. No account and no per-scan fees, on a tablet you already have. No photos leave the device.": "举起物品，按{city}的规则点亮正确的垃圾桶。无需账号，不按次收费，用你已有的平板即可。照片不会离开设备。"
  },
  "cities": {
   "nyc": "纽约",
@@ -1185,10 +1192,23 @@
     },
     "food_scraps": {
      "prep": [
-      "更好的选择：送至市政府厨余送交点（需先登记，不允许使用任何袋子）",
       "否则放入黑桶"
      ],
-     "why": "芝加哥没有路边收运的堆肥桶，因此厨余应作为垃圾处理；也可使用市政府免费送交点，那里接收所有食物，包括肉和骨头。"
+     "why": "芝加哥没有路边收运的堆肥桶，因此厨余应作为垃圾处理；也可使用市政府免费送交点，那里接收所有食物，包括肉和骨头。",
+     "cases": {
+      "dropoff": {
+       "label": "使用市政厨余投放点（须先注册）",
+       "prep": [
+        "更好的选择：送至市政府厨余送交点（需先登记，不允许使用任何袋子）"
+       ]
+      },
+      "curbside": {
+       "label": "不使用厨余投放点",
+       "prep": [
+        "否则放入黑桶"
+       ]
+      }
+     }
     },
     "yard_waste": {
      "prep": [
@@ -1200,11 +1220,25 @@
     },
     "battery": {
      "prep": [
-      "充电电池、锂电池和汽车电池：送至 Household Chemicals & Computer Recycling Facility",
-      "绝不放入蓝桶",
-      "碱性电池（AA、AAA、9V）：该设施不接收，放入黑桶"
+      "绝不放入蓝桶"
      ],
-     "why": "锂离子电池会在分拣厂引发火灾，因此绝不能放入蓝桶。"
+     "why": "锂离子电池会在分拣厂引发火灾，因此绝不能放入蓝桶。",
+     "cases": {
+      "rechargeable": {
+       "label": "充电电池、锂离子电池，或电子烟和设备内的电池",
+       "prep": [
+        "充电电池、锂电池和汽车电池：送至 Household Chemicals & Computer Recycling Facility",
+        "绝不放入蓝桶"
+       ]
+      },
+      "alkaline": {
+       "label": "一次性碱性电池（AA、AAA、C、D、9V）",
+       "prep": [
+        "碱性电池（AA、AAA、9V）：该设施不接收，放入黑桶",
+        "绝不放入蓝桶"
+       ]
+      }
+     }
     },
     "electronics": {
      "prep": [
@@ -1346,10 +1380,23 @@
     },
     "paper_bag": {
      "prep": [
-      "保持干净、干燥",
-      "有油污或沾有食物的纸袋：放入绿桶"
+      "保持干净、干燥"
      ],
-     "why": "干净的纸放入蓝桶，沾有食物的纸放入绿桶。"
+     "why": "干净的纸放入蓝桶，沾有食物的纸放入绿桶。",
+     "cases": {
+      "soiled": {
+       "label": "沾有食物或油污",
+       "prep": [
+        "有油污或沾有食物的纸袋：放入绿桶"
+       ]
+      },
+      "clean": {
+       "label": "干净且干燥",
+       "prep": [
+        "保持干净、干燥"
+       ]
+      }
+     }
     },
     "cardboard": {
      "prep": [
@@ -1460,10 +1507,23 @@
     },
     "textile": {
      "prep": [
-      "干净且还能穿用的，请捐赠",
-      "磨损或破裂的布料：放入黑桶"
+      "干净且还能穿用的，请捐赠"
      ],
-     "why": "黑桶接收不适合捐赠的破旧布料，纺织品不在蓝桶或绿桶接收清单上。"
+     "why": "黑桶接收不适合捐赠的破旧布料，纺织品不在蓝桶或绿桶接收清单上。",
+     "cases": {
+      "worn": {
+       "label": "破旧或破损",
+       "prep": [
+        "磨损或破裂的布料：放入黑桶"
+       ]
+      },
+      "wearable": {
+       "label": "干净且仍可穿用",
+       "prep": [
+        "干净且还能穿用的，请捐赠"
+       ]
+      }
+     }
     },
     "shoes": {
      "prep": [
@@ -1589,10 +1649,23 @@
     },
     "paper_bag": {
      "prep": [
-      "保持干净、干燥",
-      "沾有食物的纸袋放入棕桶"
+      "保持干净、干燥"
      ],
-     "why": "DSNY 规则将纸袋归入混合废纸。"
+     "why": "DSNY 规则将纸袋归入混合废纸。",
+     "cases": {
+      "soiled": {
+       "label": "沾有食物或油污",
+       "prep": [
+        "沾有食物的纸袋放入棕桶"
+       ]
+      },
+      "clean": {
+       "label": "干净且干燥",
+       "prep": [
+        "保持干净、干燥"
+       ]
+      }
+     }
     },
     "cardboard": {
      "prep": [
@@ -1603,17 +1676,44 @@
     },
     "pizza_box": {
      "prep": [
-      "去掉剩余食物",
-      "纸盒有油污？放入棕桶"
+      "去掉剩余食物"
      ],
-     "why": "轻度脏污的披萨盒与纸类一起回收；油污较多的可堆肥。"
+     "why": "轻度脏污的披萨盒与纸类一起回收；油污较多的可堆肥。",
+     "cases": {
+      "clean": {
+       "label": "干净或轻微弄脏",
+       "prep": [
+        "去掉剩余食物"
+       ]
+      },
+      "greasy": {
+       "label": "油腻或粘有食物",
+       "prep": [
+        "去掉剩余食物"
+       ]
+      }
+     },
+     "ask": "盒子有油渍或粘着食物吗？"
     },
     "soiled_paper": {
      "prep": [
-      "先刮掉食物残渣",
-      "干净的面巾纸可以放入垃圾桶"
+      "先刮掉食物残渣"
      ],
-     "why": "纽约堆肥收集接收厨余以及沾有食物的纸。"
+     "why": "纽约堆肥收集接收厨余以及沾有食物的纸。",
+     "cases": {
+      "tissue": {
+       "label": "干净的纸巾",
+       "prep": [
+        "干净的面巾纸可以放入垃圾桶"
+       ]
+      },
+      "soiled": {
+       "label": "沾有食物的纸",
+       "prep": [
+        "先刮掉食物残渣"
+       ]
+      }
+     }
     },
     "paper_cup": {
      "prep": [
@@ -1681,11 +1781,25 @@
     },
     "battery": {
      "prep": [
-      "用胶带封住两端，或将每节电池单独装袋",
-      "充电电池和锂离子电池：退回销售此类电池的商店",
-      "一次性碱性电池（AA、AAA、9V）可以放入垃圾桶"
+      "用胶带封住两端，或将每节电池单独装袋"
      ],
-     "why": "充电电池和锂离子电池绝不能放入垃圾桶或回收桶。它们会在收运车辆和处理厂引发火灾。"
+     "why": "充电电池和锂离子电池绝不能放入垃圾桶或回收桶。它们会在收运车辆和处理厂引发火灾。",
+     "cases": {
+      "rechargeable": {
+       "label": "充电电池、锂离子电池，或电子烟和设备内的电池",
+       "prep": [
+        "用胶带封住两端，或将每节电池单独装袋",
+        "充电电池和锂离子电池：退回销售此类电池的商店"
+       ]
+      },
+      "alkaline": {
+       "label": "一次性碱性电池（AA、AAA、C、D、9V）",
+       "prep": [
+        "用胶带封住两端，或将每节电池单独装袋",
+        "一次性碱性电池（AA、AAA、9V）可以放入垃圾桶"
+       ]
+      }
+     }
     },
     "electronics": {
      "prep": [
@@ -1715,10 +1829,24 @@
     },
     "blister_pack": {
      "prep": [
-      "倒空",
-      "背面为铝箔的药片包装放入垃圾桶"
+      "倒空"
      ],
-     "why": "接收硬塑料“blisterpak”泡罩包装。"
+     "why": "接收硬塑料“blisterpak”泡罩包装。",
+     "cases": {
+      "foil": {
+       "label": "背面有铝箔的药板",
+       "prep": [
+        "倒空",
+        "背面为铝箔的药片包装放入垃圾桶"
+       ]
+      },
+      "plastic": {
+       "label": "硬塑料包装",
+       "prep": [
+        "倒空"
+       ]
+      }
+     }
     },
     "rope_string": {
      "prep": [
@@ -1807,17 +1935,44 @@
     },
     "foam": {
      "prep": [
-      "将散落的泡沫填充粒装袋并扎紧袋口",
-      "干净的泡沫块：使用免费 Special Item Pickup 服务，或送至 Kent 的 Styro Recycle"
+      "将散落的泡沫填充粒装袋并扎紧袋口"
      ],
-     "why": "泡沫塑料放入垃圾桶；只有干净的 Styrofoam 泡沫块有回收渠道。"
+     "why": "泡沫塑料放入垃圾桶；只有干净的 Styrofoam 泡沫块有回收渠道。",
+     "cases": {
+      "blocks": {
+       "label": "干净的泡沫块",
+       "prep": [
+        "干净的泡沫块：使用免费 Special Item Pickup 服务，或送至 Kent 的 Styro Recycle"
+       ]
+      },
+      "other": {
+       "label": "其他泡沫",
+       "prep": [
+        "将散落的泡沫填充粒装袋并扎紧袋口"
+       ]
+      }
+     }
     },
     "plastic_utensil_straw": {
      "prep": [
-      "无需预处理",
-      "标有“compostable”（可堆肥）？放入厨余和庭院垃圾桶"
+      "无需预处理"
      ],
-     "why": "西雅图不回收塑料餐具和吸管。"
+     "why": "西雅图不回收塑料餐具和吸管。",
+     "cases": {
+      "compostable": {
+       "label": "标注可堆肥",
+       "prep": [
+        "无需预处理",
+        "标有“compostable”（可堆肥）？放入厨余和庭院垃圾桶"
+       ]
+      },
+      "plastic": {
+       "label": "塑料",
+       "prep": [
+        "无需预处理"
+       ]
+      }
+     }
     },
     "paper": {
      "prep": [
@@ -1830,10 +1985,25 @@
     "paper_bag": {
      "prep": [
       "保持干净、干燥",
-      "贴纸、胶带和订书钉都可以保留",
-      "沾有食物？放入厨余和庭院垃圾桶"
+      "贴纸、胶带和订书钉都可以保留"
      ],
-     "why": "干净、干燥的纸袋可回收；湿纸袋或沾有食物的纸袋可堆肥。"
+     "why": "干净、干燥的纸袋可回收；湿纸袋或沾有食物的纸袋可堆肥。",
+     "cases": {
+      "soiled": {
+       "label": "潮湿或沾有食物",
+       "prep": [
+        "贴纸、胶带和订书钉都可以保留",
+        "沾有食物？放入厨余和庭院垃圾桶"
+       ]
+      },
+      "clean": {
+       "label": "干净且干燥",
+       "prep": [
+        "保持干净、干燥",
+        "贴纸、胶带和订书钉都可以保留"
+       ]
+      }
+     }
     },
     "cardboard": {
      "prep": [
@@ -1851,11 +2021,24 @@
     },
     "soiled_paper": {
      "prep": [
-      "沾有食物或油污的餐巾纸、厨房纸和无涂层纸盘：堆肥",
-      "面巾纸，或沾有清洁剂、体液的纸巾：放入垃圾桶",
-      "有亮面涂层的纸：放入垃圾桶"
+      "沾有食物或油污的餐巾纸、厨房纸和无涂层纸盘：堆肥"
      ],
-     "why": "沾有食物或油污的无涂层纸可堆肥，但面巾纸和亮面涂层纸不可以。"
+     "why": "沾有食物或油污的无涂层纸可堆肥，但面巾纸和亮面涂层纸不可以。",
+     "cases": {
+      "other": {
+       "label": "纸巾、亮面涂层，或沾有清洁剂或体液",
+       "prep": [
+        "面巾纸，或沾有清洁剂、体液的纸巾：放入垃圾桶",
+        "有亮面涂层的纸：放入垃圾桶"
+       ]
+      },
+      "food": {
+       "label": "沾有食物或油污的无涂层纸",
+       "prep": [
+        "沾有食物或油污的餐巾纸、厨房纸和无涂层纸盘：堆肥"
+       ]
+      }
+     }
     },
     "paper_cup": {
      "prep": [
@@ -2082,10 +2265,23 @@
     },
     "paper_bag": {
      "prep": [
-      "保持干净、干燥",
-      "有油污或食物污渍？放入绿桶"
+      "保持干净、干燥"
      ],
-     "why": "干净的纸袋可回收，脏纸袋可堆肥。"
+     "why": "干净的纸袋可回收，脏纸袋可堆肥。",
+     "cases": {
+      "soiled": {
+       "label": "沾有食物或油污",
+       "prep": [
+        "有油污或食物污渍？放入绿桶"
+       ]
+      },
+      "clean": {
+       "label": "干净且干燥",
+       "prep": [
+        "保持干净、干燥"
+       ]
+      }
+     }
     },
     "cardboard": {
      "prep": [
@@ -2322,16 +2518,43 @@
     },
     "pizza_box": {
      "prep": [
-      "去掉剩余食物",
-      "油污很重？有条件时用于堆肥"
+      "去掉剩余食物"
      ],
-     "why": "EPA 说明披萨盒即使有少量油污也可以回收。"
+     "why": "EPA 说明披萨盒即使有少量油污也可以回收。",
+     "cases": {
+      "greasy": {
+       "label": "非常油腻，且有堆肥服务",
+       "prep": [
+        "去掉剩余食物",
+        "油污很重？有条件时用于堆肥"
+       ]
+      },
+      "clean": {
+       "label": "轻微油污，已去除剩余食物",
+       "prep": [
+        "去掉剩余食物"
+       ]
+      }
+     },
+     "ask": "盒子有油渍或粘着食物吗？"
     },
     "soiled_paper": {
      "prep": [
       "没有堆肥服务？放入垃圾桶"
      ],
-     "why": "沾有食物的纸绝不能放入回收桶，但可能可以堆肥。"
+     "why": "沾有食物的纸绝不能放入回收桶，但可能可以堆肥。",
+     "cases": {
+      "compost": {
+       "label": "有堆肥服务",
+       "prep": []
+      },
+      "trash": {
+       "label": "没有堆肥服务",
+       "prep": [
+        "没有堆肥服务？放入垃圾桶"
+       ]
+      }
+     }
     },
     "paper_cup": {
      "prep": [
@@ -2362,10 +2585,23 @@
     },
     "aerosol_can": {
      "prep": [
-      "未排空：按家庭危险废物处理",
-      "已排空：有些项目可随金属一起接收"
+      "未排空：按家庭危险废物处理"
      ],
-     "why": "未排空的气雾罐绝不能放入回收桶。"
+     "why": "未排空的气雾罐绝不能放入回收桶。",
+     "cases": {
+      "full": {
+       "label": "未排空",
+       "prep": [
+        "未排空：按家庭危险废物处理"
+       ]
+      },
+      "empty": {
+       "label": "已排空，且当地项目接受",
+       "prep": [
+        "已排空：有些项目可随金属一起接收"
+       ]
+      }
+     }
     },
     "metal_lid_scrap": {
      "prep": [
@@ -2390,7 +2626,19 @@
      "prep": [
       "没有堆肥服务？放入垃圾桶"
      ],
-     "why": "食物无法回收，但可以堆肥。"
+     "why": "食物无法回收，但可以堆肥。",
+     "cases": {
+      "compost": {
+       "label": "有堆肥服务",
+       "prep": []
+      },
+      "trash": {
+       "label": "没有堆肥服务",
+       "prep": [
+        "没有堆肥服务？放入垃圾桶"
+       ]
+      }
+     }
     },
     "yard_waste": {
      "prep": [

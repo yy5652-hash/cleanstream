@@ -160,14 +160,35 @@
   "pizza_box": {
    "bin": "recycling",
    "prep": [
-    "Remove leftover food",
-    "Very greasy? Compost if you can"
+    "Remove leftover food"
    ],
    "why": "EPA says pizza boxes can be recycled, even with some grease.",
    "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables",
    "also": [
-    "compost",
     "trash"
+   ],
+   "ask": "Is the box greasy, or is food stuck to it?",
+   "cases": [
+    {
+     "id": "greasy",
+     "label": "Very greasy, with compost available",
+     "bin": "compost",
+     "prep": [
+      "Remove leftover food",
+      "Very greasy? Compost if you can"
+     ],
+     "match": [
+      "very greasy"
+     ]
+    },
+    {
+     "id": "clean",
+     "label": "Some grease, with leftover food removed",
+     "bin": "recycling",
+     "prep": [
+      "Remove leftover food"
+     ]
+    }
    ]
   },
   "soiled_paper": {
@@ -177,8 +198,24 @@
    ],
    "why": "Food-soiled paper never goes in recycling but may be compostable.",
    "source": "https://www.epa.gov/recycle/frequent-questions-recycling",
-   "also": [
-    "trash"
+   "cases": [
+    {
+     "id": "compost",
+     "label": "Compost available",
+     "bin": "compost",
+     "prep": []
+    },
+    {
+     "id": "trash",
+     "label": "No compost available",
+     "bin": "trash",
+     "prep": [
+      "No compost? Trash"
+     ],
+     "match": [
+      "no compost"
+     ]
+    }
    ]
   },
   "paper_cup": {
@@ -228,13 +265,31 @@
   "aerosol_can": {
    "bin": "dropoff",
    "prep": [
-    "Not empty: household hazardous waste",
-    "Empty: some programs take it with metal"
+    "Not empty: household hazardous waste"
    ],
    "why": "Aerosol cans that aren't empty must never go in recycling.",
    "source": "https://www.epa.gov/recycle/frequent-questions-recycling",
-   "also": [
-    "recycling"
+   "cases": [
+    {
+     "id": "full",
+     "label": "Not empty",
+     "bin": "dropoff",
+     "prep": [
+      "Not empty: household hazardous waste"
+     ],
+     "match": [
+      "not empty",
+      "part full"
+     ]
+    },
+    {
+     "id": "empty",
+     "label": "Empty and accepted by the local program",
+     "bin": "recycling",
+     "prep": [
+      "Empty: some programs take it with metal"
+     ]
+    }
    ]
   },
   "metal_lid_scrap": {
@@ -273,8 +328,24 @@
    ],
    "why": "Food can't be recycled, but it can be composted.",
    "source": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables",
-   "also": [
-    "trash"
+   "cases": [
+    {
+     "id": "compost",
+     "label": "Compost available",
+     "bin": "compost",
+     "prep": []
+    },
+    {
+     "id": "trash",
+     "label": "No compost available",
+     "bin": "trash",
+     "prep": [
+      "No compost? Trash"
+     ],
+     "match": [
+      "no compost"
+     ]
+    }
    ]
   },
   "yard_waste": {

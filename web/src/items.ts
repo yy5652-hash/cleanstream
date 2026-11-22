@@ -1,5 +1,6 @@
 // Display names for the item types the model knows (ids match ml/taxonomy.py).
 import { tItem } from './i18n'
+import { matchesPhrase } from './rules'
 
 export const ITEMS: Record<string, { name: string; examples: string; aka?: string[] }> = {
   plastic_bottle: { name: 'Plastic bottle or jug', examples: 'water and soda bottles, milk and detergent jugs', aka: ['water bottle', 'soda bottle', 'pop bottle', 'shampoo bottle', 'detergent bottle', 'laundry detergent', 'milk jug', 'juice bottle', 'plastic jug', 'ketchup bottle', 'sports drink bottle', 'PET bottle'] },
@@ -25,7 +26,7 @@ export const ITEMS: Record<string, { name: string; examples: string; aka?: strin
   drinking_glass_ceramic: { name: 'Drinking glass, ceramic or broken glass', examples: 'mugs, glasses, shards', aka: ['drinking glass', 'mug', 'ceramic', 'broken glass', 'ceramic plate', 'mirror', 'window glass'] },
   food_scraps: { name: 'Food scraps', examples: 'peels, cores, leftovers', aka: ['food scraps', 'banana peel', 'apple core', 'coffee grounds', 'egg shells', 'leftovers', 'fruit', 'vegetables', 'bones', 'tea bag'] },
   yard_waste: { name: 'Yard waste', examples: 'leaves, plants, branches', aka: ['leaves', 'grass', 'branches', 'plants', 'flowers', 'christmas tree'] },
-  battery: { name: 'Battery', examples: 'AA/AAA, lithium-ion, button cells', aka: ['batteries', 'AA battery', 'AAA battery', 'lithium battery', 'phone battery', 'rechargeable battery', 'button battery', '9V battery', 'vape', 'e-cigarette'] },
+  battery: { name: 'Battery', examples: 'AA/AAA, lithium-ion, button cells', aka: ['batteries', 'AA battery', 'AAA battery', 'lithium battery', 'phone battery', 'rechargeable battery', 'button battery', '9V battery', 'vape', 'e-cigarette', 'e-cig', 'li-ion battery', 'laptop battery', 'power bank', 'alkaline battery', 'C battery', 'D battery'] },
   electronics: { name: 'Electronics', examples: 'phones, cables, earbuds', aka: ['phone', 'laptop', 'charger', 'cable', 'earbuds', 'headphones', 'e-waste', 'tablet', 'keyboard', 'computer mouse'] },
   textile: { name: 'Clothing and textiles', examples: 'clothes, linens, fabric', aka: ['clothes', 'clothing', 't-shirt', 'jeans', 'sweater', 'towel', 'bed sheets', 'fabric', 'socks'] },
   shoes: { name: 'Shoes', examples: 'sneakers, boots', aka: ['sneakers', 'boots', 'sandals'] },
@@ -45,6 +46,8 @@ export const itemShort = (id: string) => tItem(id)?.aka?.[0] ?? (tItem(id) ? ite
 // there beats a match elsewhere, which beats a word that only starts with the query.
 function termScore(term: string, q: string): number {
   if (term === q) return 100
+  // Preserve modifiers such as "oily" while finding the named item inside the query.
+  if (matchesPhrase(q, term)) return 80 + Math.min(term.length, 15)
   const at = (i: number) => i < 0 || i >= term.length || /[\s,/()-]/.test(term[i])
   if (term.endsWith(q) && at(term.length - q.length - 1)) return 90
   for (let i = term.indexOf(q); i >= 0; i = term.indexOf(q, i + 1)) if (at(i - 1) && at(i + q.length)) return 75

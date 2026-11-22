@@ -30,13 +30,14 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
   const [over, setOver] = useState(false)
   const [picked, setPicked] = useState<string | null>(null)
   const [chosen, setChosen] = useState<string | null>(linkedItem)
+  const [query, setQuery] = useState('')
   const [fromSearch, setFromSearch] = useState(() => !!linkedItem())
   const file = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     const on = () => {
       const id = linkedItem()
-      if (id) (setChosen(id), setFromSearch(true))
+      if (id) (setChosen(id), setQuery(''), setFromSearch(true))
     }
     addEventListener('hashchange', on)
     return () => removeEventListener('hashchange', on)
@@ -45,8 +46,9 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
   // on a phone the answer moves above the inputs: bring it into view
   const reveal = () => innerWidth < 1024 && requestAnimationFrame(() => scrollTo({ top: 0, behavior: 'smooth' }))
 
-  const onSearch = (id: string) => {
+  const onSearch = (id: string, query = '') => {
     setChosen(id)
+    setQuery(query)
     setFromSearch(true)
     setPicked(null)
     history.replaceState(null, '', `#scan?item=${id}`)
@@ -56,6 +58,7 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
   const onImage = async (blob: Blob) => {
     setPreview((old) => (old && URL.revokeObjectURL(old), URL.createObjectURL(blob)))
     setChosen(null)
+    setQuery('')
     setFromSearch(false)
     setProbs(null)
     setFailed(false)
@@ -140,7 +143,7 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
             <p className="mt-1.5 text-ink-2">{model.status === 'error' ? t('The model could not load: {error}', { error: String(model.error) }) : t('Try again, or type the item instead.')}</p>
           </div>
         ) : hasAnswer ? (
-          <Answer ans={ans} ms={ms} pack={pack} packs={packs} item={chosen} preview={fromSearch ? null : preview} onChoose={(id) => setChosen(id)} />
+          <Answer key={`${pack.id}-${chosen}-${query}-${preview}`} query={query} ans={ans} ms={ms} pack={pack} packs={packs} item={chosen} preview={fromSearch ? null : preview} onChoose={(id, query = '') => (setChosen(id), setQuery(query))} />
         ) : samples.length > 0 && (
           <div>
             <h2 className="font-semibold">{t('No item handy? Try a photo')}</h2>
