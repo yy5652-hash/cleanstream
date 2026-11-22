@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { change, createPilot, migratePilot, exportPilot, mergePilots, netEffect, parsePilot, rate, sampleSize, stations, t975, validWeights, verdict, wilson, type Pilot, type PilotAudit } from './pilot'
+import { change, createPilot, migratePilot, exportPilot, mergePilots, netEffect, observedEffect, parsePilot, rate, sampleSize, stations, t975, validWeights, verdict, wilson, type Pilot, type PilotAudit } from './pilot'
 const audit = (overrides: Partial<PilotAudit> = {}): PilotAudit => ({ id: 'a', site: 'Library', pack: 'nyc', bin: 'paper', date: '2026-11-02', arm: 'with', phase: 'before', n: 100, bad: 30, ...overrides })
-const pilot = (audits: PilotAudit[] = []): Pilot => ({ id: 'p', name: 'Library', pack: 'nyc', created: '2026-11-02', outcome: 'count', audits })
+const pilot = (audits: PilotAudit[] = []): Pilot => ({ id: 'p', name: 'Library', pack: 'nyc', created: '2026-11-02', outcome: 'count', primaryBin: 'paper', audits })
 const design = () => pilot([
   audit(), audit({ id: 'b', phase: 'after', bad: 10 }),
   audit({ site: 'Canteen', id: 'c', arm: 'without', bad: 30 }), audit({ site: 'Canteen', id: 'd', arm: 'without', phase: 'after', bad: 25 }),
@@ -60,10 +60,10 @@ describe('intervals and verdicts', () => {
     expect(netEffect(paired([-0.2], [0, 0.1]))).toBeNull()
   })
   it('uses Welch–Satterthwaite degrees of freedom for unequal variances and sample sizes', () => {
-    const e = netEffect(paired([-0.2, -0.1, 0], [-0.1, 0.1]))!
-    // Variance-of-mean terms .01/3 and .02/2 give df=32/19.
-    expect(e.df).toBeCloseTo(32 / 19, 12)
-    expect(e.high - e.value).toBeCloseTo(t975(32 / 19) * Math.sqrt(0.01 / 3 + 0.02 / 2), 12)
+    const e = netEffect(paired([-0.2, -0.1, 0], [-0.1, 0.1, -0.1, 0.1]))!
+    // Variance-of-mean terms are both .01/3; degrees of freedom are 4.8.
+    expect(e.df).toBeCloseTo(4.8, 12)
+    expect(e.high - e.value).toBeCloseTo(t975(4.8) * Math.sqrt(0.02 / 3), 12)
     const reverse = netEffect(paired([0.2, 0.1, 0], [0.1, 0, -0.1]))!
     expect(reverse.low).toBeCloseTo(-netEffect(paired())!.high, 12)
   })
@@ -81,11 +81,17 @@ describe('intervals and verdicts', () => {
     expect(netEffect(p)).toEqual(e)
     expect(stations(p)).toHaveLength(6)
   })
-  it('handles zero variance without a spurious infinite interval', () => {
-    const e = netEffect(paired([-0.2, -0.2, -0.2], [0, 0, 0]))!
-    expect(e.low).toBeCloseTo(-0.2)
-    expect(e.high).toBeCloseTo(-0.2)
-    expect(verdict(e)).toBe('Lower with stations')
+  it('describes zero-variance changes without an interval or directional verdict', () => {
+    const p = paired([-0.2, -0.2, -0.2], [0, 0, 0])
+    expect(observedEffect(p)?.value).toBeCloseTo(-0.2)
+    expect(netEffect(p)).toBeNull()
+    expect(verdict(netEffect(p))).toBe('Not enough to tell yet')
+    expect(netEffect(paired([-0.2, -0.2, -0.2], [-0.1, 0, 0.1]))).toBeNull()
+    expect(netEffect(paired([-0.2, -0.1], [-0.1, 0, 0.1]))).toBeNull()
+    // Equal decimal changes can differ by rounding after subtracting rates.
+    const rounded = paired([-0.1, -0.1, -0.1], [-0.1, 0, 0.1])
+    rounded.audits.filter((a) => a.arm === 'with').forEach((a, k) => { a.bad = a.phase === 'before' ? 200 + Math.floor(k / 2) * 100 : 100 + Math.floor(k / 2) * 100 })
+    expect(netEffect(rounded)).toBeNull()
   })
   it('only returns a directional verdict when the entire interval clears zero', () => {
     expect(verdict({ withStations: 3, withoutStations: 3, df: 4, value: -0.2, low: -0.3, high: -0.1 })).toBe('Lower with stations')
@@ -168,7 +174,7 @@ describe('measuring screens', () => {
       values.set('cleanstream.pilots', JSON.stringify([p]))
       const report = renderToStaticMarkup(createElement(PilotView, { pack, packs: [pack] }))
       expect(report).toContain('Example data')
-      expect(report).toContain('At least two paired stations per arm')
+      expect(report).toContain('at least three paired stations per arm')
       expect(report).toContain('Secondary: all items pooled (not independent)')
       expect(report.indexOf('Contamination by station')).toBeLessThan(report.indexOf('Net effect on contamination'))
       expect(report).toContain('measure-print pilot-print')
@@ -212,9 +218,9 @@ describe('measuring screens', () => {
 })
 
 describe('station grouping and measurement basis', () => {
-  it('groups by the site and bin pair, retaining incomplete and conflicting stations', () => {
+  it('groups by physical site, checking arm conflicts across all bins', () => {
     const rows = stations(pilot([audit(), audit({ id: 'b', phase: 'after', bad: 10 }), audit({ id: 'c', bin: 'blue' }), audit({ id: 'd', site: 'Hall' }), audit({ id: 'e', arm: 'without' })]))
-    expect(rows).toHaveLength(3)
+    expect(rows).toHaveLength(2)
     expect(rows[0]).toMatchObject({ site: 'Library', bin: 'paper', arm: null, change: null, before: { audits: 2 }, after: { audits: 1 } })
     expect(rows[1]).toMatchObject({ before: { audits: 1 }, after: { audits: 0, rate: null }, change: null })
   })
@@ -238,8 +244,8 @@ describe('station grouping and measurement basis', () => {
 describe('pilot primary outcome', () => {
   it('defaults new pilots to weight and migrates legacy pilots once using all audits', () => {
     const data = { id: 'p', name: 'Pilot', pack: 'nyc', created: '2026-11-22' }
-    expect(createPilot(data).outcome).toBe('weight')
-    expect(createPilot(data, 'count').outcome).toBe('count')
+    expect(createPilot(data, { bins: [] }).outcome).toBe('weight')
+    expect(createPilot(data, { bins: [] }, 'count').outcome).toBe('count')
     const legacy = { ...data, audits: [audit({ weights: { totalKg: 2, contaminantKg: 1 } })] }
     expect(migratePilot(legacy).outcome).toBe('weight')
     expect(parsePilot(JSON.stringify(legacy)).pilot?.outcome).toBe('weight')
@@ -254,14 +260,15 @@ describe('pilot primary outcome', () => {
   })
   it('excludes a station missing one weight from the weight effect and reports counts per arm', async () => {
     const p: Pilot = { ...pilot(), outcome: 'weight', audits: (['with', 'without'] as const).flatMap((arm) => [0, 1, 2].flatMap((k) => (['before', 'after'] as const).map((phase) => audit({ id: `${arm}-${k}-${phase}`, site: `${arm}-${k}`, arm, phase, weights: { totalKg: 10, contaminantKg: phase === 'before' ? 3 : arm === 'with' ? 1 : 2.5 } })))) }
-    expect(netEffect(p)).toMatchObject({ withStations: 3, withoutStations: 3, value: -0.15 })
+    expect(observedEffect(p)).toMatchObject({ withStations: 3, withoutStations: 3, value: -0.15 })
     delete p.audits[1].weights
     expect(stations(p)[0]).toMatchObject({ incomplete: 'weight', change: null, after: { rate: null, basis: 'weight' } })
-    const net = netEffect(p)!
+    expect(netEffect(p)).toBeNull()
+    const net = observedEffect(p)!
     expect(net.withStations).toBe(2)
     expect(net.withoutStations).toBe(3)
     expect(net.value).toBeCloseTo(-0.15)
-    expect(verdict(net)).toBe('Not enough to tell yet')
+    expect(verdict(netEffect(p))).toBe('Not enough to tell yet')
     expect(stations(p, 'count')[0].change).not.toBeNull()
     const { createElement } = await import('react')
     const { renderToStaticMarkup } = await import('react-dom/server')
@@ -275,7 +282,7 @@ describe('pilot primary outcome', () => {
       expect(html).toContain('Incomplete: missing weights')
       expect(html).toContain('Net effect on contamination by weight')
       expect(html).toContain('Stations used: 2 with tablets; 3 without tablets.')
-      expect(html).toContain('Secondary: contamination by station by count')
+      expect(html).toContain('Secondary: primary bin contamination by count')
     } finally { vi.unstubAllGlobals() }
   })
   it('migrates legacy pilots loaded from browser storage before rendering the report', async () => {
@@ -312,5 +319,65 @@ describe('pilot primary outcome', () => {
     expect(rate(parsed, 'with', 'before').rate).toBeNull()
     expect(parsePilot(JSON.stringify({ ...p, audits: [{ ...weighed, n: 1 }] })).error).toBe(true)
     expect(parsePilot(JSON.stringify({ ...p, audits: [{ ...weighed, weights: undefined }] })).error).toBe(true)
+  })
+})
+
+describe('physical station and primary stream safeguards', () => {
+  it('counts three bins at two physical sites as two units, not six', () => {
+    const p = pilot(['Library', 'Hall'].flatMap((site, k) => ['paper', 'blue', 'brown'].flatMap((bin) => (['before', 'after'] as const).map((phase) => audit({
+      id: `${site}-${bin}-${phase}`, site, bin, phase, arm: k === 0 ? 'with' : 'without', bad: phase === 'before' ? 30 : bin === 'paper' ? 20 : 0,
+    })))))
+    expect(stations(p)).toHaveLength(2)
+    expect(stations(p).every((s) => s.before.audits === 1 && s.after.audits === 1)).toBe(true)
+    expect(stations(p)[0].change).toBeCloseTo(-0.1)
+    expect(observedEffect(p)).toMatchObject({ withStations: 1, withoutStations: 1 })
+    expect(netEffect(p)).toBeNull()
+    p.audits.find((a) => a.site === 'Library' && a.bin === 'brown')!.arm = 'without'
+    expect(stations(p)[0]).toMatchObject({ arm: null, change: null })
+    expect(observedEffect(p)).toBeNull()
+  })
+  it('defaults to the first recycle bin and keeps an explicitly selected stream fixed', () => {
+    const bins = [
+      { id: 'brown', kind: 'compost' as const, name: '', accepts: '', color: '', ink: '' },
+      { id: 'blue', kind: 'recycle' as const, name: '', accepts: '', color: '', ink: '' },
+      { id: 'green', kind: 'recycle' as const, name: '', accepts: '', color: '', ink: '' },
+    ]
+    const data = { id: 'p', name: 'Pilot', pack: 'nyc', created: '2026-11-22' }
+    expect(createPilot(data, { bins }).primaryBin).toBe('blue')
+    const p = createPilot({ ...data, primaryBin: 'green' }, { bins })
+    expect(p.primaryBin).toBe('green')
+    p.audits.push(audit({ bin: 'blue' }))
+    expect(parsePilot(exportPilot(p)).pilot?.primaryBin).toBe('green')
+    expect(mergePilots(p, [{ name: 'different-stream', text: exportPilot({ ...p, primaryBin: 'blue' }) }]).errors).toEqual(['different-stream'])
+  })
+  it('migrates saved pilots to the most common audited bin once', () => {
+    const { primaryBin: _primaryBin, ...legacy } = pilot([audit({ bin: 'blue' }), audit({ id: 'b', bin: 'brown' }), audit({ id: 'c', bin: 'brown' })])
+    const migrated = migratePilot(legacy)
+    expect(migrated.primaryBin).toBe('brown')
+    expect(parsePilot(JSON.stringify(legacy)).pilot?.primaryBin).toBe('brown')
+    migrated.audits.push(audit({ id: 'd', bin: 'blue' }), audit({ id: 'e', bin: 'blue' }))
+    expect(migratePilot(migrated).primaryBin).toBe('brown')
+  })
+  it('renders the tiny zero-variance counterexample descriptively without an interval or verdict', async () => {
+    const { createElement } = await import('react')
+    const { renderToStaticMarkup } = await import('react-dom/server')
+    const { default: PilotView } = await import('./views/Pilot')
+    const { readFileSync } = await import('node:fs')
+    const { vi } = await import('vitest')
+    const pack = JSON.parse(readFileSync(new URL('../public/rules/nyc.json', import.meta.url), 'utf8'))
+    const p = { ...pilot(), primaryBin: 'blue', audits: (['with', 'without'] as const).flatMap((arm) => [0, 1, 2].flatMap((k) => (['before', 'after'] as const).map((phase) => audit({ id: `${arm}-${k}-${phase}`, site: `${arm}-${k}`, bin: 'blue', arm, phase, n: 1, bad: arm === 'with' && phase === 'after' ? 0 : 1 })))) }
+    expect(observedEffect(p)).toMatchObject({ value: -1, withStations: 3, withoutStations: 3 })
+    expect(netEffect(p)).toBeNull()
+    vi.stubGlobal('localStorage', { getItem: (k: string) => k === 'cleanstream.pilots' ? JSON.stringify([p]) : null })
+    try {
+      const html = renderToStaticMarkup(createElement(PilotView, { pack, packs: [pack] }))
+      expect(html).toContain('−100 percentage points')
+      expect(html).toContain('Not enough to tell yet')
+      expect(html).not.toContain('95% interval:')
+      expect(html).not.toContain('Lower with stations')
+      expect(html).not.toContain('Higher with stations')
+      p.audits.push(audit({ id: 'secondary', bin: 'brown' }))
+      expect(renderToStaticMarkup(createElement(PilotView, { pack, packs: [pack] }))).toContain('Secondary bin stream: Brown bin')
+    } finally { vi.unstubAllGlobals() }
   })
 })

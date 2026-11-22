@@ -11,10 +11,10 @@ import { RuleDestination } from './RuleDestination'
 
 const Sheet = lazy(() => import('./Sheet'))
 
-function Share({ pack, item, bin }: { pack: Pack; item: string; bin: Bin }) {
+export function Share({ pack, item, bin, caseId }: { pack: Pack; item: string; bin: Bin; caseId?: string }) {
   const [copied, setCopied] = useState(false)
   const share = async () => {
-    const url = answerLink(pack, item)
+    const url = answerLink(pack, item, caseId)
     const text = t('{item}: {bin} in {city}.', { item: itemName(item), bin: bin.name, city: pack.name })
     try {
       if (navigator.share) return await navigator.share({ title: t('Which bin? Cleanstream'), text, url })
@@ -46,13 +46,13 @@ export function choices(pack: Pack, ans: Ans, most = 3): string[] {
   return out
 }
 
-export function Answer({ ans, ms, pack, packs, item: chosen, preview, query = '', onChoose }: {
-  ans: Ans | null; ms?: number; pack: Pack; packs: Pack[]; item: string | null; preview?: string | null; query?: string; onChoose: (id: string | null, query?: string) => void
+export function Answer({ ans, ms, pack, packs, item: chosen, preview, query = '', caseId, onChoose }: {
+  ans: Ans | null; ms?: number; pack: Pack; packs: Pack[]; item: string | null; preview?: string | null; query?: string; caseId?: string; onChoose: (id: string | null, query?: string) => void
 }) {
   const { lang } = useLang()
   const [picking, setPicking] = useState(false)
   const item = chosen ?? shownItem(pack, ans!).id
-  const [conditionId, setConditionId] = useState<string | null | undefined>(undefined)
+  const [conditionId, setConditionId] = useState<string | null | undefined>(() => pack.items[item].cases?.find((c) => c.id === caseId)?.id)
   const baseRule = pack.items[item]
   // A condition comes from a tap, else from the typed words; items without a question start on the case for their main bin.
   const matched = conditionId === undefined ? matchCase(baseRule, query) : undefined
@@ -121,7 +121,7 @@ export function Answer({ ans, ms, pack, packs, item: chosen, preview, query = ''
       <div className="relative overflow-hidden rounded-3xl p-6 animate-flood sm:p-8" style={{ background: bin.color, color: bin.ink }}>
         <div className="flex items-start justify-between gap-3">
           <p className="text-lg font-medium leading-snug">{itemName(item)}</p>
-          <Share pack={pack} item={item} bin={bin} />
+          <Share pack={pack} item={item} bin={bin} caseId={condition?.id} />
         </div>
         {alternate}
         {otherCases.map((c) => <button key={c.id} onClick={() => setConditionId(c.id)} className="mt-3 flex min-h-12 flex-wrap items-center gap-2 rounded-2xl bg-black/10 px-3 py-2 text-left font-medium">

@@ -582,7 +582,16 @@
   "Unlock settings": "解鎖設定",
   "Unlock station settings": "解鎖站點設定",
   "Use 4–8 digits. The PIN is stored only on this device and is never shared in a station link.": "使用 4–8 位數字。PIN 僅儲存在此裝置上，不會透過站點連結分享。",
-  "This link is too long for a QR code. Shorten the labels or profile details, or copy the station link.": "此連結過長，無法產生 QR 碼。請縮短標籤或設定詳細資訊，或複製站點連結。"
+  "This link is too long for a QR code. Shorten the labels or profile details, or copy the station link.": "此連結過長，無法產生 QR 碼。請縮短標籤或設定詳細資訊，或複製站點連結。",
+  "Primary bin stream": "主要垃圾桶類別",
+  "Primary bin stream: {bin}": "主要垃圾桶類別：{bin}",
+  "Secondary: primary bin contamination by count": "次要分析：主要垃圾桶按件數計算的混雜率",
+  "Secondary bin stream: {bin}": "次要垃圾桶類別：{bin}",
+  "Mean station change with tablets minus mean station change without tablets. Each station is one physical site. Only the primary bin stream is used. Negative values mean less contamination with tablets.": "有平板站點的平均變化減去無平板站點的平均變化。每個站點為一個實際地點，僅使用主要垃圾桶類別。負值表示有平板時混雜率更低。",
+  "The 95% Welch t interval uses paired station changes and Welch–Satterthwaite degrees of freedom. An interval and directional verdict require at least three paired stations per arm and nonzero variation in each arm.": "95% Welch t 區間使用站點配對變化及 Welch–Satterthwaite 自由度。區間和方向性結論要求每組至少三個配對站點，且每組的變化均有非零方差。",
+  "Could not import: {files}. Files must be valid pilots for the same city, primary bin, primary outcome and data type.": "無法匯入：{files}。檔案必須是城市、主要垃圾桶、主要指標和資料類型相同的有效試點。",
+  "unknown (before v{version})": "未知（v{version} 之前）",
+  "unknown": "未知"
  },
  "cities": {
   "nyc": "紐約",

@@ -1,6 +1,7 @@
 // Everything the app keeps lives in this browser's localStorage: audits (with small thumbnails) and station counts.
 import { useCallback, useEffect, useState } from 'react'
-import { migratePilot, type Pilot, type Weights } from './pilot'
+import type { Pack } from './rules'
+import { defaultPrimaryBin, migratePilot, type Pilot, type Weights } from './pilot'
 
 export type AuditItem = { id: string; thumb: string; pred: string; p: number; fixed?: string; checked?: boolean; condition?: string }
 export type Audit = {
@@ -16,16 +17,30 @@ export type Audit = {
   auditor?: string
   notes?: string
 }
-export type StationDay = { bins: Record<string, number>; items: Record<string, number>; unsure: number; tapped?: number } // tapped: unsure, settled by a tap
+export type StationEntry = { bins: Record<string, number>; items: Record<string, number>; unsure: number; tapped?: number; source?: string; appVersion?: string }
+export type StationDay = StationEntry & { entries?: StationEntry[] }
 export type StationLog = Record<string, Record<string, StationDay>> // city pack id -> day -> counts (never pictures)
+export const STATION_PROVENANCE_VERSION = '1.0.1'
 
-// One answer at a station: the bin and item it showed (tapped: the person picked it after the station was unsure),
-// or null when it was not sure and nobody picked.
-export function record(log: StationLog, pack: string, day: string, shown: { bin: string; item: string; tapped?: boolean } | null): StationLog {
-  const d = log[pack]?.[day] ?? { bins: {}, items: {}, unsure: 0 }
-  const next = shown
-    ? { ...d, bins: { ...d.bins, [shown.bin]: (d.bins[shown.bin] ?? 0) + 1 }, items: { ...d.items, [shown.item]: (d.items[shown.item] ?? 0) + 1 }, tapped: (d.tapped ?? 0) + (shown.tapped ? 1 : 0) }
-    : { ...d, unsure: d.unsure + 1 }
+// Keep historical provenance separate when a day spans versions or contains legacy counts.
+export function record(log: StationLog, pack: string, day: string, shown: { bin: string; item: string; tapped?: boolean } | null, source = 'camera', appVersion = import.meta.env.VITE_APP_VERSION): StationLog {
+  const empty = () => ({ bins: {}, items: {}, unsure: 0 })
+  const d = log[pack]?.[day]
+  const add = (entry: StationEntry): StationEntry => shown
+    ? { ...entry, bins: { ...entry.bins, [shown.bin]: (entry.bins[shown.bin] ?? 0) + 1 }, items: { ...entry.items, [shown.item]: (entry.items[shown.item] ?? 0) + 1 }, tapped: (entry.tapped ?? 0) + (shown.tapped ? 1 : 0) }
+    : { ...entry, unsure: entry.unsure + 1 }
+  let next: StationDay
+  if (!d) next = add({ ...empty(), source, appVersion })
+  else if (!d.entries && d.source === source && d.appVersion === appVersion) next = add(d)
+  else {
+    const { entries: previous, ...historical } = d
+    const entries = [...(previous ?? [historical])]
+    const index = entries.findIndex((entry) => entry.source === source && entry.appVersion === appVersion)
+    if (index < 0) entries.push(add({ ...empty(), source, appVersion }))
+    else entries[index] = add(entries[index])
+    const totals = add(d)
+    next = { bins: totals.bins, items: totals.items, unsure: totals.unsure, tapped: totals.tapped, entries }
+  }
   return { ...log, [pack]: { ...log[pack], [day]: next } }
 }
 
@@ -110,7 +125,7 @@ export function download(name: string, text: string, type = 'text/csv') {
 }
 
 // Pilots keep measurement summaries, never photographs.
-export const usePilots = () => useStored<Pilot[]>('cleanstream.pilots', [], (ps) => ps.map(migratePilot))
+export const usePilots = (pack?: Pack) => useStored<Pilot[]>('cleanstream.pilots', [], (ps) => ps.map((p) => migratePilot(p, pack?.id === p.pack ? defaultPrimaryBin(pack) : '')))
 
 let deviceStationId: string | undefined
 export function stationId(): string {
