@@ -2,6 +2,8 @@ import { Check, Globe, Maximize, Minimize, Settings2, Video, Volume2, VolumeX } 
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { StationBins, StationDestination } from '../components/StationBins'
 import { HoldSettings } from '../components/HoldSettings'
+import { ItemPicker } from '../components/Search'
+import { RulesUpdateNotice } from '../components/RulesUpdate'
 import { Sheet } from '../components/Sheet'
 import { Button } from '../components/ui/button'
 import { LANGS, setLang, speechLang, t, useLang } from '../i18n'
@@ -18,7 +20,7 @@ import { PinSettings } from '../components/OperatorPin'
 import { stationDecision, type StationDecision } from '../station-decision'
 
 type Source = 'off' | 'camera' | 'demo'
-type Phase = 'idle' | 'looking' | 'result' | 'thanks'
+type Phase = 'idle' | 'looking' | 'result' | 'thanks' | 'unsure'
 
 const TIPS = ['paper_cup', 'plastic_bag_film', 'pizza_box', 'carton', 'battery', 'foam', 'snack_wrapper', 'aluminum_foil', 'soiled_paper']
 const RESULT_MS = 3600
@@ -99,12 +101,14 @@ function Countdown() {
   </div>
 }
 
-export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack; start?: Source; wait?: number }) {
+export default function Station({ pack, start = 'off', wait = 0, rulesUpdated = false }: { pack: Pack; start?: Source; wait?: number; rulesUpdated?: boolean }) {
   const model = useModel()
   const samples = useSamples()
   const config = useMemo(() => readConfig(location.search), [])
   const [source, setSource] = useState<Source>(start)
-  const [phase, setPhase] = useState<Phase>('idle')
+  const [phase, setPhaseState] = useState<Phase>('idle')
+  const phaseRef = useRef<Phase>(phase)
+  const setPhase = (next: Phase) => { phaseRef.current = next; setPhaseState(next) }
   const [ans, setAns] = useState<Answer | null>(null)
   const [decision, setDecision] = useState<StationDecision | null>(null)
   const [shot, setShot] = useState<string | null>(null)
@@ -115,6 +119,7 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
   const [cameraFailed, setCameraFailed] = useState(false)
   const [scanFailed, setScanFailed] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [picker, setPicker] = useState(false)
   const unsure = useRef(false)
   const [profile, setProfile] = useStationProfile(pack, config.city === pack.id ? config.profile : undefined, config.city === pack.id ? config.bins : undefined)
   const [log, persistLog] = useStationLog()
@@ -152,7 +157,14 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
   const { lang } = useLang()
   const homeLang = useRef(lang)
   const paused = useRef(false)
-  useEffect(() => { paused.current = settings || languages || pinPrompt }, [settings, languages, pinPrompt])
+  useEffect(() => { paused.current = settings || languages || pinPrompt || picker }, [settings, languages, pinPrompt, picker])
+  useEffect(() => {
+    if (!rulesUpdated || phase !== 'idle' || settings || languages || pinPrompt || picker) return
+    const timer = setTimeout(() => {
+      if (phaseRef.current === 'idle' && !busy.current && !paused.current) location.reload()
+    }, 1500)
+    return () => clearTimeout(timer)
+  }, [rulesUpdated, phase, settings, languages, pinPrompt, picker])
   const ready = useRef(false)
   useEffect(() => { ready.current = model.status === 'ready' }, [model.status])
 
@@ -200,6 +212,7 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
   const clearTimers = () => { timers.current.forEach(clearTimeout); timers.current = [] }
   const showDecision = (next: StationDecision, tapped = false) => {
     clearTimers()
+    setPicker(false)
     setDecision(next)
     unsure.current = next.kind !== 'resolved'
     if (next.kind === 'resolved') {
@@ -341,8 +354,26 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
     if (!ans || !unsure.current) return
     showDecision(stationDecision(pack, ans, id, caseId), true)
   }
+  const openPicker = () => {
+    clearTimers()
+    paused.current = true
+    setPicker(true)
+  }
+  const closePicker = () => {
+    setPicker(false)
+    if (decision) showDecision(decision)
+  }
+  const dontKnow = () => {
+    clearTimers()
+    setPicker(false)
+    if (unsure.current) setLog((log) => record(log, pack.id, today(), null))
+    unsure.current = false
+    setPhase('unsure')
+    if (speak.current) say(`${t('Keep this item out of these bins and ask staff.')} ${profile.note || ''}`)
+    later(UNSURE_MS, () => setPhase('idle'))
+  }
   const changeSource = (next: Source) => {
-    setSource(next); setPhase('idle'); setAns(null); setDecision(null); setCameraFailed(false); setScanFailed(false)
+    setSource(next); setPicker(false); setPhase('idle'); setAns(null); setDecision(null); setCameraFailed(false); setScanFailed(false)
   }
   const fullscreen = () => {
     if (document.fullscreenElement) void document.exitFullscreen?.().catch(() => {})
@@ -363,6 +394,7 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
 
   return (
     <div data-phase={phase} role="main" translate="no" style={rootStyle} className="relative isolate flex min-h-dvh w-full min-w-0 flex-col overflow-x-clip [overflow-wrap:anywhere]">
+      {rulesUpdated && <RulesUpdateNotice reload={false} />}
       {target && <div key={`${item}-${target.id}`} className="pointer-events-none absolute inset-0 -z-10 animate-flood" style={{ background: targetStyle!.color }} />}
       <h1 className="sr-only">{t('Cleanstream bin station: {city} rules', { city: pack.name })}</h1>
       <header className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 pb-2 pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-6">
@@ -416,11 +448,16 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
                 </button>
               })}
             </div>
+            <div className="mb-4 flex flex-wrap justify-center gap-3">
+              <Button className="min-h-16 text-lg" variant="outline" onClick={openPicker}>{t('Neither — choose another item')}</Button>
+              <Button className="min-h-16 text-lg" variant="outline" onClick={dontKnow}>{t("I don't know")}</Button>
+            </div>
             <p className="mb-4 text-[max(1rem,2.5vmin)]">{t('Tap the one you are holding.')}</p>
           </div>}
+          {phase === 'unsure' && <div role="status" className="space-y-5"><h2 className="text-[max(2rem,6vmin)] font-semibold">{t('Keep this item out of these bins and ask staff.')}</h2>{profile.note && <p className="text-[max(1.5rem,4vmin)]">{profile.note}</p>}</div>}
           {phase === 'thanks' && <div className="animate-rise"><Check className="mx-auto mb-[3vmin] size-[10vmin]" aria-hidden /><h2 className="text-[12vmin] leading-tight font-semibold tracking-tight">{t('Thank you')}</h2><p className="mt-3 text-[max(1rem,3vmin)]">{t('Ready for the next item.')}</p></div>}
         </div>
-        {choosing && <Countdown key={`${shot}-${decision?.kind}-${item}`} />}
+        {choosing && !picker && <Countdown key={`${shot}-${decision?.kind}-${item}`} />}
 
         <div className={phase === 'idle' || phase === 'looking' ? 'mx-auto flex w-full flex-col items-center gap-3' : 'hidden'}>
           <div className={`relative aspect-[4/3] w-[32vmin] min-w-32 overflow-hidden rounded-3xl border border-line bg-well ${phase === 'looking' ? 'ring-2 ring-ink' : ''}`}>
@@ -448,6 +485,10 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
         {!profile.bins.length && <p className="text-center">{t('Hold the settings button for 2 seconds to choose bins.')}</p>}
       </div>
 
+      <Sheet open={picker} onClose={closePicker} title={t('What is it?')} className="sm:w-[min(56rem,94vw)] [&_input]:min-h-16 [&_button]:min-h-16 [&_button]:text-lg">
+        <ItemPicker pack={pack} onPick={(id) => { setPicker(false); choose(id) }} />
+        <Button variant="outline" className="mt-5 w-full" onClick={dontKnow}>{t("I don't know")}</Button>
+      </Sheet>
       <Sheet open={languages} onClose={() => setLanguages(false)} title={t('Language')} className="[&_button[aria-label]]:min-h-11 [&_button[aria-label]]:min-w-11">
         <div role="radiogroup" aria-label={t('Language')} className="grid gap-1">
           {LANGS.map(([id]) => <button key={id} lang={id} role="radio" aria-checked={lang === id} onClick={() => { void setLang(id); setLanguages(false) }} className="flex min-h-14 items-center justify-between gap-3 rounded-2xl px-4 text-left font-medium hover:bg-well">

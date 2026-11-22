@@ -53,6 +53,10 @@ export default function About({ packs }: { packs: Pack[] }) {
         </div>
       </div>
 
+      <section className="rounded-3xl border border-line p-5">
+        <p>{t('App version: {version}', { version: import.meta.env.VITE_APP_VERSION })}</p>
+        <ul className="mt-3">{packs.map((pack) => <li key={pack.id}>{t('{city}: rules checked {date}', { city: pack.name, date: pack.checked })}</li>)}</ul>
+      </section>
       <div className="grid gap-5 rounded-3xl bg-well p-6 sm:p-8 [&_b]:mb-2 [&_b]:block">
         <div><b>{t("1. Photo")}</b>{t("Camera, upload, or a bin-station tablet. It stays on the device.")}</div>
         <div><b>{t("2. Image encoder")}</b>{t("SigLIP 2 (ViT-B/16), open weights stored in 8 bits, running in WebAssembly.")}</div>

@@ -107,7 +107,7 @@ describe('pilot count boundary', () => {
     let log: StationLog = {}
     for (const [bin, item] of [['blue', 'metal_can'], ['green', 'paper']]) log = record(log, pack.id, '2026-11-01', { bin, item })
     const csv = stationCsv(pack, log.nyc, ['2026-11-01'], merged)
-    expect(csv).toContain('"physical_bin","approved_by","approval_date"')
+    expect(csv).toContain('"current_physical_bin","current_profile_approved_by","current_profile_approval_date"')
     expect(csv.match(/"Recycling"/g)).toHaveLength(2)
     expect(csv).toContain('"Alex ""Coordinator""","2026-11-22"')
     expect(csv).toContain('"bin","blue"')

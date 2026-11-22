@@ -56,11 +56,12 @@ function elements(node: ReactNode): ReactElement<Props>[] {
   return [node, ...elements(node.props.children)]
 }
 let values: Map<string, string>
+let rulesUpdated = false
 const speak = vi.fn()
 const video = { videoWidth: 640, videoHeight: 480, play: async () => {} }
 function draw() {
   hooks.cursor = 0
-  const tree = Station({ pack, start: 'camera' })
+  const tree = Station({ pack, start: 'camera', rulesUpdated })
   for (const el of elements(tree)) if (el.type === 'video' && el.props.ref) el.props.ref.current = video
   hooks.effects.splice(0).forEach((effect) => effect())
   return tree
@@ -68,10 +69,11 @@ function draw() {
 const log = () => JSON.parse(values.get('cleanstream.station.log') ?? '{}').nyc?.[today()]
 beforeEach(() => {
   vi.useFakeTimers()
-  hooks.values = []; hooks.cursor = 0; hooks.effects = []; hooks.cleanups = []; hooks.classify.mockReset(); speak.mockClear()
+  hooks.values = []; hooks.cursor = 0; hooks.effects = []; hooks.cleanups = []; hooks.classify.mockReset(); hooks.model.classes = ['battery', 'paper_bag', 'pizza_box']; speak.mockClear()
+  rulesUpdated = false
   values = new Map([['cleanstream.station.voice', '1']])
   vi.stubGlobal('localStorage', { getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => values.set(key, value) })
-  vi.stubGlobal('location', { search: '' })
+  vi.stubGlobal('location', { search: '', reload: vi.fn() })
   vi.stubGlobal('window', Object.assign(new EventTarget(), { setTimeout, setInterval, speechSynthesis: { cancel: vi.fn(), speak } }))
   vi.stubGlobal('speechSynthesis', window.speechSynthesis)
   vi.stubGlobal('SpeechSynthesisUtterance', class { text: string; lang = ''; constructor(text: string) { this.text = text } })
@@ -116,4 +118,98 @@ it('asks the condition for a confident pizza box and resolves the tapped bin onc
   draw()
   expect(log().unsure).toBe(0)
   expect(log().bins.brown).toBe(1)
+})
+
+async function uncertain() {
+  hooks.model.classes = ['battery', 'metal_can', 'foam']
+  hooks.classify.mockResolvedValue({ probs: new Float32Array([0.34, 0.33, 0.33]) })
+  draw()
+  await vi.advanceTimersByTimeAsync(800)
+  return draw()
+}
+const click = (tree: ReactNode, text: string) => elements(tree).find((el) => el.props.children === text && el.props.onClick)?.props.onClick!()
+
+it('opens the shared picker, suspends the timeout, and resolves its selection', async () => {
+  const { ItemPicker } = await import('./components/Search')
+  let tree = await uncertain()
+  click(tree, 'Neither — choose another item')
+  tree = draw()
+  const picker = elements(tree).find((el) => el.type === ItemPicker)!
+  expect(picker).toBeDefined()
+  expect(elements(tree).some((element) => (element.props as unknown as { title: string; open: boolean }).title === 'What is it?' && (element.props as unknown as { open: boolean }).open)).toBe(true)
+  await vi.advanceTimersByTimeAsync(12000)
+  tree = draw()
+  expect(log()).toBeUndefined()
+  expect(elements(tree)[0].props).toHaveProperty('data-phase', 'result')
+  ;(picker.props as unknown as { onPick: (id: string) => void }).onPick('metal_can')
+  tree = draw()
+  expect(elements(tree).find((el) => el.type === StationDestination)?.props.target?.id).toBe('blue')
+  expect(log()).toMatchObject({ bins: { blue: 1 }, tapped: 1, unsure: 0 })
+})
+it('asks the pizza condition after a picker selection', async () => {
+  const { ItemPicker } = await import('./components/Search')
+  let tree = await uncertain()
+  click(tree, 'Neither — choose another item')
+  tree = draw()
+  const picker = elements(tree).find((el) => el.type === ItemPicker)!
+  ;(picker.props as unknown as { onPick: (id: string) => void }).onPick('pizza_box')
+  tree = draw()
+  expect(elements(tree).some((el) => el.props.children === pack.items.pizza_box.ask)).toBe(true)
+  expect(log()).toBeUndefined()
+})
+it('restarts a full six-second timeout when the picker closes', async () => {
+  const { Sheet } = await import('./components/Sheet')
+  let tree = await uncertain()
+  await vi.advanceTimersByTimeAsync(4000)
+  click(tree, 'Neither — choose another item')
+  tree = draw()
+  await vi.advanceTimersByTimeAsync(10000)
+  const sheet = elements(tree).find((el) => el.type === Sheet && (el.props as unknown as { title: string }).title === 'What is it?')!
+  ;(sheet.props as unknown as { onClose: () => void }).onClose()
+  draw()
+  await vi.advanceTimersByTimeAsync(5900)
+  draw()
+  expect(log()).toBeUndefined()
+  await vi.advanceTimersByTimeAsync(101)
+  draw()
+  expect(log()).toMatchObject({ unsure: 1 })
+})
+it('logs the explicit unsure exit once and shows the staff instruction and profile note', async () => {
+  values.set('cleanstream.station.profile.nyc', JSON.stringify({ bins: [], note: 'Ask at the library desk.' }))
+  let tree = await uncertain()
+  click(tree, "I don't know")
+  tree = draw()
+  expect(elements(tree).some((el) => el.props.children === 'Keep this item out of these bins and ask staff.')).toBe(true)
+  expect(elements(tree).some((el) => el.props.children === 'Ask at the library desk.')).toBe(true)
+  expect(log()).toMatchObject({ bins: {}, unsure: 1 })
+  await vi.advanceTimersByTimeAsync(6500)
+  draw()
+  expect(log().unsure).toBe(1)
+})
+
+it('defers a rules-update reload until the answer and thanks have ended and the station is idle', async () => {
+  await recognise('paper_bag')
+  rulesUpdated = true
+  draw()
+  await vi.advanceTimersByTimeAsync(3500)
+  draw()
+  expect(location.reload).not.toHaveBeenCalled()
+  await vi.advanceTimersByTimeAsync(200)
+  draw()
+  expect(location.reload).not.toHaveBeenCalled()
+  await vi.advanceTimersByTimeAsync(1500)
+  draw()
+  expect(location.reload).not.toHaveBeenCalled()
+  await vi.advanceTimersByTimeAsync(1500)
+  expect(location.reload).toHaveBeenCalledOnce()
+})
+it('does not reload a station while its item picker is open', async () => {
+  let tree = await uncertain()
+  click(tree, 'Neither — choose another item')
+  rulesUpdated = true
+  tree = draw()
+  await vi.advanceTimersByTimeAsync(20000)
+  draw()
+  expect(location.reload).not.toHaveBeenCalled()
+  expect(elements(tree)[0].props).toHaveProperty('data-phase', 'result')
 })
