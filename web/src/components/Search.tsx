@@ -3,16 +3,24 @@ import { Search as SearchIcon } from 'lucide-react'
 import { useState } from 'react'
 import { t } from '../i18n'
 import { itemExamples, itemName, itemShort, searchable, searchItems } from '../items'
-import { binById, type Pack } from '../rules'
+import { binById, matchCase, type Pack } from '../rules'
 import { BinChip } from '../ui'
 
-export function ItemSearch({ pack, onPick, popular = [] }: { pack: Pack; onPick: (id: string) => void; popular?: string[] }) {
+function SearchBin({ pack, id, query }: { pack: Pack; id: string; query: string }) {
+  const rule = pack.items[id]
+  const condition = matchCase(rule, query)
+  return rule.cases?.length && !condition
+    ? <span className="text-sm text-ink-2">{t('Choose condition')}</span>
+    : <BinChip bin={binById(pack, condition?.bin ?? rule.bin)} />
+}
+
+export function ItemSearch({ pack, onPick, popular = [] }: { pack: Pack; onPick: (id: string, query?: string) => void; popular?: string[] }) {
   const [q, setQ] = useState('')
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState(0)
   const hits = searchItems(q)
-  const pick = (id: string) => {
-    onPick(id)
+  const pick = (id: string, query = q) => {
+    onPick(id, query)
     setQ('')
     setOpen(false)
   }
@@ -44,14 +52,14 @@ export function ItemSearch({ pack, onPick, popular = [] }: { pack: Pack; onPick:
             <button key={id} id={`search-${id}`} role="option" aria-selected={k === active} onMouseDown={(e) => e.preventDefault()} onMouseEnter={() => setActive(k)} onClick={() => pick(id)}
               className={`flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left ${k === active ? 'bg-well' : ''}`}>
               <span className="min-w-0"><span className="block font-medium">{itemName(id)}</span><span className="block truncate text-sm text-ink-2">{itemExamples(id)}</span></span>
-              <BinChip bin={binById(pack, pack.items[id].bin)} />
+              <SearchBin pack={pack} id={id} query={q} />
             </button>
           )))}
         </div>
       </div>
       {popular.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-1.5">
-          {popular.map((id) => <button key={id} onClick={() => pick(id)} className="inline-flex min-h-11 items-center rounded-full border border-line px-3.5 text-sm text-ink hover:bg-well sm:min-h-9">{itemShort(id)}</button>)}
+          {popular.map((id) => <button key={id} onClick={() => pick(id, itemShort(id))} className="inline-flex min-h-11 items-center rounded-full border border-line px-3.5 text-sm text-ink hover:bg-well sm:min-h-9">{itemShort(id)}</button>)}
         </div>
       )}
     </div>
@@ -59,7 +67,7 @@ export function ItemSearch({ pack, onPick, popular = [] }: { pack: Pack; onPick:
 }
 
 // Every item type at once, for correcting a wrong answer.
-export function ItemPicker({ pack, onPick }: { pack: Pack; onPick: (id: string) => void }) {
+export function ItemPicker({ pack, onPick }: { pack: Pack; onPick: (id: string, query?: string) => void }) {
   const [q, setQ] = useState('')
   const ids = searchable(q) ? searchItems(q, 32) : Object.keys(pack.items)
   return (
@@ -68,12 +76,12 @@ export function ItemPicker({ pack, onPick }: { pack: Pack; onPick: (id: string) 
         className="mb-3 h-12 w-full rounded-xl border border-line bg-transparent px-4 text-base outline-none focus:border-ink placeholder:text-ink-3" />
       <div className="grid gap-0.5">
         {ids.map((id) => {
-          const bin = binById(pack, pack.items[id].bin)
+          const bin = binById(pack, matchCase(pack.items[id], q)?.bin ?? pack.items[id].bin)
           return (
-            <button key={id} onClick={() => onPick(id)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-left hover:bg-well">
+            <button key={id} onClick={() => onPick(id, q)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-left hover:bg-well">
               <span className="size-3 shrink-0 rounded-full" style={{ background: bin.color }} />
               <span className="min-w-0 flex-1 font-medium">{itemName(id)}</span>
-              <span className="text-sm text-ink-2">{bin.name}</span>
+              <SearchBin pack={pack} id={id} query={q} />
             </button>
           )
         })}

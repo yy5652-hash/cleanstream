@@ -459,7 +459,14 @@
   "{source}": "{source}",
   "—": "—",
   "What the camera saw": "Lo que vio la cámara",
-  "Colours from {painting} by {artist} ({year}), in the collection of The Metropolitan Museum of Art.": "Colores de {painting}, de {artist} ({year}), en la colección del Museo Metropolitano de Arte."
+  "Colours from {painting} by {artist} ({year}), in the collection of The Metropolitan Museum of Art.": "Colores de {painting}, de {artist} ({year}), en la colección del Museo Metropolitano de Arte.",
+  "Choose condition": "Elige la condición",
+  "Which condition applies?": "¿En qué condición está?",
+  "Change condition": "Cambiar condición",
+  "If {condition}:": "Si {condition}:",
+  "Or is it a {item}? →": "¿O es {item}? →",
+  "The bin depends on the condition.": "El contenedor depende de la condición.",
+  "{condition}? →": "¿{condition}? →"
  },
  "cities": {
   "nyc": "Nueva York",
@@ -1174,10 +1181,23 @@
     },
     "food_scraps": {
      "prep": [
-      "Mejor: llévalo a un punto de entrega de restos de comida de la ciudad (inscríbete primero; no se permiten bolsas de ningún tipo)",
       "Si no, va en el carrito negro"
      ],
-     "why": "Chicago no ofrece un carrito de composta con recolección en la acera, así que los restos de comida son basura salvo que uses los puntos gratuitos de la ciudad, que aceptan toda la comida, incluida la carne y los huesos."
+     "why": "Chicago no ofrece un carrito de composta con recolección en la acera, así que los restos de comida son basura salvo que uses los puntos gratuitos de la ciudad, que aceptan toda la comida, incluida la carne y los huesos.",
+     "cases": {
+      "dropoff": {
+       "label": "Con entrega municipal de restos de comida (inscríbete primero)",
+       "prep": [
+        "Mejor: llévalo a un punto de entrega de restos de comida de la ciudad (inscríbete primero; no se permiten bolsas de ningún tipo)"
+       ]
+      },
+      "curbside": {
+       "label": "Sin entrega de restos de comida",
+       "prep": [
+        "Si no, va en el carrito negro"
+       ]
+      }
+     }
     },
     "yard_waste": {
      "prep": [
@@ -1189,11 +1209,25 @@
     },
     "battery": {
      "prep": [
-      "Baterías recargables, de litio y de automóvil: llévalas a Household Chemicals & Computer Recycling Facility",
-      "Nunca en el carrito azul",
-      "Alcalinas (AA, AAA, 9V): la instalación no las acepta; van en el carrito negro"
+      "Nunca en el carrito azul"
      ],
-     "why": "Las baterías de ion de litio provocan incendios en las plantas de clasificación, así que nunca van en el carrito azul."
+     "why": "Las baterías de ion de litio provocan incendios en las plantas de clasificación, así que nunca van en el carrito azul.",
+     "cases": {
+      "rechargeable": {
+       "label": "Recargable, de ion-litio o dentro de un vapeador o dispositivo",
+       "prep": [
+        "Baterías recargables, de litio y de automóvil: llévalas a Household Chemicals & Computer Recycling Facility",
+        "Nunca en el carrito azul"
+       ]
+      },
+      "alkaline": {
+       "label": "Alcalina de un solo uso (AA, AAA, C, D, 9V)",
+       "prep": [
+        "Alcalinas (AA, AAA, 9V): la instalación no las acepta; van en el carrito negro",
+        "Nunca en el carrito azul"
+       ]
+      }
+     }
     },
     "electronics": {
      "prep": [
@@ -1335,10 +1369,23 @@
     },
     "paper_bag": {
      "prep": [
-      "Mantenlo limpio y seco",
-      "Bolsas grasosas o sucias de comida: contenedor verde"
+      "Mantenlo limpio y seco"
      ],
-     "why": "El papel limpio va en el contenedor azul y el papel sucio de comida va en el contenedor verde."
+     "why": "El papel limpio va en el contenedor azul y el papel sucio de comida va en el contenedor verde.",
+     "cases": {
+      "soiled": {
+       "label": "Con restos de comida o grasa",
+       "prep": [
+        "Bolsas grasosas o sucias de comida: contenedor verde"
+       ]
+      },
+      "clean": {
+       "label": "Limpio y seco",
+       "prep": [
+        "Mantenlo limpio y seco"
+       ]
+      }
+     }
     },
     "cardboard": {
      "prep": [
@@ -1449,10 +1496,23 @@
     },
     "textile": {
      "prep": [
-      "Dónala si está limpia y aún se puede usar",
-      "Tela desgastada o rota: contenedor negro"
+      "Dónala si está limpia y aún se puede usar"
      ],
-     "why": "El contenedor negro acepta telas desgastadas que no se pueden donar, y los textiles no están en las listas del contenedor azul ni del contenedor verde."
+     "why": "El contenedor negro acepta telas desgastadas que no se pueden donar, y los textiles no están en las listas del contenedor azul ni del contenedor verde.",
+     "cases": {
+      "worn": {
+       "label": "Desgastado o roto",
+       "prep": [
+        "Tela desgastada o rota: contenedor negro"
+       ]
+      },
+      "wearable": {
+       "label": "Limpio y utilizable",
+       "prep": [
+        "Dónala si está limpia y aún se puede usar"
+       ]
+      }
+     }
     },
     "shoes": {
      "prep": [
@@ -1578,10 +1638,23 @@
     },
     "paper_bag": {
      "prep": [
-      "Mantenlo limpio y seco",
-      "Las bolsas sucias de comida van en el contenedor marrón"
+      "Mantenlo limpio y seco"
      ],
-     "why": "Las reglas de DSNY incluyen las bolsas de papel con el papel mixto."
+     "why": "Las reglas de DSNY incluyen las bolsas de papel con el papel mixto.",
+     "cases": {
+      "soiled": {
+       "label": "Con restos de comida o grasa",
+       "prep": [
+        "Las bolsas sucias de comida van en el contenedor marrón"
+       ]
+      },
+      "clean": {
+       "label": "Limpio y seco",
+       "prep": [
+        "Mantenlo limpio y seco"
+       ]
+      }
+     }
     },
     "cardboard": {
      "prep": [
@@ -1592,17 +1665,44 @@
     },
     "pizza_box": {
      "prep": [
-      "Retira los restos de comida",
-      "¿Caja grasosa? Ponla en el contenedor marrón"
+      "Retira los restos de comida"
      ],
-     "why": "Las cajas de pizza ligeramente sucias van con el papel; las grasosas se pueden convertir en composta."
+     "why": "Las cajas de pizza ligeramente sucias van con el papel; las grasosas se pueden convertir en composta.",
+     "cases": {
+      "clean": {
+       "label": "Limpia o ligeramente manchada",
+       "prep": [
+        "Retira los restos de comida"
+       ]
+      },
+      "greasy": {
+       "label": "Grasienta o con comida pegada",
+       "prep": [
+        "Retira los restos de comida"
+       ]
+      }
+     },
+     "ask": "¿La caja tiene grasa o comida pegada?"
     },
     "soiled_paper": {
      "prep": [
-      "Raspa primero los restos de comida",
-      "Los pañuelos de papel limpios pueden ir en la basura"
+      "Raspa primero los restos de comida"
      ],
-     "why": "La composta de NYC acepta papel sucio de comida junto con restos de comida."
+     "why": "La composta de NYC acepta papel sucio de comida junto con restos de comida.",
+     "cases": {
+      "tissue": {
+       "label": "Pañuelos limpios",
+       "prep": [
+        "Los pañuelos de papel limpios pueden ir en la basura"
+       ]
+      },
+      "soiled": {
+       "label": "Papel con restos de comida",
+       "prep": [
+        "Raspa primero los restos de comida"
+       ]
+      }
+     }
     },
     "paper_cup": {
      "prep": [
@@ -1670,11 +1770,25 @@
     },
     "battery": {
      "prep": [
-      "Cubre los extremos con cinta adhesiva o embolsa cada pila por separado",
-      "Recargables y de ion de litio: devuélvelas a una tienda que las venda",
-      "Las pilas alcalinas de un solo uso (AA, AAA, 9V) pueden ir en la basura"
+      "Cubre los extremos con cinta adhesiva o embolsa cada pila por separado"
      ],
-     "why": "Las baterías recargables y de ion de litio nunca deben ir en la basura ni en el reciclaje. Provocan incendios en camiones y plantas."
+     "why": "Las baterías recargables y de ion de litio nunca deben ir en la basura ni en el reciclaje. Provocan incendios en camiones y plantas.",
+     "cases": {
+      "rechargeable": {
+       "label": "Recargable, de ion-litio o dentro de un vapeador o dispositivo",
+       "prep": [
+        "Cubre los extremos con cinta adhesiva o embolsa cada pila por separado",
+        "Recargables y de ion de litio: devuélvelas a una tienda que las venda"
+       ]
+      },
+      "alkaline": {
+       "label": "Alcalina de un solo uso (AA, AAA, C, D, 9V)",
+       "prep": [
+        "Cubre los extremos con cinta adhesiva o embolsa cada pila por separado",
+        "Las pilas alcalinas de un solo uso (AA, AAA, 9V) pueden ir en la basura"
+       ]
+      }
+     }
     },
     "electronics": {
      "prep": [
@@ -1704,10 +1818,24 @@
     },
     "blister_pack": {
      "prep": [
-      "Vacíalo",
-      "Los blísteres de pastillas con respaldo de aluminio van en la basura"
+      "Vacíalo"
      ],
-     "why": "Se aceptan empaques «blisterpak» de plástico rígido."
+     "why": "Se aceptan empaques «blisterpak» de plástico rígido.",
+     "cases": {
+      "foil": {
+       "label": "Blíster de pastillas con respaldo de aluminio",
+       "prep": [
+        "Vacíalo",
+        "Los blísteres de pastillas con respaldo de aluminio van en la basura"
+       ]
+      },
+      "plastic": {
+       "label": "Envase de plástico rígido",
+       "prep": [
+        "Vacíalo"
+       ]
+      }
+     }
     },
     "rope_string": {
      "prep": [
@@ -1796,17 +1924,44 @@
     },
     "foam": {
      "prep": [
-      "Embolsa el relleno de espuma suelto y ata la bolsa",
-      "Bloques de espuma limpios: Special Item Pickup gratuito o Styro Recycle en Kent"
+      "Embolsa el relleno de espuma suelto y ata la bolsa"
      ],
-     "why": "La espuma va en el carrito de basura; solo los bloques limpios de Styrofoam tienen una opción de reciclaje."
+     "why": "La espuma va en el carrito de basura; solo los bloques limpios de Styrofoam tienen una opción de reciclaje.",
+     "cases": {
+      "blocks": {
+       "label": "Bloques de espuma limpios",
+       "prep": [
+        "Bloques de espuma limpios: Special Item Pickup gratuito o Styro Recycle en Kent"
+       ]
+      },
+      "other": {
+       "label": "Otra espuma",
+       "prep": [
+        "Embolsa el relleno de espuma suelto y ata la bolsa"
+       ]
+      }
+     }
     },
     "plastic_utensil_straw": {
      "prep": [
-      "No requiere preparación",
-      "¿Dice «compostable»? Carrito de restos de comida y residuos de jardín"
+      "No requiere preparación"
      ],
-     "why": "Los cubiertos y popotes de plástico no son reciclables en Seattle."
+     "why": "Los cubiertos y popotes de plástico no son reciclables en Seattle.",
+     "cases": {
+      "compostable": {
+       "label": "Etiquetado como compostable",
+       "prep": [
+        "No requiere preparación",
+        "¿Dice «compostable»? Carrito de restos de comida y residuos de jardín"
+       ]
+      },
+      "plastic": {
+       "label": "Plástico",
+       "prep": [
+        "No requiere preparación"
+       ]
+      }
+     }
     },
     "paper": {
      "prep": [
@@ -1819,10 +1974,25 @@
     "paper_bag": {
      "prep": [
       "Mantenlo limpio y seco",
-      "Las calcomanías, la cinta adhesiva y las grapas no son problema",
-      "¿Sucio de comida? Carrito de restos de comida y residuos de jardín"
+      "Las calcomanías, la cinta adhesiva y las grapas no son problema"
      ],
-     "why": "Las bolsas de papel limpias y secas se reciclan; las mojadas o sucias de comida se convierten en composta."
+     "why": "Las bolsas de papel limpias y secas se reciclan; las mojadas o sucias de comida se convierten en composta.",
+     "cases": {
+      "soiled": {
+       "label": "Mojado o con restos de comida",
+       "prep": [
+        "Las calcomanías, la cinta adhesiva y las grapas no son problema",
+        "¿Sucio de comida? Carrito de restos de comida y residuos de jardín"
+       ]
+      },
+      "clean": {
+       "label": "Limpio y seco",
+       "prep": [
+        "Mantenlo limpio y seco",
+        "Las calcomanías, la cinta adhesiva y las grapas no son problema"
+       ]
+      }
+     }
     },
     "cardboard": {
      "prep": [
@@ -1840,11 +2010,24 @@
     },
     "soiled_paper": {
      "prep": [
-      "Servilletas, toallas de papel y platos sin recubrimiento con comida o grasa: composta",
-      "Pañuelos de papel o toallas usadas con limpiadores o fluidos corporales: carrito de basura",
-      "Papel con recubrimiento brillante: carrito de basura"
+      "Servilletas, toallas de papel y platos sin recubrimiento con comida o grasa: composta"
      ],
-     "why": "El papel sin recubrimiento con comida o grasa se puede convertir en composta, pero los pañuelos de papel y el papel con recubrimiento brillante no."
+     "why": "El papel sin recubrimiento con comida o grasa se puede convertir en composta, pero los pañuelos de papel y el papel con recubrimiento brillante no.",
+     "cases": {
+      "other": {
+       "label": "Pañuelos, recubrimiento brillante, limpiadores o fluidos corporales",
+       "prep": [
+        "Pañuelos de papel o toallas usadas con limpiadores o fluidos corporales: carrito de basura",
+        "Papel con recubrimiento brillante: carrito de basura"
+       ]
+      },
+      "food": {
+       "label": "Papel sin recubrimiento con comida o grasa",
+       "prep": [
+        "Servilletas, toallas de papel y platos sin recubrimiento con comida o grasa: composta"
+       ]
+      }
+     }
     },
     "paper_cup": {
      "prep": [
@@ -2071,10 +2254,23 @@
     },
     "paper_bag": {
      "prep": [
-      "Limpio y seco",
-      "¿Grasosa o manchada de comida? Contenedor verde"
+      "Limpio y seco"
      ],
-     "why": "Las bolsas de papel limpias son reciclables; las sucias se pueden convertir en composta."
+     "why": "Las bolsas de papel limpias son reciclables; las sucias se pueden convertir en composta.",
+     "cases": {
+      "soiled": {
+       "label": "Con restos de comida o grasa",
+       "prep": [
+        "¿Grasosa o manchada de comida? Contenedor verde"
+       ]
+      },
+      "clean": {
+       "label": "Limpio y seco",
+       "prep": [
+        "Limpio y seco"
+       ]
+      }
+     }
     },
     "cardboard": {
      "prep": [
@@ -2311,16 +2507,43 @@
     },
     "pizza_box": {
      "prep": [
-      "Retira los restos de comida",
-      "¿Muy grasosa? Haz composta si puedes"
+      "Retira los restos de comida"
      ],
-     "why": "EPA indica que las cajas de pizza se pueden reciclar, incluso con algo de grasa."
+     "why": "EPA indica que las cajas de pizza se pueden reciclar, incluso con algo de grasa.",
+     "cases": {
+      "greasy": {
+       "label": "Muy grasiento, con compostaje disponible",
+       "prep": [
+        "Retira los restos de comida",
+        "¿Muy grasosa? Haz composta si puedes"
+       ]
+      },
+      "clean": {
+       "label": "Algo de grasa, sin restos de comida",
+       "prep": [
+        "Retira los restos de comida"
+       ]
+      }
+     },
+     "ask": "¿La caja tiene grasa o comida pegada?"
     },
     "soiled_paper": {
      "prep": [
       "¿No hay composta? Basura"
      ],
-     "why": "El papel sucio de comida nunca va al reciclaje, pero puede ser compostable."
+     "why": "El papel sucio de comida nunca va al reciclaje, pero puede ser compostable.",
+     "cases": {
+      "compost": {
+       "label": "Con compostaje disponible",
+       "prep": []
+      },
+      "trash": {
+       "label": "Sin compostaje disponible",
+       "prep": [
+        "¿No hay composta? Basura"
+       ]
+      }
+     }
     },
     "paper_cup": {
      "prep": [
@@ -2351,10 +2574,23 @@
     },
     "aerosol_can": {
      "prep": [
-      "Con contenido: residuos domésticos peligrosos",
-      "Vacío: algunos programas lo aceptan con el metal"
+      "Con contenido: residuos domésticos peligrosos"
      ],
-     "why": "Los aerosoles que no estén vacíos nunca deben ir al reciclaje."
+     "why": "Los aerosoles que no estén vacíos nunca deben ir al reciclaje.",
+     "cases": {
+      "full": {
+       "label": "No está vacío",
+       "prep": [
+        "Con contenido: residuos domésticos peligrosos"
+       ]
+      },
+      "empty": {
+       "label": "Vacío y aceptado por el programa local",
+       "prep": [
+        "Vacío: algunos programas lo aceptan con el metal"
+       ]
+      }
+     }
     },
     "metal_lid_scrap": {
      "prep": [
@@ -2379,7 +2615,19 @@
      "prep": [
       "¿No hay composta? Basura"
      ],
-     "why": "La comida no se puede reciclar, pero sí convertir en composta."
+     "why": "La comida no se puede reciclar, pero sí convertir en composta.",
+     "cases": {
+      "compost": {
+       "label": "Con compostaje disponible",
+       "prep": []
+      },
+      "trash": {
+       "label": "Sin compostaje disponible",
+       "prep": [
+        "¿No hay composta? Basura"
+       ]
+      }
+     }
     },
     "yard_waste": {
      "prep": [

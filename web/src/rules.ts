@@ -2,7 +2,8 @@
 import { useEffect, useState } from 'react'
 
 export type Bin = { id: string; name: string; accepts: string; color: string; ink: string; kind: 'recycle' | 'compost' | 'landfill' | 'special' }
-export type Rule = { bin: string; also?: string[]; prep: string[]; why: string; source: string } // also: other bins the city accepts it in
+export type RuleCase = { id: string; label: string; bin: string; prep?: string[]; match?: string[] }
+export type Rule = { bin: string; also?: string[]; ask?: string; cases?: RuleCase[]; prep: string[]; why: string; source: string }
 export type Pack = {
   id: string
   name: string
@@ -41,14 +42,37 @@ export function usePacks(first: string): Pack[] | null {
 
 export const binById = (pack: Pack, id: string) => pack.bins.find((b) => b.id === id)!
 
-// True when the city accepts this item type in this bin (its main bin or an alternative one).
-export const belongs = (pack: Pack, item: string, bin: string) => pack.items[item]?.bin === bin || !!pack.items[item]?.also?.includes(bin)
+// Audit acceptance includes every condition; it does not resolve an individual item's condition.
+export const belongs = (pack: Pack, item: string, bin: string) => pack.items[item]?.bin === bin || !!pack.items[item]?.also?.includes(bin) || !!pack.items[item]?.cases?.some((c) => c.bin === bin)
+
+// Match complete words/phrases, including punctuation such as "li-ion" and "#7 PLA".
+export function matchesPhrase(query: string, term: string): boolean {
+  const phrase = term.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+')
+  return !!phrase && new RegExp(`(^|[^\\p{L}\\p{N}_])${phrase}($|[^\\p{L}\\p{N}_])`, 'iu').test(query)
+}
+
+export function matchCase(rule: Rule, query: string): RuleCase | undefined {
+  return rule.cases?.find((c) => c.match?.some((term) => matchesPhrase(query, term)))
+}
+
+export const caseRule = (rule: Rule, condition: RuleCase): Rule => ({ ...rule, bin: condition.bin, prep: condition.prep ?? rule.prep, also: undefined })
+
+// Compare the same condition where available, otherwise show all condition-dependent bins.
+export function ruleBins(pack: Pack, item: string, caseId?: string): Bin[] {
+  const rule = pack.items[item]
+  const condition = rule.cases?.find((c) => c.id === caseId)
+  const ids = condition ? [condition.bin] : rule.cases?.map((c) => c.bin) ?? [rule.bin]
+  return [...new Set(ids)].map((id) => binById(pack, id))
+}
 
 export type Answer = {
   items: { id: string; p: number }[] // item types, most likely first
   bins: { bin: Bin; p: number }[] // bins with summed probability, most likely first
   sure: boolean // the top bin clears the confidence bar
 }
+
+// Phone, station and evaluation must agree on the bin whose probability was summed.
+export const shownItem = (pack: Pack, ans: Answer) => ans.items.find((it) => pack.items[it.id]?.bin === ans.bins[0].bin.id)!
 
 // Below this summed probability for the top bin the app says "not sure" instead of guessing.
 export const SURE = 0.6

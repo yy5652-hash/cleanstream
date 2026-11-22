@@ -9,7 +9,7 @@ export type Dict = {
   ui: Record<string, string> // English string as written in the code -> translation; {name} placeholders are kept
   cities: Record<string, string>
   items: Record<string, { name: string; examples: string; aka?: string[] }>
-  packs: Record<string, { bins: Record<string, { name: string; accepts: string }>; items: Record<string, { prep: string[]; why: string }> }>
+  packs: Record<string, { bins: Record<string, { name: string; accepts: string }>; items: Record<string, { prep: string[]; why: string; ask?: string; cases?: Record<string, { label: string; prep?: string[] }> }> }>
 }
 
 const isLang = (l: string | null): l is Lang => LANGS.some(([id]) => id === l)
@@ -89,7 +89,10 @@ export function localizePack(p: Pack): Pack {
     ...p,
     name: dict?.cities[p.id] ?? p.name,
     bins: p.bins.map((b) => ({ ...b, ...d.bins[b.id] })),
-    items: Object.fromEntries(Object.entries(p.items).map(([id, r]) => [id, { ...r, ...d.items[id] }])),
+    items: Object.fromEntries(Object.entries(p.items).map(([id, r]) => [id, {
+      ...r, ...d.items[id],
+      cases: r.cases?.map((c) => ({ ...c, ...d.items[id]?.cases?.[c.id] })),
+    }])),
   }
 }
 

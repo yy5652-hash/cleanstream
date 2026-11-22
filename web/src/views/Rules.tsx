@@ -3,14 +3,14 @@ import { useState } from 'react'
 import { Button } from '../components/ui/button'
 import { t, useLang } from '../i18n'
 import { itemExamples, itemName, searchable, searchItems } from '../items'
-import { binById, type Pack } from '../rules'
-import { BinChip } from '../ui'
+import { ruleBins, type Pack } from '../rules'
+import { RuleDestination } from '../components/RuleDestination'
 
 export default function Rules({ pack, packs }: { pack: Pack; packs: Pack[] }) {
   const { lang } = useLang()
   const [q, setQ] = useState('')
   const [onlyDiff, setOnlyDiff] = useState(false)
-  const differs = (id: string) => new Set(packs.filter((p) => p.items[id]).map((p) => binById(p, p.items[id].bin).kind)).size > 1
+  const differs = (id: string) => new Set(packs.filter((p) => p.items[id]).map((p) => [...new Set(ruleBins(p, id).map((b) => b.kind))].sort().join(','))).size > 1
   const all = Object.keys(pack.items)
   const hits = searchable(q) ? new Set(searchItems(q, all.length)) : null
   const ids = all.filter((id) => (!hits || hits.has(id)) && (!onlyDiff || differs(id)))
@@ -38,11 +38,12 @@ export default function Rules({ pack, packs }: { pack: Pack; packs: Pack[] }) {
               return <li key={id} className="py-5">
                 <a href={`#scan?item=${encodeURIComponent(id)}&city=${encodeURIComponent(pack.id)}`} className="flex min-h-11 items-center justify-between gap-2 font-semibold hover:underline">{t('{item}', { item: itemName(id) })}<ArrowUpRight className="size-4 shrink-0" aria-hidden /></a>
                 <p className="text-sm text-ink-2">{t('{examples}', { examples: itemExamples(id) })}</p>
+                {!!rule.cases?.length && <div className="mt-3 text-sm"><RuleDestination pack={pack} item={id} /></div>}
                 <details className="group mt-2"><summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 text-sm font-medium">{t('Why and how')}<ChevronDown className="size-4 shrink-0 group-open:rotate-180" aria-hidden /></summary>
                   <div className="space-y-4 pb-1 text-sm text-ink-2"><p>{t('{reason}', { reason: rule.why })}</p><div><h3 className="font-semibold text-ink">{t('Before you toss it')}</h3><ul className="mt-2 space-y-2">{rule.prep.map((prep) => <li key={prep}>{t('{prep}', { prep })}</li>)}</ul></div>
-                    {!!rule.also?.length && <p>{t('Also accepted in: {bins}', { bins: rule.also.map((b) => binById(pack, b).name).join(', ') })}</p>}
+                    {!rule.cases?.length && !!rule.also?.length && <p>{t('Also accepted in: {bins}', { bins: rule.also.map((b) => pack.bins.find((bin) => bin.id === b)!.name).join(', ') })}</p>}
                     <a href={rule.source} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center underline underline-offset-4">{t('Official source')}</a>
-                    <div><h3 className="font-semibold text-ink">{t('Same item in other places')}</h3><ul className="mt-2 space-y-3">{packs.filter((p) => p.id !== pack.id && p.items[id]).map((p) => <li key={p.id} className="flex flex-wrap items-center justify-between gap-2"><span>{t('{city}', { city: p.name })}</span><BinChip bin={binById(p, p.items[id].bin)} /></li>)}</ul></div>
+                    <div><h3 className="font-semibold text-ink">{t('Same item in other places')}</h3><ul className="mt-2 space-y-3">{packs.filter((p) => p.id !== pack.id && p.items[id]).map((p) => <li key={p.id} className="flex flex-wrap items-center justify-between gap-2"><span>{t('{city}', { city: p.name })}</span><RuleDestination pack={p} item={id} /></li>)}</ul></div>
                   </div>
                 </details>
               </li>

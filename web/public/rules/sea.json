@@ -132,25 +132,60 @@
   "foam": {
    "bin": "garbage",
    "prep": [
-    "Bag loose packing peanuts and tie the bag",
-    "Clean foam blocks: free Special Item Pickup or Styro Recycle in Kent"
+    "Bag loose packing peanuts and tie the bag"
    ],
    "why": "Foam goes in the garbage; only clean Styrofoam blocks have a recycling option.",
    "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/foam-blocks",
-   "also": [
-    "dropoff"
+   "cases": [
+    {
+     "id": "blocks",
+     "label": "Clean foam blocks",
+     "bin": "dropoff",
+     "prep": [
+      "Clean foam blocks: free Special Item Pickup or Styro Recycle in Kent"
+     ],
+     "match": [
+      "clean foam blocks"
+     ]
+    },
+    {
+     "id": "other",
+     "label": "Other foam",
+     "bin": "garbage",
+     "prep": [
+      "Bag loose packing peanuts and tie the bag"
+     ]
+    }
    ]
   },
   "plastic_utensil_straw": {
    "bin": "garbage",
    "prep": [
-    "No prep",
-    "Labeled \"compostable\"? Food and yard waste cart"
+    "No prep"
    ],
    "why": "Plastic utensils and straws are not recyclable in Seattle.",
    "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/plastic-cups-or-utensils",
-   "also": [
-    "compost"
+   "cases": [
+    {
+     "id": "compostable",
+     "label": "Labeled compostable",
+     "bin": "compost",
+     "prep": [
+      "No prep",
+      "Labeled \"compostable\"? Food and yard waste cart"
+     ],
+     "match": [
+      "compostable"
+     ]
+    },
+    {
+     "id": "plastic",
+     "label": "Plastic",
+     "bin": "garbage",
+     "prep": [
+      "No prep"
+     ]
+    }
    ]
   },
   "paper": {
@@ -167,13 +202,33 @@
    "bin": "recycle",
    "prep": [
     "Keep it clean and dry",
-    "Stickers, tape and staples are fine",
-    "Food-soiled? Food and yard waste cart"
+    "Stickers, tape and staples are fine"
    ],
    "why": "Clean, dry paper bags are recycled; wet or food-soiled ones are composted.",
    "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/paper-bags",
-   "also": [
-    "compost"
+   "cases": [
+    {
+     "id": "soiled",
+     "label": "Wet or food-soiled",
+     "bin": "compost",
+     "prep": [
+      "Stickers, tape and staples are fine",
+      "Food-soiled? Food and yard waste cart"
+     ],
+     "match": [
+      "wet",
+      "food-soiled"
+     ]
+    },
+    {
+     "id": "clean",
+     "label": "Clean and dry",
+     "bin": "recycle",
+     "prep": [
+      "Keep it clean and dry",
+      "Stickers, tape and staples are fine"
+     ]
+    }
    ]
   },
   "cardboard": {
@@ -200,14 +255,35 @@
   "soiled_paper": {
    "bin": "compost",
    "prep": [
-    "Napkins, paper towels and uncoated plates with food or grease: compost",
-    "Tissues, or towels used with cleaners or bodily fluids: garbage",
-    "Shiny coated paper: garbage"
+    "Napkins, paper towels and uncoated plates with food or grease: compost"
    ],
    "why": "Uncoated paper with food or grease on it is compostable, but tissues and shiny-coated paper are not.",
    "source": "https://www.seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/item/food-soiled-paper",
-   "also": [
-    "garbage"
+   "cases": [
+    {
+     "id": "other",
+     "label": "Tissues, shiny coating, cleaners or bodily fluids",
+     "bin": "garbage",
+     "prep": [
+      "Tissues, or towels used with cleaners or bodily fluids: garbage",
+      "Shiny coated paper: garbage"
+     ],
+     "match": [
+      "tissue",
+      "tissues",
+      "shiny",
+      "cleaners",
+      "bodily fluids"
+     ]
+    },
+    {
+     "id": "food",
+     "label": "Uncoated paper with food or grease",
+     "bin": "compost",
+     "prep": [
+      "Napkins, paper towels and uncoated plates with food or grease: compost"
+     ]
+    }
    ]
   },
   "paper_cup": {

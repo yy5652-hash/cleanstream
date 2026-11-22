@@ -54,6 +54,14 @@ describe('translations', () => {
         expect(tr?.prep.length, `${id} ${item}`).toBe(r.prep.length)
         expect(tr.prep.every(translated) && translated(tr.why), `${id} ${item}`).toBe(true)
         if (!lang.startsWith('zh')) expect(tr.why, `${id} ${item} left in English`).not.toBe(r.why)
+        for (const c of r.cases ?? []) {
+          const tc = tr.cases?.[c.id]
+          expect(tc && translated(tc.label), `${id} ${item} ${c.id}`).toBe(true)
+          expect(tc?.prep?.length, `${id} ${item} ${c.id} prep`).toBe(c.prep?.length)
+          expect(tc?.prep?.every(translated), `${id} ${item} ${c.id} prep translation`).toBe(true)
+          if (!lang.startsWith('zh')) expect(tc?.label).not.toBe(c.label)
+        }
+        if (r.ask) expect(tr.ask && translated(tr.ask), `${id} ${item} question`).toBe(true)
       }
     })
   })

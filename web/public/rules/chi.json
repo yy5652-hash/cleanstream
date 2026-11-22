@@ -260,13 +260,27 @@
     "food_scraps": {
       "bin": "black",
       "prep": [
-        "Better: take it to a City food scrap drop-off site (sign up first, no bags of any kind)",
         "Otherwise it goes in the black cart"
       ],
       "why": "Chicago has no curbside compost cart, so food scraps are garbage unless you use the free City drop-off sites, which take all food, including meat and bones.",
       "source": "https://www.chicago.gov/city/en/sites/chicago-recycles/home/food-scrap-drop-off.html",
-      "also": [
-        "dropoff"
+      "cases": [
+        {
+          "id": "dropoff",
+          "label": "Using a City food scrap drop-off (sign up first)",
+          "bin": "dropoff",
+          "prep": [
+            "Better: take it to a City food scrap drop-off site (sign up first, no bags of any kind)"
+          ]
+        },
+        {
+          "id": "curbside",
+          "label": "Not using a food scrap drop-off",
+          "bin": "black",
+          "prep": [
+            "Otherwise it goes in the black cart"
+          ]
+        }
       ]
     },
     "yard_waste": {
@@ -282,14 +296,48 @@
     "battery": {
       "bin": "dropoff",
       "prep": [
-        "Rechargeable, lithium and car batteries: take to the Household Chemicals & Computer Recycling Facility",
-        "Never in the blue cart",
-        "Alkaline (AA, AAA, 9V): the facility does not take them; black cart"
+        "Never in the blue cart"
       ],
       "why": "Lithium-ion batteries cause fires at sorting plants, so they never go in the blue cart.",
       "source": "https://www.chicago.gov/city/en/depts/env/supp_info/environmental-permitting-and-inspection/hccrf.html",
-      "also": [
-        "black"
+      "cases": [
+        {
+          "id": "rechargeable",
+          "label": "Rechargeable, lithium-ion, or inside a vape or device",
+          "bin": "dropoff",
+          "prep": [
+            "Rechargeable, lithium and car batteries: take to the Household Chemicals & Computer Recycling Facility",
+            "Never in the blue cart"
+          ],
+          "match": [
+            "vape",
+            "e-cigarette",
+            "e-cig",
+            "lithium",
+            "li-ion",
+            "rechargeable",
+            "phone battery",
+            "laptop battery",
+            "power bank"
+          ]
+        },
+        {
+          "id": "alkaline",
+          "label": "Single-use alkaline (AA, AAA, C, D, 9V)",
+          "bin": "black",
+          "prep": [
+            "Alkaline (AA, AAA, 9V): the facility does not take them; black cart",
+            "Never in the blue cart"
+          ],
+          "match": [
+            "alkaline",
+            "aa",
+            "aaa",
+            "9v",
+            "c battery",
+            "d battery"
+          ]
+        }
       ]
     },
     "electronics": {

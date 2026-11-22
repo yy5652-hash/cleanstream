@@ -91,7 +91,7 @@ def bins_for(pack):
 def ok_bin(pack, item, bin):
     """The city accepts this item in this bin (its main bin or one of its alternatives)."""
     r = pack["items"][item]
-    return bin == r["bin"] or bin in r.get("also", [])
+    return bin == r["bin"] or bin in r.get("also", []) or bin in [c["bin"] for c in r.get("cases", [])]
 
 
 def scores(P, rows, idx, packs):

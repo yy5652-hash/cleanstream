@@ -148,13 +148,38 @@
   "paper_bag": {
    "bin": "blue",
    "prep": [
-    "Keep it clean and dry",
-    "Greasy or food-soiled bags: green bin"
+    "Keep it clean and dry"
    ],
    "why": "Clean paper goes in the blue bin, and food-soiled paper goes in the green bin.",
    "source": "https://sanitation.lacity.gov/services/recycling-collection",
-   "also": [
-    "green"
+   "cases": [
+    {
+     "id": "soiled",
+     "label": "Food-soiled or greasy",
+     "bin": "green",
+     "prep": [
+      "Greasy or food-soiled bags: green bin"
+     ],
+     "match": [
+      "greasy",
+      "oily",
+      "grease",
+      "food stuck",
+      "food-soiled"
+     ]
+    },
+    {
+     "id": "clean",
+     "label": "Clean and dry",
+     "bin": "blue",
+     "prep": [
+      "Keep it clean and dry"
+     ],
+     "match": [
+      "clean",
+      "dry"
+     ]
+    }
    ]
   },
   "cardboard": {
@@ -297,13 +322,32 @@
   "textile": {
    "bin": "black",
    "prep": [
-    "Donate it if it is clean and wearable",
-    "Worn-out or torn fabric: black bin"
+    "Donate it if it is clean and wearable"
    ],
    "why": "The black bin takes worn-out cloth that is unsuitable for donation, and textiles are not on the blue or green bin lists.",
    "source": "https://sanitation.lacity.gov/services/weekly-curbside-black-bin-collection-trash",
-   "also": [
-    "special"
+   "cases": [
+    {
+     "id": "worn",
+     "label": "Worn out or torn",
+     "bin": "black",
+     "prep": [
+      "Worn-out or torn fabric: black bin"
+     ],
+     "match": [
+      "worn-out",
+      "worn out",
+      "torn"
+     ]
+    },
+    {
+     "id": "wearable",
+     "label": "Clean and wearable",
+     "bin": "special",
+     "prep": [
+      "Donate it if it is clean and wearable"
+     ]
+    }
    ]
   },
   "shoes": {

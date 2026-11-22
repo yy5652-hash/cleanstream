@@ -4,9 +4,10 @@ import { lazy, Suspense, useState } from 'react'
 import { t, useLang } from '../i18n'
 import { itemName } from '../items'
 import { partsOf } from '../parts'
-import { binById, type Answer as Ans, type Bin, type Pack } from '../rules'
+import { binById, caseRule, matchCase, ruleBins, shownItem, type Answer as Ans, type Bin, type Pack } from '../rules'
 import { answerLink, BinChip, pct } from '../ui'
 import { ItemPicker } from './Search'
+import { RuleDestination } from './RuleDestination'
 
 const Sheet = lazy(() => import('./Sheet'))
 
@@ -45,14 +46,25 @@ export function choices(pack: Pack, ans: Ans, most = 3): string[] {
   return out
 }
 
-export function Answer({ ans, ms, pack, packs, item: chosen, preview, onChoose }: {
-  ans: Ans | null; ms?: number; pack: Pack; packs: Pack[]; item: string | null; preview?: string | null; onChoose: (id: string | null) => void
+export function Answer({ ans, ms, pack, packs, item: chosen, preview, query = '', onChoose }: {
+  ans: Ans | null; ms?: number; pack: Pack; packs: Pack[]; item: string | null; preview?: string | null; query?: string; onChoose: (id: string | null, query?: string) => void
 }) {
   const { lang } = useLang()
   const [picking, setPicking] = useState(false)
-  const item = chosen ?? ans!.items[0].id
+  const item = chosen ?? shownItem(pack, ans!).id
+  const [conditionId, setConditionId] = useState<string | null | undefined>(undefined)
+  const baseRule = pack.items[item]
+  // A condition comes from a tap, else from the typed words; items without a question start on the case for their main bin.
+  const matched = conditionId === undefined ? matchCase(baseRule, query) : undefined
+  const defaultCase = conditionId === undefined && !matched && !baseRule.ask ? baseRule.cases?.find((c) => c.bin === baseRule.bin) : undefined
+  const condition = conditionId ? baseRule.cases?.find((c) => c.id === conditionId) : matched ?? defaultCase
+  const otherCases = defaultCase ? baseRule.cases!.filter((c) => c.id !== defaultCase.id) : []
+  const lookalike = ans && !chosen ? ans.items.find((it) => it.id !== item && pack.items[it.id]?.bin !== (condition?.bin ?? baseRule.bin) && it.p >= 0.20) : undefined
+  const alternate = lookalike && <button onClick={() => onChoose(lookalike.id)} className="mt-3 flex min-h-12 flex-wrap items-center gap-2 rounded-2xl bg-black/10 px-3 py-2 text-left font-medium">
+    {t('Or is it a {item}? →', { item: itemName(lookalike.id) })}<BinChip bin={binById(pack, pack.items[lookalike.id].bin)} />
+  </button>
   const unsure = !!ans && !chosen && !ans.sure
-  const picker = picking && <Suspense fallback={null}><Sheet open onClose={() => setPicking(false)} title={t('What is it?')}><ItemPicker pack={pack} onPick={(id) => (onChoose(id), setPicking(false))} /></Sheet></Suspense>
+  const picker = picking && <Suspense fallback={null}><Sheet open onClose={() => setPicking(false)} title={t('What is it?')}><ItemPicker pack={pack} onPick={(id, query) => (onChoose(id, query), setPicking(false))} /></Sheet></Suspense>
 
   if (unsure) {
     return (
@@ -78,12 +90,30 @@ export function Answer({ ans, ms, pack, packs, item: chosen, preview, onChoose }
     )
   }
 
-  const rule = pack.items[item]
+  if (baseRule.cases?.length && !condition) {
+    return <section aria-live="polite" className="animate-rise">
+      <div className="rounded-3xl bg-well p-6 sm:p-8">
+        {preview && <img src={preview} alt={t('Item being checked')} className="mb-5 size-20 rounded-2xl object-cover" />}
+        <p className="mb-2 text-lg font-medium">{itemName(item)}</p>
+        {alternate}
+        <h2 className="text-title">{baseRule.ask ?? t('Which condition applies?')}</h2>
+        <div className="mt-5 grid gap-2">
+          {baseRule.cases.map((c) => <button key={c.id} onClick={() => setConditionId(c.id)} className="flex min-h-16 items-center justify-between gap-3 rounded-2xl bg-card px-4 py-3 text-left text-lg font-medium hover:ring-2 hover:ring-ink">
+            {c.label}<BinChip bin={binById(pack, c.bin)} />
+          </button>)}
+          <button onClick={() => setPicking(true)} className="rounded-2xl px-4 py-3 text-left font-medium text-ink-2 hover:bg-card">{t('Something else…')}</button>
+        </div>
+      </div>
+      {picker}
+    </section>
+  }
+
+  const rule = condition ? caseRule(baseRule, condition) : baseRule
   const bin = binById(pack, rule.bin)
   const also = (rule.also ?? []).map((id) => binById(pack, id))
-  const parts = partsOf(pack, item)
+  const parts = partsOf(pack, item).map((p, i) => i === 0 ? { ...p, bin } : p)
   const others = packs.filter((p) => p.id !== pack.id)
-  const differ = others.filter((p) => binById(p, p.items[item].bin).kind !== bin.kind).length
+  const differ = others.filter((p) => ruleBins(p, item, condition?.id).some((b) => b.kind !== bin.kind)).length
   const alternatives = ans ? ans.items.filter((it) => it.id !== item).slice(0, 3) : []
 
   return (
@@ -93,6 +123,11 @@ export function Answer({ ans, ms, pack, packs, item: chosen, preview, onChoose }
           <p className="text-lg font-medium leading-snug">{itemName(item)}</p>
           <Share pack={pack} item={item} bin={bin} />
         </div>
+        {alternate}
+        {otherCases.map((c) => <button key={c.id} onClick={() => setConditionId(c.id)} className="mt-3 flex min-h-12 flex-wrap items-center gap-2 rounded-2xl bg-black/10 px-3 py-2 text-left font-medium">
+          {t('{condition}? →', { condition: c.label })}<BinChip bin={binById(pack, c.bin)} />
+        </button>)}
+        {condition && !defaultCase && (matched ? <p className="mt-3 text-sm">{condition.label}</p> : <button onClick={() => setConditionId(null)} className="mt-3 min-h-11 text-left text-sm underline underline-offset-4">{condition.label} · {t('Change condition')}</button>)}
         <div className="mt-10 flex items-end justify-between gap-4 sm:mt-14">
           <div className="min-w-0">
             <h2 className="text-display">{bin.name}</h2>
@@ -144,8 +179,7 @@ export function Answer({ ans, ms, pack, packs, item: chosen, preview, onChoose }
             </summary>
             <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2.5">
               {others.map((p) => {
-                const b = binById(p, p.items[item].bin)
-                return <div key={p.id}><div className="text-sm text-ink-2">{p.name}</div><div className="flex items-center gap-2 font-medium"><span className="size-3 rounded-full" style={{ background: b.color }} />{b.name}</div></div>
+                return <div key={p.id}><div className="mb-1 text-sm text-ink-2">{p.name}</div><RuleDestination pack={p} item={item} conditionId={condition?.id} /></div>
               })}
             </div>
           </details>
