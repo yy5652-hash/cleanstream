@@ -458,7 +458,8 @@
   "{set}, {model}": "{set}, {model}",
   "{source}": "{source}",
   "—": "—",
-  "What the camera saw": "Lo que vio la cámara"
+  "What the camera saw": "Lo que vio la cámara",
+  "Colours from {painting} by {artist} ({year}), in the collection of The Metropolitan Museum of Art.": "Colores de {painting}, de {artist} ({year}), en la colección del Museo Metropolitano de Arte."
  },
  "cities": {
   "nyc": "Nueva York",

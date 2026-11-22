@@ -115,7 +115,7 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
         </button>
         <div className="mt-2.5 flex items-center justify-between gap-3 text-sm text-ink-2">
           <span className="min-w-0">{model.status === 'idle' ? t('Downloads once (95 MB), then works offline.') : progress ?? t('Photos stay on this device.')}</span>
-          <button onClick={() => (loadModel(), file.current?.click())} className="flex shrink-0 items-center gap-1.5 font-medium text-ink underline decoration-line underline-offset-4 hover:decoration-ink"><ImageUp className="size-4" aria-hidden />{t('Upload a photo')}</button>
+          <button onClick={() => (loadModel(), file.current?.click())} className="flex min-h-11 shrink-0 items-center gap-1.5 font-medium text-ink underline decoration-line underline-offset-4 hover:decoration-ink"><ImageUp className="size-4" aria-hidden />{t('Upload a photo')}</button>
         </div>
         {loading && model.total > 0 && <div className="mt-2 h-1 overflow-hidden rounded-full bg-well"><div className="h-full rounded-full bg-ink transition-[width]" style={{ width: `${Math.min(1, model.loaded / model.total) * 100}%` }} /></div>}
         <input ref={file} type="file" accept="image/*" hidden onChange={(e) => {

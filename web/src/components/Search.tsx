@@ -21,7 +21,7 @@ export function ItemSearch({ pack, onPick, popular = [] }: { pack: Pack; onPick:
   return (
     <div>
       <div className="relative">
-        <label className="flex h-14 items-center gap-3 rounded-2xl border border-line bg-card px-4 transition-colors focus-within:border-ink">
+        <label className="flex h-14 items-center gap-3 rounded-2xl border border-line bg-card px-4 transition-colors focus-within:border-ink focus-within:ring-2 focus-within:ring-brand/50">
           <SearchIcon className="size-5 shrink-0 text-ink-3" aria-hidden />
           <input
             type="search" value={q} autoComplete="off" placeholder={t('Or type it: pizza box, tin foil, vape')} aria-label={t('Search an item')}
@@ -51,7 +51,7 @@ export function ItemSearch({ pack, onPick, popular = [] }: { pack: Pack; onPick:
       </div>
       {popular.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-1.5">
-          {popular.map((id) => <button key={id} onClick={() => pick(id)} className="rounded-full border border-line px-3 py-1.5 text-sm text-ink hover:bg-well">{itemShort(id)}</button>)}
+          {popular.map((id) => <button key={id} onClick={() => pick(id)} className="inline-flex min-h-11 items-center rounded-full border border-line px-3.5 text-sm text-ink hover:bg-well sm:min-h-9">{itemShort(id)}</button>)}
         </div>
       )}
     </div>

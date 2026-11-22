@@ -328,9 +328,10 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
     setVoice(!voice)
   }
   const rootStyle = {
-    '--c-paper': '#0b0f0d', '--c-card': '#131714', '--c-well': '#191e1a', '--c-ink': '#f4f5f1',
-    '--c-ink-2': '#b7bfb9', '--c-ink-3': '#929c95', '--c-line': '#353e38',
-    background: '#0b0f0d', color: target?.ink ?? '#f4f5f1', colorScheme: 'dark',
+    '--c-paper': '#0a1420', '--c-card': '#132130', '--c-well': '#1a2a3c', '--c-ink': '#f3eedf',
+    '--c-ink-2': '#d3cab1', '--c-ink-3': '#ada38a', '--c-line': '#29394c',
+    '--c-primary': '#f3eedf', '--c-on-primary': '#14273b', '--c-accent': '#79a9d6',
+    background: '#0a1420', color: target?.ink ?? '#f3eedf', colorScheme: 'dark',
   } as CSSProperties
   const iconButton = 'shrink-0 border-current/30 text-inherit hover:bg-transparent hover:text-inherit hover:opacity-80 focus-visible:ring-current'
 

@@ -7,8 +7,8 @@ export const pct = (p: number) => `${Math.round(p * 100)}%`
 export function Logo() {
   return (
     <svg viewBox="0 0 32 32" aria-hidden>
-      <rect width="32" height="32" rx="9" fill="var(--c-ink)" />
-      <path d="M7 11c3-3 6-3 9 0s6 3 9 0M7 17c3-3 6-3 9 0s6 3 9 0M7 23c3-3 6-3 9 0s6 3 9 0" fill="none" stroke="var(--c-paper)" strokeWidth="2.4" strokeLinecap="round" />
+      <rect width="32" height="32" rx="9" fill="var(--c-primary)" />
+      <path d="M7 11c3-3 6-3 9 0s6 3 9 0M7 17c3-3 6-3 9 0s6 3 9 0M7 23c3-3 6-3 9 0s6 3 9 0" fill="none" stroke="var(--c-on-primary)" strokeWidth="2.4" strokeLinecap="round" />
     </svg>
   )
 }

@@ -30,7 +30,7 @@ function PlaceButton({ city, setCity, install }: { city: string; setCity: (c: st
   return (
     <>
       <button onClick={() => setOpen(true)} aria-haspopup="dialog" aria-label={t('Change city or language. Now: {city}', { city: cityName(city) })}
-        className="flex h-10 min-w-0 items-center gap-1.5 rounded-full bg-well pl-3.5 pr-2.5 text-sm font-medium hover:bg-line">
+        className="flex h-11 min-w-0 items-center gap-1.5 rounded-full bg-well pl-3.5 pr-2.5 text-sm font-medium hover:bg-line">
         <span className="truncate">{cityName(city)}</span><Globe className="size-4 shrink-0 text-ink-2" aria-hidden /><ChevronDown className="size-4 shrink-0 text-ink-2" aria-hidden />
       </button>
       {open && <Suspense fallback={null}><Sheet open onClose={() => setOpen(false)} title={t('Your place')}>
@@ -58,7 +58,7 @@ export function Shell({ section, city, setCity, install, children }: { section: 
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-lg focus:bg-card focus:px-3 focus:py-2">{t('Skip to content')}</a>
       <header className="sticky top-0 z-30 border-b print:hidden border-line bg-paper/90 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-4 sm:px-6">
-          <a href="#scan" className="flex shrink-0 items-center gap-2.5 text-lg font-semibold tracking-tight text-ink [&_svg]:size-7"><Logo /><span translate="no">Cleanstream</span></a>
+          <a href="#scan" className="flex min-h-11 shrink-0 items-center gap-2.5 text-lg font-semibold tracking-tight text-ink [&_svg]:size-7"><Logo /><span translate="no">Cleanstream</span></a>
           <nav aria-label={t('Main')} className="hidden flex-1 items-center gap-1 md:flex">
             {SECTIONS.map(([id, href, name]) => (
               <a key={id} href={href} aria-current={section === id ? 'page' : undefined} className={`rounded-full px-3.5 py-2 text-[15px] font-medium ${section === id ? 'bg-well text-ink' : 'text-ink-2 hover:text-ink'}`}>{name()}</a>

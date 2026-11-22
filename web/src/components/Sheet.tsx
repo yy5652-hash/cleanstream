@@ -1,10 +1,15 @@
 // A bottom sheet on phones, a centred panel from the small breakpoint up. Built on Radix Dialog for focus and keyboard handling.
 import * as Dialog from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
-import type { ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import { t } from '../i18n'
 
 export function Sheet({ open, onClose, title, children, className }: { open: boolean; onClose: () => void; title: string; children: ReactNode; className?: string }) {
+  // Callers mount the sheet only while it is open, so give focus back to whatever opened it when it goes away
+  useEffect(() => {
+    const opener = document.activeElement as HTMLElement | null
+    return () => void setTimeout(() => opener?.focus(), 0)
+  }, [])
   return (
     <Dialog.Root open={open} onOpenChange={(o) => !o && onClose()}>
       <Dialog.Portal>

@@ -458,7 +458,8 @@
   "{set}, {model}": "{set}，{model}",
   "{source}": "{source}",
   "—": "—",
-  "What the camera saw": "攝像頭看到的物品"
+  "What the camera saw": "攝像頭看到的物品",
+  "Colours from {painting} by {artist} ({year}), in the collection of The Metropolitan Museum of Art.": "配色取自{artist}的《{painting}》（{year}），藏於大都會藝術博物館。"
  },
  "cities": {
   "nyc": "紐約",

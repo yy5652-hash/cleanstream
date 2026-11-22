@@ -144,6 +144,7 @@ export default function About({ packs }: { packs: Pack[] }) {
               </tbody>
             </table>
           </div>
+          <p className="text-sm text-ink-2">{t('Colours from {painting} by {artist} ({year}), in the collection of The Metropolitan Museum of Art.', { painting: 'Under the Wave off Kanagawa', artist: 'Katsushika Hokusai', year: 'ca. 1830–32' })}</p>
           <p className="text-sm text-ink-2">{t('Image encoder: SigLIP 2 ViT-B/16 at 256 px (Google, Apache 2.0), loaded through open_clip and exported to ONNX. Runtime: ONNX Runtime Web. Rule sources are linked on the Rules tab. Photo credits for the Wikimedia Commons images are in {file}.', { file: 'ml/commons_credits.csv' })} <a href={`${REPO}/ml/commons_credits.csv`} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center">{t('View photo credits')}</a></p>
         </>
       )}
