@@ -8,6 +8,7 @@ vi.mock('react', async (original) => ({
   useState: () => [0, hooks.progress],
   useRef: (value: unknown) => ({ current: value }),
   useEffect: (effect: () => () => void) => { hooks.cleanups.push(effect()) },
+  useSyncExternalStore: (_subscribe: unknown, snapshot: () => unknown) => snapshot(),
 }))
 import { HoldSettings } from './components/HoldSettings'
 
@@ -21,8 +22,9 @@ type Handlers = {
 }
 function control() {
   const open = vi.fn()
-  const tree = HoldSettings({ onOpen: open, children: 'settings' }) as ReactElement<{ children: ReactElement<Handlers>[] }>
-  return { open, button: tree.props.children[0].props }
+  const prompt = vi.fn()
+  const tree = HoldSettings({ city: 'nyc', onOpen: open, onPromptChange: prompt, children: 'settings' }) as ReactElement<{ children: ReactElement<Handlers>[] }>
+  return { open, prompt, button: tree.props.children[0].props }
 }
 const key = (name: string, repeat = false): Key => ({ key: name, repeat, preventDefault: vi.fn() })
 const pointer = (): Pointer => ({ button: 0, isPrimary: true, pointerId: 1, preventDefault: vi.fn(), currentTarget: { setPointerCapture: vi.fn() } })
@@ -30,7 +32,18 @@ beforeEach(() => {
   vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval', 'performance'] })
   vi.stubGlobal('window', new EventTarget())
   vi.stubGlobal('document', new EventTarget())
+  vi.stubGlobal('localStorage', { getItem: () => null })
   hooks.progress.mockClear()
+})
+it('requires a PIN challenge after the full hold when a PIN is set', () => {
+  vi.stubGlobal('localStorage', { getItem: () => '{"hash":"stored"}' })
+  const { open, prompt, button } = control()
+  button.onKeyDown(key('Enter'))
+  vi.advanceTimersByTime(1999)
+  expect(prompt).not.toHaveBeenCalled()
+  vi.advanceTimersByTime(1)
+  expect(prompt).toHaveBeenCalledWith(true)
+  expect(open).not.toHaveBeenCalled()
 })
 afterEach(() => {
   hooks.cleanups.splice(0).forEach((cleanup) => cleanup())

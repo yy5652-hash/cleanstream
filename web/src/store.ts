@@ -46,9 +46,16 @@ function write(key: string, v: unknown) {
   }
 }
 
-function useStored<T>(key: string, fallback: T, normalize: (v: T) => T = (v) => v): [T, (f: (v: T) => T) => void] {
+// normalize migrates what was read (pilots); sync follows writes made in other tabs (station counts).
+function useStored<T>(key: string, fallback: T, normalize: (v: T) => T = (v) => v, sync = false): [T, (f: (v: T) => T) => void] {
   const [v, setV] = useState<T>(() => normalize(read(key, fallback)))
   useEffect(() => write(key, v), [key, v])
+  useEffect(() => {
+    if (!sync) return
+    const changed = (event: StorageEvent) => { if (event.key === key || event.key === null) setV(normalize(read(key, fallback))) }
+    window.addEventListener('storage', changed)
+    return () => window.removeEventListener('storage', changed)
+  }, [key, sync, fallback]) // normalize is a pure migration; a new function each render must not re-subscribe
   const update = useCallback((f: (v: T) => T) => setV(f), [])
   return [v, update]
 }
@@ -56,7 +63,24 @@ function useStored<T>(key: string, fallback: T, normalize: (v: T) => T = (v) => 
 export const useAudits = () => useStored<Audit[]>('cleanstream.audits', [])
 // Select once per source session so delayed demo callbacks can never persist counts.
 export const stationLogWriter = (source: string, persist: (f: (log: StationLog) => StationLog) => void): typeof persist => source === 'camera' ? persist : () => {}
-export const useStationLog = () => useStored<StationLog>('cleanstream.station.log', {})
+const EMPTY_STATION_LOG: StationLog = {}
+export const useStationLog = () => useStored<StationLog>('cleanstream.station.log', EMPTY_STATION_LOG, undefined, true)
+
+export const stationSinceKey = (city: string) => `cleanstream.station.since.${city}`
+export function readCountingSince(city: string): string {
+  try { return localStorage.getItem(stationSinceKey(city)) ?? '' } catch { return '' }
+}
+export function resetStationCounts(log: StationLog, city: string): StationLog {
+  const next = { ...log }
+  delete next[city]
+  return next
+}
+// Write the date before clearing counts; a storage error must leave the existing counts intact.
+export function startStationPilot(city: string, clearCounts: () => void, date = today()): string {
+  localStorage.setItem(stationSinceKey(city), date)
+  clearCounts()
+  return date
+}
 
 // Local calendar day (YYYY-MM-DD), and the n days ending on `last`, oldest first
 export const today = () => {

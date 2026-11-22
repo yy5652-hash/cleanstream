@@ -3,10 +3,11 @@ import { useState } from 'react'
 import { t } from '../i18n'
 import { itemName } from '../items'
 import { binById, type Pack } from '../rules'
-import { download, lastDays, stationId, type StationDay } from '../store'
+import { download, lastDays, readCountingSince, startStationPilot, stationId, type StationDay } from '../store'
 import { BinChip, pct } from '../ui'
 import { Button } from '../components/ui/button'
 import { Sheet } from '../components/Sheet'
+import { physicalBinFor, readStationProfile, type StationProfile } from '../station-config'
 
 export type Summary = {
   total: number // answers shown with a bin
@@ -40,24 +41,26 @@ export function summarize(log: Record<string, StationDay>, days: string[]): Summ
   }
 }
 
-export function stationCsv(pack: Pack, log: Record<string, StationDay>, days: string[]): string {
-  const rows = [['date', 'city', 'type', 'id', 'name', 'count']]
+export function stationCsv(pack: Pack, log: Record<string, StationDay>, days: string[], profile = readStationProfile(pack)): string {
+  const rows = [['date', 'city', 'type', 'id', 'name', 'count', 'physical_bin', 'approved_by', 'approval_date']]
   const device = stationId()
   for (const day of days) {
     const d = log[day]
     if (!d) continue
-    for (const [id, n] of Object.entries(d.bins)) rows.push([day, pack.name, 'bin', id, pack.bins.find((b) => b.id === id)?.name ?? id, String(n)])
+    for (const [id, n] of Object.entries(d.bins)) rows.push([day, pack.name, 'bin', id, pack.bins.find((b) => b.id === id)?.name ?? id, String(n), physicalBinFor(profile, id)?.label ?? ''])
     for (const [id, n] of Object.entries(d.items)) rows.push([day, pack.name, 'item', id, itemName(id), String(n)])
     if (d.tapped) rows.push([day, pack.name, 'settled_by_tap', '', 'Not sure, person tapped the item', String(d.tapped)])
     if (d.unsure) rows.push([day, pack.name, 'not_sure', '', 'Not sure', String(d.unsure)])
   }
-  return rows.map((r, index) => [...r, ...(index === 0 ? ['station_id', 'source', 'app_version'] : [device, 'camera', import.meta.env.VITE_APP_VERSION])].map((v) => `"${v.replace(/"/g, '""')}"`).join(',')).join('\n')
+  return rows.map((r, index) => [...(index === 0 ? r : [...r.slice(0, 6), r[6] ?? '', profile.approvedBy ?? '', profile.approvedDate ?? '']), ...(index === 0 ? ['station_id', 'source', 'app_version'] : [device, 'camera', import.meta.env.VITE_APP_VERSION])].map((v) => `"${v.replace(/"/g, '""')}"`).join(',')).join('\n')
 }
 
 const RANGES = [[1, () => t('Today')], [7, () => t('7 days')], [30, () => t('30 days')]] as const
 
-export default function StationReport({ pack, log, onReset }: { pack: Pack; log: Record<string, StationDay>; onReset: () => void }) {
-  const [resetting, setResetting] = useState(false)
+export default function StationReport({ pack, log, onReset, profile = readStationProfile(pack) }: { pack: Pack; profile?: StationProfile; log: Record<string, StationDay>; onReset: () => void }) {
+  const [resetting, setResetting] = useState<'export' | 'confirm' | null>(null)
+  const [since, setSince] = useState(() => readCountingSince(pack.id))
+  const [resetError, setResetError] = useState('')
   const [range, setRange] = useState<1 | 7 | 30>(7)
   const days = lastDays(range)
   const s = summarize(log, days)
@@ -66,11 +69,11 @@ export default function StationReport({ pack, log, onReset }: { pack: Pack; log:
   const notRecycling = known.filter((b) => b.kind !== 'recycle').reduce((a, b) => a + s.bins[b.id], 0)
   const peak = Math.max(1, ...s.perDay.map((d) => d.total))
 
-  const csv = () => download(`station-${pack.id}-${days[0]}-to-${days[days.length - 1]}.csv`, stationCsv(pack, log, days))
+  const csv = () => download(`station-${pack.id}-${days[0]}-to-${days[days.length - 1]}.csv`, stationCsv(pack, log, days, profile))
 
   return <section className="space-y-8">
-    <header><h2 className="text-title">{t('Station report')}</h2><p className="mt-2 max-w-2xl text-ink-2">{t('What people held up at this station, in {city} rules. Counts only: no pictures are kept, and nothing leaves this device.', { city: pack.name })}</p></header>
-    <div className="flex flex-wrap gap-2"><div className="flex rounded-2xl bg-well p-1" aria-label={t('Report period')}>{RANGES.map(([n, name]) => <Button key={n} variant={range === n ? 'default' : 'ghost'} aria-pressed={range === n} onClick={() => setRange(n)}>{name()}</Button>)}</div><Button variant="outline" onClick={csv} disabled={!asked}>{t('Export CSV')}</Button><Button variant="ghost" onClick={() => setResetting(true)} disabled={!Object.keys(log).length}>{t('Reset')}</Button></div>
+    <header><h2 className="text-title">{t('Station report')}</h2><p className="mt-2 max-w-2xl text-ink-2">{t('What people held up at this station, in {city} rules. Counts only: no pictures are kept, and nothing leaves this device.', { city: pack.name })}</p>{since && <p className="mt-2 text-sm text-ink-2">{t('Counting since {date}', { date: since })}</p>}</header>
+    <div className="flex flex-wrap gap-2"><div className="flex rounded-2xl bg-well p-1" aria-label={t('Report period')}>{RANGES.map(([n, name]) => <Button key={n} variant={range === n ? 'default' : 'ghost'} aria-pressed={range === n} onClick={() => setRange(n)}>{name()}</Button>)}</div><Button variant="outline" onClick={csv} disabled={!asked}>{t('Export CSV')}</Button><Button variant="ghost" onClick={() => { setResetError(''); setResetting('export') }}>{t('Start fresh for a pilot')}</Button></div>
     <div className="grid gap-6 border-y border-line py-6 sm:grid-cols-3">{[
       [t('Answers shown'), s.total, t('Answered with a bin')],
       [t('Sure enough to answer'), asked ? pct((s.total - s.tapped) / asked) : t('No data'), t('{tapped} settled with a tap, {unsure} left unsure', { tapped: s.tapped, unsure: s.unsure })],
@@ -83,6 +86,15 @@ export default function StationReport({ pack, log, onReset }: { pack: Pack; log:
       <section className="lg:col-span-2"><h3 className="font-semibold">{t('Most asked about')}</h3><ol className="mt-3 divide-y divide-line">{s.items.filter(([id]) => pack.items[id]).slice(0, 6).map(([id, n], k) => <li key={id} className="flex flex-wrap items-center gap-3 py-4"><span className="text-ink-3">{k + 1}</span><span className="flex-1">{itemName(id)}</span><BinChip bin={binById(pack, pack.items[id].bin)} /><strong>{n}</strong></li>)}</ol></section>
     </div>}
     <Button asChild variant="outline" className="h-auto min-h-11 whitespace-normal py-3"><a href="#poster">{t('Print a poster with these items')}</a></Button>
-    <Sheet open={resetting} onClose={() => setResetting(false)} title={t('Reset station counts?')}><p className="mb-5 text-ink-2">{t("Clear this station's counts for {city}?", { city: pack.name })}</p><Button onClick={() => { onReset(); setResetting(false) }}>{t('Reset')}</Button></Sheet>
+    <Sheet open={resetting !== null} onClose={() => setResetting(null)} title={t('Start fresh for a pilot')}>
+      {resetting === 'export' ? <div className="space-y-4"><p>{t('Export all current station counts before starting a new pilot. The next step clears this city’s counts on this device.')}</p><Button onClick={() => {
+        const allDays = Object.keys(log).sort()
+        download(`station-${pack.id}-before-pilot.csv`, stationCsv(pack, log, allDays, profile))
+        setResetting('confirm')
+      }}>{t('Export all counts as CSV')}</Button><Button variant="ghost" onClick={() => setResetting('confirm')}>{t('Continue without export')}</Button></div> : <div className="space-y-4"><p>{t('Clear this station’s counts for {city} and begin counting from today? This cannot be undone.', { city: pack.name })}</p><Button onClick={() => {
+        try { setSince(startStationPilot(pack.id, onReset)); setResetting(null) }
+        catch { setResetError(t('Could not start the pilot. Counts have not been cleared.')) }
+      }}>{t('Clear counts and start pilot')}</Button><p role="alert">{resetError}</p></div>}
+    </Sheet>
   </section>
 }
