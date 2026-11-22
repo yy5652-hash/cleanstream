@@ -7,7 +7,8 @@ export function StationDestination({ profile, target, prep }: { profile: Station
   const physical = physicalBinFor(profile, target.id)
   return <>
     <h2 className="my-[3vmin] min-h-[10dvh] text-[18vmin] leading-[0.95] font-semibold tracking-[-0.04em]">{physical?.label || target.name}</h2>
-    {physical && <p className="mb-[2vmin] text-[max(0.875rem,2vmin)]">{target.name}</p>}
+    {/* the city's bin name only when the station renamed or merged it */}
+    {physical && physical.label && physical.label !== target.name && <p className="mb-[2vmin] text-[max(0.875rem,2vmin)]">{target.name}</p>}
     <p className="mx-auto max-w-5xl text-[max(1.125rem,3.5vmin)] leading-snug">{physical ? prep : profile.note || t('Not in these bins. {prep}', { prep: prep ?? '' })}</p>
   </>
 }
