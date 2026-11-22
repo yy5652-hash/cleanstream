@@ -28,10 +28,14 @@ whether answering it changed anything.
 
 **How we would measure it.** Pick six shared bin stations (for example, campus building lobbies). Audit each station's
 recycling bin weekly for two weeks with Cleanstream's audit mode, alongside a standard weight-based audit of the same
-bags. Then mount a bin-station tablet at three of the stations for four weeks and keep three as controls. The outcome
-is the change in contamination rate at tablet stations minus the change at control stations (by weight, with item
-counts from the audit mode as a second view), plus which contaminants dropped. Feedback programs have moved this number
-before: The Recycling Partnership's cart-tagging work cut contamination 31% in Atlanta and 37% in Grand Rapids.
+bags. Then mount a bin-station tablet at three of the stations for four weeks and keep three as controls (six weeks in all;
+all six keep the same improved printed signs, so the comparison is tablets versus good signs). The outcome is the
+mean change in contamination at tablet stations minus the mean change at control stations, analysed station by station
+(by weight, with item counts as a second view, labels checked by a person), plus which contaminants dropped and whether
+more recyclables turned up in the trash. Feedback programs have moved this number
+before: cart-tagging programs, alongside other outreach, cut contamination by 31% in Atlanta and 37% in Grand Rapids
+(relative reductions, The Recycling Partnership). That is the reason to test feedback at the bin, not an effect we
+claim for Cleanstream; Cleanstream's own effect has not been measured yet.
 
 ## What it does
 
@@ -41,9 +45,9 @@ The app has three sections: **Sort** for anyone at a bin, **Learn** for the rule
 | --- | --- |
 | **Sort** | Point the camera, upload a photo, or try a held-out test photo. The answer comes first, in the bin's colour, with the first prep step. Below it: each part of a cup (cup, lid, sleeve or straw) with its own bin, the reason, the official source, and what the same item gets in other cities. One tap corrects it, and when it isn't sure it asks. Or type the item: search knows everyday names (tin foil, Amazon box, styrofoam). Every answer has a share link (`#scan?item=pizza_box&city=sf`), and the app installs to a home screen and works offline. |
 | **Learn** | The rule table for New York, San Francisco, Los Angeles, Chicago, Seattle and US general guidance (EPA and The Recycling Partnership), one column per bin, with a source link on every item and a filter for items where places disagree. Today's three is a daily challenge, the same for everyone in a city, with a streak kept on the device. There is also a ten-item quiz, half of it items places disagree on. |
-| **Bin station** (For sites) | A three-step setup: choose the city, switch on the bins and drag them into their order on site, then scan a QR code with the tablet. No account. The kiosk shows a tip and a live count while idle. When an item is held still, the whole screen fills with that bin's colour, an arrow points at the physical bin, and it can say the answer out loud. It notices an item by the share of the view that changed (changes in light are ignored) and classifies a crop around it, so small items count. When it isn't sure, it offers the likeliest items as big buttons. It keeps counts, never pictures, and a station report shows items per day and bin, the items people ask about most and how often it was unsure, with CSV export. |
-| **Audit** (For sites) | Photograph each item pulled from a bin, or drop a whole batch. It flags what doesn't belong, gives the contamination rate and the worst offenders, and exports CSV. |
-| **Pilot** (For sites) | The measurement plan below as a tool: audit before and after, at stations with tablets and comparison stations without, with weights when you have them. The report gives the net effect with a 95% interval and a plain verdict, including "Not enough to tell yet", and prints on one page. Sites can merge their results as JSON, with no pictures in the file. |
+| **Bin station** (For sites) | A three-step setup: choose the city, switch on the bins and drag them into their order on site, then scan a QR code with the tablet. No account. The kiosk shows a tip and a live count while idle. When an item is held still, the whole screen fills with that bin's colour, an arrow points at the physical bin, and it can say the answer out loud. It notices an item by the share of the view that changed (changes in light are ignored) and classifies a crop around it, so small items count. When it isn't sure, or the bin depends on the item's condition (a greasy pizza box), it offers big buttons instead of guessing. It uses the front camera by default, with a camera picker in its settings, and the settings open only after a two-second hold so passers-by can't reorder the bins. It keeps counts, never pictures, and answers from the demo feed are never counted; a station report shows answers shown per day and bin, the items people ask about most and how often it was unsure, with CSV export. |
+| **Audit** (For sites) | Photograph each item pulled from a bin, one item per photo, or drop a whole batch. A person confirms or corrects each label; until every label is checked the rate is marked provisional and can't be exported or added to a pilot. It flags what doesn't belong and gives the contamination rate and the worst offenders. |
+| **Pilot** (For sites) | The measurement plan below as a tool: audit before and after, at stations with tablets and comparison stations without, with weights when you have them. The report leads with a table per station, then the net effect: the mean change at tablet stations minus the mean change at comparison stations, with a 95% Welch t interval over station-level changes (one basis per station, weight when every audit is weighed). It gives a verdict only with at least three stations per arm and otherwise says "Not enough to tell yet"; pooled item counts are shown as a secondary view, labelled as not independent. It prints on one page. Sites can merge their results as JSON, with no pictures in the file. |
 | **Poster** (For sites) | A printable sign for the bins, built from what people ask about most at that station, in the bins' order on site, with a QR code to the phone version. A bin with no tablet can still use it. |
 | **How it works** | The model, the evaluation numbers below, data sources and licences. |
 
@@ -66,9 +70,13 @@ away; `web/src/i18n.test.ts` checks that every string, rule and prep step is pre
 3. **Item head.** A linear classifier over 32 item types. The types follow the rules, not the material: a plastic bottle
    and a plastic bag are both plastic, but most cities want them in different places.
 4. **Rule pack.** JSON per city: bins, and for each item type the main bin, any other accepted bin, prep steps, the
-   reason and the source URL.
+   reason and the source URL. When the bin depends on the item's condition, the rule lists cases (a greasy or clean pizza
+   box; a rechargeable or single-use alkaline battery). Typed words such as "greasy" or "vape" pick the case; otherwise the
+   app shows the safe default (drop-off for batteries) with the other case one tap away, or asks first (pizza boxes).
 5. **Answer or ask.** Item probabilities are summed per bin. The app can be sure of the bin even when two look-alike
-   items split the vote, and below 60% for the top bin it says it is not sure.
+   items split the vote, and below 60% for the top bin it says it is not sure. The phone, the station and the evaluation
+   share this one decision: the bin with the most summed probability, shown with the most likely item in that bin. When
+   a look-alike in another bin still has 20% or more, the answer offers it right under the item name.
 
 ### Training the item head
 
