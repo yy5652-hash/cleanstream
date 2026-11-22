@@ -224,3 +224,7 @@ photos from [Pexels](https://www.pexels.com) (listed in `ml/field.csv`, not redi
 Utilities; US EPA and
 The Recycling Partnership (links on every item of the rules page). Sample photos in the app are held-out test photos from
 TrashNet, the Garbage Dataset and TACO.
+
+AI tools: the code, tests, data scripts and documentation were written with AI coding assistants, Claude Code (Anthropic) and
+OpenAI Codex, directed and reviewed by the author. The demo film's narration is AI-generated (VibeVoice). The model inside the
+app is the open SigLIP 2 encoder credited above, with a classification head we trained.
