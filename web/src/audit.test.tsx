@@ -95,7 +95,7 @@ describe('direct weighed audits', () => {
     expect(snapshot).not.toHaveProperty('n')
     expect(snapshot).not.toHaveProperty('bad')
     expect(snapshot).toMatchObject({ weights: a.weights, auditor: 'AB', notes: a.notes })
-    const p = { ...createPilot({ id: 'p', name: 'Pilot', pack: 'nyc', created: a.date, primaryBin: snapshot.bin }, nyc), audits: [snapshot, { ...snapshot, id: 'after', phase: 'after' as const, weights: { totalKg: 10, contaminantKg: 1 } }] }
+    const p = { ...createPilot({ id: 'p', name: 'Pilot', pack: 'nyc', created: a.date, primaryBin: snapshot.bin }, nyc), audits: [snapshot, { ...snapshot, id: 'after', date: '2026-11-23', phase: 'after' as const, weights: { totalKg: 10, contaminantKg: 1 } }] }
     expect(rate(p, 'with', 'before')).toMatchObject({ n: 0, rate: null, weightRate: 0.2 })
     expect(stations(p)[0].change).toBeCloseTo(-0.1)
     expect(stations(p, 'count')[0]).toMatchObject({ incomplete: 'count', change: null })
@@ -116,5 +116,37 @@ describe('direct weighed audits', () => {
       expect(snapshotAudit(a, nyc, 'with', 'before')).not.toHaveProperty('n')
       expect(auditChecked(a, nyc)).toBe(true)
     }
+  })
+})
+
+describe('pilot corrections and canonical weights', () => {
+  it('keeps a pending snapshot and its weights, excludes it, and restores it after recheck', async () => {
+    const { syncPilotAudits } = await import('./audit')
+    const { migrateAuditWeights } = await import('./store')
+    const a = audit([item('metal_can')], 'blue')
+    const snapshot = { ...snapshotAudit(a, nyc, 'with', 'before')!, weights: { totalKg: 8, contaminantKg: 2 } }
+    const p = { ...createPilot({ id: 'p', name: 'Pilot', pack: 'nyc', created: a.date, primaryBin: 'blue' }, nyc), audits: [snapshot] }
+    const migrated = migrateAuditWeights([a], [p])[0]
+    expect(migrated.weights).toEqual(snapshot.weights)
+    migrated.items[0].checked = false
+    const pending = syncPilotAudits([p], [migrated], [nyc])[0]
+    expect(pending.audits).toHaveLength(1)
+    expect(pending.audits[0]).toMatchObject({ id: a.id, weights: snapshot.weights, pendingRecheck: true, arm: 'with', phase: 'before' })
+    expect(rate(pending, 'with', 'before')).toMatchObject({ audits: 0, n: 0, weightRate: null })
+    expect(parsePilot(exportPilot(pending)).pilot).toEqual(pending)
+    migrated.items[0].checked = true
+    migrated.weights = { totalKg: 10, contaminantKg: 1 }
+    const restored = syncPilotAudits([pending], [migrated], [nyc])[0]
+    expect(restored.audits[0]).toEqual({ ...snapshot, weights: migrated.weights })
+    expect(rate(restored, 'with', 'before').weightRate).toBe(0.1)
+    expect(auditCsv(migrated, nyc)).toContain('"10","1"')
+    migrated.weights = undefined
+    expect(syncPilotAudits([restored], [migrated], [nyc])[0].audits[0].weights).toBeUndefined()
+  })
+  it('does not overwrite canonical audit weights with a stale snapshot', async () => {
+    const { migrateAuditWeights } = await import('./store')
+    const a = { ...audit([item('metal_can')], 'blue'), weights: { totalKg: 5, contaminantKg: 1 } }
+    const p = { ...createPilot({ id: 'p', name: 'P', pack: 'nyc', created: a.date }, nyc), audits: [{ ...snapshotAudit(a, nyc, 'with', 'before')!, weights: { totalKg: 99, contaminantKg: 99 } }] }
+    expect(migrateAuditWeights([a], [p])[0].weights).toEqual(a.weights)
   })
 })

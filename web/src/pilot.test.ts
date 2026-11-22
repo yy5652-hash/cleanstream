@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { change, createPilot, migratePilot, exportPilot, mergePilots, netEffect, observedEffect, parsePilot, rate, sampleSize, stations, t975, validWeights, verdict, wilson, type Pilot, type PilotAudit } from './pilot'
-const audit = (overrides: Partial<PilotAudit> = {}): PilotAudit => ({ id: 'a', site: 'Library', pack: 'nyc', bin: 'paper', date: '2026-11-02', arm: 'with', phase: 'before', n: 100, bad: 30, ...overrides })
+import { change, createPilot, migratePilot, exportPilot, mergePilots, netEffect, observedEffect, parsePilot, rate, stations, t975, validWeights, verdict, wilson, type Pilot, type PilotAudit } from './pilot'
+const audit = (overrides: Partial<PilotAudit> = {}): PilotAudit => ({ id: 'a', site: 'Library', pack: 'nyc', bin: 'paper', date: overrides.phase === 'after' ? '2026-11-16' : '2026-11-02', arm: 'with', phase: 'before', n: 100, bad: 30, ...overrides })
 const pilot = (audits: PilotAudit[] = []): Pilot => ({ id: 'p', name: 'Library', pack: 'nyc', created: '2026-11-02', outcome: 'count', primaryBin: 'paper', audits })
 const design = () => pilot([
   audit(), audit({ id: 'b', phase: 'after', bad: 10 }),
@@ -114,14 +114,6 @@ describe('intervals and verdicts', () => {
   })
 })
 
-describe('sample planning', () => {
-  it('matches the two-proportion 80% power formula', () => {
-    expect(sampleSize(0.3, 0.1)).toBe(294)
-    expect(sampleSize(0.3, 0.05)).toBeGreaterThan(sampleSize(0.3, 0.1)!)
-  })
-  it.each([[0, 0.1], [0.2, 0], [0.2, -0.1], [0.2, 0.3], [1.1, 0.1], [NaN, 0.1], [0.3, Infinity]])('rejects invalid baseline %s and drop %s', (b, d) => expect(sampleSize(b, d)).toBeNull())
-})
-
 describe('portable pilot files', () => {
   it('round-trips a pilot without any pictures or unexpected fields', () => {
     const p = pilot([Object.assign(audit(), { thumb: 'secret photo', items: [{ thumb: 'another photo' }] })])
@@ -170,7 +162,7 @@ describe('measuring screens', () => {
       const empty = renderToStaticMarkup(createElement(PilotView, { pack, packs: [pack] }))
       expect(empty).toContain('Start a pilot')
       expect(empty).toContain('All data stays on this device')
-      const p = { ...design(), name: 'Example data', example: true }
+      const p = { ...design(), name: 'Example data', example: true, runComplete: true }
       values.set('cleanstream.pilots', JSON.stringify([p]))
       const report = renderToStaticMarkup(createElement(PilotView, { pack, packs: [pack] }))
       expect(report).toContain('Example data')
@@ -372,7 +364,7 @@ describe('physical station and primary stream safeguards', () => {
     try {
       const html = renderToStaticMarkup(createElement(PilotView, { pack, packs: [pack] }))
       expect(html).toContain('−100 percentage points')
-      expect(html).toContain('Not enough to tell yet')
+      expect(html).toContain('Observed difference only; the agreed period is not complete.')
       expect(html).not.toContain('95% interval:')
       expect(html).not.toContain('Lower with stations')
       expect(html).not.toContain('Higher with stations')
@@ -380,4 +372,65 @@ describe('physical station and primary stream safeguards', () => {
       expect(renderToStaticMarkup(createElement(PilotView, { pack, packs: [pack] }))).toContain('Secondary bin stream: Brown bin')
     } finally { vi.unstubAllGlobals() }
   })
+})
+
+describe('chronology and normalized site identities', () => {
+  it.each(['2026-11-01', '2026-11-02'])('excludes a site whose after audit on %s is not after all baseline audits', (date) => {
+    const p = design()
+    p.audits.push(audit({ id: 'late-baseline', date: '2026-11-02' }), audit({ id: 'early-after', phase: 'after', date }))
+    expect(stations(p)[0]).toMatchObject({ chronologyInvalid: true, change: null })
+    expect(observedEffect(p)).toBeNull()
+  })
+  it('checks chronology across secondary streams at the same physical site', () => {
+    const p = design()
+    p.audits.push(audit({ id: 'secondary', bin: 'trash', date: '2026-11-20' }))
+    expect(stations(p)[0].chronologyInvalid).toBe(true)
+  })
+  it('groups trim, case and whitespace variants using the first entered display name', () => {
+    const p = pilot([audit({ site: 'Library Lobby' }), audit({ id: 'b', site: '  library   LOBBY ', phase: 'after', bad: 10 })])
+    expect(stations(p)).toHaveLength(1)
+    expect(stations(p)[0]).toMatchObject({ site: 'Library Lobby', nameVariants: true, chronologyInvalid: false })
+    expect(stations(p)[0].change).toBeCloseTo(-0.2)
+    p.audits[1].arm = 'without'
+    expect(stations(p)[0]).toMatchObject({ arm: null, change: null })
+  })
+})
+
+it('shows interim data descriptively and reserves intervals and verdicts for a completed run', async () => {
+  const { createElement } = await import('react')
+  const { renderToStaticMarkup } = await import('react-dom/server')
+  const { Report, example, PlanningChecklist } = await import('./views/Pilot')
+  const { readFileSync } = await import('node:fs')
+  const pack = JSON.parse(readFileSync(new URL('../public/rules/nyc.json', import.meta.url), 'utf8'))
+  const p = example(pack)
+  expect(netEffect(p)).not.toBeNull()
+  const interim = renderToStaticMarkup(createElement(Report, { pack, pilot: { ...p, runComplete: false } }))
+  expect(interim).toContain('Interim')
+  expect(interim).toContain('Observed difference only')
+  expect(interim).toContain('percentage points')
+  expect(interim).not.toContain('95% interval:')
+  expect(interim).not.toContain('Lower with stations')
+  expect(interim).not.toContain('Higher with stations')
+  const complete = renderToStaticMarkup(createElement(Report, { pack, pilot: p }))
+  expect(complete).not.toContain('Interim')
+  expect(complete).toContain('95% interval:')
+  expect(complete).toContain('Lower with stations')
+  const plan = renderToStaticMarkup(createElement(PlanningChecklist))
+  for (const text of ['independent physical stations', 'primary bin stream', 'two baseline weeks', 'same improved signs', 'recyclables in trash', 'variation in station-level changes']) expect(plan).toContain(text)
+  expect(plan).not.toMatch(/80%|294|power/)
+  p.audits.push({ ...p.audits[0], id: 'alias', site: p.audits[0].site.toUpperCase(), date: '2099-01-01' })
+  const warning = renderToStaticMarkup(createElement(Report, { pack, pilot: p }))
+  expect(warning).toContain('Site names differ only by spacing or case')
+  expect(warning).toContain('Invalid chronology')
+})
+
+it('shows the app version and every loaded rule-pack checked date on About', async () => {
+  const { createElement } = await import('react')
+  const { renderToStaticMarkup } = await import('react-dom/server')
+  const { default: About } = await import('./views/About')
+  const { readFileSync } = await import('node:fs')
+  const packs = ['nyc', 'sf'].map((id) => JSON.parse(readFileSync(new URL(`../public/rules/${id}.json`, import.meta.url), 'utf8')))
+  const html = renderToStaticMarkup(createElement(About, { packs }))
+  expect(html).toContain(`App version: ${import.meta.env.VITE_APP_VERSION}`)
+  for (const pack of packs) expect(html).toContain(`${pack.name}: rules checked ${pack.checked}`)
 })

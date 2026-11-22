@@ -4,12 +4,13 @@ import { t } from '../i18n'
 import { itemName } from '../items'
 import { classify, loadModel, useModel } from '../model/client'
 import { binById, ruleBins, type Pack } from '../rules'
-import { download, thumbnail, today, uid, useAudits, usePilots, type Audit as AuditT } from '../store'
-import { validWeights, type Arm, type Phase } from '../pilot'
+import { download, thumbnail, today, uid, type Audit as AuditT } from '../store'
+import { auditBins, siteKey, validWeights, type Arm, type Phase } from '../pilot'
 import { auditChecked, auditCsv, canAddAudit, conditionOf, contamination, itemBelongs, itemChecked, label, needsCondition, snapshotAudit } from '../audit'
 import { ItemPicker } from '../components/Search'
 import { Sheet } from '../components/Sheet'
 import { Button } from '../components/ui/button'
+import { usePilotRecords } from '../pilot-records'
 import { BinChip, pct } from '../ui'
 
 export { auditChecked, contamination } from '../audit'
@@ -18,8 +19,7 @@ const field = 'mt-2 min-h-11 w-full min-w-0 rounded-2xl border border-line bg-ca
 
 export default function Audit({ pack, packs }: { pack: Pack; packs: Pack[] }) {
   const model = useModel()
-  const [audits, setAudits] = useAudits()
-  const [pilots, setPilots] = usePilots()
+  const { audits, setAudits, pilots, setPilots } = usePilotRecords(packs)
   const [weighed, setWeighed] = useState(false)
   const [measurement, setMeasurement] = useState({ total: '', bad: '', auditor: '', notes: '' })
   const weights = { totalKg: Number(measurement.total), contaminantKg: Number(measurement.bad) }
@@ -33,20 +33,22 @@ export default function Audit({ pack, packs }: { pack: Pack; packs: Pack[] }) {
   const linked = pilot && !pilot.example && (arm === 'with' || arm === 'without') && (phase === 'before' || phase === 'after')
   const activePack = linked ? packs.find((p) => p.id === pilot.pack) ?? pack : pack
   const [form, setForm] = useState({ site: '', bin: '', phase: 'baseline' as AuditT['phase'], date: today() })
-  const bins = activePack.bins.filter((b) => b.kind !== 'special')
-  const selectedBin = bins.some((b) => b.id === form.bin) ? form.bin : bins.find((b) => b.kind === 'recycle')?.id ?? bins[0].id
+  const bins = auditBins(activePack)
+  const selectedBin = bins.some((b) => b.id === form.bin) ? form.bin : (linked && bins.some((b) => b.id === pilot.primaryBin) ? pilot.primaryBin : bins.find((b) => b.kind === 'recycle')?.id ?? bins[0].id)
   const packOf = (id: string) => packs.find((p) => p.id === id) ?? pack
   const current = audits.find((a) => a.id === open)
+  const linkedPrimaryBin = linked ? pilot.primaryBin : ''
   useEffect(() => {
-    setPilots((ps) => ps.map((p) => ({ ...p, audits: p.audits.flatMap((snapshot) => {
-      const a = audits.find((a) => a.id === snapshot.id)
-      const rules = a && packs.find((p) => p.id === a.pack)
-      if (!a || !rules) return [snapshot]
-      const next = snapshotAudit(a, rules, snapshot.arm, snapshot.phase)
-      if (!next) return []
-      return [{ ...next, weights: snapshot.weights ?? a.weights }]
-    }) })))
-  }, [audits, packs, setPilots])
+    setForm({ site: '', bin: linkedPrimaryBin, phase: 'baseline', date: today() })
+    setMeasurement({ total: '', bad: '', auditor: '', notes: '' })
+    setWeighed(false)
+    setOpen(null)
+  }, [pilotId, linkedPrimaryBin, activePack.id])
+  const names = new Map<string, string>()
+  for (const audit of [...[...audits].reverse(), ...[...pilots].reverse().flatMap((pilot) => pilot.audits)]) {
+    if (audit.pack === activePack.id && !names.has(siteKey(audit.site))) names.set(siteKey(audit.site), audit.site)
+  }
+  const siteNames = [...names.values()]
   const start = () => {
     if (weighed && (!validMeasurement || !form.site.trim())) return
     const a: AuditT = { id: uid(), site: form.site.trim() || t('Untitled site'), pack: activePack.id, bin: selectedBin, phase: linked ? phase === 'before' ? 'baseline' : 'after' : form.phase, date: form.date, items: [], ...(weighed ? { kind: 'weighed', weights, auditor: measurement.auditor.trim(), notes: measurement.notes.trim() } : {}) }
@@ -69,8 +71,9 @@ export default function Audit({ pack, packs }: { pack: Pack; packs: Pack[] }) {
       <header><h1 className="text-display">{t('What is in the bin?')}</h1><p className="mt-3 max-w-2xl text-lg text-ink-2">{t('Photograph one item at a time. Check the labels, then see what does not belong.')}</p></header>
       <div className="flex flex-wrap gap-3"><Button variant={!weighed ? 'default' : 'outline'} onClick={() => setWeighed(false)}>{t('Photo audit')}</Button><Button variant={weighed ? 'default' : 'outline'} onClick={() => setWeighed(true)}>{t('Record a weighed audit')}</Button></div>
       <form onSubmit={(e) => { e.preventDefault(); start() }} className="grid gap-5 rounded-3xl bg-well p-5 sm:grid-cols-2 sm:p-8">
-        <label>{t('Site or station')}<input required={weighed} className={field} value={form.site} placeholder={t('e.g. Library lobby')} onChange={(e) => setForm({ ...form, site: e.target.value })} /></label>
-        <label>{t('Bin audited')}<select className={field} value={selectedBin} onChange={(e) => setForm({ ...form, bin: e.target.value })}>{bins.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}</select></label>
+        <label>{t('Site or station')}<input required={weighed} className={field} list="audit-site-names" value={form.site} placeholder={t('e.g. Library lobby')} onChange={(e) => setForm({ ...form, site: e.target.value })} /></label>
+        <datalist id="audit-site-names">{siteNames.map((site) => <option key={site} value={site} />)}</datalist>
+        <label>{t('Bin audited')}<select className={field} value={selectedBin} onChange={(e) => setForm({ ...form, bin: e.target.value })}>{bins.map((b) => <option key={b.id} value={b.id}>{b.name}{linked && b.id !== pilot.primaryBin ? ` · ${t('secondary stream (not in the primary effect)')}` : ''}</option>)}</select>{linked && selectedBin !== pilot.primaryBin && <span className="mt-2 block text-sm">{t('secondary stream (not in the primary effect)')}</span>}</label>
         <label>{t('Phase')}<select className={field} disabled={!!linked} value={linked ? phase === 'before' ? 'baseline' : 'after' : form.phase} onChange={(e) => setForm({ ...form, phase: e.target.value as AuditT['phase'] })}><option value="baseline">{t('Before')}</option><option value="after">{t('After')}</option></select></label>
         <label>{t('Date')}<input required className={field} type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} /></label>
         {weighed && <>
@@ -90,7 +93,7 @@ export default function Audit({ pack, packs }: { pack: Pack; packs: Pack[] }) {
 
 function Compare({ audits, packOf }: { audits: AuditT[]; packOf: (id: string) => Pack }) {
   const pairs = new Map<string, { baseline?: AuditT; after?: AuditT }>()
-  for (const a of audits.filter((a) => a.kind !== 'weighed' && auditChecked(a, packOf(a.pack))).sort((a, b) => a.date.localeCompare(b.date))) { const key = JSON.stringify([a.site, a.pack, a.bin]); pairs.set(key, { ...pairs.get(key), [a.phase]: a }) }
+  for (const a of audits.filter((a) => a.kind !== 'weighed' && auditChecked(a, packOf(a.pack))).sort((a, b) => a.date.localeCompare(b.date))) { const key = JSON.stringify([siteKey(a.site), a.pack, a.bin]); pairs.set(key, { ...pairs.get(key), [a.phase]: a }) }
   const complete = [...pairs.values()].filter((p) => p.baseline && p.after)
   if (!complete.length) return null
   return <section><h2 className="text-title">{t('Before and after')}</h2>{complete.map(({ baseline: b, after: a }) => { const before = contamination(b!, packOf(b!.pack)), after = contamination(a!, packOf(a!.pack)); return <div key={b!.id} className="mt-4 flex flex-wrap justify-between gap-3 border-b border-line py-4"><span>{b!.site} <BinChip bin={binById(packOf(b!.pack), b!.bin)} /></span><span>{before.n && after.n ? t('{before} → {after}', { before: pct(before.rate), after: pct(after.rate) }) : t('Add items to both audits')}</span></div> })}</section>

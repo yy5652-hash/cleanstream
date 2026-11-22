@@ -8,10 +8,12 @@ export type PilotAudit = {
   id: string; site: string; pack: string; bin: string; date: string
   arm: Arm; phase: Phase; n?: number; bad?: number; weights?: Weights
   conditions?: { item: string; condition: string; n: number; bad: number }[]
-  auditor?: string; notes?: string
+  auditor?: string; notes?: string; pendingRecheck?: boolean
 }
 export type Pilot = { id: string; name: string; pack: string; created: string; outcome: Outcome; primaryBin: string; audits: PilotAudit[]; example?: boolean; runComplete?: boolean }
-export const defaultPrimaryBin = (pack: Pick<Pack, 'bins'>): string => pack.bins.find((b) => b.kind === 'recycle')?.id ?? pack.bins[0]?.id ?? ''
+export const auditBins = (pack: Pick<Pack, 'bins'>) => pack.bins.filter((bin) => bin.kind !== 'special')
+export const siteKey = (site: string) => site.trim().replace(/\s+/g, ' ').toLowerCase()
+export const defaultPrimaryBin = (pack: Pick<Pack, 'bins'>): string => pack.bins.find((b) => b.kind === 'recycle')?.id ?? auditBins(pack)[0]?.id ?? ''
 // Migrate once at the storage/import boundary, then keep both choices fixed.
 export function migratePilot(pilot: Omit<Pilot, 'outcome' | 'primaryBin'> & { outcome?: Outcome; primaryBin?: string }, fallbackBin = ''): Pilot {
   const bins = new Map<string, number>()
@@ -20,7 +22,7 @@ export function migratePilot(pilot: Omit<Pilot, 'outcome' | 'primaryBin'> & { ou
   return { ...pilot, primaryBin: pilot.primaryBin || primaryBin, outcome: pilot.outcome ?? (pilot.audits.some((a) => !validWeights(a.weights)) ? 'count' : 'weight') }
 }
 export function createPilot(data: Pick<Pilot, 'id' | 'name' | 'pack' | 'created'> & { primaryBin?: string }, pack: Pick<Pack, 'bins'>, outcome: Outcome = 'weight'): Pilot {
-  return { ...data, primaryBin: data.primaryBin ?? defaultPrimaryBin(pack), outcome, audits: [] }
+  return { ...data, primaryBin: auditBins(pack).some((bin) => bin.id === data.primaryBin) ? data.primaryBin! : defaultPrimaryBin(pack), outcome, audits: [] }
 }
 export const hasCounts = (a: PilotAudit): a is PilotAudit & { n: number; bad: number } => count(a.n) && count(a.bad) && a.n > 0 && a.bad <= a.n
 export type Rate = { n: number; bad: number; rate: number | null; weights: Weights | null; weightRate: number | null; weighedAudits: number; audits: number }
@@ -28,7 +30,7 @@ export type Estimate = { value: number; low: number; high: number }
 const Z = 1.959963984540054
 
 export function rate(pilot: Pilot, arm: Arm, phase: Phase): Rate {
-  const xs = pilot.audits.filter((a) => a.arm === arm && a.phase === phase)
+  const xs = pilot.audits.filter((a) => !a.pendingRecheck && a.arm === arm && a.phase === phase)
   const n = xs.reduce((s, a) => s + (a.n ?? 0), 0)
   const bad = xs.reduce((s, a) => s + (a.bad ?? 0), 0)
   const weighed = xs.filter((a) => validWeights(a.weights))
@@ -54,7 +56,7 @@ export function change(pilot: Pilot, arm: Arm): Estimate | null {
 }
 
 export type StationPhase = { audits: number; rate: number | null; basis: Outcome }
-export type StationResult = { site: string; bin: string; arm: Arm | null; before: StationPhase; after: StationPhase; change: number | null; incomplete: Outcome | null }
+export type StationResult = { site: string; bin: string; arm: Arm | null; before: StationPhase; after: StationPhase; change: number | null; incomplete: Outcome | null; chronologyInvalid: boolean; nameVariants: boolean }
 export type StationEstimate = Estimate & { withStations: number; withoutStations: number; df: number }
 
 function stationPhase(audits: PilotAudit[], outcome: Outcome): StationPhase {
@@ -67,19 +69,25 @@ function stationPhase(audits: PilotAudit[], outcome: Outcome): StationPhase {
 export function stations(pilot: Pilot, outcome = pilot.outcome, bin = pilot.primaryBin): StationResult[] {
   const groups = new Map<string, PilotAudit[]>()
   for (const audit of pilot.audits) {
-    const group = groups.get(audit.site) ?? []
+    const group = groups.get(siteKey(audit.site)) ?? []
     group.push(audit)
-    groups.set(audit.site, group)
+    groups.set(siteKey(audit.site), group)
   }
-  return [...groups.entries()].map(([site, allAudits]) => {
-    const audits = allAudits.filter((a) => a.bin === bin)
+  return [...groups.entries()].map(([, allAudits]) => {
+    const site = allAudits[0].site
+    const nameVariants = new Set(allAudits.map((audit) => audit.site)).size > 1
+    const checked = allAudits.filter((audit) => !audit.pendingRecheck)
+    const beforeDates = checked.filter((audit) => audit.phase === 'before').map((audit) => audit.date)
+    const afterDates = checked.filter((audit) => audit.phase === 'after').map((audit) => audit.date)
+    const chronologyInvalid = beforeDates.some((before) => afterDates.some((after) => after <= before))
+    const audits = checked.filter((a) => a.bin === bin)
     const incomplete = audits.some((a) => outcome === 'weight' ? !validWeights(a.weights) : !hasCounts(a)) ? outcome : null
     const before = stationPhase(audits.filter((a) => a.phase === 'before'), outcome)
     const after = stationPhase(audits.filter((a) => a.phase === 'after'), outcome)
     // Check every stream: a physical station can only belong to one arm.
     const arm = allAudits.every((a) => a.arm === allAudits[0].arm) ? allAudits[0].arm : null
-    return { site, bin, arm, before, after, incomplete,
-      change: !incomplete && arm && before.rate !== null && after.rate !== null ? after.rate - before.rate : null }
+    return { site, bin, arm, before, after, incomplete, chronologyInvalid, nameVariants,
+      change: !chronologyInvalid && !incomplete && arm && before.rate !== null && after.rate !== null ? after.rate - before.rate : null }
   })
 }
 
@@ -156,13 +164,6 @@ export function verdict(e: StationEstimate | null): 'Lower with stations' | 'Hig
   return e.high < 0 ? 'Lower with stations' : e.low > 0 ? 'Higher with stations' : 'Not enough to tell yet'
 }
 
-// Equal groups, two-sided alpha .05, power .80; items in each phase of an arm.
-export function sampleSize(baseline: number, drop: number): number | null {
-  if (!Number.isFinite(baseline) || !Number.isFinite(drop) || baseline <= 0 || baseline > 1 || drop <= 0 || drop > baseline) return null
-  const after = baseline - drop, pooled = (baseline + after) / 2
-  return Math.ceil((Z * Math.sqrt(2 * pooled * (1 - pooled)) + 0.8416212335729143 * Math.sqrt(baseline * (1 - baseline) + after * (1 - after))) ** 2 / drop ** 2)
-}
-
 const obj = (x: unknown): x is Record<string, unknown> => !!x && typeof x === 'object' && !Array.isArray(x)
 const str = (x: unknown): x is string => typeof x === 'string' && x.trim().length > 0 && x.length <= 500
 const count = (x: unknown): x is number => typeof x === 'number' && Number.isSafeInteger(x) && x >= 0
@@ -176,7 +177,7 @@ export function parsePilot(input: string): { pilot: Pilot | null; error: boolean
     if (!obj(x) || !str(x.id) || !str(x.name) || !str(x.pack) || !date(x.created) || (x.example !== undefined && typeof x.example !== 'boolean') || (x.runComplete !== undefined && typeof x.runComplete !== 'boolean') || (x.outcome !== undefined && x.outcome !== 'weight' && x.outcome !== 'count') || (x.primaryBin !== undefined && x.primaryBin !== '' && !str(x.primaryBin)) || !Array.isArray(x.audits) || x.audits.length > 100000) throw Error()
     const ids = new Set<string>()
     const audits = x.audits.map((a: unknown): PilotAudit => {
-      if (!obj(a) || !str(a.id) || ids.has(a.id) || !str(a.site) || a.pack !== x.pack || !str(a.bin) || !date(a.date) || !['with', 'without'].includes(String(a.arm)) || !['before', 'after'].includes(String(a.phase)) || !((count(a.n) && count(a.bad) && a.bad <= a.n) || (a.n === undefined && a.bad === undefined && validWeights(a.weights))) || (a.weights !== undefined && !validWeights(a.weights))) throw Error()
+      if (!obj(a) || !str(a.id) || ids.has(a.id) || !str(a.site) || a.pack !== x.pack || !str(a.bin) || !date(a.date) || !['with', 'without'].includes(String(a.arm)) || !['before', 'after'].includes(String(a.phase)) || !((count(a.n) && count(a.bad) && a.bad <= a.n) || (a.n === undefined && a.bad === undefined && validWeights(a.weights))) || (a.weights !== undefined && !validWeights(a.weights)) || (a.pendingRecheck !== undefined && typeof a.pendingRecheck !== 'boolean')) throw Error()
       if ((a.auditor !== undefined && !str(a.auditor)) || (a.notes !== undefined && (typeof a.notes !== 'string' || a.notes.length > 10000))) throw Error()
       const conditions: NonNullable<PilotAudit['conditions']> = []
       if (a.conditions !== undefined) {
@@ -187,7 +188,7 @@ export function parsePilot(input: string): { pilot: Pilot | null; error: boolean
         }
       }
       ids.add(a.id)
-      return { id: a.id, site: a.site, pack: a.pack as string, bin: a.bin, date: a.date, arm: a.arm as Arm, phase: a.phase as Phase, ...(a.n !== undefined ? { n: a.n as number, bad: a.bad as number } : {}),
+      return { ...(a.pendingRecheck ? { pendingRecheck: true } : {}), id: a.id, site: a.site, pack: a.pack as string, bin: a.bin, date: a.date, arm: a.arm as Arm, phase: a.phase as Phase, ...(a.n !== undefined ? { n: a.n as number, bad: a.bad as number } : {}),
         ...(conditions.length ? { conditions } : {}), ...(a.auditor ? { auditor: a.auditor as string } : {}), ...(a.notes ? { notes: a.notes as string } : {}), ...(a.weights ? { weights: { totalKg: (a.weights as Weights).totalKg, contaminantKg: (a.weights as Weights).contaminantKg } } : {}) }
     })
     return { pilot: migratePilot({ id: x.id, name: x.name, pack: x.pack, created: x.created, outcome: x.outcome as Outcome | undefined, primaryBin: x.primaryBin as string | undefined, audits, ...(x.example ? { example: true } : {}), ...(x.runComplete ? { runComplete: true } : {}) }), error: false }

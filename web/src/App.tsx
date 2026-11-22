@@ -3,6 +3,7 @@ import { Shell, type Section } from './components/Shell'
 import { localizePack, t, useLang } from './i18n'
 import { PACK_IDS, usePacks } from './rules'
 import Scan from './views/Scan'
+import { RulesUpdateNotice, useRulesUpdate } from './components/RulesUpdate'
 
 // Everything except Sort loads when first opened
 const About = lazy(() => import('./views/About'))
@@ -58,6 +59,7 @@ export default function App() {
   const [city, setCity] = useState(storedCity)
   const { lang, ready } = useLang()
   const english = usePacks(city)
+  const rulesUpdated = useRulesUpdate(english)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const packs = useMemo(() => english?.map(localizePack) ?? null, [english, lang])
   const install = useInstall()
@@ -88,12 +90,13 @@ export default function App() {
   // ?kiosk: the bin station alone, full window, for a tablet mounted above the bins
   if (params.has('kiosk')) {
     const start = params.get('source') === 'demo' ? 'demo' : 'camera'
-    return pack ? <Suspense fallback={null}><Station pack={pack} start={start} wait={Number(params.get('wait')) || 0} /></Suspense> : null
+    return pack ? <Suspense fallback={null}><Station pack={pack} rulesUpdated={rulesUpdated} start={start} wait={Number(params.get('wait')) || 0} /></Suspense> : null
   }
 
   const loading = <p className="min-h-[70vh] text-ink-2">{t('Loading…')}</p>
   return (
     <Shell section={ROUTES[route]} city={city} setCity={setCity} install={install}>
+      {rulesUpdated && <RulesUpdateNotice />}
       {!packs || !pack || (route !== 'scan' && packs.length < PACK_IDS.length) ? loading : (
         <Suspense fallback={loading}>
           {route === 'scan' && <Scan pack={pack} packs={packs} />}

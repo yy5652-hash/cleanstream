@@ -1,6 +1,6 @@
 import { belongs, binById, type Pack } from './rules'
 import { itemName } from './items'
-import { validWeights, type Arm, type Outcome, type Phase, type PilotAudit } from './pilot'
+import { validWeights, type Arm, type Outcome, type Phase, type Pilot, type PilotAudit } from './pilot'
 import type { Audit, AuditItem } from './store'
 
 export const label = (it: AuditItem) => it.fixed ?? it.pred
@@ -57,4 +57,15 @@ export function auditCsv(a: Audit, pack: Pack): string | null {
       [...new Set(conditionOf(it, pack) ? [conditionOf(it, pack)!.bin] : rule.cases?.map((c) => c.bin) ?? [rule.bin])].map((id) => binById(pack, id).name).join(' / '), itemBelongs(a, it, pack) ? 'no' : 'yes', ...weights])
   }
   return rows.map((row) => row.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n')
+}
+
+// An unchecked correction suspends a snapshot without losing its identity or measurements.
+export function syncPilotAudits(pilots: Pilot[], audits: Audit[], packs: Pack[]): Pilot[] {
+  return pilots.map((pilot) => ({ ...pilot, audits: pilot.audits.map((snapshot) => {
+    const audit = audits.find((audit) => audit.id === snapshot.id)
+    const pack = audit && packs.find((pack) => pack.id === audit.pack)
+    if (!audit || !pack) return snapshot // Imported summaries need no local photo audit.
+    return snapshotAudit(audit, pack, snapshot.arm, snapshot.phase)
+      ?? { ...snapshot, weights: audit.weights, pendingRecheck: true }
+  }) }))
 }

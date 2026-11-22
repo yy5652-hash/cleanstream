@@ -42,7 +42,7 @@ export function summarize(log: Record<string, StationDay>, days: string[]): Summ
 }
 
 export function stationCsv(pack: Pack, log: Record<string, StationDay>, days: string[], profile = readStationProfile(pack)): string {
-  const rows = [['date', 'city', 'type', 'id', 'name', 'count', 'physical_bin', 'approved_by', 'approval_date']]
+  const rows = [['date', 'city', 'type', 'id', 'name', 'count', 'current_physical_bin', 'current_profile_approved_by', 'current_profile_approval_date']]
   const device = stationId()
   for (const day of days) {
     const d = log[day]

@@ -75,7 +75,14 @@ function useStored<T>(key: string, fallback: T, normalize: (v: T) => T = (v) => 
   return [v, update]
 }
 
-export const useAudits = () => useStored<Audit[]>('cleanstream.audits', [])
+// One-time compatibility migration for weights previously stored only on pilot snapshots.
+export function migrateAuditWeights(audits: Audit[], pilots: Pilot[]): Audit[] {
+  return audits.map((audit) => {
+    const weights = pilots.flatMap((pilot) => pilot.audits).find((snapshot) => snapshot.id === audit.id && snapshot.weights)?.weights
+    return !audit.weights && weights ? { ...audit, weights } : audit
+  })
+}
+export const useAudits = () => useStored<Audit[]>('cleanstream.audits', [], (audits) => migrateAuditWeights(audits, read<Pilot[]>('cleanstream.pilots', [])))
 // Select once per source session so delayed demo callbacks can never persist counts.
 export const stationLogWriter = (source: string, persist: (f: (log: StationLog) => StationLog) => void): typeof persist => source === 'camera' ? persist : () => {}
 const EMPTY_STATION_LOG: StationLog = {}
