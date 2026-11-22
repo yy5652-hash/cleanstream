@@ -39,7 +39,7 @@ it('stores one device id across exports and includes camera source and package v
   const csv = stationCsv(pack, { '2026-11-22': { bins: { blue: 1 }, items: { metal_can: 1 }, tapped: 1, unsure: 1 } }, ['2026-11-22'])
   const rows = csv.split('\n')
   expect(rows).toHaveLength(5)
-  expect(rows[0]).toBe('"date","city","type","id","name","count","station_id","source","app_version"')
+  expect(rows[0]).toBe('"date","city","type","id","name","count","physical_bin","approved_by","approval_date","station_id","source","app_version"')
   const version = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version
   for (const row of rows.slice(1)) expect(row.endsWith(`"${firstId}","camera","${version}"`)).toBe(true)
   expect(stationCsv(pack, {}, []).split('\n')).toHaveLength(1)

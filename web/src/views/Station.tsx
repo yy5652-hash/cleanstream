@@ -1,5 +1,6 @@
-import { ArrowDown, Check, Globe, Maximize, Minimize, Settings2, Video, Volume2, VolumeX } from 'lucide-react'
+import { Check, Globe, Maximize, Minimize, Settings2, Video, Volume2, VolumeX } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { StationBins, StationDestination } from '../components/StationBins'
 import { HoldSettings } from '../components/HoldSettings'
 import { Sheet } from '../components/Sheet'
 import { Button } from '../components/ui/button'
@@ -8,11 +9,12 @@ import { itemName } from '../items'
 import { classify, loadModel, useModel } from '../model/client'
 import { partsOf } from '../parts'
 import { answer, binById, caseRule, shownItem, type Answer, type Pack } from '../rules'
-import { cameraConstraints, readConfig, useStationBins, useStationCamera } from '../station-config'
+import { cameraConstraints, readConfig, physicalBinFor, physicalBinStyle, useStationProfile, useStationCamera } from '../station-config'
 import { lastDays, record, stationLogWriter, today, useStationLog } from '../store'
 import { BinChip, pct, sampleUrl, useSamples } from '../ui'
 import { changedCells, focusBox, GRID_H, GRID_W, isPresent, isStill, type Box } from './motion'
-import { BinOrder } from './StationSetup'
+import { StationProfileEditor } from '../components/StationProfileEditor'
+import { PinSettings } from '../components/OperatorPin'
 
 type Source = 'off' | 'camera' | 'demo'
 type Phase = 'idle' | 'looking' | 'result' | 'thanks'
@@ -107,13 +109,14 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
   const [shot, setShot] = useState<string | null>(null)
   const [frame, setFrame] = useState<string | null>(null)
   const [settings, setSettings] = useState(false)
+  const [pinPrompt, setPinPrompt] = useState(false)
   const [languages, setLanguages] = useState(false)
   const [cameraFailed, setCameraFailed] = useState(false)
   const [scanFailed, setScanFailed] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [chosen, setChosen] = useState<string | null>(null)
   const unsure = useRef(false)
-  const [binIds, setBinIds] = useStationBins(pack, config.city === pack.id ? config.bins : undefined)
+  const [profile, setProfile] = useStationProfile(pack, config.city === pack.id ? config.profile : undefined, config.city === pack.id ? config.bins : undefined)
   const [log, persistLog] = useStationLog()
   // Capture the source in each inference session, including delayed unsure callbacks.
   const setLog = stationLogWriter(source, persistLog)
@@ -144,12 +147,12 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
   const timers = useRef<number[]>([])
   const day = today()
   const total = lastDays(7, day).reduce((sum, date) => sum + Object.values(log[pack.id]?.[date]?.bins ?? {}).reduce((a, b) => a + b, 0), 0)
-  const bins = binIds.map((id) => binById(pack, id))
+  const binLabel = (id: string) => physicalBinFor(profile, id)?.label || binById(pack, id).name
   const tips = useMemo(() => TIPS.filter((id) => pack.items[id] && !pack.items[id].cases?.length), [pack])
   const { lang } = useLang()
   const homeLang = useRef(lang)
   const paused = useRef(false)
-  useEffect(() => { paused.current = settings || languages }, [settings, languages])
+  useEffect(() => { paused.current = settings || languages || pinPrompt }, [settings, languages, pinPrompt])
   const ready = useRef(false)
   useEffect(() => { ready.current = model.status === 'ready' }, [model.status])
 
@@ -217,7 +220,7 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
       const item = shownItem(pack, a).id
       if (a.sure && !pack.items[item].cases?.length) {
         setLog((l) => record(l, pack.id, today(), { bin, item }))
-        if (speak.current) say(t('{item}. {bin}.', { item: itemName(item), bin: a.bins[0].bin.name }))
+        if (speak.current) say(t('{item}. {bin}.', { item: itemName(item), bin: binLabel(a.bins[0].bin.id) }))
         later(RESULT_MS, () => { setPhase('thanks'); later(THANKS_MS, () => setPhase('idle')) })
       } else {
         unsure.current = true
@@ -323,7 +326,8 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
   const rule = baseRule && condition ? caseRule(baseRule, condition) : baseRule
   const needsCondition = !!baseRule?.ask && !!baseRule?.cases?.length && !condition && (ans?.sure || !!chosen)
   const target = phase === 'result' && rule && !needsCondition && (ans?.sure || chosen) ? binById(pack, rule.bin) : null
-  const here = target && binIds.includes(target.id)
+  const physicalTarget = target ? physicalBinFor(profile, target.id) : undefined
+  const targetStyle = physicalTarget ? physicalBinStyle(pack, physicalTarget) : target
   const parts = target && item ? partsOf(pack, item).slice(1) : []
   const choosing = phase === 'result' && ans && !target
   const partNames: Record<string, string> = { Cup: t('Cup'), Lid: t('Lid'), Sleeve: t('Sleeve'), Straw: t('Straw') }
@@ -346,7 +350,7 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
     setConditionId(caseId ?? null)
     const bin = pack.items[id].cases?.find((c) => c.id === caseId)?.bin ?? pack.items[id].bin
     setLog((l) => record(l, pack.id, today(), { bin, item: id, tapped: true }))
-    if (speak.current) say(t('{item}. {bin}.', { item: itemName(id), bin: binById(pack, bin).name }))
+    if (speak.current) say(t('{item}. {bin}.', { item: itemName(id), bin: binLabel(bin) }))
     later(RESULT_MS, () => { setPhase('thanks'); later(THANKS_MS, () => setPhase('idle')) })
   }
   const changeSource = (next: Source) => {
@@ -365,13 +369,13 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
     '--c-paper': '#0a1420', '--c-card': '#132130', '--c-well': '#1a2a3c', '--c-ink': '#f3eedf',
     '--c-ink-2': '#d3cab1', '--c-ink-3': '#ada38a', '--c-line': '#29394c',
     '--c-primary': '#f3eedf', '--c-on-primary': '#14273b', '--c-accent': '#79a9d6',
-    background: '#0a1420', color: target?.ink ?? '#f3eedf', colorScheme: 'dark',
+    background: '#0a1420', color: targetStyle?.ink ?? '#f3eedf', colorScheme: 'dark',
   } as CSSProperties
   const iconButton = 'shrink-0 border-current/30 text-inherit hover:bg-transparent hover:text-inherit hover:opacity-80 focus-visible:ring-current'
 
   return (
     <div data-phase={phase} role="main" translate="no" style={rootStyle} className="relative isolate flex min-h-dvh w-full min-w-0 flex-col overflow-x-clip [overflow-wrap:anywhere]">
-      {target && <div key={`${item}-${target.id}`} className="pointer-events-none absolute inset-0 -z-10 animate-flood" style={{ background: target.color }} />}
+      {target && <div key={`${item}-${target.id}`} className="pointer-events-none absolute inset-0 -z-10 animate-flood" style={{ background: targetStyle!.color }} />}
       <h1 className="sr-only">{t('Cleanstream bin station: {city} rules', { city: pack.name })}</h1>
       <header className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 pb-2 pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-6">
         <div className="min-w-0 flex-1 text-sm leading-relaxed">
@@ -382,7 +386,7 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
           <Button variant="outline" className={`${iconButton} px-2.5`} aria-label={t('Change language')} aria-haspopup="dialog" onClick={() => setLanguages(true)}><Globe aria-hidden /><span lang={lang} className="hidden sm:inline">{lang === 'en' ? t('English') : lang === 'es' ? t('Spanish') : lang === 'zh-Hans' ? t('Simplified Chinese') : t('Traditional Chinese')}</span></Button>
           <Button variant="outline" size="icon" className={iconButton} aria-pressed={voice} aria-label={voice ? t('Turn voice off') : t('Turn voice on')} onClick={toggleVoice}>{voice ? <Volume2 aria-hidden /> : <VolumeX aria-hidden />}</Button>
           <Button variant="outline" size="icon" className={iconButton} aria-label={isFullscreen ? t('Exit full screen') : t('Full screen')} onClick={fullscreen}>{isFullscreen ? <Minimize aria-hidden /> : <Maximize aria-hidden />}</Button>
-          <HoldSettings onOpen={() => setSettings(true)} className={iconButton}><Settings2 aria-hidden /></HoldSettings>
+          <HoldSettings city={pack.id} onPromptChange={setPinPrompt} onOpen={() => setSettings(true)} className={iconButton}><Settings2 aria-hidden /></HoldSettings>
         </div>
       </header>
       {source === 'demo' && <p className="px-4 text-sm font-medium sm:px-6">{t('Example data')}<span aria-hidden> · </span>{t('Demo feed')}</p>}
@@ -392,17 +396,18 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
           {(phase === 'idle' || phase === 'looking') && <>
             <h2 className={`text-[14vmin] leading-[1.02] font-semibold tracking-[-0.04em] ${phase === 'looking' ? 'animate-breathe' : ''}`}>{phase === 'looking' ? t('Looking…') : t('Hold it up')}</h2>
             {phase === 'idle' && tips.length > 0 && <p className="mx-auto mt-[3vmin] max-w-4xl text-[max(1rem,3vmin)] leading-snug">
-              <Rotating items={tips} every={5200} render={(id) => t('{item} goes in {bin} here.', { item: itemName(id), bin: binById(pack, pack.items[id].bin).name })} />
+              <Rotating items={tips} every={5200} render={(id) => physicalBinFor(profile, pack.items[id].bin)
+                ? t('{item} goes in {bin} here.', { item: itemName(id), bin: binLabel(pack.items[id].bin) })
+                : profile.note || t('Not in these bins. {prep}', { prep: pack.items[id].prep[0] ?? '' })} />
             </p>}
           </>}
           {target && item && rule && <div className="animate-rise">
             {shot && <img src={shot} alt={t('What the camera saw')} className="mx-auto mb-[2.5vmin] size-[16vmin] min-h-20 min-w-20 rounded-[2.5vmin] object-cover shadow-2xl ring-4 ring-white/50" />}
             <p className="text-[max(1.25rem,4vmin)] font-medium">{itemName(item)}</p>
-            <h2 className="my-[3vmin] min-h-[10dvh] text-[18vmin] leading-[0.95] font-semibold tracking-[-0.04em]">{target.name}</h2>
-            <p className="mx-auto max-w-5xl text-[max(1.125rem,3.5vmin)] leading-snug">{here ? rule.prep[0] : t('Not in these bins. {prep}', { prep: rule.prep[0] ?? '' })}</p>
+            <StationDestination profile={profile} target={target} prep={rule.prep[0]} />
             {parts.length > 0 && <ul className="mt-[3vmin] flex flex-wrap justify-center gap-3">
               {parts.map((part) => <li key={part.name} className="max-w-72 rounded-2xl border border-current/30 px-4 py-3 text-left">
-                <div className="flex flex-wrap items-center gap-2 text-[max(1rem,2.5vmin)] font-medium"><span>{t('{part}:', { part: partNames[part.name] ?? t(part.name) })}</span><BinChip bin={part.bin} /></div>
+                <div className="flex flex-wrap items-center gap-2 text-[max(1rem,2.5vmin)] font-medium"><span>{t('{part}:', { part: partNames[part.name] ?? t(part.name) })}</span><BinChip bin={{ ...part.bin, name: binLabel(part.bin.id) }} /></div>
                 {part.note && <p className="mt-1 text-sm">{partNotes[part.note] ?? t(part.note)}</p>}
               </li>)}
             </ul>}
@@ -414,12 +419,12 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
               {needsCondition ? baseRule!.cases!.map((c) => {
                 const bin = binById(pack, c.bin)
                 return <button key={c.id} onClick={() => choose(item!, c.id)} className="flex min-h-[22vmin] flex-col justify-between gap-4 rounded-3xl p-[4vmin] text-left focus-visible:outline-ink" style={{ background: bin.color, color: bin.ink }}>
-                  <span className="text-[max(1.5rem,5vmin)] leading-tight font-semibold">{c.label}</span><BinChip bin={bin} />
+                  <span className="text-[max(1.5rem,5vmin)] leading-tight font-semibold">{c.label}</span><BinChip bin={{ ...bin, name: binLabel(bin.id) }} />
                 </button>
               }) : options.map((id) => {
                 const bin = binById(pack, pack.items[id].bin)
                 return <button key={id} onClick={() => choose(id)} className="flex min-h-[22vmin] flex-col justify-between gap-4 rounded-3xl p-[4vmin] text-left focus-visible:outline-ink" style={{ background: bin.color, color: bin.ink }}>
-                  <span className="text-[max(1.5rem,5vmin)] leading-tight font-semibold">{itemName(id)}</span><span className="text-[max(1rem,3vmin)]">{bin.name}</span>
+                  <span className="text-[max(1.5rem,5vmin)] leading-tight font-semibold">{itemName(id)}</span><span className="text-[max(1rem,3vmin)]">{binLabel(bin.id)}</span>
                 </button>
               })}
             </div>
@@ -451,14 +456,8 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
       </div>
 
       <div className="mt-auto px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-[8vmin] sm:px-4">
-        <div aria-label={t('Your bins, left to right')} className="grid gap-1.5 sm:gap-3" style={{ gridTemplateColumns: `repeat(${Math.max(1, bins.length)}, minmax(0, 1fr))` }}>
-          {bins.map((bin) => <div key={bin.id} className={`relative flex min-h-[12vmin] min-w-0 items-center justify-center rounded-2xl px-1 py-[3vmin] text-center text-[clamp(0.75rem,2.8vmin,2.5rem)] leading-tight font-semibold ${target && target.id !== bin.id ? 'grayscale' : ''}`} style={{ background: bin.color, color: bin.ink }}>
-            {target?.id === bin.id && <span aria-hidden className="pointer-events-none absolute inset-0 rounded-2xl border-[3px] border-current" />}
-            {target?.id === bin.id && <ArrowDown className="absolute -top-[8vmin] left-1/2 h-[7vmin] w-[7vmin] -translate-x-1/2" strokeWidth={3} aria-label={t('Use this bin')} />}
-            {bin.name}
-          </div>)}
-        </div>
-        {!bins.length && <p className="text-center">{t('Hold the settings button for 2 seconds to choose bins.')}</p>}
+        <StationBins pack={pack} profile={profile} target={target} />
+        {!profile.bins.length && <p className="text-center">{t('Hold the settings button for 2 seconds to choose bins.')}</p>}
       </div>
 
       <Sheet open={languages} onClose={() => setLanguages(false)} title={t('Language')} className="[&_button[aria-label]]:min-h-11 [&_button[aria-label]]:min-w-11">
@@ -469,7 +468,8 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
         </div>
       </Sheet>
       <Sheet open={settings} onClose={() => setSettings(false)} title={t('Set up bins')} className="[&_button[aria-label]]:min-h-11 [&_button[aria-label]]:min-w-11">
-        <BinOrder pack={pack} ids={binIds} onChange={setBinIds} />
+        <StationProfileEditor pack={pack} profile={profile} onChange={setProfile} />
+        <PinSettings city={pack.id} authenticated />
         <section className="mt-6 space-y-3">
           <label className="block">{t('Station camera')}<select className="mt-2 min-h-11 w-full rounded-2xl border border-line bg-card px-3" value={cameraId} onChange={(e) => setCameraId(e.target.value)}>
             <option value="">{t('Front camera (default)')}</option>
@@ -481,7 +481,7 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
           {cameraFailed && <p role="alert">{t('Camera unavailable. Allow camera access, or try the demo feed.')}</p>}
           {source === 'camera' && <video ref={settingsVideo} autoPlay playsInline muted aria-label={t('Live camera preview')} className="aspect-[4/3] w-full rounded-2xl bg-well object-cover" />}
         </section>
-        <Button className="mt-6 w-full" onClick={() => setSettings(false)} disabled={!binIds.length}>{t('Done')}</Button>
+        <Button className="mt-6 w-full" onClick={() => setSettings(false)} disabled={!profile.bins.length}>{t('Done')}</Button>
       </Sheet>
     </div>
   )

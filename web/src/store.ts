@@ -41,9 +41,15 @@ function write(key: string, v: unknown) {
   }
 }
 
-function useStored<T>(key: string, fallback: T): [T, (f: (v: T) => T) => void] {
+function useStored<T>(key: string, fallback: T, sync = false): [T, (f: (v: T) => T) => void] {
   const [v, setV] = useState<T>(() => read(key, fallback))
   useEffect(() => write(key, v), [key, v])
+  useEffect(() => {
+    if (!sync) return
+    const changed = (event: StorageEvent) => { if (event.key === key || event.key === null) setV(read(key, fallback)) }
+    window.addEventListener('storage', changed)
+    return () => window.removeEventListener('storage', changed)
+  }, [key, sync, fallback])
   const update = useCallback((f: (v: T) => T) => setV(f), [])
   return [v, update]
 }
@@ -51,7 +57,24 @@ function useStored<T>(key: string, fallback: T): [T, (f: (v: T) => T) => void] {
 export const useAudits = () => useStored<Audit[]>('cleanstream.audits', [])
 // Select once per source session so delayed demo callbacks can never persist counts.
 export const stationLogWriter = (source: string, persist: (f: (log: StationLog) => StationLog) => void): typeof persist => source === 'camera' ? persist : () => {}
-export const useStationLog = () => useStored<StationLog>('cleanstream.station.log', {})
+const EMPTY_STATION_LOG: StationLog = {}
+export const useStationLog = () => useStored<StationLog>('cleanstream.station.log', EMPTY_STATION_LOG, true)
+
+export const stationSinceKey = (city: string) => `cleanstream.station.since.${city}`
+export function readCountingSince(city: string): string {
+  try { return localStorage.getItem(stationSinceKey(city)) ?? '' } catch { return '' }
+}
+export function resetStationCounts(log: StationLog, city: string): StationLog {
+  const next = { ...log }
+  delete next[city]
+  return next
+}
+// Write the date before clearing counts; a storage error must leave the existing counts intact.
+export function startStationPilot(city: string, clearCounts: () => void, date = today()): string {
+  localStorage.setItem(stationSinceKey(city), date)
+  clearCounts()
+  return date
+}
 
 // Local calendar day (YYYY-MM-DD), and the n days ending on `last`, oldest first
 export const today = () => {
