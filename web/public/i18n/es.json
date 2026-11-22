@@ -1339,7 +1339,7 @@
      "why": "Las baterías de ion de litio provocan incendios en las plantas de clasificación, así que nunca van en el carrito azul.",
      "cases": {
       "rechargeable": {
-       "label": "Recargable, de ion-litio o dentro de un vapeador o dispositivo",
+       "label": "Recargable, de litio, de botón o dentro de un vapeador o dispositivo",
        "prep": [
         "Baterías recargables, de litio y de automóvil: llévalas a Household Chemicals & Computer Recycling Facility",
         "Nunca en el carrito azul"
@@ -1357,7 +1357,11 @@
         "batería de teléfono",
         "batería de laptop",
         "batería de portátil",
-        "batería externa"
+        "batería externa",
+        "pila de botón",
+        "pila botón",
+        "batería de botón",
+        "pila de reloj"
        ]
       },
       "alkaline": {
@@ -1368,10 +1372,7 @@
        ],
        "match": [
         "alcalina",
-        "alcalinas",
-        "desechable",
-        "de un solo uso",
-        "no recargable"
+        "alcalinas"
        ]
       }
      }
@@ -1976,7 +1977,7 @@
      "why": "Las baterías recargables y de ion de litio nunca deben ir en la basura ni en el reciclaje. Provocan incendios en camiones y plantas.",
      "cases": {
       "rechargeable": {
-       "label": "Recargable, de ion-litio o dentro de un vapeador o dispositivo",
+       "label": "Recargable, de litio, de botón o dentro de un vapeador o dispositivo",
        "prep": [
         "Cubre los extremos con cinta adhesiva o embolsa cada pila por separado",
         "Recargables y de ion de litio: devuélvelas a una tienda que las venda"
@@ -1994,7 +1995,11 @@
         "batería de teléfono",
         "batería de laptop",
         "batería de portátil",
-        "batería externa"
+        "batería externa",
+        "pila de botón",
+        "pila botón",
+        "batería de botón",
+        "pila de reloj"
        ]
       },
       "alkaline": {
@@ -2005,10 +2010,7 @@
        ],
        "match": [
         "alcalina",
-        "alcalinas",
-        "desechable",
-        "de un solo uso",
-        "no recargable"
+        "alcalinas"
        ]
       }
      }

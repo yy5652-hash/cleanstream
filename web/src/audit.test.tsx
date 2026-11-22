@@ -51,7 +51,7 @@ describe('condition-aware audits', () => {
     const html = render(a)
     expect(html).toContain('Choose the condition')
     expect(html).toContain('Single-use alkaline')
-    expect(html).toContain('Rechargeable, lithium-ion')
+    expect(html).toContain('Rechargeable, lithium, button or coin')
     expect(html).toMatch(/disabled=""[^>]*>.*?Export CSV/)
     expect(html).toMatch(/disabled=""[^>]*>Add checked audit to pilot/)
     a.items[0].condition = 'rechargeable'

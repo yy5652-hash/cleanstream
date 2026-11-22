@@ -351,7 +351,7 @@
    "cases": [
     {
      "id": "rechargeable",
-     "label": "Rechargeable, lithium-ion, or inside a vape or device",
+     "label": "Rechargeable, lithium, button or coin, or inside a vape or device",
      "bin": "dropoff",
      "prep": [
       "Tape the ends or bag each battery",
@@ -371,7 +371,14 @@
       "ni-mh",
       "nicad",
       "ni-cd",
-      "lithium aa"
+      "lithium aa",
+      "button battery",
+      "button cell",
+      "coin battery",
+      "coin cell",
+      "cr2032",
+      "hearing aid battery",
+      "watch battery"
      ]
     },
     {
@@ -383,11 +390,7 @@
       "Single-use alkaline (AA, AAA, 9V) may go in the trash"
      ],
      "match": [
-      "alkaline",
-      "single-use",
-      "single use",
-      "disposable battery",
-      "non-rechargeable"
+      "alkaline"
      ]
     }
    ]

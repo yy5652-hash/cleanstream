@@ -120,8 +120,13 @@ describe('conditional answers', () => {
     expect(matchCase(nyc.items.battery, query)).toBeUndefined()
   })
 
-  it.each(['AlKaLiNe', '(alkaline)', 'single-use AA', 'a disposable battery'])('matches whole words case-insensitively: %s', (query) => {
+  it.each(['AlKaLiNe', '(alkaline)', 'alkaline AA'])('matches whole words case-insensitively: %s', (query) => {
     expect(matchCase(nyc.items.battery, query)?.id).toBe('alkaline')
+  })
+
+  // single-use or disposable is not a chemistry; button and coin cells are never trash in NYC
+  it.each(['single-use button battery', 'a disposable battery', 'single-use AA', 'coin cell CR2032', 'alkaline button battery'])('never sends %s to the trash', (query) => {
+    expect(matchCase(nyc.items.battery, query)?.bin ?? nyc.items.battery.bin).toBe('dropoff')
   })
 
   it.each(['AA battery', '(aaa)', '9V battery', 'C battery', 'd battery'])('does not take a size as a chemistry: %s', (query) => {

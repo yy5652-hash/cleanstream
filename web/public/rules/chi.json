@@ -303,7 +303,7 @@
       "cases": [
         {
           "id": "rechargeable",
-          "label": "Rechargeable, lithium-ion, or inside a vape or device",
+          "label": "Rechargeable, lithium, button or coin, or inside a vape or device",
           "bin": "dropoff",
           "prep": [
             "Rechargeable, lithium and car batteries: take to the Household Chemicals & Computer Recycling Facility",
@@ -323,7 +323,14 @@
             "ni-mh",
             "nicad",
             "ni-cd",
-            "lithium aa"
+            "lithium aa",
+            "button battery",
+            "button cell",
+            "coin battery",
+            "coin cell",
+            "cr2032",
+            "hearing aid battery",
+            "watch battery"
           ]
         },
         {
@@ -335,11 +342,7 @@
             "Never in the blue cart"
           ],
           "match": [
-            "alkaline",
-            "single-use",
-            "single use",
-            "disposable battery",
-            "non-rechargeable"
+            "alkaline"
           ]
         }
       ]
