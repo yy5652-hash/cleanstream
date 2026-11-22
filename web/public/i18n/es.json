@@ -582,7 +582,16 @@
   "Unlock settings": "Desbloquear ajustes",
   "Unlock station settings": "Desbloquear ajustes de la estación",
   "Use 4–8 digits. The PIN is stored only on this device and is never shared in a station link.": "Usa entre 4 y 8 dígitos. El PIN se guarda solo en este dispositivo y nunca se comparte en el enlace de la estación.",
-  "This link is too long for a QR code. Shorten the labels or profile details, or copy the station link.": "Este enlace es demasiado largo para un código QR. Acorta las etiquetas o los datos del perfil, o copia el enlace de la estación."
+  "This link is too long for a QR code. Shorten the labels or profile details, or copy the station link.": "Este enlace es demasiado largo para un código QR. Acorta las etiquetas o los datos del perfil, o copia el enlace de la estación.",
+  "Primary bin stream": "Flujo de contenedor principal",
+  "Primary bin stream: {bin}": "Flujo de contenedor principal: {bin}",
+  "Secondary: primary bin contamination by count": "Secundario: contaminación del contenedor principal por número de artículos",
+  "Secondary bin stream: {bin}": "Flujo de contenedor secundario: {bin}",
+  "Mean station change with tablets minus mean station change without tablets. Each station is one physical site. Only the primary bin stream is used. Negative values mean less contamination with tablets.": "Cambio medio de las estaciones con tabletas menos el de las estaciones sin tabletas. Cada estación es un lugar físico. Solo se usa el flujo principal. Los valores negativos indican menos contaminación con tabletas.",
+  "The 95% Welch t interval uses paired station changes and Welch–Satterthwaite degrees of freedom. An interval and directional verdict require at least three paired stations per arm and nonzero variation in each arm.": "El intervalo t de Welch del 95% usa cambios emparejados por estación y grados de libertad de Welch–Satterthwaite. El intervalo y el veredicto direccional requieren al menos tres estaciones emparejadas por grupo y variación distinta de cero en cada grupo.",
+  "Could not import: {files}. Files must be valid pilots for the same city, primary bin, primary outcome and data type.": "No se pudo importar: {files}. Los archivos deben ser pilotos válidos de la misma ciudad, contenedor principal, resultado principal y tipo de datos.",
+  "unknown (before v{version})": "desconocido (anterior a v{version})",
+  "unknown": "desconocido"
  },
  "cities": {
   "nyc": "Nueva York",

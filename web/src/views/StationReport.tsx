@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { t } from '../i18n'
 import { itemName } from '../items'
 import { binById, type Pack } from '../rules'
-import { download, lastDays, readCountingSince, startStationPilot, stationId, type StationDay } from '../store'
+import { download, STATION_PROVENANCE_VERSION, lastDays, readCountingSince, startStationPilot, stationId, type StationDay } from '../store'
 import { BinChip, pct } from '../ui'
 import { Button } from '../components/ui/button'
 import { Sheet } from '../components/Sheet'
@@ -47,12 +47,20 @@ export function stationCsv(pack: Pack, log: Record<string, StationDay>, days: st
   for (const day of days) {
     const d = log[day]
     if (!d) continue
-    for (const [id, n] of Object.entries(d.bins)) rows.push([day, pack.name, 'bin', id, pack.bins.find((b) => b.id === id)?.name ?? id, String(n), physicalBinFor(profile, id)?.label ?? ''])
-    for (const [id, n] of Object.entries(d.items)) rows.push([day, pack.name, 'item', id, itemName(id), String(n)])
-    if (d.tapped) rows.push([day, pack.name, 'settled_by_tap', '', 'Not sure, person tapped the item', String(d.tapped)])
-    if (d.unsure) rows.push([day, pack.name, 'not_sure', '', 'Not sure', String(d.unsure)])
+    for (const entry of d.entries ?? [d]) {
+      const first = rows.length
+      for (const [id, n] of Object.entries(entry.bins)) rows.push([day, pack.name, 'bin', id, pack.bins.find((b) => b.id === id)?.name ?? id, String(n), physicalBinFor(profile, id)?.label ?? ''])
+      for (const [id, n] of Object.entries(entry.items)) rows.push([day, pack.name, 'item', id, itemName(id), String(n)])
+      if (entry.tapped) rows.push([day, pack.name, 'settled_by_tap', '', 'Not sure, person tapped the item', String(entry.tapped)])
+      if (entry.unsure) rows.push([day, pack.name, 'not_sure', '', 'Not sure', String(entry.unsure)])
+      for (let index = first; index < rows.length; index++) {
+        const r = rows[index]
+        rows[index] = [...r.slice(0, 6), r[6] ?? '', profile.approvedBy ?? '', profile.approvedDate ?? '', device, entry.source ?? t('unknown (before v{version})', { version: STATION_PROVENANCE_VERSION }), entry.appVersion ?? t('unknown')]
+      }
+    }
   }
-  return rows.map((r, index) => [...(index === 0 ? r : [...r.slice(0, 6), r[6] ?? '', profile.approvedBy ?? '', profile.approvedDate ?? '']), ...(index === 0 ? ['station_id', 'source', 'app_version'] : [device, 'camera', import.meta.env.VITE_APP_VERSION])].map((v) => `"${v.replace(/"/g, '""')}"`).join(',')).join('\n')
+  rows[0].push('station_id', 'source', 'app_version')
+  return rows.map((r) => r.map((v) => `"${v.replace(/"/g, '""')}"`).join(',')).join('\n')
 }
 
 const RANGES = [[1, () => t('Today')], [7, () => t('7 days')], [30, () => t('30 days')]] as const

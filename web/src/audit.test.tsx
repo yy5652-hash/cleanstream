@@ -33,7 +33,7 @@ describe('condition-aware audits', () => {
     expect(csv.split('\n')[2]).toContain('"Green bin","no"')
     const snapshot = snapshotAudit(a, nyc, 'with', 'before')!
     expect(snapshot.conditions).toEqual([{ item: 'pizza_box', condition: 'greasy', n: 1, bad: 1 }, { item: 'pizza_box', condition: 'clean', n: 1, bad: 0 }])
-    const p = { ...createPilot({ id: 'p', name: 'Pilot', pack: 'nyc', created: a.date }), audits: [snapshot] }
+    const p = { ...createPilot({ id: 'p', name: 'Pilot', pack: 'nyc', created: a.date, primaryBin: snapshot.bin }, nyc), audits: [snapshot] }
     expect(parsePilot(exportPilot(p)).pilot?.audits).toEqual([snapshot])
     expect(exportPilot(p)).not.toContain('thumb')
     const html = render(a)
@@ -95,7 +95,7 @@ describe('direct weighed audits', () => {
     expect(snapshot).not.toHaveProperty('n')
     expect(snapshot).not.toHaveProperty('bad')
     expect(snapshot).toMatchObject({ weights: a.weights, auditor: 'AB', notes: a.notes })
-    const p = { ...createPilot({ id: 'p', name: 'Pilot', pack: 'nyc', created: a.date }), audits: [snapshot, { ...snapshot, id: 'after', phase: 'after' as const, weights: { totalKg: 10, contaminantKg: 1 } }] }
+    const p = { ...createPilot({ id: 'p', name: 'Pilot', pack: 'nyc', created: a.date, primaryBin: snapshot.bin }, nyc), audits: [snapshot, { ...snapshot, id: 'after', phase: 'after' as const, weights: { totalKg: 10, contaminantKg: 1 } }] }
     expect(rate(p, 'with', 'before')).toMatchObject({ n: 0, rate: null, weightRate: 0.2 })
     expect(stations(p)[0].change).toBeCloseTo(-0.1)
     expect(stations(p, 'count')[0]).toMatchObject({ incomplete: 'count', change: null })

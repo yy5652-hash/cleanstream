@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { afterEach, expect, it, vi } from 'vitest'
-import { record, stationId, stationLogWriter, type StationLog } from './store'
+import { record, STATION_PROVENANCE_VERSION, stationId, stationLogWriter, type StationLog } from './store'
 import { stationCsv } from './views/StationReport'
 import type { Pack } from './rules'
 
@@ -36,7 +36,8 @@ it('stores one device id across exports and includes camera source and package v
   expect(firstId).toMatch(/^[0-9a-f-]{36}$/)
   expect(values.get('cleanstream.station.id')).toBe(firstId)
   expect(stationId()).toBe(firstId)
-  const csv = stationCsv(pack, { '2026-11-22': { bins: { blue: 1 }, items: { metal_can: 1 }, tapped: 1, unsure: 1 } }, ['2026-11-22'])
+  const logged = record(record(record({}, 'nyc', '2026-11-22', { bin: 'blue', item: 'metal_can' }), 'nyc', '2026-11-22', { bin: 'blue', item: 'metal_can', tapped: true }), 'nyc', '2026-11-22', null)
+  const csv = stationCsv(pack, logged.nyc, ['2026-11-22'])
   const rows = csv.split('\n')
   expect(rows).toHaveLength(5)
   expect(rows[0]).toBe('"date","city","type","id","name","count","physical_bin","approved_by","approval_date","station_id","source","app_version"')
@@ -48,4 +49,30 @@ it('stores one device id across exports and includes camera source and package v
 it('retains a previously stored station id', () => {
   vi.stubGlobal('localStorage', { getItem: () => 'existing-tablet-id' })
   expect(stationId()).toBe('existing-tablet-id')
+})
+
+
+it('keeps legacy counts unknown even when new answers arrive on the same day', () => {
+  const day = '2026-11-22'
+  const legacy: StationLog = { nyc: { [day]: { bins: { blue: 7 }, items: { metal_can: 7 }, unsure: 2 } } }
+  const updated = record(legacy, 'nyc', day, { bin: 'blue', item: 'metal_can' })
+  expect(updated.nyc[day]).toMatchObject({ bins: { blue: 8 }, unsure: 2 })
+  expect(updated.nyc[day].entries).toHaveLength(2)
+  const rows = stationCsv(pack, updated.nyc, [day]).split('\n')
+  expect(rows.filter((r) => r.includes(`unknown (before v${STATION_PROVENANCE_VERSION})`))).toHaveLength(3)
+  expect(rows.filter((r) => r.endsWith(`"camera","${import.meta.env.VITE_APP_VERSION}"`))).toHaveLength(2)
+  expect(stationCsv(pack, legacy.nyc, [day])).toContain(`"unknown (before v${STATION_PROVENANCE_VERSION})","unknown"`)
+})
+
+it('exports the version and source observed for each entry across app updates', () => {
+  const day = '2026-11-22'
+  const old = record({}, 'nyc', day, { bin: 'blue', item: 'metal_can' }, 'camera', '1.0.1')
+  const newer = record(old, 'nyc', day, { bin: 'green', item: 'paper' }, 'camera', '1.0.2')
+  const log = record(newer, 'nyc', day, null, 'manual', '1.0.2')
+  expect(log.nyc[day].entries).toHaveLength(3)
+  const csv = stationCsv(pack, log.nyc, [day])
+  expect(csv).toContain('"camera","1.0.1"')
+  expect(csv).toContain('"camera","1.0.2"')
+  expect(csv).toContain('"manual","1.0.2"')
+  expect(old.nyc[day]).toMatchObject({ source: 'camera', appVersion: '1.0.1', bins: { blue: 1 } })
 })

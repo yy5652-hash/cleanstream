@@ -1,3 +1,5 @@
+import type { Pack } from './rules'
+
 export type Arm = 'with' | 'without'
 export type Outcome = 'weight' | 'count'
 export type Phase = 'before' | 'after'
@@ -8,13 +10,17 @@ export type PilotAudit = {
   conditions?: { item: string; condition: string; n: number; bad: number }[]
   auditor?: string; notes?: string
 }
-export type Pilot = { id: string; name: string; pack: string; created: string; outcome: Outcome; audits: PilotAudit[]; example?: boolean; runComplete?: boolean }
-// Migrate once at the storage/import boundary, then keep the chosen outcome fixed.
-export function migratePilot(pilot: Omit<Pilot, 'outcome'> & { outcome?: Outcome }): Pilot {
-  return { ...pilot, outcome: pilot.outcome ?? (pilot.audits.some((a) => !validWeights(a.weights)) ? 'count' : 'weight') }
+export type Pilot = { id: string; name: string; pack: string; created: string; outcome: Outcome; primaryBin: string; audits: PilotAudit[]; example?: boolean; runComplete?: boolean }
+export const defaultPrimaryBin = (pack: Pick<Pack, 'bins'>): string => pack.bins.find((b) => b.kind === 'recycle')?.id ?? pack.bins[0]?.id ?? ''
+// Migrate once at the storage/import boundary, then keep both choices fixed.
+export function migratePilot(pilot: Omit<Pilot, 'outcome' | 'primaryBin'> & { outcome?: Outcome; primaryBin?: string }, fallbackBin = ''): Pilot {
+  const bins = new Map<string, number>()
+  for (const audit of pilot.audits) bins.set(audit.bin, (bins.get(audit.bin) ?? 0) + 1)
+  const primaryBin = [...bins].sort((a, b) => b[1] - a[1])[0]?.[0] ?? fallbackBin
+  return { ...pilot, primaryBin: pilot.primaryBin || primaryBin, outcome: pilot.outcome ?? (pilot.audits.some((a) => !validWeights(a.weights)) ? 'count' : 'weight') }
 }
-export function createPilot(data: Pick<Pilot, 'id' | 'name' | 'pack' | 'created'>, outcome: Outcome = 'weight'): Pilot {
-  return { ...data, outcome, audits: [] }
+export function createPilot(data: Pick<Pilot, 'id' | 'name' | 'pack' | 'created'> & { primaryBin?: string }, pack: Pick<Pack, 'bins'>, outcome: Outcome = 'weight'): Pilot {
+  return { ...data, primaryBin: data.primaryBin ?? defaultPrimaryBin(pack), outcome, audits: [] }
 }
 export const hasCounts = (a: PilotAudit): a is PilotAudit & { n: number; bad: number } => count(a.n) && count(a.bad) && a.n > 0 && a.bad <= a.n
 export type Rate = { n: number; bad: number; rate: number | null; weights: Weights | null; weightRate: number | null; weighedAudits: number; audits: number }
@@ -58,21 +64,21 @@ function stationPhase(audits: PilotAudit[], outcome: Outcome): StationPhase {
   return { audits: audits.length, rate: total > 0 ? bad / total : null, basis: outcome }
 }
 
-export function stations(pilot: Pilot, outcome = pilot.outcome): StationResult[] {
+export function stations(pilot: Pilot, outcome = pilot.outcome, bin = pilot.primaryBin): StationResult[] {
   const groups = new Map<string, PilotAudit[]>()
   for (const audit of pilot.audits) {
-    const key = JSON.stringify([audit.site, audit.bin])
-    const group = groups.get(key) ?? []
+    const group = groups.get(audit.site) ?? []
     group.push(audit)
-    groups.set(key, group)
+    groups.set(audit.site, group)
   }
-  return [...groups.values()].map((audits) => {
+  return [...groups.entries()].map(([site, allAudits]) => {
+    const audits = allAudits.filter((a) => a.bin === bin)
     const incomplete = audits.some((a) => outcome === 'weight' ? !validWeights(a.weights) : !hasCounts(a)) ? outcome : null
     const before = stationPhase(audits.filter((a) => a.phase === 'before'), outcome)
     const after = stationPhase(audits.filter((a) => a.phase === 'after'), outcome)
-    // A physical station cannot belong to both arms. Keep it visible but exclude it.
-    const arm = audits.every((a) => a.arm === audits[0].arm) ? audits[0].arm : null
-    return { site: audits[0].site, bin: audits[0].bin, arm, before, after, incomplete,
+    // Check every stream: a physical station can only belong to one arm.
+    const arm = allAudits.every((a) => a.arm === allAudits[0].arm) ? allAudits[0].arm : null
+    return { site, bin, arm, before, after, incomplete,
       change: !incomplete && arm && before.rate !== null && after.rate !== null ? after.rate - before.rate : null }
   })
 }
@@ -123,16 +129,24 @@ export function t975(df: number): number {
   return (low + high) / 2
 }
 
+function stationChanges(pilot: Pilot, arm: Arm): number[] {
+  return stations(pilot).filter((s) => s.arm === arm && s.change !== null).map((s) => s.change!)
+}
+const mean = (xs: number[]) => xs.reduce((s, v) => s + v, 0) / xs.length
+export function observedEffect(pilot: Pilot): Pick<StationEstimate, 'value' | 'withStations' | 'withoutStations'> | null {
+  const w = stationChanges(pilot, 'with'), c = stationChanges(pilot, 'without')
+  return w.length && c.length ? { value: mean(w) - mean(c), withStations: w.length, withoutStations: c.length } : null
+}
 export function netEffect(pilot: Pilot): StationEstimate | null {
-  const rows = stations(pilot)
-  const values = (arm: Arm) => rows.filter((s) => s.arm === arm && s.change !== null).map((s) => s.change!)
-  const w = values('with'), c = values('without')
-  if (w.length < 2 || c.length < 2) return null
-  const mean = (xs: number[]) => xs.reduce((s, v) => s + v, 0) / xs.length
+  const w = stationChanges(pilot, 'with'), c = stationChanges(pilot, 'without')
+  if (w.length < 3 || c.length < 3) return null
   const variance = (xs: number[]) => xs.reduce((s, v) => s + (v - mean(xs)) ** 2, 0) / (xs.length - 1)
   const vw = variance(w) / w.length, vc = variance(c) / c.length
+  // Identical changes contain no empirical station-level uncertainty to estimate.
+  const constant = (xs: number[]) => xs.every((v) => Math.abs(v - xs[0]) <= 4 * Number.EPSILON)
+  if (constant(w) || constant(c)) return null
   const se2 = vw + vc
-  const df = se2 === 0 ? Infinity : se2 ** 2 / (vw ** 2 / (w.length - 1) + vc ** 2 / (c.length - 1))
+  const df = se2 ** 2 / (vw ** 2 / (w.length - 1) + vc ** 2 / (c.length - 1))
   const value = mean(w) - mean(c), half = t975(df) * Math.sqrt(se2)
   return { value, low: value - half, high: value + half, df, withStations: w.length, withoutStations: c.length }
 }
@@ -159,7 +173,7 @@ export function validWeights(x: unknown): x is Weights {
 export function parsePilot(input: string): { pilot: Pilot | null; error: boolean } {
   try {
     const x: unknown = JSON.parse(input)
-    if (!obj(x) || !str(x.id) || !str(x.name) || !str(x.pack) || !date(x.created) || (x.example !== undefined && typeof x.example !== 'boolean') || (x.runComplete !== undefined && typeof x.runComplete !== 'boolean') || (x.outcome !== undefined && x.outcome !== 'weight' && x.outcome !== 'count') || !Array.isArray(x.audits) || x.audits.length > 100000) throw Error()
+    if (!obj(x) || !str(x.id) || !str(x.name) || !str(x.pack) || !date(x.created) || (x.example !== undefined && typeof x.example !== 'boolean') || (x.runComplete !== undefined && typeof x.runComplete !== 'boolean') || (x.outcome !== undefined && x.outcome !== 'weight' && x.outcome !== 'count') || (x.primaryBin !== undefined && x.primaryBin !== '' && !str(x.primaryBin)) || !Array.isArray(x.audits) || x.audits.length > 100000) throw Error()
     const ids = new Set<string>()
     const audits = x.audits.map((a: unknown): PilotAudit => {
       if (!obj(a) || !str(a.id) || ids.has(a.id) || !str(a.site) || a.pack !== x.pack || !str(a.bin) || !date(a.date) || !['with', 'without'].includes(String(a.arm)) || !['before', 'after'].includes(String(a.phase)) || !((count(a.n) && count(a.bad) && a.bad <= a.n) || (a.n === undefined && a.bad === undefined && validWeights(a.weights))) || (a.weights !== undefined && !validWeights(a.weights))) throw Error()
@@ -176,7 +190,7 @@ export function parsePilot(input: string): { pilot: Pilot | null; error: boolean
       return { id: a.id, site: a.site, pack: a.pack as string, bin: a.bin, date: a.date, arm: a.arm as Arm, phase: a.phase as Phase, ...(a.n !== undefined ? { n: a.n as number, bad: a.bad as number } : {}),
         ...(conditions.length ? { conditions } : {}), ...(a.auditor ? { auditor: a.auditor as string } : {}), ...(a.notes ? { notes: a.notes as string } : {}), ...(a.weights ? { weights: { totalKg: (a.weights as Weights).totalKg, contaminantKg: (a.weights as Weights).contaminantKg } } : {}) }
     })
-    return { pilot: migratePilot({ id: x.id, name: x.name, pack: x.pack, created: x.created, outcome: x.outcome as Outcome | undefined, audits, ...(x.example ? { example: true } : {}), ...(x.runComplete ? { runComplete: true } : {}) }), error: false }
+    return { pilot: migratePilot({ id: x.id, name: x.name, pack: x.pack, created: x.created, outcome: x.outcome as Outcome | undefined, primaryBin: x.primaryBin as string | undefined, audits, ...(x.example ? { example: true } : {}), ...(x.runComplete ? { runComplete: true } : {}) }), error: false }
   } catch { return { pilot: null, error: true } }
 }
 export function exportPilot(pilot: Pilot): string {
@@ -187,7 +201,7 @@ export function mergePilots(target: Pilot, files: { name: string; text: string }
   const audits = [...target.audits], ids = new Set(audits.map((a) => a.id)), errors: string[] = []
   for (const f of files) {
     const p = parsePilot(f.text).pilot
-    if (!p || p.pack !== target.pack || p.outcome !== target.outcome || !!p.example !== !!target.example) { errors.push(f.name); continue }
+    if (!p || p.pack !== target.pack || p.outcome !== target.outcome || p.primaryBin !== target.primaryBin || !!p.example !== !!target.example) { errors.push(f.name); continue }
     for (const a of p.audits) if (!ids.has(a.id)) { audits.push(a); ids.add(a.id) }
   }
   return { pilot: { ...target, audits }, errors, added: audits.length - target.audits.length }

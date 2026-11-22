@@ -3,7 +3,7 @@ import { Check, Download, Plus, Printer, Trash2, Upload } from 'lucide-react'
 import { Button } from '../components/ui/button'
 import { Sheet } from '../components/Sheet'
 import { t } from '../i18n'
-import { createPilot, hasCounts, exportPilot, mergePilots, netEffect, stations, verdict, rate, sampleSize, validWeights, type Arm, type Phase, type Pilot as PilotT, type PilotAudit, type Weights, type Outcome, type StationResult } from '../pilot'
+import { createPilot, defaultPrimaryBin, observedEffect, hasCounts, exportPilot, mergePilots, netEffect, stations, verdict, rate, sampleSize, validWeights, type Arm, type Phase, type Pilot as PilotT, type PilotAudit, type Weights, type Outcome, type StationResult } from '../pilot'
 import type { Pack } from '../rules'
 import { download, today, uid, usePilots } from '../store'
 import { pct } from '../ui'
@@ -16,7 +16,7 @@ const points = (v: number) => `${v > 0 ? '+' : v < 0 ? '−' : ''}${Math.abs(v *
 export function example(pack: Pack): PilotT {
   const id = uid()
   const bin = pack.bins.find((b) => b.kind === 'recycle')!.id
-  return { id, name: t('Example pilot'), example: true, runComplete: true, outcome: 'weight', pack: pack.id, created: today(), audits: Array.from({ length: 6 }, (_, station) => {
+  return { id, name: t('Example pilot'), example: true, runComplete: true, outcome: 'weight', primaryBin: bin, pack: pack.id, created: today(), audits: Array.from({ length: 6 }, (_, station) => {
     const arm: Arm = station < 3 ? 'with' : 'without'
     return (['before', 'after'] as const).flatMap((phase) => Array.from({ length: phase === 'before' ? 2 : 4 }, (_, week): PilotAudit => {
       const before = [30, 34, 28, 31, 29, 33][station]
@@ -29,8 +29,9 @@ export function example(pack: Pack): PilotT {
 }
 
 export default function Pilot({ pack, packs }: { pack: Pack; packs: Pack[] }) {
-  const [pilots, setPilots] = usePilots()
+  const [pilots, setPilots] = usePilots(pack)
   const [selected, setSelected] = useState<string | null>(null), [creating, setCreating] = useState(false), [name, setName] = useState('')
+  const [primaryBin, setPrimaryBin] = useState(() => defaultPrimaryBin(pack))
   const [outcome, setOutcome] = useState<Outcome>('weight')
   const [notice, setNotice] = useState(''), [deleting, setDeleting] = useState(false), [removing, setRemoving] = useState<string | null>(null), [weighing, setWeighing] = useState<PilotAudit | null>(null)
   const input = useRef<HTMLInputElement>(null)
@@ -38,7 +39,7 @@ export default function Pilot({ pack, packs }: { pack: Pack; packs: Pack[] }) {
   const pilot = choices.find((p) => p.id === selected) ?? choices[0]
   const pilotPack = packs.find((p) => p.id === pilot?.pack) ?? pack
   const update = (f: (p: PilotT) => PilotT) => { if (pilot) setPilots((ps) => ps.map((p) => p.id === pilot.id ? f(p) : p)) }
-  const start = () => { const p = createPilot({ id: uid(), name: name.trim(), pack: pack.id, created: today() }, outcome); setPilots((ps) => [p, ...ps]); setSelected(p.id); setCreating(false); setName(''); setOutcome('weight'); setNotice('') }
+  const start = () => { const p = createPilot({ id: uid(), name: name.trim(), pack: pack.id, created: today(), primaryBin: pack.bins.some((b) => b.id === primaryBin) ? primaryBin : defaultPrimaryBin(pack) }, pack, outcome); setPilots((ps) => [p, ...ps]); setSelected(p.id); setCreating(false); setName(''); setOutcome('weight'); setNotice('') }
   const loadExample = () => { const p = example(pack); setPilots((ps) => [p, ...ps]); setSelected(p.id); setNotice('') }
   const auditLink = (arm: Arm, phase: Phase) => `#audit?pilot=${encodeURIComponent(pilot!.id)}&arm=${arm}&phase=${phase}`
   const armReady = (arm: Arm, phase: Phase) => stations(pilot!).some((s) => s.arm === arm && !s.incomplete && s[phase].rate !== null)
@@ -50,7 +51,7 @@ export default function Pilot({ pack, packs }: { pack: Pack; packs: Pack[] }) {
     // Merge into the latest state, preserving edits made while files were read.
     setPilots((ps) => ps.map((p) => p.id === target.id ? mergePilots(p, read).pilot : p))
     const result = mergePilots(target, read)
-    setNotice(result.errors.length ? t('Could not import: {files}. Files must be valid pilots for the same city, primary outcome and data type.', { files: result.errors.join(', ') }) : t('Imported {count} new audits. Pictures are never included.', { count: result.added }))
+    setNotice(result.errors.length ? t('Could not import: {files}. Files must be valid pilots for the same city, primary bin, primary outcome and data type.', { files: result.errors.join(', ') }) : t('Imported {count} new audits. Pictures are never included.', { count: result.added }))
   }
   return <div className="space-y-8">
     <div className="space-y-6 print:hidden">
@@ -73,7 +74,7 @@ export default function Pilot({ pack, packs }: { pack: Pack; packs: Pack[] }) {
         <SampleHint />
       </div>
     </>}
-    <Sheet open={creating} onClose={() => setCreating(false)} title={t('Start a pilot')}><form onSubmit={(e) => { e.preventDefault(); if (name.trim()) start() }}><label>{t('Pilot name')}<input required maxLength={200} className={field} value={name} onChange={(e) => setName(e.target.value)} autoFocus /></label><label className="mt-4 block">{t('Primary outcome')}<select className={field} value={outcome} onChange={(e) => setOutcome(e.target.value as Outcome)}><option value="weight">{t('Contamination by weight')}</option><option value="count">{t('Contamination by item count')}</option></select></label><Button type="submit" className="mt-5" disabled={!name.trim()}>{t('Start a pilot')}</Button></form></Sheet>
+    <Sheet open={creating} onClose={() => setCreating(false)} title={t('Start a pilot')}><form onSubmit={(e) => { e.preventDefault(); if (name.trim()) start() }}><label>{t('Pilot name')}<input required maxLength={200} className={field} value={name} onChange={(e) => setName(e.target.value)} autoFocus /></label><label className="mt-4 block">{t('Primary bin stream')}<select className={field} value={pack.bins.some((b) => b.id === primaryBin) ? primaryBin : defaultPrimaryBin(pack)} onChange={(e) => setPrimaryBin(e.target.value)}>{pack.bins.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}</select></label><label className="mt-4 block">{t('Primary outcome')}<select className={field} value={outcome} onChange={(e) => setOutcome(e.target.value as Outcome)}><option value="weight">{t('Contamination by weight')}</option><option value="count">{t('Contamination by item count')}</option></select></label><Button type="submit" className="mt-5" disabled={!name.trim()}>{t('Start a pilot')}</Button></form></Sheet>
     <Sheet open={deleting} onClose={() => setDeleting(false)} title={t('Delete this pilot?')}><p className="mb-5 text-ink-2">{t('The pilot report will be removed from this device. Original bin audits stay in audit history.')}</p><Button onClick={() => { setPilots((ps) => ps.filter((p) => p.id !== pilot?.id)); setDeleting(false); setNotice('') }}>{t('Delete pilot')}</Button></Sheet>
     <Sheet open={!!removing} onClose={() => setRemoving(null)} title={t('Remove this audit from the pilot?')}><p className="mb-5 text-ink-2">{t('The original bin audit stays in audit history.')}</p><Button onClick={() => { update((p) => ({ ...p, audits: p.audits.filter((a) => a.id !== removing) })); setRemoving(null) }}>{t('Remove audit')}</Button></Sheet>
     <Sheet open={!!weighing} onClose={() => setWeighing(null)} title={t('Sample weights')}>{weighing && <WeightForm key={weighing.id} audit={weighing} save={(weights) => { update((p) => ({ ...p, audits: p.audits.map((a) => a.id === weighing.id ? { ...a, weights } : a) })); setWeighing(null) }} />}</Sheet>
@@ -81,28 +82,30 @@ export default function Pilot({ pack, packs }: { pack: Pack; packs: Pack[] }) {
 }
 
 function Report({ pilot, pack }: { pilot: PilotT; pack: Pack }) {
-  const net = netEffect(pilot), rows = stations(pilot)
+  const net = netEffect(pilot), observed = observedEffect(pilot), rows = stations(pilot)
   const used = (arm: Arm) => rows.filter((r) => r.arm === arm && r.change !== null).length
   return <article className="measure-print pilot-print rounded-3xl border border-line bg-card p-5 sm:p-8">
     {pilot.example && <p className="mb-4 rounded-2xl bg-well p-3 font-semibold">{t('Example data')}</p>}
     <header><h2 className="break-words text-title">{pilot.name}</h2><p className="mt-2 text-sm text-ink-2">{t('{city} · Created {date}', { city: pack.name, date: pilot.created })}</p></header>
-    <StationTable rows={rows} pack={pack} secondary={false} />
+    <p className="mt-4 font-semibold">{t('Primary bin stream: {bin}', { bin: pack.bins.find((b) => b.id === pilot.primaryBin)?.name ?? pilot.primaryBin })}</p>
+    <StationTable rows={rows} pack={pack} />
 
-    <div className="my-7"><h3 className="text-ink-2">{pilot.outcome === 'weight' ? t('Net effect on contamination by weight') : t('Net effect on contamination by count')}</h3><p className="mt-2 text-sm">{t('Stations used: {with} with tablets; {without} without tablets.', { with: used('with'), without: used('without') })}</p><p className="mt-3 text-display">{net ? t('{points} percentage points', { points: points(net.value) }) : t('Not enough to tell yet')}</p>
+    <div className="my-7"><h3 className="text-ink-2">{pilot.outcome === 'weight' ? t('Net effect on contamination by weight') : t('Net effect on contamination by count')}</h3><p className="mt-2 text-sm">{t('Stations used: {with} with tablets; {without} without tablets.', { with: used('with'), without: used('without') })}</p><p className="mt-3 text-display">{observed ? t('{points} percentage points', { points: points(observed.value) }) : t('Not enough to tell yet')}</p>
       {net && <p className="mt-4 text-lg">{t('95% interval: from {low} to {high} percentage points.', { low: points(net.low), high: points(net.high) })}</p>}
       <p className="mt-2 font-semibold">{verdict(net) === 'Lower with stations' ? t('Lower with stations') : verdict(net) === 'Higher with stations' ? t('Higher with stations') : t('Not enough to tell yet')}</p>
-      <p className="mt-3 text-sm text-ink-2">{t('Mean station change with tablets minus mean station change without tablets. Each station is one site and bin. Negative values mean less contamination with tablets.')}</p>
-      <p className="mt-2 text-sm text-ink-2">{t('The 95% Welch t interval uses paired station changes and Welch–Satterthwaite degrees of freedom. At least two paired stations per arm are needed for an interval; a directional verdict needs at least three per arm.')}</p>
+      <p className="mt-3 text-sm text-ink-2">{t('Mean station change with tablets minus mean station change without tablets. Each station is one physical site. Only the primary bin stream is used. Negative values mean less contamination with tablets.')}</p>
+      <p className="mt-2 text-sm text-ink-2">{t('The 95% Welch t interval uses paired station changes and Welch–Satterthwaite degrees of freedom. An interval and directional verdict require at least three paired stations per arm and nonzero variation in each arm.')}</p>
       <p className="mt-2 text-sm text-ink-2">{t('The primary outcome is fixed for the whole pilot. Stations missing required measurements are excluded from the net effect.')}</p>
     </div>
-    {pilot.outcome === 'weight' && <StationTable rows={stations(pilot, 'count')} pack={pack} secondary />}
+    {pilot.outcome === 'weight' && <StationTable rows={stations(pilot, 'count')} pack={pack} caption={t('Secondary: primary bin contamination by count')} />}
+    {[...new Set(pilot.audits.map((a) => a.bin))].filter((bin) => bin !== pilot.primaryBin).map((bin) => <StationTable key={bin} rows={stations(pilot, pilot.outcome, bin).filter((s) => s.before.audits + s.after.audits > 0)} pack={pack} caption={t('Secondary bin stream: {bin}', { bin: pack.bins.find((b) => b.id === bin)?.name ?? bin })} />)}
     <div className="overflow-x-auto"><table className="w-full table-fixed text-left text-xs [overflow-wrap:anywhere] sm:text-sm"><caption className="mb-3 text-left font-semibold">{t('Secondary: all items pooled (not independent)')}</caption><thead className="border-b border-line text-ink-2"><tr><th className="py-3 pr-3">{t('Group')}</th><th className="px-2 py-3">{t('Phase')}</th><th className="px-2 py-3">{t('Items (n)')}</th><th className="px-2 py-3">{t('By count')}</th><th className="px-2 py-3">{t('By weight')}</th></tr></thead><tbody>{(['with', 'without'] as const).flatMap((arm) => (['before', 'after'] as const).map((phase) => { const r = rate(pilot, arm, phase); return <tr key={`${arm}-${phase}`} className="border-b border-line"><th className="py-3 pr-3 font-medium">{armName(arm)}</th><td className="p-2">{phaseName(phase)}</td><td className="p-2">{r.n || t('No data')}</td><td className="p-2">{r.rate === null ? t('No data') : pct(r.rate)}{r.rate !== null && <span className="block text-xs text-ink-2">{t('{bad} contaminants', { bad: r.bad })}</span>}</td><td className="p-2">{r.weightRate === null ? t('Not weighed') : <>{pct(r.weightRate)}<span className="block text-xs text-ink-2">{t('{bad} / {total} kg', { bad: r.weights!.contaminantKg.toLocaleString(undefined, { maximumFractionDigits: 2 }), total: r.weights!.totalKg.toLocaleString(undefined, { maximumFractionDigits: 2 }) })}</span><span className="block text-xs text-ink-2">{t('{count} of {total} audits weighed', { count: r.weighedAudits, total: r.audits })}</span></>}</td></tr> }))}</tbody></table></div>
     <p className="mt-5 text-sm text-ink-2">{t('Pooled item counts are descriptive only. Weight totals cover only weighed audits; the primary interval uses stations as the units.')}</p>
   </article>
 }
 
-function StationTable({ rows, pack, secondary }: { rows: StationResult[]; pack: Pack; secondary: boolean }) {
-  return <div className="mt-7 overflow-x-auto"><table className="w-full text-left text-sm"><caption className="mb-3 text-left font-semibold">{secondary ? t('Secondary: contamination by station by count') : t('Contamination by station')}</caption><thead className="border-b border-line"><tr>{[t('Station'), t('Group'), t('Audits before / after'), t('Rate before'), t('Rate after'), t('Change (percentage points)'), t('Status')].map((h) => <th key={h} className="p-2">{h}</th>)}</tr></thead><tbody>{rows.map((row) => <tr key={JSON.stringify([row.site, row.bin])} className="border-b border-line">
+function StationTable({ rows, pack, caption }: { rows: StationResult[]; pack: Pack; caption?: string }) {
+  return <div className="mt-7 overflow-x-auto"><table className="w-full text-left text-sm"><caption className="mb-3 text-left font-semibold">{caption ?? t('Contamination by station')}</caption><thead className="border-b border-line"><tr>{[t('Station'), t('Group'), t('Audits before / after'), t('Rate before'), t('Rate after'), t('Change (percentage points)'), t('Status')].map((h) => <th key={h} className="p-2">{h}</th>)}</tr></thead><tbody>{rows.map((row) => <tr key={JSON.stringify([row.site, row.bin])} className="border-b border-line">
     <th className="p-2 font-medium">{row.site}<span className="block">{pack.bins.find((b) => b.id === row.bin)?.name ?? row.bin}</span></th><td className="p-2">{row.arm ? armName(row.arm) : t('Conflicting arms: excluded')}</td><td className="p-2">{row.before.audits} / {row.after.audits}</td><td className="p-2">{row.before.rate === null ? t('No data') : pct(row.before.rate)}</td><td className="p-2">{row.after.rate === null ? t('No data') : pct(row.after.rate)}</td><td className="p-2">{row.change === null ? t('No data') : points(row.change)}</td><td className="p-2">{row.incomplete === 'weight' ? t('Incomplete: missing weights') : row.incomplete === 'count' ? t('Incomplete: missing item counts') : row.before.basis === 'weight' ? t('By weight') : t('By count')}</td>
   </tr>)}</tbody></table></div>
 }

@@ -3,18 +3,12 @@ import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { Answer } from '../components/Answer'
 import { ItemSearch } from '../components/Search'
 import { t } from '../i18n'
-import { ITEMS, itemName } from '../items'
+import { itemName } from '../items'
 import { classify, loadModel, useModel } from '../model/client'
 import { answer, type Pack } from '../rules'
-import { sampleUrl, thumbUrl, useSamples, type Sample } from '../ui'
+import { linkedAnswer, sampleUrl, thumbUrl, useSamples, type Sample } from '../ui'
 
 const CameraSheet = lazy(() => import('../components/Camera').then((m) => ({ default: m.CameraSheet })))
-
-// The item in a shared link: #scan?item=pizza_box&city=sf
-const linkedItem = () => {
-  const id = new URLSearchParams(location.hash.split('?')[1] ?? '').get('item')
-  return id && id in ITEMS ? id : null
-}
 
 const POPULAR = ['paper_cup', 'pizza_box', 'battery', 'foam', 'plastic_bag_film', 'carton']
 
@@ -29,25 +23,27 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
   const [camera, setCamera] = useState(false)
   const [over, setOver] = useState(false)
   const [picked, setPicked] = useState<string | null>(null)
-  const [chosen, setChosen] = useState<string | null>(linkedItem)
+  const [chosen, setChosen] = useState<string | null>(() => linkedAnswer(pack).item)
+  const [caseId, setCaseId] = useState(() => linkedAnswer(pack).caseId)
   const [query, setQuery] = useState('')
-  const [fromSearch, setFromSearch] = useState(() => !!linkedItem())
+  const [fromSearch, setFromSearch] = useState(() => !!linkedAnswer(pack).item)
   const file = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     const on = () => {
-      const id = linkedItem()
-      if (id) (setChosen(id), setQuery(''), setFromSearch(true))
+      const linked = linkedAnswer(pack)
+      if (linked.item) (setChosen(linked.item), setCaseId(linked.caseId), setQuery(''), setFromSearch(true))
     }
     addEventListener('hashchange', on)
     return () => removeEventListener('hashchange', on)
-  }, [])
+  }, [pack])
 
   // on a phone the answer moves above the inputs: bring it into view
   const reveal = () => innerWidth < 1024 && requestAnimationFrame(() => scrollTo({ top: 0, behavior: 'smooth' }))
 
   const onSearch = (id: string, query = '') => {
     setChosen(id)
+    setCaseId(undefined)
     setQuery(query)
     setFromSearch(true)
     setPicked(null)
@@ -58,6 +54,7 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
   const onImage = async (blob: Blob) => {
     setPreview((old) => (old && URL.revokeObjectURL(old), URL.createObjectURL(blob)))
     setChosen(null)
+    setCaseId(undefined)
     setQuery('')
     setFromSearch(false)
     setProbs(null)
@@ -143,7 +140,7 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
             <p className="mt-1.5 text-ink-2">{model.status === 'error' ? t('The model could not load: {error}', { error: String(model.error) }) : t('Try again, or type the item instead.')}</p>
           </div>
         ) : hasAnswer ? (
-          <Answer key={`${pack.id}-${chosen}-${query}-${preview}`} query={query} ans={ans} ms={ms} pack={pack} packs={packs} item={chosen} preview={fromSearch ? null : preview} onChoose={(id, query = '') => (setChosen(id), setQuery(query))} />
+          <Answer key={`${pack.id}-${chosen}-${query}-${preview}-${caseId}`} caseId={caseId} query={query} ans={ans} ms={ms} pack={pack} packs={packs} item={chosen} preview={fromSearch ? null : preview} onChoose={(id, query = '') => (setChosen(id), setCaseId(undefined), setQuery(query))} />
         ) : samples.length > 0 && (
           <div>
             <h2 className="font-semibold">{t('No item handy? Try a photo')}</h2>

@@ -49,4 +49,15 @@ export const sampleUrl = (s: Sample) => `${import.meta.env.BASE_URL}samples/${s.
 export const thumbUrl = (s: Sample) => `${import.meta.env.BASE_URL}samples/thumbs/${s.file.replace(/\.jpg$/, '.webp')}`
 
 // A link that opens this answer directly: #scan?item=pizza_box&city=sf
-export const answerLink = (pack: Pack, item: string) => `${location.origin}${import.meta.env.BASE_URL}#scan?item=${item}&city=${pack.id}`
+export const answerLink = (pack: Pack, item: string, caseId?: string) => {
+  const condition = pack.items[item]?.cases?.find((c) => c.id === caseId)
+  return `${location.origin}${import.meta.env.BASE_URL}#scan?item=${encodeURIComponent(item)}&city=${encodeURIComponent(pack.id)}${condition ? `&case=${encodeURIComponent(condition.id)}` : ''}`
+}
+
+export function linkedAnswer(pack: Pack, hash = location.hash): { item: string | null; caseId?: string } {
+  const params = new URLSearchParams(hash.split('?')[1] ?? '')
+  const item = params.get('item')
+  if (!item || !Object.hasOwn(pack.items, item)) return { item: null }
+  const caseId = pack.items[item].cases?.find((c) => c.id === params.get('case'))?.id
+  return { item, caseId }
+}
