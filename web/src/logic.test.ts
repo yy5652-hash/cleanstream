@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { ITEMS, searchItems } from './items'
 import { answer, PACK_IDS, PACK_NAMES, SURE, type Pack } from './rules'
 import { lastDays, record, type StationLog } from './store'
-import { contamination } from './views/Audit'
+import { auditChecked, contamination } from './views/Audit'
 import { changedCells, focusBox, GRID_H, GRID_W, isPresent, isStill, share } from './views/motion'
 import { pickQuiz, ROUNDS } from './views/Quiz'
 import { summarize } from './views/StationReport'
@@ -74,7 +74,7 @@ describe('item search', () => {
 describe('contamination', () => {
   it('counts items whose bin differs from the audited bin, using corrections', () => {
     const bin = nyc.items.metal_can.bin
-    const item = (pred: string, fixed?: string) => ({ id: pred + (fixed ?? ''), thumb: '', pred, p: 0.9, fixed })
+    const item = (pred: string, fixed?: string) => ({ id: pred + (fixed ?? ''), thumb: '', pred, p: 0.9, fixed, checked: true })
     const c = contamination(
       { id: 'a', site: 's', pack: 'nyc', bin, phase: 'baseline', date: '2026-10-23', items: [item('metal_can'), item('plastic_bag_film'), item('food_scraps', 'metal_can'), item('')] },
       nyc,
@@ -83,6 +83,25 @@ describe('contamination', () => {
     expect(c.bad).toBe(1)
     expect(c.top[0][0]).toBe('plastic_bag_film')
   })
+  it('counts model labels provisionally and requires every item checked before use', () => {
+    const a = { id: 'a', site: 's', pack: 'nyc', bin: nyc.items.metal_can.bin, phase: 'baseline' as const, date: '2026-11-22', items: [
+      { id: '1', thumb: '', pred: 'metal_can', p: 0.9, checked: true },
+      { id: '2', thumb: '', pred: 'plastic_bag_film', p: 0.9, checked: false },
+    ] }
+    expect(contamination(a, nyc)).toMatchObject({ n: 2, bad: 1, checked: 1 })
+    expect(auditChecked(a)).toBe(false)
+    a.items[1].checked = true
+    expect(contamination(a, nyc)).toMatchObject({ n: 2, bad: 1, rate: 0.5 })
+    expect(auditChecked(a)).toBe(true)
+    expect(auditChecked({ ...a, items: [] })).toBe(false)
+    expect(auditChecked({ ...a, items: [{ id: 'x', thumb: '', pred: '', p: 0, checked: true }] })).toBe(false)
+  })
+  it('treats saved model predictions without a checked flag as unchecked', () => {
+    const a = { id: 'a', site: 's', pack: 'nyc', bin: 'blue', phase: 'baseline' as const, date: '2026-11-22', items: [{ id: '1', thumb: '', pred: 'metal_can', p: 0.99 }] }
+    expect(auditChecked(a)).toBe(false)
+    expect(contamination(a, nyc)).toMatchObject({ n: 1, checked: 0 })
+  })
+
 })
 
 describe('station log', () => {

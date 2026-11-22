@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { PACK_IDS, type Pack } from './rules'
-import { kioskUrl, moveBin, readConfig, readStationBins, saveStationBins, stationBinsKey } from './station-config'
+import { cameraConstraints, kioskUrl, moveBin, readConfig, readStationBins, saveStationBins, stationBinsKey } from './station-config'
 
 const packs: Pack[] = PACK_IDS.map((id) => JSON.parse(readFileSync(new URL(`../public/rules/${id}.json`, import.meta.url), 'utf8')))
 const nyc = packs[0]
@@ -88,4 +88,9 @@ describe('station layout', () => {
     expect(moveBin(ids, 'missing', 1)).toEqual(ids)
     expect(ids).toEqual(['blue', 'green', 'brown', 'trash'])
   })
+})
+
+it('requests the front camera by default and an exact saved device when chosen', () => {
+  expect(cameraConstraints('')).toEqual({ facingMode: 'user', width: { ideal: 1280 } })
+  expect(cameraConstraints('tablet-front-id')).toEqual({ deviceId: { exact: 'tablet-front-id' }, width: { ideal: 1280 } })
 })
