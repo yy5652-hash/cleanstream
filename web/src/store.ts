@@ -1,7 +1,8 @@
 // Everything the app keeps lives in this browser's localStorage: audits (with small thumbnails) and station counts.
 import { useCallback, useEffect, useState } from 'react'
+import { migratePilot, type Pilot, type Weights } from './pilot'
 
-export type AuditItem = { id: string; thumb: string; pred: string; p: number; fixed?: string; checked?: boolean }
+export type AuditItem = { id: string; thumb: string; pred: string; p: number; fixed?: string; checked?: boolean; condition?: string }
 export type Audit = {
   id: string
   site: string
@@ -10,6 +11,10 @@ export type Audit = {
   phase: 'baseline' | 'after'
   date: string
   items: AuditItem[]
+  kind?: 'weighed'
+  weights?: Weights
+  auditor?: string
+  notes?: string
 }
 export type StationDay = { bins: Record<string, number>; items: Record<string, number>; unsure: number; tapped?: number } // tapped: unsure, settled by a tap
 export type StationLog = Record<string, Record<string, StationDay>> // city pack id -> day -> counts (never pictures)
@@ -41,8 +46,8 @@ function write(key: string, v: unknown) {
   }
 }
 
-function useStored<T>(key: string, fallback: T): [T, (f: (v: T) => T) => void] {
-  const [v, setV] = useState<T>(() => read(key, fallback))
+function useStored<T>(key: string, fallback: T, normalize: (v: T) => T = (v) => v): [T, (f: (v: T) => T) => void] {
+  const [v, setV] = useState<T>(() => normalize(read(key, fallback)))
   useEffect(() => write(key, v), [key, v])
   const update = useCallback((f: (v: T) => T) => setV(f), [])
   return [v, update]
@@ -80,8 +85,8 @@ export function download(name: string, text: string, type = 'text/csv') {
   setTimeout(() => URL.revokeObjectURL(a.href), 1000)
 }
 
-// Pilots keep count summaries, never photographs.
-export const usePilots = () => useStored<import('./pilot').Pilot[]>('cleanstream.pilots', [])
+// Pilots keep measurement summaries, never photographs.
+export const usePilots = () => useStored<Pilot[]>('cleanstream.pilots', [], (ps) => ps.map(migratePilot))
 
 let deviceStationId: string | undefined
 export function stationId(): string {

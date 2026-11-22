@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { change, exportPilot, mergePilots, netEffect, parsePilot, rate, sampleSize, stations, t975, validWeights, verdict, wilson, type Pilot, type PilotAudit } from './pilot'
+import { change, createPilot, migratePilot, exportPilot, mergePilots, netEffect, parsePilot, rate, sampleSize, stations, t975, validWeights, verdict, wilson, type Pilot, type PilotAudit } from './pilot'
 const audit = (overrides: Partial<PilotAudit> = {}): PilotAudit => ({ id: 'a', site: 'Library', pack: 'nyc', bin: 'paper', date: '2026-11-02', arm: 'with', phase: 'before', n: 100, bad: 30, ...overrides })
-const pilot = (audits: PilotAudit[] = []): Pilot => ({ id: 'p', name: 'Library', pack: 'nyc', created: '2026-11-02', audits })
+const pilot = (audits: PilotAudit[] = []): Pilot => ({ id: 'p', name: 'Library', pack: 'nyc', created: '2026-11-02', outcome: 'count', audits })
 const design = () => pilot([
   audit(), audit({ id: 'b', phase: 'after', bad: 10 }),
   audit({ site: 'Canteen', id: 'c', arm: 'without', bad: 30 }), audit({ site: 'Canteen', id: 'd', arm: 'without', phase: 'after', bad: 25 }),
@@ -77,7 +77,7 @@ describe('intervals and verdicts', () => {
   it('does not let extra items or repeated audits create extra independent stations', () => {
     const p = paired()
     const e = netEffect(p)!
-    p.audits = p.audits.flatMap((a) => [a, { ...a, id: `${a.id}-copy`, n: a.n * 100, bad: a.bad * 100 }])
+    p.audits = p.audits.flatMap((a) => [a, { ...a, id: `${a.id}-copy`, n: a.n! * 100, bad: a.bad! * 100 }])
     expect(netEffect(p)).toEqual(e)
     expect(stations(p)).toHaveLength(6)
   })
@@ -169,7 +169,7 @@ describe('measuring screens', () => {
       const report = renderToStaticMarkup(createElement(PilotView, { pack, packs: [pack] }))
       expect(report).toContain('Example data')
       expect(report).toContain('At least two paired stations per arm')
-      expect(report).toContain('All items pooled (not independent)')
+      expect(report).toContain('Secondary: all items pooled (not independent)')
       expect(report.indexOf('Contamination by station')).toBeLessThan(report.indexOf('Net effect on contamination'))
       expect(report).toContain('measure-print pilot-print')
       expect(report).toContain('Print or save as PDF')
@@ -218,9 +218,11 @@ describe('station grouping and measurement basis', () => {
     expect(rows[0]).toMatchObject({ site: 'Library', bin: 'paper', arm: null, change: null, before: { audits: 2 }, after: { audits: 1 } })
     expect(rows[1]).toMatchObject({ before: { audits: 1 }, after: { audits: 0, rate: null }, change: null })
   })
-  it('uses weight only when every audit of the station is weighed, so both phases share one basis', () => {
+  it('excludes missing weights from the chosen weight outcome, retaining a count secondary view', () => {
     const p = pilot([audit({ weights: { totalKg: 1, contaminantKg: 0.8 } }), audit({ id: 'b', weights: { totalKg: 9, contaminantKg: 0.2 } }), audit({ id: 'c', phase: 'after', n: 20, bad: 2, weights: { totalKg: 1, contaminantKg: 0.5 } }), audit({ id: 'd', phase: 'after', n: 80, bad: 8 })])
-    const counted = stations(p)[0]
+    p.outcome = 'weight'
+    expect(stations(p)[0]).toMatchObject({ incomplete: 'weight', change: null, after: { rate: null, basis: 'weight' } })
+    const counted = stations(p, 'count')[0]
     expect(counted).toMatchObject({ before: { rate: 0.3, basis: 'count', audits: 2 }, after: { rate: 0.1, basis: 'count', audits: 2 } })
     expect(counted.change).toBeCloseTo(-0.2)
     p.audits[3].weights = { totalKg: 4, contaminantKg: 0.5 }
@@ -230,5 +232,85 @@ describe('station grouping and measurement basis', () => {
   })
   it('does not treat an empty count sample as a measured zero', () => {
     expect(stations(pilot([audit({ n: 0, bad: 0 })]))[0].before.rate).toBeNull()
+  })
+})
+
+describe('pilot primary outcome', () => {
+  it('defaults new pilots to weight and migrates legacy pilots once using all audits', () => {
+    const data = { id: 'p', name: 'Pilot', pack: 'nyc', created: '2026-11-22' }
+    expect(createPilot(data).outcome).toBe('weight')
+    expect(createPilot(data, 'count').outcome).toBe('count')
+    const legacy = { ...data, audits: [audit({ weights: { totalKg: 2, contaminantKg: 1 } })] }
+    expect(migratePilot(legacy).outcome).toBe('weight')
+    expect(parsePilot(JSON.stringify(legacy)).pilot?.outcome).toBe('weight')
+    legacy.audits.push(audit({ id: 'unweighed' }))
+    expect(migratePilot(legacy).outcome).toBe('count')
+    expect(parsePilot(JSON.stringify(legacy)).pilot?.outcome).toBe('count')
+    const saved = migratePilot(legacy)
+    saved.audits[1].weights = { totalKg: 2, contaminantKg: 1 }
+    expect(migratePilot(saved).outcome).toBe('count')
+    expect(migratePilot({ ...legacy, outcome: 'weight' }).outcome).toBe('weight')
+    expect(parsePilot(JSON.stringify({ ...legacy, outcome: 'invalid' })).error).toBe(true)
+  })
+  it('excludes a station missing one weight from the weight effect and reports counts per arm', async () => {
+    const p: Pilot = { ...pilot(), outcome: 'weight', audits: (['with', 'without'] as const).flatMap((arm) => [0, 1, 2].flatMap((k) => (['before', 'after'] as const).map((phase) => audit({ id: `${arm}-${k}-${phase}`, site: `${arm}-${k}`, arm, phase, weights: { totalKg: 10, contaminantKg: phase === 'before' ? 3 : arm === 'with' ? 1 : 2.5 } })))) }
+    expect(netEffect(p)).toMatchObject({ withStations: 3, withoutStations: 3, value: -0.15 })
+    delete p.audits[1].weights
+    expect(stations(p)[0]).toMatchObject({ incomplete: 'weight', change: null, after: { rate: null, basis: 'weight' } })
+    const net = netEffect(p)!
+    expect(net.withStations).toBe(2)
+    expect(net.withoutStations).toBe(3)
+    expect(net.value).toBeCloseTo(-0.15)
+    expect(verdict(net)).toBe('Not enough to tell yet')
+    expect(stations(p, 'count')[0].change).not.toBeNull()
+    const { createElement } = await import('react')
+    const { renderToStaticMarkup } = await import('react-dom/server')
+    const { default: PilotView } = await import('./views/Pilot')
+    const { readFileSync } = await import('node:fs')
+    const { vi } = await import('vitest')
+    const pack = JSON.parse(readFileSync(new URL('../public/rules/nyc.json', import.meta.url), 'utf8'))
+    vi.stubGlobal('localStorage', { getItem: (k: string) => k === 'cleanstream.pilots' ? JSON.stringify([p]) : null })
+    try {
+      const html = renderToStaticMarkup(createElement(PilotView, { pack, packs: [pack] }))
+      expect(html).toContain('Incomplete: missing weights')
+      expect(html).toContain('Net effect on contamination by weight')
+      expect(html).toContain('Stations used: 2 with tablets; 3 without tablets.')
+      expect(html).toContain('Secondary: contamination by station by count')
+    } finally { vi.unstubAllGlobals() }
+  })
+  it('migrates legacy pilots loaded from browser storage before rendering the report', async () => {
+    const { createElement } = await import('react')
+    const { renderToStaticMarkup } = await import('react-dom/server')
+    const { default: PilotView } = await import('./views/Pilot')
+    const { readFileSync } = await import('node:fs')
+    const { vi } = await import('vitest')
+    const pack = JSON.parse(readFileSync(new URL('../public/rules/nyc.json', import.meta.url), 'utf8'))
+    const { outcome: _outcome, ...legacy } = pilot([audit({ weights: { totalKg: 2, contaminantKg: 1 } })])
+    vi.stubGlobal('localStorage', { getItem: (k: string) => k === 'cleanstream.pilots' ? JSON.stringify([legacy]) : null })
+    try {
+      expect(renderToStaticMarkup(createElement(PilotView, { pack, packs: [pack] }))).toContain('Net effect on contamination by weight')
+      legacy.audits.push(audit({ id: 'missing' }))
+      expect(renderToStaticMarkup(createElement(PilotView, { pack, packs: [pack] }))).toContain('Net effect on contamination by count')
+    } finally { vi.unstubAllGlobals() }
+  })
+  it('keeps the example fully weighed and complete', async () => {
+    const { example } = await import('./views/Pilot')
+    const { readFileSync } = await import('node:fs')
+    const pack = JSON.parse(readFileSync(new URL('../public/rules/nyc.json', import.meta.url), 'utf8'))
+    const p = example(pack)
+    expect(p.outcome).toBe('weight')
+    expect(p.audits.every((a) => validWeights(a.weights))).toBe(true)
+    expect(stations(p).every((s) => s.incomplete === null && s.change !== null)).toBe(true)
+    expect(netEffect(p)).toMatchObject({ withStations: 3, withoutStations: 3 })
+    expect(verdict(netEffect(p))).toBe('Lower with stations')
+  })
+  it('rejects partial counts and preserves weight-only snapshots without synthetic zero counts', () => {
+    const weighed = { ...audit(), n: undefined, bad: undefined, weights: { totalKg: 3, contaminantKg: 1 } }
+    const p = { ...pilot([weighed]), outcome: 'weight' as const }
+    const parsed = parsePilot(exportPilot(p)).pilot!
+    expect(parsed.audits[0]).not.toHaveProperty('n')
+    expect(rate(parsed, 'with', 'before').rate).toBeNull()
+    expect(parsePilot(JSON.stringify({ ...p, audits: [{ ...weighed, n: 1 }] })).error).toBe(true)
+    expect(parsePilot(JSON.stringify({ ...p, audits: [{ ...weighed, weights: undefined }] })).error).toBe(true)
   })
 })

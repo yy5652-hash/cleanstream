@@ -1,20 +1,31 @@
 export type Arm = 'with' | 'without'
+export type Outcome = 'weight' | 'count'
 export type Phase = 'before' | 'after'
 export type Weights = { totalKg: number; contaminantKg: number }
 export type PilotAudit = {
   id: string; site: string; pack: string; bin: string; date: string
-  arm: Arm; phase: Phase; n: number; bad: number; weights?: Weights
+  arm: Arm; phase: Phase; n?: number; bad?: number; weights?: Weights
+  conditions?: { item: string; condition: string; n: number; bad: number }[]
+  auditor?: string; notes?: string
 }
-export type Pilot = { id: string; name: string; pack: string; created: string; audits: PilotAudit[]; example?: boolean; runComplete?: boolean }
+export type Pilot = { id: string; name: string; pack: string; created: string; outcome: Outcome; audits: PilotAudit[]; example?: boolean; runComplete?: boolean }
+// Migrate once at the storage/import boundary, then keep the chosen outcome fixed.
+export function migratePilot(pilot: Omit<Pilot, 'outcome'> & { outcome?: Outcome }): Pilot {
+  return { ...pilot, outcome: pilot.outcome ?? (pilot.audits.some((a) => !validWeights(a.weights)) ? 'count' : 'weight') }
+}
+export function createPilot(data: Pick<Pilot, 'id' | 'name' | 'pack' | 'created'>, outcome: Outcome = 'weight'): Pilot {
+  return { ...data, outcome, audits: [] }
+}
+export const hasCounts = (a: PilotAudit): a is PilotAudit & { n: number; bad: number } => count(a.n) && count(a.bad) && a.n > 0 && a.bad <= a.n
 export type Rate = { n: number; bad: number; rate: number | null; weights: Weights | null; weightRate: number | null; weighedAudits: number; audits: number }
 export type Estimate = { value: number; low: number; high: number }
 const Z = 1.959963984540054
 
 export function rate(pilot: Pilot, arm: Arm, phase: Phase): Rate {
   const xs = pilot.audits.filter((a) => a.arm === arm && a.phase === phase)
-  const n = xs.reduce((s, a) => s + a.n, 0)
-  const bad = xs.reduce((s, a) => s + a.bad, 0)
-  const weighed = xs.filter((a) => a.weights)
+  const n = xs.reduce((s, a) => s + (a.n ?? 0), 0)
+  const bad = xs.reduce((s, a) => s + (a.bad ?? 0), 0)
+  const weighed = xs.filter((a) => validWeights(a.weights))
   const weights = weighed.length ? weighed.reduce((s, a) => ({ totalKg: s.totalKg + a.weights!.totalKg, contaminantKg: s.contaminantKg + a.weights!.contaminantKg }), { totalKg: 0, contaminantKg: 0 }) : null
   return { n, bad, rate: n ? bad / n : null, weights, weightRate: weights ? weights.contaminantKg / weights.totalKg : null, weighedAudits: weighed.length, audits: xs.length }
 }
@@ -36,18 +47,18 @@ export function change(pilot: Pilot, arm: Arm): Estimate | null {
   return { value, low: value - Math.hypot(a.rate - al, bu - b.rate), high: value + Math.hypot(au - a.rate, b.rate - bl) }
 }
 
-export type StationPhase = { audits: number; rate: number | null; basis: 'weight' | 'count' }
-export type StationResult = { site: string; bin: string; arm: Arm | null; before: StationPhase; after: StationPhase; change: number | null }
+export type StationPhase = { audits: number; rate: number | null; basis: Outcome }
+export type StationResult = { site: string; bin: string; arm: Arm | null; before: StationPhase; after: StationPhase; change: number | null; incomplete: Outcome | null }
 export type StationEstimate = Estimate & { withStations: number; withoutStations: number; df: number }
 
-// One basis per station, so a change never compares a weighed phase with a counted one.
-function stationPhase(audits: PilotAudit[], weighed: boolean): StationPhase {
-  const total = audits.reduce((s, a) => s + (weighed ? a.weights!.totalKg : a.n), 0)
-  const bad = audits.reduce((s, a) => s + (weighed ? a.weights!.contaminantKg : a.bad), 0)
-  return { audits: audits.length, rate: total > 0 ? bad / total : null, basis: weighed ? 'weight' : 'count' }
+function stationPhase(audits: PilotAudit[], outcome: Outcome): StationPhase {
+  const complete = audits.every((a) => outcome === 'weight' ? validWeights(a.weights) : hasCounts(a))
+  const total = complete ? audits.reduce((s, a) => s + (outcome === 'weight' ? a.weights!.totalKg : a.n!), 0) : 0
+  const bad = complete ? audits.reduce((s, a) => s + (outcome === 'weight' ? a.weights!.contaminantKg : a.bad!), 0) : 0
+  return { audits: audits.length, rate: total > 0 ? bad / total : null, basis: outcome }
 }
 
-export function stations(pilot: Pilot): StationResult[] {
+export function stations(pilot: Pilot, outcome = pilot.outcome): StationResult[] {
   const groups = new Map<string, PilotAudit[]>()
   for (const audit of pilot.audits) {
     const key = JSON.stringify([audit.site, audit.bin])
@@ -56,13 +67,13 @@ export function stations(pilot: Pilot): StationResult[] {
     groups.set(key, group)
   }
   return [...groups.values()].map((audits) => {
-    const weighed = audits.every((a) => a.weights)
-    const before = stationPhase(audits.filter((a) => a.phase === 'before'), weighed)
-    const after = stationPhase(audits.filter((a) => a.phase === 'after'), weighed)
+    const incomplete = audits.some((a) => outcome === 'weight' ? !validWeights(a.weights) : !hasCounts(a)) ? outcome : null
+    const before = stationPhase(audits.filter((a) => a.phase === 'before'), outcome)
+    const after = stationPhase(audits.filter((a) => a.phase === 'after'), outcome)
     // A physical station cannot belong to both arms. Keep it visible but exclude it.
     const arm = audits.every((a) => a.arm === audits[0].arm) ? audits[0].arm : null
-    return { site: audits[0].site, bin: audits[0].bin, arm, before, after,
-      change: arm && before.rate !== null && after.rate !== null ? after.rate - before.rate : null }
+    return { site: audits[0].site, bin: audits[0].bin, arm, before, after, incomplete,
+      change: !incomplete && arm && before.rate !== null && after.rate !== null ? after.rate - before.rate : null }
   })
 }
 
@@ -148,14 +159,24 @@ export function validWeights(x: unknown): x is Weights {
 export function parsePilot(input: string): { pilot: Pilot | null; error: boolean } {
   try {
     const x: unknown = JSON.parse(input)
-    if (!obj(x) || !str(x.id) || !str(x.name) || !str(x.pack) || !date(x.created) || (x.example !== undefined && typeof x.example !== 'boolean') || (x.runComplete !== undefined && typeof x.runComplete !== 'boolean') || !Array.isArray(x.audits) || x.audits.length > 100000) throw Error()
+    if (!obj(x) || !str(x.id) || !str(x.name) || !str(x.pack) || !date(x.created) || (x.example !== undefined && typeof x.example !== 'boolean') || (x.runComplete !== undefined && typeof x.runComplete !== 'boolean') || (x.outcome !== undefined && x.outcome !== 'weight' && x.outcome !== 'count') || !Array.isArray(x.audits) || x.audits.length > 100000) throw Error()
     const ids = new Set<string>()
     const audits = x.audits.map((a: unknown): PilotAudit => {
-      if (!obj(a) || !str(a.id) || ids.has(a.id) || !str(a.site) || a.pack !== x.pack || !str(a.bin) || !date(a.date) || !['with', 'without'].includes(String(a.arm)) || !['before', 'after'].includes(String(a.phase)) || !count(a.n) || !count(a.bad) || a.bad > a.n || (a.weights !== undefined && !validWeights(a.weights))) throw Error()
+      if (!obj(a) || !str(a.id) || ids.has(a.id) || !str(a.site) || a.pack !== x.pack || !str(a.bin) || !date(a.date) || !['with', 'without'].includes(String(a.arm)) || !['before', 'after'].includes(String(a.phase)) || !((count(a.n) && count(a.bad) && a.bad <= a.n) || (a.n === undefined && a.bad === undefined && validWeights(a.weights))) || (a.weights !== undefined && !validWeights(a.weights))) throw Error()
+      if ((a.auditor !== undefined && !str(a.auditor)) || (a.notes !== undefined && (typeof a.notes !== 'string' || a.notes.length > 10000))) throw Error()
+      const conditions: NonNullable<PilotAudit['conditions']> = []
+      if (a.conditions !== undefined) {
+        if (!Array.isArray(a.conditions) || a.conditions.length > 100000) throw Error()
+        for (const c of a.conditions) {
+          if (!obj(c) || !str(c.item) || !str(c.condition) || !count(c.n) || !count(c.bad) || c.bad > c.n) throw Error()
+          conditions.push({ item: c.item, condition: c.condition, n: c.n, bad: c.bad })
+        }
+      }
       ids.add(a.id)
-      return { id: a.id, site: a.site, pack: a.pack as string, bin: a.bin, date: a.date, arm: a.arm as Arm, phase: a.phase as Phase, n: a.n, bad: a.bad, ...(a.weights ? { weights: { totalKg: (a.weights as Weights).totalKg, contaminantKg: (a.weights as Weights).contaminantKg } } : {}) }
+      return { id: a.id, site: a.site, pack: a.pack as string, bin: a.bin, date: a.date, arm: a.arm as Arm, phase: a.phase as Phase, ...(a.n !== undefined ? { n: a.n as number, bad: a.bad as number } : {}),
+        ...(conditions.length ? { conditions } : {}), ...(a.auditor ? { auditor: a.auditor as string } : {}), ...(a.notes ? { notes: a.notes as string } : {}), ...(a.weights ? { weights: { totalKg: (a.weights as Weights).totalKg, contaminantKg: (a.weights as Weights).contaminantKg } } : {}) }
     })
-    return { pilot: { id: x.id, name: x.name, pack: x.pack, created: x.created, audits, ...(x.example ? { example: true } : {}), ...(x.runComplete ? { runComplete: true } : {}) }, error: false }
+    return { pilot: migratePilot({ id: x.id, name: x.name, pack: x.pack, created: x.created, outcome: x.outcome as Outcome | undefined, audits, ...(x.example ? { example: true } : {}), ...(x.runComplete ? { runComplete: true } : {}) }), error: false }
   } catch { return { pilot: null, error: true } }
 }
 export function exportPilot(pilot: Pilot): string {
@@ -166,7 +187,7 @@ export function mergePilots(target: Pilot, files: { name: string; text: string }
   const audits = [...target.audits], ids = new Set(audits.map((a) => a.id)), errors: string[] = []
   for (const f of files) {
     const p = parsePilot(f.text).pilot
-    if (!p || p.pack !== target.pack || !!p.example !== !!target.example) { errors.push(f.name); continue }
+    if (!p || p.pack !== target.pack || p.outcome !== target.outcome || !!p.example !== !!target.example) { errors.push(f.name); continue }
     for (const a of p.audits) if (!ids.has(a.id)) { audits.push(a); ids.add(a.id) }
   }
   return { pilot: { ...target, audits }, errors, added: audits.length - target.audits.length }

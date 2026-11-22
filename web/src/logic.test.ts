@@ -89,16 +89,16 @@ describe('contamination', () => {
       { id: '2', thumb: '', pred: 'plastic_bag_film', p: 0.9, checked: false },
     ] }
     expect(contamination(a, nyc)).toMatchObject({ n: 2, bad: 1, checked: 1 })
-    expect(auditChecked(a)).toBe(false)
+    expect(auditChecked(a, nyc)).toBe(false)
     a.items[1].checked = true
     expect(contamination(a, nyc)).toMatchObject({ n: 2, bad: 1, rate: 0.5 })
-    expect(auditChecked(a)).toBe(true)
-    expect(auditChecked({ ...a, items: [] })).toBe(false)
-    expect(auditChecked({ ...a, items: [{ id: 'x', thumb: '', pred: '', p: 0, checked: true }] })).toBe(false)
+    expect(auditChecked(a, nyc)).toBe(true)
+    expect(auditChecked({ ...a, items: [] }, nyc)).toBe(false)
+    expect(auditChecked({ ...a, items: [{ id: 'x', thumb: '', pred: '', p: 0, checked: true }] }, nyc)).toBe(false)
   })
   it('treats saved model predictions without a checked flag as unchecked', () => {
     const a = { id: 'a', site: 's', pack: 'nyc', bin: 'blue', phase: 'baseline' as const, date: '2026-11-22', items: [{ id: '1', thumb: '', pred: 'metal_can', p: 0.99 }] }
-    expect(auditChecked(a)).toBe(false)
+    expect(auditChecked(a, nyc)).toBe(false)
     expect(contamination(a, nyc)).toMatchObject({ n: 1, checked: 0 })
   })
 
