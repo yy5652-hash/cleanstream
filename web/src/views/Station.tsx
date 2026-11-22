@@ -1,5 +1,6 @@
 import { ArrowDown, Check, Globe, Maximize, Minimize, Settings2, Video, Volume2, VolumeX } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { HoldSettings } from '../components/HoldSettings'
 import { Sheet } from '../components/Sheet'
 import { Button } from '../components/ui/button'
 import { LANGS, setLang, speechLang, t, useLang } from '../i18n'
@@ -7,8 +8,8 @@ import { itemName } from '../items'
 import { classify, loadModel, useModel } from '../model/client'
 import { partsOf } from '../parts'
 import { answer, binById, type Answer, type Pack } from '../rules'
-import { readConfig, useStationBins } from '../station-config'
-import { lastDays, record, today, useStationLog } from '../store'
+import { cameraConstraints, readConfig, useStationBins, useStationCamera } from '../station-config'
+import { lastDays, record, stationLogWriter, today, useStationLog } from '../store'
 import { BinChip, pct, sampleUrl, useSamples } from '../ui'
 import { changedCells, focusBox, GRID_H, GRID_W, isPresent, isStill, type Box } from './motion'
 import { BinOrder } from './StationSetup'
@@ -112,7 +113,27 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
   const [chosen, setChosen] = useState<string | null>(null)
   const unsure = useRef(false)
   const [binIds, setBinIds] = useStationBins(pack, config.city === pack.id ? config.bins : undefined)
-  const [log, setLog] = useStationLog()
+  const [log, persistLog] = useStationLog()
+  // Capture the source in each inference session, including delayed unsure callbacks.
+  const setLog = stationLogWriter(source, persistLog)
+  const [cameraId, setCameraId] = useStationCamera()
+  const [cameras, setCameras] = useState<MediaDeviceInfo[]>([])
+  const [cameraStream, setCameraStream] = useState<MediaStream | null>(null)
+  const settingsVideo = useRef<HTMLVideoElement>(null)
+  useEffect(() => {
+    if (settings && settingsVideo.current) settingsVideo.current.srcObject = cameraStream
+  }, [settings, cameraStream])
+  useEffect(() => {
+    const media = navigator.mediaDevices
+    if (!media?.enumerateDevices) return
+    let stopped = false
+    const refresh = () => { void media.enumerateDevices().then((devices) => {
+      if (!stopped) setCameras(devices.filter((d) => d.kind === 'videoinput' && d.deviceId))
+    }).catch(() => {}) }
+    refresh()
+    media.addEventListener('devicechange', refresh)
+    return () => { stopped = true; media.removeEventListener('devicechange', refresh) }
+  }, [cameraStream, settings])
   const [voice, setVoice] = useVoice()
   const speak = useRef(voice)
   useEffect(() => { speak.current = voice }, [voice])
@@ -221,7 +242,7 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
     unsure.current = false
     clearTimers()
     if ('speechSynthesis' in window) speechSynthesis.cancel()
-  }, [source, pack.id])
+  }, [source, pack.id, cameraId])
 
   useEffect(() => {
     if (source !== 'camera') return
@@ -239,9 +260,10 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
       if (!stopped) { setCameraFailed(true); setSource('off'); setPhase('idle') }
     }
     if (!navigator.mediaDevices?.getUserMedia) { fail(); return }
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width: { ideal: 1280 } } }).then((s) => {
+    navigator.mediaDevices.getUserMedia({ video: cameraConstraints(cameraId) }).then((s) => {
       if (stopped) { s.getTracks().forEach((track) => track.stop()); return }
       stream = s
+      setCameraStream(s)
       if (video.current) { video.current.srcObject = s; void video.current.play().catch(fail) }
       timer = window.setInterval(() => {
         const v = video.current
@@ -262,10 +284,10 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
         }
       }, 250)
     }).catch(fail)
-    return () => { stopped = true; clearInterval(timer); stream?.getTracks().forEach((track) => track.stop()) }
-  }, [source, pack.id])
+    return () => { stopped = true; clearInterval(timer); stream?.getTracks().forEach((track) => track.stop()); setCameraStream(null) }
+  }, [source, pack.id, cameraId])
 
-  // Held-out test photos follow the same inference and counting path as the camera.
+  // Held-out test photos use inference without writing station counts.
   useEffect(() => {
     if (source !== 'demo' || !samples.length || model.status !== 'ready') return
     let i = 0
@@ -348,7 +370,7 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
           <Button variant="outline" className={`${iconButton} px-2.5`} aria-label={t('Change language')} aria-haspopup="dialog" onClick={() => setLanguages(true)}><Globe aria-hidden /><span lang={lang} className="hidden sm:inline">{lang === 'en' ? t('English') : lang === 'es' ? t('Spanish') : lang === 'zh-Hans' ? t('Simplified Chinese') : t('Traditional Chinese')}</span></Button>
           <Button variant="outline" size="icon" className={iconButton} aria-pressed={voice} aria-label={voice ? t('Turn voice off') : t('Turn voice on')} onClick={toggleVoice}>{voice ? <Volume2 aria-hidden /> : <VolumeX aria-hidden />}</Button>
           <Button variant="outline" size="icon" className={iconButton} aria-label={isFullscreen ? t('Exit full screen') : t('Full screen')} onClick={fullscreen}>{isFullscreen ? <Minimize aria-hidden /> : <Maximize aria-hidden />}</Button>
-          <Button variant="outline" size="icon" className={iconButton} aria-label={t('Set up bins')} aria-haspopup="dialog" onClick={() => setSettings(true)}><Settings2 aria-hidden /></Button>
+          <HoldSettings onOpen={() => setSettings(true)} className={iconButton}><Settings2 aria-hidden /></HoldSettings>
         </div>
       </header>
       {source === 'demo' && <p className="px-4 text-sm font-medium sm:px-6">{t('Example data')}<span aria-hidden> · </span>{t('Demo feed')}</p>}
@@ -407,7 +429,7 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
           {source !== 'off' && model.status === 'loading' && <p role="status" className="text-sm text-ink-2">{model.total ? t('Getting ready… {progress}', { progress: pct(Math.min(1, model.loaded / model.total)) }) : t('Getting ready…')}</p>}
           {(scanFailed || model.status === 'error') && <div role="alert" className="max-w-xl text-sm text-ink-2"><p>{t('Could not read that item. Try again.')}</p><Button variant="outline" className="mt-2" onClick={() => { if (model.status === 'error') location.reload(); else changeSource('off') }}>{model.status === 'error' ? t('Reload station') : t('Restart station')}</Button></div>}
           {source === 'demo' && model.status === 'ready' && !samples.length && <p role="status" className="text-sm text-ink-2">{t('Demo photos are not available yet. Check your connection or use the camera.')} <button onClick={() => changeSource('camera')} className="min-h-11 rounded-2xl px-2 underline">{t('Start camera')}</button></p>}
-          {phase === 'idle' && total > 0 && <p className="mt-1 text-[max(0.875rem,2vmin)] text-ink-2">{t('{count} items sorted here in the last 7 days', { count: total })}</p>}
+          {phase === 'idle' && total > 0 && <p className="mt-1 text-[max(0.875rem,2vmin)] text-ink-2">{t('{count} answers shown here in the last 7 days', { count: total })}</p>}
         </div>
       </div>
 
@@ -419,7 +441,7 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
             {bin.name}
           </div>)}
         </div>
-        {!bins.length && <Button variant="outline" className="w-full" onClick={() => setSettings(true)}>{t('Choose the bins at this station')}</Button>}
+        {!bins.length && <p className="text-center">{t('Hold the settings button for 2 seconds to choose bins.')}</p>}
       </div>
 
       <Sheet open={languages} onClose={() => setLanguages(false)} title={t('Language')} className="[&_button[aria-label]]:min-h-11 [&_button[aria-label]]:min-w-11">
@@ -431,6 +453,17 @@ export default function Station({ pack, start = 'off', wait = 0 }: { pack: Pack;
       </Sheet>
       <Sheet open={settings} onClose={() => setSettings(false)} title={t('Set up bins')} className="[&_button[aria-label]]:min-h-11 [&_button[aria-label]]:min-w-11">
         <BinOrder pack={pack} ids={binIds} onChange={setBinIds} />
+        <section className="mt-6 space-y-3">
+          <label className="block">{t('Station camera')}<select className="mt-2 min-h-11 w-full rounded-2xl border border-line bg-card px-3" value={cameraId} onChange={(e) => setCameraId(e.target.value)}>
+            <option value="">{t('Front camera (default)')}</option>
+            {cameraId && !cameras.some((c) => c.deviceId === cameraId) && <option value={cameraId}>{t('Selected camera unavailable')}</option>}
+            {cameras.map((camera, index) => <option key={camera.deviceId} value={camera.deviceId}>{camera.label || (index === 0 ? t('Front camera') : t('Back camera'))}</option>)}
+          </select></label>
+          <p className="text-sm">{t('Start the camera to see device names and check the framing.')}</p>
+          {source !== 'camera' && <Button variant="outline" onClick={() => changeSource('camera')}>{t('Start camera')}</Button>}
+          {cameraFailed && <p role="alert">{t('Camera unavailable. Allow camera access, or try the demo feed.')}</p>}
+          {source === 'camera' && <video ref={settingsVideo} autoPlay playsInline muted aria-label={t('Live camera preview')} className="aspect-[4/3] w-full rounded-2xl bg-well object-cover" />}
+        </section>
         <Button className="mt-6 w-full" onClick={() => setSettings(false)} disabled={!binIds.length}>{t('Done')}</Button>
       </Sheet>
     </div>

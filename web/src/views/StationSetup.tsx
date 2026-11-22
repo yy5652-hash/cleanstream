@@ -155,7 +155,7 @@ export default function StationSetup({ pack, onCity }: { pack: Pack; onCity: (id
                 <Button asChild variant="secondary" size="lg" className="h-auto min-h-14 whitespace-normal py-3"><a href={demo} target="_blank" rel="noreferrer">{t('Try the demo feed')}<ArrowUpRight aria-hidden /></a></Button>
                 <label htmlFor="station-link" className="mt-2 text-sm text-ink-2">{t('Station link')}</label>
                 <input id="station-link" ref={linkInput} readOnly value={link} onFocus={(e) => e.currentTarget.select()} className="min-h-11 min-w-0 w-full rounded-2xl border border-line bg-card px-3 text-sm text-ink-2" />
-                <p role="status" className="text-sm text-ink-2">{copyFailed ? t('Select and copy the link above.') : copied ? t('Link copied') : t('Demo counts are saved in this browser too.')}</p>
+                <p role="status" className="text-sm text-ink-2">{copyFailed ? t('Select and copy the link above.') : copied ? t('Link copied') : t('Demo answers are not counted.')}</p>
               </div>
             </div>
             <div className="mt-8 grid gap-2 border-t border-line pt-5 sm:grid-cols-2">

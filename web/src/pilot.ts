@@ -36,16 +36,99 @@ export function change(pilot: Pilot, arm: Arm): Estimate | null {
   return { value, low: value - Math.hypot(a.rate - al, bu - b.rate), high: value + Math.hypot(au - a.rate, b.rate - bl) }
 }
 
-export function netEffect(pilot: Pilot): Estimate | null {
-  const w = change(pilot, 'with'), c = change(pilot, 'without')
-  if (!w || !c) return null
-  const variance = (['with', 'without'] as const).flatMap((arm) => (['before', 'after'] as const).map((phase) => rate(pilot, arm, phase))).reduce((s, r) => s + r.rate! * (1 - r.rate!) / r.n, 0)
-  const value = w.value - c.value, half = Z * Math.sqrt(variance)
-  return { value, low: value - half, high: value + half }
+export type StationPhase = { audits: number; rate: number | null; basis: 'weight' | 'count' }
+export type StationResult = { site: string; bin: string; arm: Arm | null; before: StationPhase; after: StationPhase; change: number | null }
+export type StationEstimate = Estimate & { withStations: number; withoutStations: number; df: number }
+
+// One basis per station, so a change never compares a weighed phase with a counted one.
+function stationPhase(audits: PilotAudit[], weighed: boolean): StationPhase {
+  const total = audits.reduce((s, a) => s + (weighed ? a.weights!.totalKg : a.n), 0)
+  const bad = audits.reduce((s, a) => s + (weighed ? a.weights!.contaminantKg : a.bad), 0)
+  return { audits: audits.length, rate: total > 0 ? bad / total : null, basis: weighed ? 'weight' : 'count' }
 }
 
-export function verdict(e: Estimate | null): 'Lower with stations' | 'Higher with stations' | 'Not enough to tell yet' {
-  return e && e.high < 0 ? 'Lower with stations' : e && e.low > 0 ? 'Higher with stations' : 'Not enough to tell yet'
+export function stations(pilot: Pilot): StationResult[] {
+  const groups = new Map<string, PilotAudit[]>()
+  for (const audit of pilot.audits) {
+    const key = JSON.stringify([audit.site, audit.bin])
+    const group = groups.get(key) ?? []
+    group.push(audit)
+    groups.set(key, group)
+  }
+  return [...groups.values()].map((audits) => {
+    const weighed = audits.every((a) => a.weights)
+    const before = stationPhase(audits.filter((a) => a.phase === 'before'), weighed)
+    const after = stationPhase(audits.filter((a) => a.phase === 'after'), weighed)
+    // A physical station cannot belong to both arms. Keep it visible but exclude it.
+    const arm = audits.every((a) => a.arm === audits[0].arm) ? audits[0].arm : null
+    return { site: audits[0].site, bin: audits[0].bin, arm, before, after,
+      change: arm && before.rate !== null && after.rate !== null ? after.rate - before.rate : null }
+  })
+}
+
+// Lanczos log-gamma and the continued fraction for the regularized incomplete beta.
+// Inverting the Student t CDF avoids a normal approximation with few stations.
+function logGamma(z: number): number {
+  const c = [676.5203681218851, -1259.1392167224028, 771.3234287776531, -176.6150291621406, 12.507343278686905, -0.13857109526572012, 9.984369578019572e-6, 1.5056327351493116e-7]
+  if (z < 0.5) return Math.log(Math.PI / Math.sin(Math.PI * z)) - logGamma(1 - z)
+  z -= 1
+  let x = 0.9999999999998099
+  c.forEach((v, i) => { x += v / (z + i + 1) })
+  const t = z + 7.5
+  return 0.5 * Math.log(2 * Math.PI) + (z + 0.5) * Math.log(t) - t + Math.log(x)
+}
+function betaFraction(a: number, b: number, x: number): number {
+  const floor = (v: number) => Math.abs(v) < 1e-300 ? 1e-300 : v
+  let c = 1, d = 1 / floor(1 - (a + b) * x / (a + 1)), h = d
+  for (let m = 1; m <= 500; m++) {
+    const m2 = 2 * m
+    let aa = m * (b - m) * x / ((a + m2 - 1) * (a + m2))
+    d = 1 / floor(1 + aa * d); c = floor(1 + aa / c); h *= d * c
+    aa = -(a + m) * (a + b + m) * x / ((a + m2) * (a + m2 + 1))
+    d = 1 / floor(1 + aa * d); c = floor(1 + aa / c)
+    const delta = d * c
+    h *= delta
+    if (Math.abs(delta - 1) < 3e-14) break
+  }
+  return h
+}
+function beta(x: number, a: number, b: number): number {
+  if (x <= 0) return 0
+  if (x >= 1) return 1
+  const bt = Math.exp(logGamma(a + b) - logGamma(a) - logGamma(b) + a * Math.log(x) + b * Math.log1p(-x))
+  return x < (a + 1) / (a + b + 2) ? bt * betaFraction(a, b, x) / a : 1 - bt * betaFraction(b, a, 1 - x) / b
+}
+export function t975(df: number): number {
+  if (df === Infinity) return Z
+  if (!(df > 0)) return NaN
+  const cdf = (t: number) => 1 - beta(df / (df + t * t), df / 2, 0.5) / 2
+  let low = 0, high = 1
+  while (cdf(high) < 0.975) high *= 2
+  for (let i = 0; i < 100; i++) {
+    const mid = (low + high) / 2
+    if (cdf(mid) < 0.975) low = mid
+    else high = mid
+  }
+  return (low + high) / 2
+}
+
+export function netEffect(pilot: Pilot): StationEstimate | null {
+  const rows = stations(pilot)
+  const values = (arm: Arm) => rows.filter((s) => s.arm === arm && s.change !== null).map((s) => s.change!)
+  const w = values('with'), c = values('without')
+  if (w.length < 2 || c.length < 2) return null
+  const mean = (xs: number[]) => xs.reduce((s, v) => s + v, 0) / xs.length
+  const variance = (xs: number[]) => xs.reduce((s, v) => s + (v - mean(xs)) ** 2, 0) / (xs.length - 1)
+  const vw = variance(w) / w.length, vc = variance(c) / c.length
+  const se2 = vw + vc
+  const df = se2 === 0 ? Infinity : se2 ** 2 / (vw ** 2 / (w.length - 1) + vc ** 2 / (c.length - 1))
+  const value = mean(w) - mean(c), half = t975(df) * Math.sqrt(se2)
+  return { value, low: value - half, high: value + half, df, withStations: w.length, withoutStations: c.length }
+}
+
+export function verdict(e: StationEstimate | null): 'Lower with stations' | 'Higher with stations' | 'Not enough to tell yet' {
+  if (!e || e.withStations < 3 || e.withoutStations < 3) return 'Not enough to tell yet'
+  return e.high < 0 ? 'Lower with stations' : e.low > 0 ? 'Higher with stations' : 'Not enough to tell yet'
 }
 
 // Equal groups, two-sided alpha .05, power .80; items in each phase of an arm.

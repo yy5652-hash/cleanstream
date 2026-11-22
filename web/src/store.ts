@@ -1,7 +1,7 @@
 // Everything the app keeps lives in this browser's localStorage: audits (with small thumbnails) and station counts.
 import { useCallback, useEffect, useState } from 'react'
 
-export type AuditItem = { id: string; thumb: string; pred: string; p: number; fixed?: string }
+export type AuditItem = { id: string; thumb: string; pred: string; p: number; fixed?: string; checked?: boolean }
 export type Audit = {
   id: string
   site: string
@@ -49,6 +49,8 @@ function useStored<T>(key: string, fallback: T): [T, (f: (v: T) => T) => void] {
 }
 
 export const useAudits = () => useStored<Audit[]>('cleanstream.audits', [])
+// Select once per source session so delayed demo callbacks can never persist counts.
+export const stationLogWriter = (source: string, persist: (f: (log: StationLog) => StationLog) => void): typeof persist => source === 'camera' ? persist : () => {}
 export const useStationLog = () => useStored<StationLog>('cleanstream.station.log', {})
 
 // Local calendar day (YYYY-MM-DD), and the n days ending on `last`, oldest first
@@ -80,3 +82,14 @@ export function download(name: string, text: string, type = 'text/csv') {
 
 // Pilots keep count summaries, never photographs.
 export const usePilots = () => useStored<import('./pilot').Pilot[]>('cleanstream.pilots', [])
+
+let deviceStationId: string | undefined
+export function stationId(): string {
+  try {
+    const saved = localStorage.getItem('cleanstream.station.id')
+    if (saved) return saved
+  } catch { /* Use a stable in-memory id when storage is blocked. */ }
+  deviceStationId ??= crypto.randomUUID()
+  try { localStorage.setItem('cleanstream.station.id', deviceStationId) } catch { /* Storage is blocked. */ }
+  return deviceStationId
+}

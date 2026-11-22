@@ -71,3 +71,17 @@ export function useStationBins(pack: Pack, linked?: string[]): [string[], (ids: 
   return [ids, (next) => setLayouts((old) => ({ ...old, [pack.id]: next }))]
 }
 
+
+// Camera ids belong to this tablet, never to shared station links.
+export const cameraConstraints = (id: string): MediaTrackConstraints => ({
+  ...(id ? { deviceId: { exact: id } } : { facingMode: 'user' }), width: { ideal: 1280 },
+})
+export function useStationCamera(): [string, (id: string) => void] {
+  const [id, setId] = useState(() => {
+    try { return localStorage.getItem('cleanstream.station.camera') ?? '' } catch { return '' }
+  })
+  useEffect(() => {
+    try { localStorage.setItem('cleanstream.station.camera', id) } catch { /* Keep the in-memory choice. */ }
+  }, [id])
+  return [id, setId]
+}

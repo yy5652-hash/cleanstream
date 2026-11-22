@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { change, exportPilot, mergePilots, netEffect, parsePilot, rate, sampleSize, validWeights, verdict, wilson, type Pilot, type PilotAudit } from './pilot'
+import { change, exportPilot, mergePilots, netEffect, parsePilot, rate, sampleSize, stations, t975, validWeights, verdict, wilson, type Pilot, type PilotAudit } from './pilot'
 const audit = (overrides: Partial<PilotAudit> = {}): PilotAudit => ({ id: 'a', site: 'Library', pack: 'nyc', bin: 'paper', date: '2026-11-02', arm: 'with', phase: 'before', n: 100, bad: 30, ...overrides })
 const pilot = (audits: PilotAudit[] = []): Pilot => ({ id: 'p', name: 'Library', pack: 'nyc', created: '2026-11-02', audits })
 const design = () => pilot([
   audit(), audit({ id: 'b', phase: 'after', bad: 10 }),
-  audit({ id: 'c', arm: 'without', bad: 30 }), audit({ id: 'd', arm: 'without', phase: 'after', bad: 25 }),
+  audit({ site: 'Canteen', id: 'c', arm: 'without', bad: 30 }), audit({ site: 'Canteen', id: 'd', arm: 'without', phase: 'after', bad: 25 }),
 ])
 
 describe('pilot rates', () => {
@@ -43,26 +43,68 @@ describe('intervals and verdicts', () => {
     expect(reverse.low).toBeCloseTo(-e.high)
     expect(reverse.high).toBeCloseTo(-e.low)
   })
-  it('calculates difference in differences and the sum of four variances', () => {
-    const e = netEffect(design())!
-    expect(e.value).toBeCloseTo(-0.15)
-    const half = 1.959963984540054 * Math.sqrt((0.3 * 0.7 + 0.1 * 0.9 + 0.3 * 0.7 + 0.25 * 0.75) / 100)
-    expect(e.low).toBeCloseTo(-0.15 - half)
-    expect(e.high).toBeCloseTo(-0.15 + half)
-    expect(netEffect(pilot([audit(), audit({ id: 'b', phase: 'after' })]))).toBeNull()
+  const paired = (withChanges = [-0.2, -0.1, 0], withoutChanges = [-0.1, 0, 0.1]) => pilot((['with', 'without'] as const).flatMap((arm) => (arm === 'with' ? withChanges : withoutChanges).flatMap((delta, k) => [
+    audit({ id: `${arm}-${k}-b`, site: `${arm}-${k}`, arm, n: 1000, bad: 500 }),
+    audit({ id: `${arm}-${k}-a`, site: `${arm}-${k}`, arm, phase: 'after', n: 1000, bad: Math.round(500 + delta * 1000) }),
+  ])))
+  it('matches a hand-checked Welch interval on equally weighted station changes', () => {
+    // Means -0.1 and 0; sample variances both .01; SE=sqrt(.02/3), df=4.
+    // t(.975,4)=2.7764451051977987, half-width=.226695793552752.
+    const e = netEffect(paired())!
+    expect(e.value).toBeCloseTo(-0.1, 12)
+    expect(e.df).toBeCloseTo(4, 12)
+    expect(e.low).toBeCloseTo(-0.326695793552752, 10)
+    expect(e.high).toBeCloseTo(0.126695793552752, 10)
+    expect(e.withStations).toBe(3)
+    expect(netEffect(design())).toBeNull()
+    expect(netEffect(paired([-0.2], [0, 0.1]))).toBeNull()
+  })
+  it('uses Welch–Satterthwaite degrees of freedom for unequal variances and sample sizes', () => {
+    const e = netEffect(paired([-0.2, -0.1, 0], [-0.1, 0.1]))!
+    // Variance-of-mean terms .01/3 and .02/2 give df=32/19.
+    expect(e.df).toBeCloseTo(32 / 19, 12)
+    expect(e.high - e.value).toBeCloseTo(t975(32 / 19) * Math.sqrt(0.01 / 3 + 0.02 / 2), 12)
+    const reverse = netEffect(paired([0.2, 0.1, 0], [0.1, 0, -0.1]))!
+    expect(reverse.low).toBeCloseTo(-netEffect(paired())!.high, 12)
+  })
+  it('numerically inverts the t distribution, including small and fractional df', () => {
+    expect(t975(1)).toBeCloseTo(12.7062047364, 8)
+    expect(t975(2)).toBeCloseTo(4.3026527297, 8)
+    expect(t975(4)).toBeCloseTo(2.7764451052, 8)
+    expect(t975(2.5)).toBeCloseTo(3.574654842, 8)
+    expect(t975(Infinity)).toBeCloseTo(1.95996398454, 10)
+  })
+  it('does not let extra items or repeated audits create extra independent stations', () => {
+    const p = paired()
+    const e = netEffect(p)!
+    p.audits = p.audits.flatMap((a) => [a, { ...a, id: `${a.id}-copy`, n: a.n * 100, bad: a.bad * 100 }])
+    expect(netEffect(p)).toEqual(e)
+    expect(stations(p)).toHaveLength(6)
+  })
+  it('handles zero variance without a spurious infinite interval', () => {
+    const e = netEffect(paired([-0.2, -0.2, -0.2], [0, 0, 0]))!
+    expect(e.low).toBeCloseTo(-0.2)
+    expect(e.high).toBeCloseTo(-0.2)
+    expect(verdict(e)).toBe('Lower with stations')
   })
   it('only returns a directional verdict when the entire interval clears zero', () => {
-    expect(verdict({ value: -0.2, low: -0.3, high: -0.1 })).toBe('Lower with stations')
-    expect(verdict({ value: 0.2, low: 0.1, high: 0.3 })).toBe('Higher with stations')
-    expect(verdict({ value: -0.1, low: -0.2, high: 0 })).toBe('Not enough to tell yet')
-    expect(verdict({ value: 0, low: -0.1, high: 0.1 })).toBe('Not enough to tell yet')
+    expect(verdict({ withStations: 3, withoutStations: 3, df: 4, value: -0.2, low: -0.3, high: -0.1 })).toBe('Lower with stations')
+    expect(verdict({ withStations: 3, withoutStations: 3, df: 4, value: 0.2, low: 0.1, high: 0.3 })).toBe('Higher with stations')
+    expect(verdict({ withStations: 3, withoutStations: 3, df: 4, value: -0.1, low: -0.2, high: 0 })).toBe('Not enough to tell yet')
+    expect(verdict({ withStations: 3, withoutStations: 3, df: 4, value: 0, low: -0.1, high: 0.1 })).toBe('Not enough to tell yet')
     expect(verdict(null)).toBe('Not enough to tell yet')
+  })
+  it('requires three paired stations in each arm even with an interval below zero', () => {
+    for (const [withStations, withoutStations] of [[2, 3], [3, 2], [2, 2]]) {
+      expect(verdict({ value: -0.2, low: -0.3, high: -0.1, df: 2, withStations, withoutStations })).toBe('Not enough to tell yet')
+      expect(verdict({ value: 0.2, low: 0.1, high: 0.3, df: 2, withStations, withoutStations })).toBe('Not enough to tell yet')
+    }
   })
   it('retains uncertainty for two zero-count samples', () => {
     const e = change(pilot([audit({ bad: 0 }), audit({ id: 'b', phase: 'after', bad: 0 })]), 'with')!
     expect(e.low).toBeLessThan(0)
     expect(e.high).toBeGreaterThan(0)
-    expect(verdict(e)).toBe('Not enough to tell yet')
+    expect(verdict(null)).toBe('Not enough to tell yet')
   })
 })
 
@@ -126,8 +168,9 @@ describe('measuring screens', () => {
       values.set('cleanstream.pilots', JSON.stringify([p]))
       const report = renderToStaticMarkup(createElement(PilotView, { pack, packs: [pack] }))
       expect(report).toContain('Example data')
-      expect(report).toContain('95% interval:')
-      expect(report).toContain('Items in one bin are not independent')
+      expect(report).toContain('At least two paired stations per arm')
+      expect(report).toContain('All items pooled (not independent)')
+      expect(report.indexOf('Contamination by station')).toBeLessThan(report.indexOf('Net effect on contamination'))
       expect(report).toContain('measure-print pilot-print')
       expect(report).toContain('Print or save as PDF')
       expect(report).not.toContain('#audit?pilot=')
@@ -165,5 +208,27 @@ describe('measuring screens', () => {
       expect(fallback).toContain('Uses a built-in list of commonly confused items')
       expect(fallback).toContain('Which bin?')
     } finally { vi.unstubAllGlobals() }
+  })
+})
+
+describe('station grouping and measurement basis', () => {
+  it('groups by the site and bin pair, retaining incomplete and conflicting stations', () => {
+    const rows = stations(pilot([audit(), audit({ id: 'b', phase: 'after', bad: 10 }), audit({ id: 'c', bin: 'blue' }), audit({ id: 'd', site: 'Hall' }), audit({ id: 'e', arm: 'without' })]))
+    expect(rows).toHaveLength(3)
+    expect(rows[0]).toMatchObject({ site: 'Library', bin: 'paper', arm: null, change: null, before: { audits: 2 }, after: { audits: 1 } })
+    expect(rows[1]).toMatchObject({ before: { audits: 1 }, after: { audits: 0, rate: null }, change: null })
+  })
+  it('uses weight only when every audit of the station is weighed, so both phases share one basis', () => {
+    const p = pilot([audit({ weights: { totalKg: 1, contaminantKg: 0.8 } }), audit({ id: 'b', weights: { totalKg: 9, contaminantKg: 0.2 } }), audit({ id: 'c', phase: 'after', n: 20, bad: 2, weights: { totalKg: 1, contaminantKg: 0.5 } }), audit({ id: 'd', phase: 'after', n: 80, bad: 8 })])
+    const counted = stations(p)[0]
+    expect(counted).toMatchObject({ before: { rate: 0.3, basis: 'count', audits: 2 }, after: { rate: 0.1, basis: 'count', audits: 2 } })
+    expect(counted.change).toBeCloseTo(-0.2)
+    p.audits[3].weights = { totalKg: 4, contaminantKg: 0.5 }
+    const weighed = stations(p)[0]
+    expect(weighed).toMatchObject({ before: { rate: 0.1, basis: 'weight' }, after: { rate: 0.2, basis: 'weight' } })
+    expect(weighed.change).toBeCloseTo(0.1)
+  })
+  it('does not treat an empty count sample as a measured zero', () => {
+    expect(stations(pilot([audit({ n: 0, bad: 0 })]))[0].before.rate).toBeNull()
   })
 })
