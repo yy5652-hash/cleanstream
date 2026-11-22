@@ -318,7 +318,12 @@
             "rechargeable",
             "phone battery",
             "laptop battery",
-            "power bank"
+            "power bank",
+            "nimh",
+            "ni-mh",
+            "nicad",
+            "ni-cd",
+            "lithium aa"
           ]
         },
         {
@@ -331,11 +336,10 @@
           ],
           "match": [
             "alkaline",
-            "aa",
-            "aaa",
-            "9v",
-            "c battery",
-            "d battery"
+            "single-use",
+            "single use",
+            "disposable battery",
+            "non-rechargeable"
           ]
         }
       ]

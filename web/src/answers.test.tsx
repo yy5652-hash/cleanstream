@@ -53,7 +53,8 @@ describe('conditional answers', () => {
 
   it('keeps Chicago alkaline disposal separate from vapes', () => {
     const chicago = packs.find((p) => p.id === 'chi')!
-    expect(matchCase(chicago.items.battery, 'AA battery')?.bin).toBe('black')
+    expect(matchCase(chicago.items.battery, 'alkaline AA battery')?.bin).toBe('black')
+    expect(matchCase(chicago.items.battery, 'AA battery')).toBeUndefined()
     const html = typed('vape', chicago)
     expect(html).toContain('<h2 class="text-display">Drop-off</h2>')
     expect(html).not.toContain('>Black cart<')
@@ -96,7 +97,11 @@ describe('conditional answers', () => {
 
   it('takes the safe default when the words match more than one case', () => {
     expect(matchCase(nyc.items.battery, 'rechargeable AA battery')?.id).toBe('rechargeable')
-    expect(matchCase(nyc.items.battery, 'AA battery')?.id).toBe('alkaline')
+    // a size is not a chemistry: an AA battery is not assumed to be alkaline
+    expect(matchCase(nyc.items.battery, 'AA battery')).toBeUndefined()
+    expect(matchCase(nyc.items.battery, '9V battery')).toBeUndefined()
+    expect(matchCase(nyc.items.battery, 'alkaline AA battery')?.id).toBe('alkaline')
+    expect(matchCase(nyc.items.battery, 'NiMH AA battery')?.id).toBe('rechargeable')
     expect(matchCase(nyc.items.pizza_box, 'greasy pizza box')?.id).toBe('greasy')
   })
 
@@ -115,8 +120,12 @@ describe('conditional answers', () => {
     expect(matchCase(nyc.items.battery, query)).toBeUndefined()
   })
 
-  it.each(['AA battery', '(aaa)', '9V battery', 'C battery', 'd battery', 'AlKaLiNe'])('matches whole words case-insensitively: %s', (query) => {
+  it.each(['AlKaLiNe', '(alkaline)', 'single-use AA', 'a disposable battery'])('matches whole words case-insensitively: %s', (query) => {
     expect(matchCase(nyc.items.battery, query)?.id).toBe('alkaline')
+  })
+
+  it.each(['AA battery', '(aaa)', '9V battery', 'C battery', 'd battery'])('does not take a size as a chemistry: %s', (query) => {
+    expect(matchCase(nyc.items.battery, query)).toBeUndefined()
   })
 
   it('matches complete multiword and punctuated phrases', () => {
@@ -158,7 +167,9 @@ describe('conditional answers', () => {
       expect(condition.bin).toBe('dropoff')
       expect(pack.items.battery.source).toBe(nyc.items.battery.source)
       expect(matchCase(pack.items.battery, 'bag')).toBeUndefined()
-      const local = { es: ['pila recargable AA', 'vapeador', 'pizza grasienta'], 'zh-Hans': ['可充电5号电池', '电子烟', '油腻的披萨盒'], 'zh-Hant': ['可充電3號電池', '電子菸', '油膩的披薩盒'] }[lang]
+      const local = { es: ['pila recargable AA', 'vapeador', 'pizza grasienta', 'pila AA'], 'zh-Hans': ['充电 AA 电池', '电子烟', '油腻的披萨盒', '5号电池'], 'zh-Hant': ['充電 AA 電池', '電子菸', '油膩的披薩盒', '3號電池'] }[lang]
+      // a size alone never reaches the trash case
+      expect(matchCase(pack.items.battery, local[3])).toBeUndefined()
       // rechargeable wins over the AA/5号/3號 words, and a vape never reaches the trash
       expect(matchCase(pack.items.battery, local[0])?.bin).toBe('dropoff')
       expect(matchCase(pack.items.battery, local[1])?.bin).toBe('dropoff')

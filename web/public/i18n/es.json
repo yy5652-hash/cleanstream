@@ -1360,8 +1360,9 @@
        "match": [
         "alcalina",
         "alcalinas",
-        "pila c",
-        "pila d"
+        "desechable",
+        "de un solo uso",
+        "no recargable"
        ]
       }
      }
@@ -1996,8 +1997,9 @@
        "match": [
         "alcalina",
         "alcalinas",
-        "pila c",
-        "pila d"
+        "desechable",
+        "de un solo uso",
+        "no recargable"
        ]
       }
      }
