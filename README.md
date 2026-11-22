@@ -110,6 +110,10 @@ away; `web/src/i18n.test.ts` checks that every string, rule and prep step is pre
   validation, which rewards generalising to a new photo source. The encoder and head settings were compared on validation
   photos only, photo by photo (`ml/compare.py`, a paired test): ViT-B/16 beat ViT-B/32 on item type and bin. The first
   encoder had been picked from four open models (OpenAI CLIP, LAION-2B CLIP, DataComp CLIP, SigLIP 2) with the same pipeline.
+- **What "right bin" means.** The test photos are labelled with item types, not conditions. For an item whose bin depends
+  on its condition (a battery, a greasy or clean pizza box), a predicted bin counts as right if any of that item's
+  conditions allows it, the same rule as the city's "also accepted" bins. The app itself asks, or shows the safe default,
+  for those items; this benchmark does not measure that end-to-end conditional answer.
 - **What we looked at.** RealWaste is never trained on, but we looked at it twice during development. At the first look an
   earlier candidate had lifted everyday photos and lost 6 points on RealWaste, so we went back to the validation photos and
   added recycling-plant photos, then looked once more and stopped tuning. The shipped model is stronger on everyday items and
