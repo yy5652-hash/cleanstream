@@ -42,8 +42,14 @@ export function usePacks(first: string): Pack[] | null {
 
 export const binById = (pack: Pack, id: string) => pack.bins.find((b) => b.id === id)!
 
-// Audit acceptance includes every condition; it does not resolve an individual item's condition.
-export const belongs = (pack: Pack, item: string, bin: string) => pack.items[item]?.bin === bin || !!pack.items[item]?.also?.includes(bin) || !!pack.items[item]?.cases?.some((c) => c.bin === bin)
+// Non-audit callers may still ask whether any condition accepts this bin.
+export function belongs(pack: Pack, item: string, bin: string, caseId?: string): boolean {
+  const rule = pack.items[item]
+  if (!rule) return false
+  if (rule.also?.includes(bin)) return true
+  if (caseId !== undefined) return rule.cases?.find((c) => c.id === caseId)?.bin === bin
+  return rule.bin === bin || !!rule.cases?.some((c) => c.bin === bin)
+}
 
 // Match complete words/phrases, including punctuation such as "li-ion" and "#7 PLA".
 export function matchesPhrase(query: string, term: string): boolean {
