@@ -94,6 +94,12 @@ describe('conditional answers', () => {
     expect(html).toContain('Single-use alkaline')
   })
 
+  it('takes the safe default when the words match more than one case', () => {
+    expect(matchCase(nyc.items.battery, 'rechargeable AA battery')?.id).toBe('rechargeable')
+    expect(matchCase(nyc.items.battery, 'AA battery')?.id).toBe('alkaline')
+    expect(matchCase(nyc.items.pizza_box, 'greasy pizza box')?.id).toBe('greasy')
+  })
+
   it('resolves case prep independently, retaining the source and safe default', () => {
     const rule = nyc.items.battery
     const resolved = caseRule(rule, matchCase(rule, 'vape')!)
@@ -152,6 +158,11 @@ describe('conditional answers', () => {
       expect(condition.bin).toBe('dropoff')
       expect(pack.items.battery.source).toBe(nyc.items.battery.source)
       expect(matchCase(pack.items.battery, 'bag')).toBeUndefined()
+      const local = { es: ['pila recargable AA', 'vapeador', 'pizza grasienta'], 'zh-Hans': ['可充电5号电池', '电子烟', '油腻的披萨盒'], 'zh-Hant': ['可充電3號電池', '電子菸', '油膩的披薩盒'] }[lang]
+      // rechargeable wins over the AA/5号/3號 words, and a vape never reaches the trash
+      expect(matchCase(pack.items.battery, local[0])?.bin).toBe('dropoff')
+      expect(matchCase(pack.items.battery, local[1])?.bin).toBe('dropoff')
+      expect(matchCase(pack.items.pizza_box, local[2])?.bin).toBe('brown')
     } finally {
       await setLang('en')
       vi.unstubAllGlobals()

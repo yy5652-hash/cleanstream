@@ -1259,6 +1259,21 @@
        "prep": [
         "Baterías recargables, de litio y de automóvil: llévalas a Household Chemicals & Computer Recycling Facility",
         "Nunca en el carrito azul"
+       ],
+       "match": [
+        "vapeador",
+        "vaper",
+        "cigarrillo electrónico",
+        "cigarro electrónico",
+        "litio",
+        "ion de litio",
+        "recargable",
+        "recargables",
+        "batería de celular",
+        "batería de teléfono",
+        "batería de laptop",
+        "batería de portátil",
+        "batería externa"
        ]
       },
       "alkaline": {
@@ -1266,6 +1281,12 @@
        "prep": [
         "Alcalinas (AA, AAA, 9V): la instalación no las acepta; van en el carrito negro",
         "Nunca en el carrito azul"
+       ],
+       "match": [
+        "alcalina",
+        "alcalinas",
+        "pila c",
+        "pila d"
        ]
       }
      }
@@ -1418,12 +1439,30 @@
        "label": "Con restos de comida o grasa",
        "prep": [
         "Bolsas grasosas o sucias de comida: contenedor verde"
+       ],
+       "match": [
+        "grasa",
+        "grasienta",
+        "grasiento",
+        "grasosa",
+        "grasoso",
+        "aceitosa",
+        "aceitoso",
+        "con comida",
+        "manchada",
+        "manchado"
        ]
       },
       "clean": {
        "label": "Limpio y seco",
        "prep": [
         "Mantenlo limpio y seco"
+       ],
+       "match": [
+        "limpia",
+        "limpio",
+        "seca",
+        "seco"
        ]
       }
      }
@@ -1687,12 +1726,30 @@
        "label": "Con restos de comida o grasa",
        "prep": [
         "Las bolsas sucias de comida van en el contenedor marrón"
+       ],
+       "match": [
+        "grasa",
+        "grasienta",
+        "grasiento",
+        "grasosa",
+        "grasoso",
+        "aceitosa",
+        "aceitoso",
+        "con comida",
+        "manchada",
+        "manchado"
        ]
       },
       "clean": {
        "label": "Limpio y seco",
        "prep": [
         "Mantenlo limpio y seco"
+       ],
+       "match": [
+        "limpia",
+        "limpio",
+        "seca",
+        "seco"
        ]
       }
      }
@@ -1714,12 +1771,30 @@
        "label": "Limpia o ligeramente manchada",
        "prep": [
         "Retira los restos de comida"
+       ],
+       "match": [
+        "limpia",
+        "limpio",
+        "seca",
+        "seco"
        ]
       },
       "greasy": {
        "label": "Grasienta o con comida pegada",
        "prep": [
         "Retira los restos de comida"
+       ],
+       "match": [
+        "grasa",
+        "grasienta",
+        "grasiento",
+        "grasosa",
+        "grasoso",
+        "aceitosa",
+        "aceitoso",
+        "con comida",
+        "manchada",
+        "manchado"
        ]
       }
      },
@@ -1820,6 +1895,21 @@
        "prep": [
         "Cubre los extremos con cinta adhesiva o embolsa cada pila por separado",
         "Recargables y de ion de litio: devuélvelas a una tienda que las venda"
+       ],
+       "match": [
+        "vapeador",
+        "vaper",
+        "cigarrillo electrónico",
+        "cigarro electrónico",
+        "litio",
+        "ion de litio",
+        "recargable",
+        "recargables",
+        "batería de celular",
+        "batería de teléfono",
+        "batería de laptop",
+        "batería de portátil",
+        "batería externa"
        ]
       },
       "alkaline": {
@@ -1827,6 +1917,12 @@
        "prep": [
         "Cubre los extremos con cinta adhesiva o embolsa cada pila por separado",
         "Las pilas alcalinas de un solo uso (AA, AAA, 9V) pueden ir en la basura"
+       ],
+       "match": [
+        "alcalina",
+        "alcalinas",
+        "pila c",
+        "pila d"
        ]
       }
      }
@@ -2303,12 +2399,30 @@
        "label": "Con restos de comida o grasa",
        "prep": [
         "¿Grasosa o manchada de comida? Contenedor verde"
+       ],
+       "match": [
+        "grasa",
+        "grasienta",
+        "grasiento",
+        "grasosa",
+        "grasoso",
+        "aceitosa",
+        "aceitoso",
+        "con comida",
+        "manchada",
+        "manchado"
        ]
       },
       "clean": {
        "label": "Limpio y seco",
        "prep": [
         "Limpio y seco"
+       ],
+       "match": [
+        "limpia",
+        "limpio",
+        "seca",
+        "seco"
        ]
       }
      }

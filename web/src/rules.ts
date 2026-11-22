@@ -47,12 +47,17 @@ export const belongs = (pack: Pack, item: string, bin: string) => pack.items[ite
 
 // Match complete words/phrases, including punctuation such as "li-ion" and "#7 PLA".
 export function matchesPhrase(query: string, term: string): boolean {
+  // Chinese has no spaces between words, so a Han term matches anywhere in the query.
+  if (/\p{Script=Han}/u.test(term)) return query.toLowerCase().includes(term.trim().toLowerCase())
   const phrase = term.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+')
   return !!phrase && new RegExp(`(^|[^\\p{L}\\p{N}_])${phrase}($|[^\\p{L}\\p{N}_])`, 'iu').test(query)
 }
 
+// When the words point at more than one case ("pila recargable AA"), only the safe default (the rule's main bin) is taken;
+// otherwise nothing is resolved and the app shows its default or asks.
 export function matchCase(rule: Rule, query: string): RuleCase | undefined {
-  return rule.cases?.find((c) => c.match?.some((term) => matchesPhrase(query, term)))
+  const hits = rule.cases?.filter((c) => c.match?.some((term) => matchesPhrase(query, term))) ?? []
+  return hits.length === 1 ? hits[0] : hits.find((c) => c.bin === rule.bin)
 }
 
 export const caseRule = (rule: Rule, condition: RuleCase): Rule => ({ ...rule, bin: condition.bin, prep: condition.prep ?? rule.prep, also: undefined })
