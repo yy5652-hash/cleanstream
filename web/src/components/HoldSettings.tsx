@@ -20,7 +20,7 @@ export function HoldSettings({ onOpen, className, children }: { onOpen: () => vo
       if (p === 1) { stop(); onOpen() }
     }, 25)
   }
-  return <div className="relative flex flex-col items-center">
+  return <div className="relative">
     <Button variant="outline" size="icon" className={`${className ?? ''} touch-none select-none`} aria-label={t('Hold to change bins')} aria-describedby="station-hold-hint" aria-haspopup="dialog"
       onPointerDown={(e) => { if (e.button === 0 && e.isPrimary) { e.preventDefault(); e.currentTarget.setPointerCapture(e.pointerId); start() } }}
       onPointerLeave={stop} onPointerUp={stop} onPointerCancel={stop} onLostPointerCapture={stop} onBlur={stop}
@@ -28,7 +28,8 @@ export function HoldSettings({ onOpen, className, children }: { onOpen: () => vo
       onKeyUp={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); stop() } }} onContextMenu={(e) => e.preventDefault()}>
       {children}
     </Button>
-    <span id="station-hold-hint" className="text-xs">{t('Hold 2 seconds')}</span>
-    <div role="progressbar" aria-label={t('Hold to change bins')} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress * 100)} className="h-1 w-full bg-current/20"><div className="h-full bg-current" style={{ width: `${progress * 100}%` }} /></div>
+    {/* The hint and progress hang below the button so it lines up with the other header buttons. */}
+    <span id="station-hold-hint" className="pointer-events-none absolute top-full right-0 mt-1 text-xs whitespace-nowrap text-ink-2">{t('Hold 2 seconds')}</span>
+    <div role="progressbar" aria-label={t('Hold to change bins')} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress * 100)} className="pointer-events-none absolute inset-x-1 bottom-0.5 h-1 overflow-hidden rounded-full"><div className="h-full bg-current" style={{ width: `${progress * 100}%` }} /></div>
   </div>
 }
