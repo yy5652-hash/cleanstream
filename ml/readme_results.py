@@ -58,7 +58,7 @@ def main():
     rows = [(f"Held-out test photos ({ad[k]['n']:,})" if k == "test" else f"RealWaste ({ad[k]['n']:,})", ad[k]) for k in ("test", "external") if k in ad]
     if held.exists():
         h = json.loads(held.read_text())
-        rows.append((f"Held-up photos, labelled and frozen before scoring ({h['n']})", {**h["packs"]["nyc"], "n": h["n"]}))
+        rows.append((f"Held-up photos, labelled and frozen before scoring ({h['n']}; scored once, before NYC blister packs asked)", {**h["packs"]["nyc"], "n": h["n"]}))
     if rows:
         lines += ["", "What the screen does, with NYC rules: below 60% it asks which item, a pizza box asks whether it is greasy, "
                   "and otherwise it shows one bin. A photo whose condition can't be seen counts as right only for the safe default "

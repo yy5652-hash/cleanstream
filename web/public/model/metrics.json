@@ -262,25 +262,25 @@
   "nyc": {
    "test": {
     "n": 6490,
-    "right": 6233,
-    "asked": 130,
+    "right": 6229,
+    "asked": 134,
     "wrong": 127,
     "unsafe": 0,
-    "right_rate": 0.9604006163328197,
-    "ask_rate": 0.020030816640986132,
+    "right_rate": 0.9597842835130971,
+    "ask_rate": 0.020647149460708784,
     "wrong_rate": 0.019568567026194146,
-    "right_when_answered": 0.9800314465408805
+    "right_when_answered": 0.9800188797986155
    },
    "external": {
     "n": 2546,
     "right": 1633,
-    "asked": 373,
-    "wrong": 540,
+    "asked": 374,
+    "wrong": 539,
     "unsafe": 0,
     "right_rate": 0.6413982717989002,
-    "ask_rate": 0.14650432050274942,
-    "wrong_rate": 0.21209740769835037,
-    "right_when_answered": 0.7514956281638288
+    "ask_rate": 0.14689709347996857,
+    "wrong_rate": 0.21170463472113119,
+    "right_when_answered": 0.751841620626151
    }
   },
   "sea": {

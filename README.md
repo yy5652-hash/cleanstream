@@ -177,9 +177,9 @@ What the screen does, with NYC rules: below 60% it asks which item, a pizza box 
 
 | Test set | Right bin shown | Asks | Wrong bin | Battery or device shown a regular bin |
 | --- | --- | --- | --- | --- |
-| Held-out test photos (6,490) | 96.0% | 2.0% | 2.0% | 0 |
+| Held-out test photos (6,490) | 96.0% | 2.1% | 2.0% | 0 |
 | RealWaste (2,546) | 64.1% | 14.7% | 21.2% | 0 |
-| Held-up photos, labelled and frozen before scoring (100) | 77.0% | 18.0% | 5.0% | 1 |
+| Held-up photos, labelled and frozen before scoring (100; scored once, before NYC blister packs asked) | 77.0% | 18.0% | 5.0% | 1 |
 
 On the held-up photos the item type is right on 86.0% and the visual bin (the rule used in the first table) on 89.0%; when the app shows a bin it is right on 93.9% of those photos (NYC rules).
 <!-- results:end -->
