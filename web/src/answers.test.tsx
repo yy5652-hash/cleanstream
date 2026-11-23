@@ -6,6 +6,7 @@ import { RuleDestination } from './components/RuleDestination'
 import { localizePack, setLang, type Dict } from './i18n'
 import { ITEMS, searchItems } from './items'
 import { answer, belongs, caseRule, matchCase, matchesPhrase, PACK_IDS, ruleBins, shownItem, type Pack } from './rules'
+import { stationDecision } from './station-decision'
 
 // Only replace the browser subscription; render the real English rules and interface.
 vi.mock(import('./i18n'), async (importOriginal) => ({
@@ -15,6 +16,7 @@ vi.mock(import('./i18n'), async (importOriginal) => ({
 
 const packs: Pack[] = PACK_IDS.map((id) => JSON.parse(readFileSync(new URL(`../public/rules/${id}.json`, import.meta.url), 'utf8')))
 const nyc = packs.find((p) => p.id === 'nyc')!
+const blisterQuestion = 'Does it have a foil back, like a pill pack?'
 const classes = Object.keys(ITEMS)
 const prediction = (values: Record<string, number | undefined>) => answer(nyc, classes, new Float32Array(classes.map((id) => values[id] ?? 0)))
 const noop = () => {}
@@ -97,6 +99,30 @@ describe('conditional answers', () => {
     expect(html).not.toContain('text-display')
   })
 
+  it('asks for a condition before giving a generic NYC blister pack a definitive bin', () => {
+    const html = typed('blister pack')
+    expect(html).toContain(blisterQuestion)
+    expect(html).toContain('Pill pack with a foil back')
+    expect(html).toContain('Rigid plastic packaging')
+    expect(html).toContain('>Trash<')
+    expect(html).toContain('>Blue bin<')
+    expect(html).not.toContain('text-display')
+  })
+
+  it('asks about the backing for a confident NYC blister pack photo on the phone', () => {
+    const html = renderToStaticMarkup(<Answer ans={prediction({ blister_pack: 1 })} item={null} pack={nyc} packs={packs} onChoose={noop} />)
+    expect(html).toContain(blisterQuestion)
+    expect(html).not.toContain('text-display')
+  })
+
+  it.each(['pill pack', 'foil back pill pack'])('%s resolves to NYC trash without asking a condition', (query) => {
+    expect(searchItems(query)[0]).toBe('blister_pack')
+    expect(matchCase(nyc.items.blister_pack, query)?.id).toBe('foil')
+    const html = typed(query)
+    expect(html).toContain('<h2 class="text-display">Trash</h2>')
+    expect(html).not.toContain(blisterQuestion)
+  })
+
   it('shows a battery photo as drop-off, with the alkaline case one tap away and no trash card', () => {
     const html = renderToStaticMarkup(<Answer ans={prediction({ battery: 1 })} item={null} pack={nyc} packs={packs} onChoose={noop} />)
     expect(html).toContain('<h2 class="text-display">Drop-off</h2>')
@@ -175,6 +201,8 @@ describe('conditional answers', () => {
     try {
       await setLang(lang)
       const pack = localizePack(nyc)
+      expect(pack.items.blister_pack.ask).toBe(dict.packs.nyc.items.blister_pack.ask)
+      expect(pack.items.blister_pack.ask).not.toBe(nyc.items.blister_pack.ask)
       const condition = matchCase(pack.items.battery, 'vape')!
       expect(condition.id).toBe('rechargeable')
       expect(condition.label).toBe(dict.packs.nyc.items.battery.cases!.rechargeable.label)
@@ -197,6 +225,12 @@ describe('conditional answers', () => {
 })
 
 describe('one photo decision across surfaces', () => {
+  it('asks for the backing at the station and sends a confirmed foil pack to trash', () => {
+    const ans = prediction({ blister_pack: 1 })
+    expect(stationDecision(nyc, ans)).toMatchObject({ kind: 'needs-condition', item: 'blister_pack', rule: { ask: blisterQuestion } })
+    expect(stationDecision(nyc, ans, undefined, 'foil')).toMatchObject({ kind: 'resolved', item: 'blister_pack', rule: { bin: 'trash' } })
+  })
+
   it('shows the most likely item in the top summed bin for the reviewer vector', () => {
     const ans = prediction({ paper: 0.38, plastic_bottle: 0.32, metal_can: 0.30 })
     expect(ans.items[0].id).toBe('paper')

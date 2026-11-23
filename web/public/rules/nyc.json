@@ -442,6 +442,7 @@
    ],
    "why": "Rigid plastic 'blisterpak' packaging is accepted.",
    "source": "https://portal.311.nyc.gov/article/?kanumber=KA-02013",
+   "ask": "Does it have a foil back, like a pill pack?",
    "cases": [
     {
      "id": "foil",
