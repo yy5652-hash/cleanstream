@@ -6,7 +6,11 @@ Protocol, fixed before the model is run on these photos (see git history: ml/hel
 before ml/results/heldup.json exists):
 - ml/heldup.csv lists the photos (Wikimedia Commons, CC0 / public domain / CC BY / CC BY-SA), with the item type and,
   where it is visible in the photo, the condition (battery: alkaline / rechargeable / button; pizza box: greasy / clean;
-  paper bag: soiled / clean). Labels were set by looking at each photo; no model output was consulted.
+  paper bag: soiled / clean; also tissue / food-soiled paper and foil / plastic blister packs). Labels were set by
+  looking at each photo; no model output was consulted. ml/fetch_heldup.py collected the candidates
+  (ml/heldup_candidates.csv); before scoring, 12 were excluded by three rules written down in ml/heldup_excluded.csv:
+  black-and-white or sepia photos, an item tiny in the frame or not the held object, and a cup whose material can't be
+  told from the photo.
 - Files are checked against their recorded SHA-256. Photos already used for training (Commons page ids in
   ml/commons_credits.csv) were excluded when collecting. Any photo within cosine 0.97 of an image from the training
   sources (the same rule train.py uses) is dropped before scoring and reported.
