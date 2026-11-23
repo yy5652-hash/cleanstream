@@ -1,0 +1,1185 @@
+{
+ "n": 100,
+ "near_duplicates_dropped": [],
+ "item_acc": 0.86,
+ "by_label": {
+  "blister_pack": {
+   "n": 3,
+   "item_acc": 1.0
+  },
+  "cardboard": {
+   "n": 4,
+   "item_acc": 0.75
+  },
+  "carton": {
+   "n": 2,
+   "item_acc": 1.0
+  },
+  "cigarette_butt": {
+   "n": 1,
+   "item_acc": 1.0
+  },
+  "drinking_glass_ceramic": {
+   "n": 12,
+   "item_acc": 0.9166666666666666
+  },
+  "electronics": {
+   "n": 11,
+   "item_acc": 0.7272727272727273
+  },
+  "food_scraps": {
+   "n": 11,
+   "item_acc": 1.0
+  },
+  "glass_bottle_jar": {
+   "n": 10,
+   "item_acc": 0.9
+  },
+  "mask_gloves": {
+   "n": 5,
+   "item_acc": 0.8
+  },
+  "metal_can": {
+   "n": 5,
+   "item_acc": 1.0
+  },
+  "paper": {
+   "n": 5,
+   "item_acc": 1.0
+  },
+  "paper_bag": {
+   "n": 1,
+   "item_acc": 1.0
+  },
+  "paper_cup": {
+   "n": 3,
+   "item_acc": 1.0
+  },
+  "pizza_box": {
+   "n": 1,
+   "item_acc": 1.0
+  },
+  "plastic_bag_film": {
+   "n": 1,
+   "item_acc": 1.0
+  },
+  "plastic_bottle": {
+   "n": 6,
+   "item_acc": 1.0
+  },
+  "plastic_container": {
+   "n": 1,
+   "item_acc": 0.0
+  },
+  "plastic_cup": {
+   "n": 2,
+   "item_acc": 0.5
+  },
+  "plastic_utensil_straw": {
+   "n": 1,
+   "item_acc": 1.0
+  },
+  "rope_string": {
+   "n": 1,
+   "item_acc": 1.0
+  },
+  "shoes": {
+   "n": 1,
+   "item_acc": 1.0
+  },
+  "soiled_paper": {
+   "n": 1,
+   "item_acc": 1.0
+  },
+  "textile": {
+   "n": 6,
+   "item_acc": 1.0
+  },
+  "yard_waste": {
+   "n": 6,
+   "item_acc": 0.16666666666666666
+  }
+ },
+ "packs": {
+  "chi": {
+   "visual_ok": 89,
+   "right": 85,
+   "asked": 10,
+   "wrong": 5,
+   "unsafe": 1,
+   "answered": 90,
+   "visual_bin_acc": 0.89,
+   "right_rate": 0.85,
+   "ask_rate": 0.1,
+   "wrong_rate": 0.05,
+   "right_when_answered": 0.9444444444444444
+  },
+  "la": {
+   "visual_ok": 91,
+   "right": 87,
+   "asked": 10,
+   "wrong": 3,
+   "unsafe": 1,
+   "answered": 90,
+   "visual_bin_acc": 0.91,
+   "right_rate": 0.87,
+   "ask_rate": 0.1,
+   "wrong_rate": 0.03,
+   "right_when_answered": 0.9666666666666667
+  },
+  "nyc": {
+   "visual_ok": 89,
+   "right": 77,
+   "asked": 18,
+   "wrong": 5,
+   "unsafe": 1,
+   "answered": 82,
+   "visual_bin_acc": 0.89,
+   "right_rate": 0.77,
+   "ask_rate": 0.18,
+   "wrong_rate": 0.05,
+   "right_when_answered": 0.9390243902439024
+  },
+  "sea": {
+   "visual_ok": 88,
+   "right": 82,
+   "asked": 15,
+   "wrong": 3,
+   "unsafe": 1,
+   "answered": 85,
+   "visual_bin_acc": 0.88,
+   "right_rate": 0.82,
+   "ask_rate": 0.15,
+   "wrong_rate": 0.03,
+   "right_when_answered": 0.9647058823529412
+  },
+  "sf": {
+   "visual_ok": 89,
+   "right": 82,
+   "asked": 15,
+   "wrong": 3,
+   "unsafe": 2,
+   "answered": 85,
+   "visual_bin_acc": 0.89,
+   "right_rate": 0.82,
+   "ask_rate": 0.15,
+   "wrong_rate": 0.03,
+   "right_when_answered": 0.9647058823529412
+  },
+  "us": {
+   "visual_ok": 91,
+   "right": 85,
+   "asked": 14,
+   "wrong": 1,
+   "unsafe": 1,
+   "answered": 86,
+   "visual_bin_acc": 0.91,
+   "right_rate": 0.85,
+   "ask_rate": 0.14,
+   "wrong_rate": 0.01,
+   "right_when_answered": 0.9883720930232558
+  }
+ },
+ "rows": [
+  {
+   "pageid": "51052957",
+   "label": "plastic_bottle",
+   "condition": "",
+   "pred_item": "plastic_bottle",
+   "decision": "resolved",
+   "shown_item": "plastic_bottle",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "187657462",
+   "label": "glass_bottle_jar",
+   "condition": "",
+   "pred_item": "glass_bottle_jar",
+   "decision": "resolved",
+   "shown_item": "glass_bottle_jar",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "155870831",
+   "label": "metal_can",
+   "condition": "",
+   "pred_item": "metal_can",
+   "decision": "resolved",
+   "shown_item": "metal_can",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "61875215",
+   "label": "drinking_glass_ceramic",
+   "condition": "",
+   "pred_item": "drinking_glass_ceramic",
+   "decision": "resolved",
+   "shown_item": "drinking_glass_ceramic",
+   "bin": "trash",
+   "verdict": "right"
+  },
+  {
+   "pageid": "188195998",
+   "label": "drinking_glass_ceramic",
+   "condition": "",
+   "pred_item": "drinking_glass_ceramic",
+   "decision": "resolved",
+   "shown_item": "drinking_glass_ceramic",
+   "bin": "trash",
+   "verdict": "right"
+  },
+  {
+   "pageid": "99398997",
+   "label": "drinking_glass_ceramic",
+   "condition": "",
+   "pred_item": "drinking_glass_ceramic",
+   "decision": "ask-item",
+   "shown_item": null,
+   "bin": "blue",
+   "verdict": "asked"
+  },
+  {
+   "pageid": "186069729",
+   "label": "drinking_glass_ceramic",
+   "condition": "",
+   "pred_item": "drinking_glass_ceramic",
+   "decision": "resolved",
+   "shown_item": "drinking_glass_ceramic",
+   "bin": "trash",
+   "verdict": "right"
+  },
+  {
+   "pageid": "186069731",
+   "label": "drinking_glass_ceramic",
+   "condition": "",
+   "pred_item": "drinking_glass_ceramic",
+   "decision": "resolved",
+   "shown_item": "drinking_glass_ceramic",
+   "bin": "trash",
+   "verdict": "right"
+  },
+  {
+   "pageid": "187608996",
+   "label": "drinking_glass_ceramic",
+   "condition": "",
+   "pred_item": "drinking_glass_ceramic",
+   "decision": "resolved",
+   "shown_item": "drinking_glass_ceramic",
+   "bin": "trash",
+   "verdict": "right"
+  },
+  {
+   "pageid": "191947116",
+   "label": "drinking_glass_ceramic",
+   "condition": "",
+   "pred_item": "drinking_glass_ceramic",
+   "decision": "resolved",
+   "shown_item": "drinking_glass_ceramic",
+   "bin": "trash",
+   "verdict": "right"
+  },
+  {
+   "pageid": "192534285",
+   "label": "drinking_glass_ceramic",
+   "condition": "",
+   "pred_item": "drinking_glass_ceramic",
+   "decision": "resolved",
+   "shown_item": "drinking_glass_ceramic",
+   "bin": "trash",
+   "verdict": "right"
+  },
+  {
+   "pageid": "193561893",
+   "label": "drinking_glass_ceramic",
+   "condition": "",
+   "pred_item": "drinking_glass_ceramic",
+   "decision": "ask-item",
+   "shown_item": null,
+   "bin": "trash",
+   "verdict": "asked"
+  },
+  {
+   "pageid": "197345701",
+   "label": "drinking_glass_ceramic",
+   "condition": "",
+   "pred_item": "plastic_cup",
+   "decision": "ask-item",
+   "shown_item": null,
+   "bin": "blue",
+   "verdict": "asked"
+  },
+  {
+   "pageid": "197516580",
+   "label": "drinking_glass_ceramic",
+   "condition": "",
+   "pred_item": "drinking_glass_ceramic",
+   "decision": "ask-item",
+   "shown_item": null,
+   "bin": "trash",
+   "verdict": "asked"
+  },
+  {
+   "pageid": "198099678",
+   "label": "drinking_glass_ceramic",
+   "condition": "",
+   "pred_item": "drinking_glass_ceramic",
+   "decision": "resolved",
+   "shown_item": "drinking_glass_ceramic",
+   "bin": "trash",
+   "verdict": "right"
+  },
+  {
+   "pageid": "61716129",
+   "label": "paper_cup",
+   "condition": "",
+   "pred_item": "paper_cup",
+   "decision": "ask-item",
+   "shown_item": null,
+   "bin": "green",
+   "verdict": "asked"
+  },
+  {
+   "pageid": "94912110",
+   "label": "paper_cup",
+   "condition": "",
+   "pred_item": "paper_cup",
+   "decision": "resolved",
+   "shown_item": "paper_cup",
+   "bin": "green",
+   "verdict": "right"
+  },
+  {
+   "pageid": "1051903",
+   "label": "plastic_cup",
+   "condition": "",
+   "pred_item": "plastic_cup",
+   "decision": "resolved",
+   "shown_item": "plastic_cup",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "202377133",
+   "label": "paper",
+   "condition": "",
+   "pred_item": "paper",
+   "decision": "resolved",
+   "shown_item": "paper",
+   "bin": "green",
+   "verdict": "right"
+  },
+  {
+   "pageid": "18846060",
+   "label": "paper",
+   "condition": "",
+   "pred_item": "paper",
+   "decision": "resolved",
+   "shown_item": "paper",
+   "bin": "green",
+   "verdict": "right"
+  },
+  {
+   "pageid": "86415477",
+   "label": "paper",
+   "condition": "",
+   "pred_item": "paper",
+   "decision": "resolved",
+   "shown_item": "paper",
+   "bin": "green",
+   "verdict": "right"
+  },
+  {
+   "pageid": "194578810",
+   "label": "paper",
+   "condition": "",
+   "pred_item": "paper",
+   "decision": "resolved",
+   "shown_item": "paper",
+   "bin": "green",
+   "verdict": "right"
+  },
+  {
+   "pageid": "194016837",
+   "label": "paper",
+   "condition": "",
+   "pred_item": "paper",
+   "decision": "resolved",
+   "shown_item": "paper",
+   "bin": "green",
+   "verdict": "right"
+  },
+  {
+   "pageid": "123917614",
+   "label": "cardboard",
+   "condition": "",
+   "pred_item": "cardboard",
+   "decision": "resolved",
+   "shown_item": "cardboard",
+   "bin": "green",
+   "verdict": "right"
+  },
+  {
+   "pageid": "120365151",
+   "label": "electronics",
+   "condition": "",
+   "pred_item": "electronics",
+   "decision": "ask-item",
+   "shown_item": null,
+   "bin": "green",
+   "verdict": "asked"
+  },
+  {
+   "pageid": "203273596",
+   "label": "glass_bottle_jar",
+   "condition": "",
+   "pred_item": "glass_bottle_jar",
+   "decision": "resolved",
+   "shown_item": "glass_bottle_jar",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "98189155",
+   "label": "glass_bottle_jar",
+   "condition": "",
+   "pred_item": "glass_bottle_jar",
+   "decision": "resolved",
+   "shown_item": "glass_bottle_jar",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "174443180",
+   "label": "glass_bottle_jar",
+   "condition": "",
+   "pred_item": "glass_bottle_jar",
+   "decision": "resolved",
+   "shown_item": "glass_bottle_jar",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "197811333",
+   "label": "glass_bottle_jar",
+   "condition": "",
+   "pred_item": "glass_bottle_jar",
+   "decision": "ask-item",
+   "shown_item": null,
+   "bin": "blue",
+   "verdict": "asked"
+  },
+  {
+   "pageid": "4375065",
+   "label": "glass_bottle_jar",
+   "condition": "",
+   "pred_item": "plastic_bottle",
+   "decision": "resolved",
+   "shown_item": "plastic_bottle",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "161574266",
+   "label": "cardboard",
+   "condition": "",
+   "pred_item": "paper",
+   "decision": "resolved",
+   "shown_item": "paper",
+   "bin": "green",
+   "verdict": "right"
+  },
+  {
+   "pageid": "192935394",
+   "label": "cardboard",
+   "condition": "",
+   "pred_item": "cardboard",
+   "decision": "resolved",
+   "shown_item": "cardboard",
+   "bin": "green",
+   "verdict": "right"
+  },
+  {
+   "pageid": "142188357",
+   "label": "glass_bottle_jar",
+   "condition": "",
+   "pred_item": "glass_bottle_jar",
+   "decision": "resolved",
+   "shown_item": "glass_bottle_jar",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "196497440",
+   "label": "food_scraps",
+   "condition": "",
+   "pred_item": "food_scraps",
+   "decision": "resolved",
+   "shown_item": "food_scraps",
+   "bin": "brown",
+   "verdict": "right"
+  },
+  {
+   "pageid": "104096621",
+   "label": "food_scraps",
+   "condition": "",
+   "pred_item": "food_scraps",
+   "decision": "resolved",
+   "shown_item": "food_scraps",
+   "bin": "brown",
+   "verdict": "right"
+  },
+  {
+   "pageid": "191786868",
+   "label": "food_scraps",
+   "condition": "",
+   "pred_item": "food_scraps",
+   "decision": "resolved",
+   "shown_item": "food_scraps",
+   "bin": "brown",
+   "verdict": "right"
+  },
+  {
+   "pageid": "201778592",
+   "label": "food_scraps",
+   "condition": "",
+   "pred_item": "food_scraps",
+   "decision": "resolved",
+   "shown_item": "food_scraps",
+   "bin": "brown",
+   "verdict": "right"
+  },
+  {
+   "pageid": "201778593",
+   "label": "food_scraps",
+   "condition": "",
+   "pred_item": "food_scraps",
+   "decision": "resolved",
+   "shown_item": "food_scraps",
+   "bin": "brown",
+   "verdict": "right"
+  },
+  {
+   "pageid": "202093810",
+   "label": "food_scraps",
+   "condition": "",
+   "pred_item": "food_scraps",
+   "decision": "resolved",
+   "shown_item": "food_scraps",
+   "bin": "brown",
+   "verdict": "right"
+  },
+  {
+   "pageid": "195963645",
+   "label": "food_scraps",
+   "condition": "",
+   "pred_item": "food_scraps",
+   "decision": "resolved",
+   "shown_item": "food_scraps",
+   "bin": "brown",
+   "verdict": "right"
+  },
+  {
+   "pageid": "3087462",
+   "label": "food_scraps",
+   "condition": "",
+   "pred_item": "food_scraps",
+   "decision": "resolved",
+   "shown_item": "food_scraps",
+   "bin": "brown",
+   "verdict": "right"
+  },
+  {
+   "pageid": "197811336",
+   "label": "food_scraps",
+   "condition": "",
+   "pred_item": "food_scraps",
+   "decision": "resolved",
+   "shown_item": "food_scraps",
+   "bin": "brown",
+   "verdict": "right"
+  },
+  {
+   "pageid": "100901235",
+   "label": "glass_bottle_jar",
+   "condition": "",
+   "pred_item": "glass_bottle_jar",
+   "decision": "resolved",
+   "shown_item": "glass_bottle_jar",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "61416893",
+   "label": "food_scraps",
+   "condition": "",
+   "pred_item": "food_scraps",
+   "decision": "resolved",
+   "shown_item": "food_scraps",
+   "bin": "brown",
+   "verdict": "right"
+  },
+  {
+   "pageid": "61664694",
+   "label": "food_scraps",
+   "condition": "",
+   "pred_item": "food_scraps",
+   "decision": "resolved",
+   "shown_item": "food_scraps",
+   "bin": "brown",
+   "verdict": "right"
+  },
+  {
+   "pageid": "22198957",
+   "label": "electronics",
+   "condition": "",
+   "pred_item": "electronics",
+   "decision": "resolved",
+   "shown_item": "electronics",
+   "bin": "dropoff",
+   "verdict": "right"
+  },
+  {
+   "pageid": "104077917",
+   "label": "electronics",
+   "condition": "",
+   "pred_item": "paper",
+   "decision": "resolved",
+   "shown_item": "paper",
+   "bin": "green",
+   "verdict": "unsafe"
+  },
+  {
+   "pageid": "53155970",
+   "label": "electronics",
+   "condition": "",
+   "pred_item": "electronics",
+   "decision": "resolved",
+   "shown_item": "electronics",
+   "bin": "dropoff",
+   "verdict": "right"
+  },
+  {
+   "pageid": "116757519",
+   "label": "electronics",
+   "condition": "",
+   "pred_item": "electronics",
+   "decision": "resolved",
+   "shown_item": "electronics",
+   "bin": "dropoff",
+   "verdict": "right"
+  },
+  {
+   "pageid": "62246488",
+   "label": "electronics",
+   "condition": "",
+   "pred_item": "electronics",
+   "decision": "resolved",
+   "shown_item": "electronics",
+   "bin": "dropoff",
+   "verdict": "right"
+  },
+  {
+   "pageid": "126441681",
+   "label": "electronics",
+   "condition": "",
+   "pred_item": "electronics",
+   "decision": "resolved",
+   "shown_item": "electronics",
+   "bin": "dropoff",
+   "verdict": "right"
+  },
+  {
+   "pageid": "196835421",
+   "label": "electronics",
+   "condition": "",
+   "pred_item": "electronics",
+   "decision": "resolved",
+   "shown_item": "electronics",
+   "bin": "dropoff",
+   "verdict": "right"
+  },
+  {
+   "pageid": "196043610",
+   "label": "electronics",
+   "condition": "",
+   "pred_item": "electronics",
+   "decision": "ask-item",
+   "shown_item": null,
+   "bin": "dropoff",
+   "verdict": "asked"
+  },
+  {
+   "pageid": "76443214",
+   "label": "electronics",
+   "condition": "",
+   "pred_item": "drinking_glass_ceramic",
+   "decision": "ask-item",
+   "shown_item": null,
+   "bin": "blue",
+   "verdict": "asked"
+  },
+  {
+   "pageid": "134006169",
+   "label": "electronics",
+   "condition": "",
+   "pred_item": "paper",
+   "decision": "ask-item",
+   "shown_item": null,
+   "bin": "green",
+   "verdict": "asked"
+  },
+  {
+   "pageid": "124364316",
+   "label": "plastic_container",
+   "condition": "",
+   "pred_item": "plastic_cup",
+   "decision": "resolved",
+   "shown_item": "plastic_cup",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "197811324",
+   "label": "mask_gloves",
+   "condition": "",
+   "pred_item": "mask_gloves",
+   "decision": "resolved",
+   "shown_item": "mask_gloves",
+   "bin": "trash",
+   "verdict": "right"
+  },
+  {
+   "pageid": "98336022",
+   "label": "mask_gloves",
+   "condition": "",
+   "pred_item": "textile",
+   "decision": "ask-item",
+   "shown_item": null,
+   "bin": "dropoff",
+   "verdict": "asked"
+  },
+  {
+   "pageid": "82983746",
+   "label": "soiled_paper",
+   "condition": "tissue",
+   "pred_item": "soiled_paper",
+   "decision": "resolved",
+   "shown_item": "soiled_paper",
+   "bin": "brown",
+   "verdict": "wrong"
+  },
+  {
+   "pageid": "187627845",
+   "label": "mask_gloves",
+   "condition": "",
+   "pred_item": "mask_gloves",
+   "decision": "resolved",
+   "shown_item": "mask_gloves",
+   "bin": "trash",
+   "verdict": "right"
+  },
+  {
+   "pageid": "187540427",
+   "label": "mask_gloves",
+   "condition": "",
+   "pred_item": "mask_gloves",
+   "decision": "resolved",
+   "shown_item": "mask_gloves",
+   "bin": "trash",
+   "verdict": "right"
+  },
+  {
+   "pageid": "104998437",
+   "label": "mask_gloves",
+   "condition": "",
+   "pred_item": "mask_gloves",
+   "decision": "resolved",
+   "shown_item": "mask_gloves",
+   "bin": "trash",
+   "verdict": "right"
+  },
+  {
+   "pageid": "120179045",
+   "label": "plastic_utensil_straw",
+   "condition": "",
+   "pred_item": "plastic_utensil_straw",
+   "decision": "resolved",
+   "shown_item": "plastic_utensil_straw",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "198328320",
+   "label": "paper_cup",
+   "condition": "",
+   "pred_item": "paper_cup",
+   "decision": "resolved",
+   "shown_item": "paper_cup",
+   "bin": "green",
+   "verdict": "right"
+  },
+  {
+   "pageid": "80138914",
+   "label": "paper_bag",
+   "condition": "clean",
+   "pred_item": "paper_bag",
+   "decision": "resolved",
+   "shown_item": "paper_bag",
+   "bin": "green",
+   "verdict": "right"
+  },
+  {
+   "pageid": "82684008",
+   "label": "plastic_cup",
+   "condition": "",
+   "pred_item": "drinking_glass_ceramic",
+   "decision": "ask-item",
+   "shown_item": null,
+   "bin": "trash",
+   "verdict": "asked"
+  },
+  {
+   "pageid": "112826319",
+   "label": "yard_waste",
+   "condition": "",
+   "pred_item": "food_scraps",
+   "decision": "ask-item",
+   "shown_item": null,
+   "bin": "brown",
+   "verdict": "asked"
+  },
+  {
+   "pageid": "134692162",
+   "label": "yard_waste",
+   "condition": "",
+   "pred_item": "textile",
+   "decision": "ask-item",
+   "shown_item": null,
+   "bin": "dropoff",
+   "verdict": "asked"
+  },
+  {
+   "pageid": "201778594",
+   "label": "yard_waste",
+   "condition": "",
+   "pred_item": "yard_waste",
+   "decision": "ask-item",
+   "shown_item": null,
+   "bin": "brown",
+   "verdict": "asked"
+  },
+  {
+   "pageid": "51438554",
+   "label": "yard_waste",
+   "condition": "",
+   "pred_item": "snack_wrapper",
+   "decision": "ask-item",
+   "shown_item": null,
+   "bin": "trash",
+   "verdict": "asked"
+  },
+  {
+   "pageid": "112826398",
+   "label": "yard_waste",
+   "condition": "",
+   "pred_item": "food_scraps",
+   "decision": "resolved",
+   "shown_item": "food_scraps",
+   "bin": "brown",
+   "verdict": "right"
+  },
+  {
+   "pageid": "76804992",
+   "label": "yard_waste",
+   "condition": "",
+   "pred_item": "snack_wrapper",
+   "decision": "ask-item",
+   "shown_item": null,
+   "bin": "trash",
+   "verdict": "asked"
+  },
+  {
+   "pageid": "79296810",
+   "label": "textile",
+   "condition": "",
+   "pred_item": "textile",
+   "decision": "resolved",
+   "shown_item": "textile",
+   "bin": "dropoff",
+   "verdict": "right"
+  },
+  {
+   "pageid": "111054477",
+   "label": "textile",
+   "condition": "",
+   "pred_item": "textile",
+   "decision": "resolved",
+   "shown_item": "textile",
+   "bin": "dropoff",
+   "verdict": "right"
+  },
+  {
+   "pageid": "87900061",
+   "label": "textile",
+   "condition": "",
+   "pred_item": "textile",
+   "decision": "resolved",
+   "shown_item": "textile",
+   "bin": "dropoff",
+   "verdict": "right"
+  },
+  {
+   "pageid": "96629120",
+   "label": "textile",
+   "condition": "",
+   "pred_item": "textile",
+   "decision": "resolved",
+   "shown_item": "textile",
+   "bin": "dropoff",
+   "verdict": "right"
+  },
+  {
+   "pageid": "17588438",
+   "label": "textile",
+   "condition": "",
+   "pred_item": "textile",
+   "decision": "resolved",
+   "shown_item": "textile",
+   "bin": "dropoff",
+   "verdict": "right"
+  },
+  {
+   "pageid": "134894437",
+   "label": "textile",
+   "condition": "",
+   "pred_item": "textile",
+   "decision": "resolved",
+   "shown_item": "textile",
+   "bin": "dropoff",
+   "verdict": "right"
+  },
+  {
+   "pageid": "78725860",
+   "label": "glass_bottle_jar",
+   "condition": "",
+   "pred_item": "glass_bottle_jar",
+   "decision": "resolved",
+   "shown_item": "glass_bottle_jar",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "47789075",
+   "label": "shoes",
+   "condition": "",
+   "pred_item": "shoes",
+   "decision": "resolved",
+   "shown_item": "shoes",
+   "bin": "dropoff",
+   "verdict": "right"
+  },
+  {
+   "pageid": "182978530",
+   "label": "blister_pack",
+   "condition": "foil",
+   "pred_item": "blister_pack",
+   "decision": "resolved",
+   "shown_item": "blister_pack",
+   "bin": "blue",
+   "verdict": "wrong"
+  },
+  {
+   "pageid": "197808883",
+   "label": "blister_pack",
+   "condition": "foil",
+   "pred_item": "blister_pack",
+   "decision": "resolved",
+   "shown_item": "blister_pack",
+   "bin": "blue",
+   "verdict": "wrong"
+  },
+  {
+   "pageid": "201267210",
+   "label": "blister_pack",
+   "condition": "foil",
+   "pred_item": "blister_pack",
+   "decision": "resolved",
+   "shown_item": "blister_pack",
+   "bin": "blue",
+   "verdict": "wrong"
+  },
+  {
+   "pageid": "69843179",
+   "label": "rope_string",
+   "condition": "",
+   "pred_item": "rope_string",
+   "decision": "resolved",
+   "shown_item": "rope_string",
+   "bin": "trash",
+   "verdict": "right"
+  },
+  {
+   "pageid": "8225746",
+   "label": "pizza_box",
+   "condition": "unknown",
+   "pred_item": "pizza_box",
+   "decision": "ask-condition",
+   "shown_item": "pizza_box",
+   "bin": "green",
+   "verdict": "asked"
+  },
+  {
+   "pageid": "180144877",
+   "label": "plastic_bag_film",
+   "condition": "",
+   "pred_item": "plastic_bag_film",
+   "decision": "resolved",
+   "shown_item": "plastic_bag_film",
+   "bin": "trash",
+   "verdict": "right"
+  },
+  {
+   "pageid": "177258023",
+   "label": "plastic_bottle",
+   "condition": "",
+   "pred_item": "plastic_bottle",
+   "decision": "resolved",
+   "shown_item": "plastic_bottle",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "196950683",
+   "label": "plastic_bottle",
+   "condition": "",
+   "pred_item": "plastic_bottle",
+   "decision": "resolved",
+   "shown_item": "plastic_bottle",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "30556137",
+   "label": "cigarette_butt",
+   "condition": "",
+   "pred_item": "cigarette_butt",
+   "decision": "resolved",
+   "shown_item": "cigarette_butt",
+   "bin": "trash",
+   "verdict": "right"
+  },
+  {
+   "pageid": "69400805",
+   "label": "metal_can",
+   "condition": "",
+   "pred_item": "metal_can",
+   "decision": "resolved",
+   "shown_item": "metal_can",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "132833112",
+   "label": "metal_can",
+   "condition": "",
+   "pred_item": "metal_can",
+   "decision": "resolved",
+   "shown_item": "metal_can",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "132833110",
+   "label": "metal_can",
+   "condition": "",
+   "pred_item": "metal_can",
+   "decision": "resolved",
+   "shown_item": "metal_can",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "200079174",
+   "label": "metal_can",
+   "condition": "",
+   "pred_item": "metal_can",
+   "decision": "resolved",
+   "shown_item": "metal_can",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "129512018",
+   "label": "cardboard",
+   "condition": "",
+   "pred_item": "cardboard",
+   "decision": "resolved",
+   "shown_item": "cardboard",
+   "bin": "green",
+   "verdict": "right"
+  },
+  {
+   "pageid": "20803699",
+   "label": "carton",
+   "condition": "",
+   "pred_item": "carton",
+   "decision": "resolved",
+   "shown_item": "carton",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "186057607",
+   "label": "plastic_bottle",
+   "condition": "",
+   "pred_item": "plastic_bottle",
+   "decision": "resolved",
+   "shown_item": "plastic_bottle",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "36530184",
+   "label": "plastic_bottle",
+   "condition": "",
+   "pred_item": "plastic_bottle",
+   "decision": "resolved",
+   "shown_item": "plastic_bottle",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "4323507",
+   "label": "plastic_bottle",
+   "condition": "",
+   "pred_item": "plastic_bottle",
+   "decision": "resolved",
+   "shown_item": "plastic_bottle",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "100900849",
+   "label": "glass_bottle_jar",
+   "condition": "",
+   "pred_item": "glass_bottle_jar",
+   "decision": "resolved",
+   "shown_item": "glass_bottle_jar",
+   "bin": "blue",
+   "verdict": "right"
+  },
+  {
+   "pageid": "198191923",
+   "label": "carton",
+   "condition": "",
+   "pred_item": "carton",
+   "decision": "resolved",
+   "shown_item": "carton",
+   "bin": "blue",
+   "verdict": "right"
+  }
+ ]
+}

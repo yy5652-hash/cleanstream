@@ -65,6 +65,10 @@ def main():
                   "(a battery of unknown chemistry must go to drop-off).", "",
                   "| Test set | Right bin shown | Asks | Wrong bin | Battery or device shown a regular bin |", "| --- | --- | --- | --- | --- |"]
         lines += [f"| {name} | {pct(s['right_rate'])} | {pct(s['ask_rate'])} | {pct(s['wrong_rate'])} | {s['unsafe']} |" for name, s in rows]
+    if held.exists():
+        lines += ["", f"On the held-up photos the item type is right on {pct(h['item_acc'])} and the visual bin (the rule used in the first "
+                  f"table) on {pct(h['packs']['nyc']['visual_bin_acc'])}; when the app shows a bin it is right on "
+                  f"{pct(h['packs']['nyc']['right_when_answered'])} of those photos (NYC rules)."]
     readme = ROOT / "README.md"
     text = readme.read_text()
     i, j = text.index(START) + len(START), text.index(END)

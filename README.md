@@ -130,7 +130,7 @@ away; `web/src/i18n.test.ts` checks that every string, rule and prep step is pre
 The head is trained by `ml/train.py` on embeddings from the shipped 8-bit weights (`ml/embed_int8.py`, which runs on a GPU
 because `encoder.onnx` itself is slow on a CPU). The numbers below are then computed by `ml/final_eval.py` from the
 `encoder.onnx` file the page downloads. "Bin" counts the bin the app would show as correct when the city accepts that item
-there. Four test sets:
+there. Five test sets:
 
 - **All held-out test photos** from the seven training sources.
 - **Original three sources**: the held-out test photos from TrashNet, the Garbage Dataset and TACO only. Their photos and
@@ -139,6 +139,14 @@ there. Four test sets:
   photos unlike its training data, but see "What we looked at" above.
 - **Web field test**: 88 stock photos and video frames of everyday items from Pexels, labelled by looking at each one
   (listed in [`ml/field.csv`](ml/field.csv)), never trained on, but see "What we looked at" above.
+- **Held-up photos**: 100 Wikimedia Commons photos of a person holding one item (CC0, public domain, CC BY or CC BY-SA;
+  credits in [`ml/heldup.csv`](ml/heldup.csv)), collected after the model was final, labelled by looking at each photo
+  (with the condition where it is visible), frozen in a commit (e15a7a1) before the model saw them, and scored once by
+  [`ml/heldup_test.py`](ml/heldup_test.py). It is the only set nobody looked at during development. Its mix follows
+  what Commons has: mugs, phones, food, bottles and shirts, and no batteries, wrappers, foil or foam. What it found:
+  three foil-backed pill packs got the blister pack's default (rigid plastic, blue bin) where New York wants them in the
+  trash; a phone showing a web page was read as paper (the one device shown a regular bin); and single leaves held up
+  were mostly asked about rather than answered.
 
 <!-- results:start -->
 | Test set | Model | Item type | Material |
@@ -171,6 +179,9 @@ What the screen does, with NYC rules: below 60% it asks which item, a pizza box 
 | --- | --- | --- | --- | --- |
 | Held-out test photos (6,490) | 96.0% | 2.0% | 2.0% | 0 |
 | RealWaste (2,546) | 64.1% | 14.7% | 21.2% | 0 |
+| Held-up photos, labelled and frozen before scoring (100) | 77.0% | 18.0% | 5.0% | 1 |
+
+On the held-up photos the item type is right on 86.0% and the visual bin (the rule used in the first table) on 89.0%; when the app shows a bin it is right on 93.9% of those photos (NYC rules).
 <!-- results:end -->
 
 ## Run it
@@ -216,8 +227,9 @@ uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python torch to
 - A pilot at campus bin stations with the measurement plan above.
 - More rule packs. A pack is one JSON file, and the rules page shows what a city would need to fill in. Adding a city
   needs no retraining: `ml/eval_packs.py` scores the shipped model under the new rules on the same held-out photos.
-- More training photos for the item types that have the fewest today (yard waste, pizza box, squeezable tube), and photos
-  taken at bin stations, which are the closest match to real use.
+- More training photos for the item types that have the fewest today (yard waste, pizza box, squeezable tube), phones
+  with a lit screen (the held-up test read one as paper), and photos taken at bin stations, which are the closest match to
+  real use. A second held-up set, collected the same way, would then measure those changes.
 - Optional sharing of station counts and audits across a campus, keeping images on the device.
 
 ## Credits
@@ -238,7 +250,9 @@ Datasets: [TrashNet](https://github.com/garythung/trashnet) (MIT),
 390 photos from [Wikimedia Commons](https://commons.wikimedia.org) (CC0, public domain or CC BY; photographer, licence and
 page of each in [`ml/commons_credits.csv`](ml/commons_credits.csv)), and for evaluation only:
 [RealWaste](https://archive.ics.uci.edu/dataset/908/realwaste) (CC BY-NC-SA 4.0, not redistributed) and the web field test
-photos from [Pexels](https://www.pexels.com) (listed in `ml/field.csv`, not redistributed). Encoder: SigLIP 2 (Google, Apache 2.0) via
+photos from [Pexels](https://www.pexels.com) (listed in `ml/field.csv`, not redistributed), and 100 held-up photos from
+Wikimedia Commons (CC0, public domain, CC BY or CC BY-SA; photographer, licence and page of each in
+[`ml/heldup.csv`](ml/heldup.csv), not redistributed). Encoder: SigLIP 2 (Google, Apache 2.0) via
 [open_clip](https://github.com/mlfoundations/open_clip). Rules: DSNY and NYC311; Recology and SF Environment; LA Sanitation; Chicago Streets and Sanitation; Seattle Public
 Utilities; US EPA and
 The Recycling Partnership (links on every item of the rules page). Sample photos in the app are held-out test photos from
