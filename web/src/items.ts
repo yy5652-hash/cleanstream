@@ -56,6 +56,14 @@ function termScore(term: string, q: string): number {
   return term.includes(q) ? 40 : 0
 }
 
+// A multi-word query whose every word starts a word somewhere in the item's names: a weak match, below any phrase match.
+function coverScore(terms: string[], q: string): number {
+  const words = q.split(' ').filter((w) => w.length >= 2)
+  if (words.length < 2) return 0
+  const vocab = terms.flatMap((term) => norm(term).split(/[\s,/()-]+/)).filter(Boolean)
+  return words.every((w) => vocab.some((v) => v.startsWith(w) || v.startsWith(singular(w)))) ? 30 : 0
+}
+
 const singular = (q: string) => q.replace(/ies$/, 'y').replace(/(x|ch|sh|ss)es$/, '$1').replace(/ones$/, 'on').replace(/([^s])s$/, '$1')
 
 // Lower case without accents, so "carton" finds "cartón"
@@ -80,6 +88,8 @@ export function searchItems(query: string, limit = 6): string[] {
       const sc = termScore(norm(term), v)
       if (sc) best = Math.max(best, sc + bonus - 5 * k)
     }
+    // Several words spread over different names ("alkaline AA": "alkaline battery" + "AA battery") still find the item.
+    if (!best) best = coverScore(terms.map(([term]) => term), q)
     if (best > 0) scored.push([id, best])
   }
   return scored.sort((a, b) => b[1] - a[1]).slice(0, limit).map(([id]) => id)

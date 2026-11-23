@@ -315,9 +315,12 @@ export default function Station({ pack, start = 'off', wait = 0, rulesUpdated = 
     let stopped = false
     let timer = 0
     const controller = new AbortController()
+    // After a pause (picker, settings), give the answer or "ask staff" screen a full cycle before the next sample.
+    let held = false
     const step = async () => {
       if (stopped) return
-      if (paused.current) { timer = window.setTimeout(step, 500); return }
+      if (paused.current) { held = true; timer = window.setTimeout(step, 500); return }
+      if (held) { held = false; timer = window.setTimeout(step, Math.max(UNSURE_MS, RESULT_MS + THANKS_MS) + 1600); return }
       try {
         const sample = samples[i++ % samples.length]
         const picture = sampleUrl(sample)

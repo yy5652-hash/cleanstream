@@ -51,6 +51,16 @@ describe('conditional answers', () => {
     expect(html).toContain(nyc.items.battery.source)
   })
 
+  it.each(['alkaline AA', 'AA alkaline', 'alkaline AAA'])('%s finds the battery and its confirmed-alkaline case', (query) => {
+    expect(searchItems(query)[0]).toBe('battery')
+    expect(matchCase(nyc.items.battery, query)?.id).toBe('alkaline')
+  })
+
+  it('does not stretch multi-word search to unrelated items', () => {
+    expect(searchItems('alkaline cup')).not.toContain('battery')
+    expect(searchItems('xylophone trumpet')).toEqual([])
+  })
+
   it('keeps Chicago alkaline disposal separate from vapes', () => {
     const chicago = packs.find((p) => p.id === 'chi')!
     expect(matchCase(chicago.items.battery, 'alkaline AA battery')?.bin).toBe('black')
