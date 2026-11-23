@@ -52,6 +52,19 @@ def main():
     if parts:
         lines += ["", "The app says it is not sure when the top bin gets less than 60% of the probability, and answers otherwise. "
                   "With NYC rules, " + "; ".join(parts) + "."]
+    # What the screen actually does (ml/app_decision_eval.py, ml/heldup_test.py), conditions included.
+    ad = m.get("app_decision", {}).get("nyc", {})
+    held = ROOT / "ml/results/heldup.json"
+    rows = [(f"Held-out test photos ({ad[k]['n']:,})" if k == "test" else f"RealWaste ({ad[k]['n']:,})", ad[k]) for k in ("test", "external") if k in ad]
+    if held.exists():
+        h = json.loads(held.read_text())
+        rows.append((f"Held-up photos, labelled and frozen before scoring ({h['n']})", {**h["packs"]["nyc"], "n": h["n"]}))
+    if rows:
+        lines += ["", "What the screen does, with NYC rules: below 60% it asks which item, a pizza box asks whether it is greasy, "
+                  "and otherwise it shows one bin. A photo whose condition can't be seen counts as right only for the safe default "
+                  "(a battery of unknown chemistry must go to drop-off).", "",
+                  "| Test set | Right bin shown | Asks | Wrong bin | Battery or device shown a regular bin |", "| --- | --- | --- | --- | --- |"]
+        lines += [f"| {name} | {pct(s['right_rate'])} | {pct(s['ask_rate'])} | {pct(s['wrong_rate'])} | {s['unsafe']} |" for name, s in rows]
     readme = ROOT / "README.md"
     text = readme.read_text()
     i, j = text.index(START) + len(START), text.index(END)

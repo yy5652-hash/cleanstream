@@ -209,5 +209,151 @@
    "sf": 0.9318181818181818,
    "us": 0.9545454545454546
   }
+ },
+ "app_decision": {
+  "chi": {
+   "test": {
+    "n": 6490,
+    "right": 6298,
+    "asked": 85,
+    "wrong": 107,
+    "unsafe": 0,
+    "right_rate": 0.9704160246533128,
+    "ask_rate": 0.013097072419106317,
+    "wrong_rate": 0.016486902927580895,
+    "right_when_answered": 0.9832943013270882
+   },
+   "external": {
+    "n": 2546,
+    "right": 1743,
+    "asked": 230,
+    "wrong": 573,
+    "unsafe": 0,
+    "right_rate": 0.6846032992930087,
+    "ask_rate": 0.09033778476040849,
+    "wrong_rate": 0.22505891594658287,
+    "right_when_answered": 0.7525906735751295
+   }
+  },
+  "la": {
+   "test": {
+    "n": 6490,
+    "right": 6272,
+    "asked": 108,
+    "wrong": 110,
+    "unsafe": 0,
+    "right_rate": 0.9664098613251155,
+    "ask_rate": 0.016640986132511557,
+    "wrong_rate": 0.01694915254237288,
+    "right_when_answered": 0.9827640238169852
+   },
+   "external": {
+    "n": 2546,
+    "right": 1696,
+    "asked": 282,
+    "wrong": 568,
+    "unsafe": 0,
+    "right_rate": 0.6661429693637078,
+    "ask_rate": 0.11076197957580518,
+    "wrong_rate": 0.22309505106048705,
+    "right_when_answered": 0.7491166077738516
+   }
+  },
+  "nyc": {
+   "test": {
+    "n": 6490,
+    "right": 6233,
+    "asked": 130,
+    "wrong": 127,
+    "unsafe": 0,
+    "right_rate": 0.9604006163328197,
+    "ask_rate": 0.020030816640986132,
+    "wrong_rate": 0.019568567026194146,
+    "right_when_answered": 0.9800314465408805
+   },
+   "external": {
+    "n": 2546,
+    "right": 1633,
+    "asked": 373,
+    "wrong": 540,
+    "unsafe": 0,
+    "right_rate": 0.6413982717989002,
+    "ask_rate": 0.14650432050274942,
+    "wrong_rate": 0.21209740769835037,
+    "right_when_answered": 0.7514956281638288
+   }
+  },
+  "sea": {
+   "test": {
+    "n": 6490,
+    "right": 6293,
+    "asked": 107,
+    "wrong": 90,
+    "unsafe": 0,
+    "right_rate": 0.9696456086286595,
+    "ask_rate": 0.016486902927580895,
+    "wrong_rate": 0.01386748844375963,
+    "right_when_answered": 0.9859000469998433
+   },
+   "external": {
+    "n": 2546,
+    "right": 1686,
+    "asked": 319,
+    "wrong": 541,
+    "unsafe": 0,
+    "right_rate": 0.6622152395915161,
+    "ask_rate": 0.12529457973291439,
+    "wrong_rate": 0.21249018067556952,
+    "right_when_answered": 0.7570722945666817
+   }
+  },
+  "sf": {
+   "test": {
+    "n": 6490,
+    "right": 6282,
+    "asked": 98,
+    "wrong": 110,
+    "unsafe": 1,
+    "right_rate": 0.9679506933744222,
+    "ask_rate": 0.01510015408320493,
+    "wrong_rate": 0.01694915254237288,
+    "right_when_answered": 0.9827909887359199
+   },
+   "external": {
+    "n": 2546,
+    "right": 1681,
+    "asked": 333,
+    "wrong": 532,
+    "unsafe": 0,
+    "right_rate": 0.6602513747054203,
+    "ask_rate": 0.1307934014139827,
+    "wrong_rate": 0.208955223880597,
+    "right_when_answered": 0.7596023497514686
+   }
+  },
+  "us": {
+   "test": {
+    "n": 6490,
+    "right": 6262,
+    "asked": 132,
+    "wrong": 96,
+    "unsafe": 0,
+    "right_rate": 0.964869029275809,
+    "ask_rate": 0.020338983050847456,
+    "wrong_rate": 0.014791987673343606,
+    "right_when_answered": 0.9849009122365524
+   },
+   "external": {
+    "n": 2546,
+    "right": 1666,
+    "asked": 377,
+    "wrong": 503,
+    "unsafe": 0,
+    "right_rate": 0.6543597800471328,
+    "ask_rate": 0.14807541241162608,
+    "wrong_rate": 0.19756480754124117,
+    "right_when_answered": 0.7680958967266022
+   }
+  }
  }
 }

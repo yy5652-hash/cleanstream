@@ -164,6 +164,13 @@ Right bin under each city's rules (the same model and photos; only the rule pack
 Item type and bin columns use photos with an item label. The material column also counts photos labelled only by material (6,992 for the held-out test and 4,257 for RealWaste). A dash means the set has no labels of that kind.
 
 The app says it is not sure when the top bin gets less than 60% of the probability, and answers otherwise. With NYC rules, on held-out test photos it answers 98.0% of the photos and is right on 98.1% of those; on RealWaste it answers 85.7% of the photos and is right on 75.2% of those.
+
+What the screen does, with NYC rules: below 60% it asks which item, a pizza box asks whether it is greasy, and otherwise it shows one bin. A photo whose condition can't be seen counts as right only for the safe default (a battery of unknown chemistry must go to drop-off).
+
+| Test set | Right bin shown | Asks | Wrong bin | Battery or device shown a regular bin |
+| --- | --- | --- | --- | --- |
+| Held-out test photos (6,490) | 96.0% | 2.0% | 2.0% | 0 |
+| RealWaste (2,546) | 64.1% | 14.7% | 21.2% | 0 |
 <!-- results:end -->
 
 ## Run it
