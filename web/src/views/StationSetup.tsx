@@ -88,6 +88,14 @@ export default function StationSetup({ pack, onCity }: { pack: Pack; onCity: (id
                 <p role="status" className="text-sm text-ink-2">{copyFailed ? t('Select and copy the link above.') : copied ? t('Link copied') : t('Demo answers are not counted.')}</p>
               </div>
             </div>
+            <details className="mt-6 rounded-2xl border border-line px-4 text-sm">
+              <summary className="min-h-11 cursor-pointer py-3 font-medium">{t('Lock the tablet to this screen')}</summary>
+              <div className="space-y-3 pb-4 text-ink-2">
+                <p>{t('On iPad, turn on Guided Access under Settings › Accessibility › Guided Access. Open the station and triple-click the top or Home button. Tap Start if prompted.')}</p>
+                <p>{t('On Android, turn on App pinning under Settings › Security › Advanced, or Security & privacy › More security settings. Open the station, then tap the browser icon in Overview (recent apps) and choose Pin.')}</p>
+                <p>{t('Keep the tablet plugged in. Set Display Auto-Lock in Guided Access or the Android screen timeout to the longest option.')}</p>
+              </div>
+            </details>
             <div className="mt-8 grid gap-2 border-t border-line pt-5 sm:grid-cols-2">
               <a href="#poster" className="flex min-h-14 items-center gap-3 rounded-2xl px-3 font-medium hover:bg-well"><Printer className="size-5 shrink-0" aria-hidden />{t('Print bin poster')}<ArrowUpRight className="ml-auto size-4 shrink-0" aria-hidden /></a>
               <a href="#pilot" className="flex min-h-14 items-center gap-3 rounded-2xl px-3 font-medium hover:bg-well">{t('Start a before and after pilot')}<ArrowUpRight className="ml-auto size-4 shrink-0" aria-hidden /></a>

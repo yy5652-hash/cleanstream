@@ -64,9 +64,13 @@ away; `web/src/i18n.test.ts` checks that every string, rule and prep step is pre
 1. **Photo.** Never uploaded. Everything below runs in a Web Worker with ONNX Runtime Web (WebAssembly), on several threads
    where the browser allows it: the service worker adds the isolation headers that needs, so a first visit reloads once.
 2. **Image encoder.** SigLIP 2 ViT-B/16 (256 px, open weights, Apache 2.0). We store its weights in 8 bits with one scale
-   per output channel and dequantize at load, so the file is 95 MB and the arithmetic stays 32-bit. `ml/export_onnx.py`
-   compares the file with the original model; with the earlier ViT-B/32 file the mean embedding cosine to the original
-   was 0.998 over 300 test photos (`ml/parity.py`).
+   per output channel and dequantize at load, so the file is 95 MB and the arithmetic stays 32-bit. On 300 held-out test
+   photos the 8-bit file keeps a mean embedding cosine of 0.999 with the original model (minimum 0.995), picks the same
+   item type on 98.3% and scores 90.7% against the original's 91.3% (`ml/parity.py`, result in
+   [`ml/results/int8_parity.txt`](ml/results/int8_parity.txt)). Before the encoder sees a photo, the page squashes it to
+   256 × 256 with a port of Pillow's bicubic resampler (`web/src/model/resample.ts`, byte-identical to Pillow on the test
+   images in `web/src/model/__fixtures__`) and ignores embedded colour profiles, exactly as the training and evaluation
+   code does.
 3. **Item head.** A linear classifier over 32 item types. The types follow the rules, not the material: a plastic bottle
    and a plastic bag are both plastic, but most cities want them in different places.
 4. **Rule pack.** JSON per city: bins, and for each item type the main bin, any other accepted bin, prep steps, the
@@ -183,6 +187,17 @@ What the screen does, with NYC rules: below 60% it asks which item, a pizza box 
 
 On the held-up photos the item type is right on 86.0% and the visual bin (the rule used in the first table) on 89.0%; when the app shows a bin it is right on 93.9% of those photos (NYC rules).
 <!-- results:end -->
+
+With only 100 held-up photos these numbers are wide: 77 right has a 95% interval of 68–84%, and 77 right of 82 answered
+has 87–97% (Wilson).
+
+**The page makes the same call as the scorer.** Every number above comes from Python. To check that the page itself
+behaves the same, [`ml/web_parity.mjs`](ml/web_parity.mjs) runs the held-up photos through the app's own `classify` in
+Chromium and [`ml/web_parity.py`](ml/web_parity.py) compares the result with the scorer
+([`ml/results/web_parity.json`](ml/results/web_parity.json)). Before 2026-11-25 the page shrank photos with the
+browser's own smoothing and colour handling instead of the training resampler, and disagreed with the scorer on 11 of 100
+New York decisions (photos near the 60% line flipped both ways). With the Pillow-exact resampler, all 100 photos get the
+same decision under every rule pack, and item probabilities differ by 0.0003 on average (at most 0.048 on one photo).
 
 ## Run it
 

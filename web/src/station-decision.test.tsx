@@ -59,9 +59,9 @@ let values: Map<string, string>
 let rulesUpdated = false
 const speak = vi.fn()
 const video = { videoWidth: 640, videoHeight: 480, play: async () => {} }
-function draw() {
+function draw(start: 'off' | 'camera' | 'demo' = 'camera') {
   hooks.cursor = 0
-  const tree = Station({ pack, start: 'camera', rulesUpdated })
+  const tree = Station({ pack, start, rulesUpdated })
   for (const el of elements(tree)) if (el.type === 'video' && el.props.ref) el.props.ref.current = video
   hooks.effects.splice(0).forEach((effect) => effect())
   return tree
@@ -84,6 +84,14 @@ afterEach(() => {
   hooks.cleanups.splice(0).forEach((cleanup) => cleanup())
   vi.useRealTimers(); vi.unstubAllGlobals()
 })
+
+it.each(['off', 'demo', 'camera'] as const)('shows the camera privacy line only when the %s source has a live stream', async (source) => {
+  const hasLine = (tree: ReactNode) => elements(tree).some((el) => el.type === 'p' && el.props.children === 'Camera on · no photos are kept')
+  expect(hasLine(draw(source))).toBe(false)
+  await vi.advanceTimersByTimeAsync(0)
+  expect(hasLine(draw(source))).toBe(source === 'camera')
+})
+
 async function recognise(item: string) {
   hooks.classify.mockResolvedValue({ probs: new Float32Array(hooks.model.classes.map((id) => id === item ? 1 : 0)) })
   draw()

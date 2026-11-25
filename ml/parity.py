@@ -1,6 +1,6 @@
 """Checks that the shipped int8 ONNX encoder agrees with the PyTorch model used for evaluation.
 
-    .venv/bin/python ml/parity.py ViT-B-32:openai web/public/model [n]
+    .venv/bin/python ml/parity.py ViT-B-16-SigLIP2-256:ml/cache/b16.safetensors web/public/model [n]
 
 Runs n held-out test photos through both and reports embedding cosine and item-type agreement.
 """

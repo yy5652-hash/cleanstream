@@ -1,6 +1,7 @@
 /// <reference lib="webworker" />
 // Runs the image encoder and the item-type head off the main thread. Images never leave the device.
 import * as ort from 'onnxruntime-web/wasm'
+import { resizeBicubic } from './resample'
 
 type Head = { classes: string[]; temperature: number; dim: number; W: number[][]; b: number[] }
 type Prep = { size: number; mean: number[]; std: number[]; resize: 'squash' | 'shortest' }
@@ -46,24 +47,26 @@ async function fetchWithProgress(url: string): Promise<Uint8Array> {
   return out
 }
 
-// Resize exactly as in training (the whole photo squashed to size x size, or a centre crop for "shortest"),
-// then per-channel normalisation.
 function pixels(bitmap: ImageBitmap): Float32Array {
   const { size, mean, std, resize } = prep!
-  const canvas = new OffscreenCanvas(size, size)
+  // The shipped model uses squash. Read native pixels before applying the training resampler.
+  const squash = resize === 'squash'
+  const canvas = new OffscreenCanvas(squash ? bitmap.width : size, squash ? bitmap.height : size)
   const ctx = canvas.getContext('2d')!
-  ctx.imageSmoothingEnabled = true
-  ctx.imageSmoothingQuality = 'high'
-  if (resize === 'squash') ctx.drawImage(bitmap, 0, 0, size, size)
+  if (squash) ctx.drawImage(bitmap, 0, 0)
   else {
+    ctx.imageSmoothingEnabled = true
+    ctx.imageSmoothingQuality = 'high'
     const s = Math.min(bitmap.width, bitmap.height)
     ctx.drawImage(bitmap, (bitmap.width - s) / 2, (bitmap.height - s) / 2, s, s, 0, 0, size, size)
   }
-  const { data } = ctx.getImageData(0, 0, size, size)
+  const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height)
+  const bytes = squash ? resizeBicubic(data, canvas.width, canvas.height, size, size) : data
+  const channels = squash ? 3 : 4
   const out = new Float32Array(3 * size * size)
   const plane = size * size
   for (let i = 0; i < plane; i++) {
-    for (let c = 0; c < 3; c++) out[c * plane + i] = (data[i * 4 + c] / 255 - mean[c]) / std[c]
+    for (let c = 0; c < 3; c++) out[c * plane + i] = (bytes[i * channels + c] / 255 - mean[c]) / std[c]
   }
   return out
 }

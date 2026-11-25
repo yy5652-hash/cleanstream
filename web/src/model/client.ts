@@ -101,7 +101,8 @@ export function useModel(): ModelState {
 
 export async function classify(source: Blob | ImageBitmapSource): Promise<Prediction> {
   const w = await start()
-  const bitmap = await createImageBitmap(source as ImageBitmapSource)
+  // Ignore embedded ICC profiles like Pillow, and keep the browser's default EXIF orientation.
+  const bitmap = await createImageBitmap(source, { colorSpaceConversion: 'none', premultiplyAlpha: 'none' })
   const id = nextId++
   return new Promise((resolve, reject) => {
     pending.set(id, { resolve, reject })

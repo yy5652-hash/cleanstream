@@ -22,7 +22,7 @@ import Scan from './views/Scan'
 import { answerLink, linkedAnswer } from './ui'
 
 const pack: Pack = JSON.parse(readFileSync(new URL('../public/rules/nyc.json', import.meta.url), 'utf8'))
-type Props = { children?: ReactNode; onClick?: () => Promise<void> | void }
+type Props = { children?: ReactNode; href?: string; onClick?: () => Promise<void> | void }
 function elements(node: ReactNode): ReactElement<Props>[] {
   if (Array.isArray(node)) return node.flatMap(elements)
   if (!isValidElement<Props>(node)) return []
@@ -36,6 +36,13 @@ beforeEach(() => {
   vi.stubGlobal('navigator', { share })
 })
 afterEach(() => vi.unstubAllGlobals())
+
+it('links straight from Scan to the selected city’s station demo', () => {
+  const selectedPack = { ...pack, id: 'sf' }
+  const tree = Scan({ pack: selectedPack, packs: [selectedPack] })
+  const link = elements(tree).find((el) => el.type === 'a' && el.props.children === 'See the bin station')
+  expect(link?.props.href).toBe(`${import.meta.env.BASE_URL}?kiosk&source=demo&city=sf`)
+})
 
 it.each([
   ['pizza_box', 'greasy', 'Brown bin'],

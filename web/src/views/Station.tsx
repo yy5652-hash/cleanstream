@@ -413,6 +413,7 @@ export default function Station({ pack, start = 'off', wait = 0, rulesUpdated = 
         </div>
       </header>
       {source === 'demo' && <p className="px-4 text-sm font-medium sm:px-6">{t('Example data')}<span aria-hidden> · </span>{t('Demo feed')}</p>}
+      {source === 'camera' && cameraStream && <p className="px-4 text-sm font-medium sm:px-6">{t('Camera on · no photos are kept')}</p>}
 
       <div className="relative flex flex-1 flex-col justify-center gap-[3vmin] px-[5vmin] py-[4vmin] text-center">
         <div aria-live="polite" aria-atomic="true">

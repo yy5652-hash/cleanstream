@@ -6,6 +6,7 @@ import { t } from '../i18n'
 import { itemName } from '../items'
 import { classify, loadModel, useModel } from '../model/client'
 import { answer, type Pack } from '../rules'
+import { stationDemoUrl } from '../station-links'
 import { linkedAnswer, sampleUrl, thumbUrl, useSamples, type Sample } from '../ui'
 
 const CameraSheet = lazy(() => import('../components/Camera').then((m) => ({ default: m.CameraSheet })))
@@ -125,6 +126,10 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
         }} />
 
         <div className="mt-5"><ItemSearch pack={pack} onPick={onSearch} popular={POPULAR} /></div>
+        <div className="mt-5 border-t border-line pt-4 text-sm text-ink-2">
+          <p>{t('Run shared bins? A spare tablet above them answers for everyone.')}</p>
+          <a href={stationDemoUrl(pack.id)} className="inline-flex min-h-11 items-center font-medium text-ink underline decoration-line underline-offset-4 hover:decoration-ink">{t('See the bin station')}</a>
+        </div>
       </div>
 
       <div className={`min-w-0 ${showing ? 'order-first lg:order-none' : ''}`}>

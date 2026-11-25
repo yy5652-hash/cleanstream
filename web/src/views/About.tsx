@@ -5,6 +5,13 @@ import { pct } from '../ui'
 
 type Scores = { item_acc: number; material_acc: number | null; bin_acc: Record<string, number>; n_item: number }
 type Answered = { coverage: number; accuracy_answered: number | null }
+type ScreenDecision = {
+  n?: number
+  right_rate?: number
+  ask_rate?: number
+  wrong_rate?: number
+  right_when_answered?: number
+}
 type SetKey = 'test' | 'test_original' | 'external' | 'field'
 // test_original (TrashNet, Garbage Dataset and TACO only) and field (everyday photos) are written by ml/final_eval.py, so they can be missing
 type Metrics = {
@@ -19,6 +26,8 @@ type Metrics = {
   zero_shot: { test: Scores; external: Scores } & Partial<Record<SetKey, Scores>>
   answered: Record<string, { test: Answered; external: Answered } & Partial<Record<SetKey, Answered>>>
   datasets: { name: string; url: string; license: string; role: string; images: number }[]
+  app_decision?: { nyc?: { test?: ScreenDecision; external?: ScreenDecision } }
+  heldup?: { n?: number; app_decision?: { nyc?: ScreenDecision } }
 }
 
 // The sets shown in the tables, in order; a set is listed only when metrics.json has it
@@ -30,6 +39,8 @@ const SETS: { key: SetKey; name: () => string; short: () => string }[] = [
 ]
 const REPO = 'https://github.com/yy5652-hash/cleanstream/blob/main'
 const pctOrDash = (x: number | null | undefined) => (x == null ? t('—') : pct(x))
+const screenPercent = new Intl.NumberFormat(undefined, { style: 'percent', minimumFractionDigits: 1, maximumFractionDigits: 1 })
+const screenPercentOrDash = (x: number | undefined) => x == null ? t('—') : screenPercent.format(x)
 
 export default function About({ packs }: { packs: Pack[] }) {
   const [m, setM] = useState<Metrics | null>(null)
@@ -43,6 +54,15 @@ export default function About({ packs }: { packs: Pack[] }) {
   // one column per (set, model); zero-shot columns exist only where metrics.json has them
   const cols = sets.flatMap((s) => [{ ...s, model: 'zero-shot', scores: m?.zero_shot[s.key], bold: false }, { ...s, model: 'Cleanstream', scores: m?.[s.key], bold: true }]).filter((c) => c.scores)
   const trainSets = m?.datasets.filter((d) => d.role.includes('train')) ?? []
+  const heldOut = m?.app_decision?.nyc?.test
+  const realWaste = m?.app_decision?.nyc?.external
+  const heldUp = m?.heldup?.app_decision?.nyc
+  const heldUpCount = m?.heldup?.n
+  const screenRows = [
+    { name: t('Held-out test photos'), scores: heldOut, count: heldOut?.n },
+    { name: t('RealWaste'), scores: realWaste, count: realWaste?.n },
+    { name: t('Held-up photos'), scores: heldUp, count: heldUpCount },
+  ]
 
   return (
     <div className="mx-auto max-w-4xl space-y-8 animate-rise [&_h2]:pt-6 [&_h2]:text-title [&_p]:leading-relaxed [&_ul]:space-y-5 [&_li]:text-ink-2 [&_li>b]:mb-2 [&_li>b]:block [&_b]:text-ink [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_a]:underline [&_a]:underline-offset-4 [&_a]:break-words [&_th]:p-4 [&_th]:text-left [&_th]:font-medium [&_th]:text-ink-2 [&_td]:p-4 [&_tr]:border-b [&_tr]:border-line">
@@ -69,6 +89,32 @@ export default function About({ packs }: { packs: Pack[] }) {
       {m && (
         <>
           <h2>{t("Results")}</h2>
+          {(heldOut || realWaste || heldUp) && (
+            <section className="space-y-4" aria-labelledby="screen-results">
+              <h3 id="screen-results" className="text-xl font-semibold tracking-tight">{t('What the screen does, New York rules')}</h3>
+              <div role="region" tabIndex={0} aria-labelledby="screen-results" className="max-w-full overflow-x-auto rounded-2xl border border-line">
+                <table className="w-full text-sm">
+                  <thead><tr><th scope="col">{t('Test set')}</th><th scope="col">{t('Right bin shown')}</th><th scope="col">{t('Asks')}</th><th scope="col">{t('Wrong bin')}</th></tr></thead>
+                  <tbody>
+                    {screenRows.map(({ name, scores, count }) => (
+                      <tr key={name}>
+                        <th scope="row">
+                          <strong className="text-ink">{name}</strong>
+                          {count != null && <span className="block font-normal">{t('{count} photos', { count: count.toLocaleString() })}</span>}
+                        </th>
+                        <td className="whitespace-nowrap tabular-nums">{screenPercentOrDash(scores?.right_rate)}</td>
+                        <td className="whitespace-nowrap tabular-nums">{screenPercentOrDash(scores?.ask_rate)}</td>
+                        <td className="whitespace-nowrap tabular-nums">{screenPercentOrDash(scores?.wrong_rate)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="text-sm text-ink-2">{t("The screen asks which item it is below 60% bin confidence, asks about the condition for a pizza box or a New York blister pack, and otherwise shows one bin, with only the safe default counted as right when the condition can't be seen.")}</p>
+              {heldUpCount != null && heldUp?.right_when_answered != null && <p className="text-sm text-ink-2">{t('On {count} Wikimedia Commons photos of a person holding one item, collected after the model was final, labelled by looking, frozen in a public commit and scored once before New York blister packs asked about a foil back, the screen was right on {accuracy} of the photos it answered.', { count: heldUpCount.toLocaleString(), accuracy: screenPercent.format(heldUp.right_when_answered) })}</p>}
+            </section>
+          )}
+          <h3 className="text-xl font-semibold tracking-tight">{t('Visual results')}</h3>
           <div className="grid gap-6 sm:grid-cols-2 [&_b]:my-3 [&_b]:block [&_b]:text-display [&_b]:tabular-nums">
             <div className="rounded-3xl bg-well p-6"><span className="block font-medium">{t("Right bin, NYC rules")}</span><b>{pct(m.test.bin_acc.nyc)}</b><span className="text-sm text-ink-2">{t('held-out test photos ({count})', { count: m.test.n_item.toLocaleString() })}</span></div>
             <div className="rounded-3xl bg-well p-6"><span className="block font-medium">{t("Right item type")}</span><b>{pct(m.test.item_acc)}</b><span className="text-sm text-ink-2">{t('out of {count} types, same test photos', { count: m.classes })}</span></div>
@@ -107,12 +153,21 @@ export default function About({ packs }: { packs: Pack[] }) {
             </table>
           </div>
           <p className="text-sm text-ink-2">
-            {t('Item head trained on {count} photos from {sources} open sources ({names}), each given the same total weight in training. Every number above is measured with the same {size} MB model file that ships in this page. Bin accuracy counts the bin the app would show. Training images that were near-copies of any test image were removed first.', { count: m.n_train.toLocaleString(), sources: trainSets.length, names: trainSets.map((d) => d.name).join(', '), size: m.model_mb })}
+            {t('Item head trained on {count} photos from {sources} open sources ({names}), each given the same total weight in training. Every number above is measured with the same {size} MB model file that ships in this page. Visual bin accuracy compares the top bin with the labelled bin before any questions. Training images that were near-copies of any test image were removed first.', { count: m.n_train.toLocaleString(), sources: trainSets.length, names: trainSets.map((d) => d.name).join(', '), size: m.model_mb })}
             {m.field && <span className="mt-4 block">{t('The field test is photos and video frames of everyday items from Pexels, labelled by looking at each one and never trained on; its errors on mugs and pizza boxes are why those types got more photos.')}</span>}
             <span className="mt-4 block">{t("RealWaste was looked at twice during development, so treat its numbers as slightly optimistic. This model is stronger on everyday items and weaker on landfill photos than the first one (79.3% before for New York's bins).")}</span>
           </p>
         </>
       )}
+
+      <h2>{t('Not tested yet')}</h2>
+      <ul className="list-disc pl-5">
+        <li>{t('A tablet mounted above real bins in a real lobby.')}</li>
+        <li>{t('A study of whether people sort better with the station.')}</li>
+        <li>{t('A site operator reviewing a real station profile.')}</li>
+        <li>{t("Photos taken by a station tablet's own camera.")}</li>
+        <li>{t('Batteries, snack wrappers, foil and foam in the held-up test. Wikimedia Commons had none for this set.')}</li>
+      </ul>
 
       <h2>{t("What makes the model good at this job")}</h2>
       <ul>

@@ -1,0 +1,719 @@
+{
+  "summary": {
+    "n": 100,
+    "item_agree": 100,
+    "decision_agree": {
+      "nyc": 100,
+      "chi": 100,
+      "la": 100,
+      "sea": 100,
+      "sf": 100,
+      "us": 100
+    },
+    "max_abs_dp": 0.0480269193649292,
+    "mean_abs_dp": 0.0002915212598894664
+  },
+  "disagreements": [],
+  "rows": [
+    {
+      "pageid": "51052957",
+      "label": "plastic_bottle",
+      "max_abs_dp": 0.00010372442193329334,
+      "python_item": "plastic_bottle",
+      "browser_item": "plastic_bottle"
+    },
+    {
+      "pageid": "187657462",
+      "label": "glass_bottle_jar",
+      "max_abs_dp": 0.003743469715118408,
+      "python_item": "glass_bottle_jar",
+      "browser_item": "glass_bottle_jar"
+    },
+    {
+      "pageid": "155870831",
+      "label": "metal_can",
+      "max_abs_dp": 0.0012105107307434082,
+      "python_item": "metal_can",
+      "browser_item": "metal_can"
+    },
+    {
+      "pageid": "61875215",
+      "label": "drinking_glass_ceramic",
+      "max_abs_dp": 0.0014597177505493164,
+      "python_item": "drinking_glass_ceramic",
+      "browser_item": "drinking_glass_ceramic"
+    },
+    {
+      "pageid": "188195998",
+      "label": "drinking_glass_ceramic",
+      "max_abs_dp": 0.0002466440200805664,
+      "python_item": "drinking_glass_ceramic",
+      "browser_item": "drinking_glass_ceramic"
+    },
+    {
+      "pageid": "99398997",
+      "label": "drinking_glass_ceramic",
+      "max_abs_dp": 0.007381826639175415,
+      "python_item": "drinking_glass_ceramic",
+      "browser_item": "drinking_glass_ceramic"
+    },
+    {
+      "pageid": "186069729",
+      "label": "drinking_glass_ceramic",
+      "max_abs_dp": 9.228754788637161e-05,
+      "python_item": "drinking_glass_ceramic",
+      "browser_item": "drinking_glass_ceramic"
+    },
+    {
+      "pageid": "186069731",
+      "label": "drinking_glass_ceramic",
+      "max_abs_dp": 0.0003802776336669922,
+      "python_item": "drinking_glass_ceramic",
+      "browser_item": "drinking_glass_ceramic"
+    },
+    {
+      "pageid": "187608996",
+      "label": "drinking_glass_ceramic",
+      "max_abs_dp": 0.0003273487091064453,
+      "python_item": "drinking_glass_ceramic",
+      "browser_item": "drinking_glass_ceramic"
+    },
+    {
+      "pageid": "191947116",
+      "label": "drinking_glass_ceramic",
+      "max_abs_dp": 0.0012311935424804688,
+      "python_item": "drinking_glass_ceramic",
+      "browser_item": "drinking_glass_ceramic"
+    },
+    {
+      "pageid": "192534285",
+      "label": "drinking_glass_ceramic",
+      "max_abs_dp": 0.0076032280921936035,
+      "python_item": "drinking_glass_ceramic",
+      "browser_item": "drinking_glass_ceramic"
+    },
+    {
+      "pageid": "193561893",
+      "label": "drinking_glass_ceramic",
+      "max_abs_dp": 0.0028742849826812744,
+      "python_item": "drinking_glass_ceramic",
+      "browser_item": "drinking_glass_ceramic"
+    },
+    {
+      "pageid": "197345701",
+      "label": "drinking_glass_ceramic",
+      "max_abs_dp": 0.011938273906707764,
+      "python_item": "plastic_cup",
+      "browser_item": "plastic_cup"
+    },
+    {
+      "pageid": "197516580",
+      "label": "drinking_glass_ceramic",
+      "max_abs_dp": 0.013933956623077393,
+      "python_item": "drinking_glass_ceramic",
+      "browser_item": "drinking_glass_ceramic"
+    },
+    {
+      "pageid": "198099678",
+      "label": "drinking_glass_ceramic",
+      "max_abs_dp": 0.00504668802022934,
+      "python_item": "drinking_glass_ceramic",
+      "browser_item": "drinking_glass_ceramic"
+    },
+    {
+      "pageid": "61716129",
+      "label": "paper_cup",
+      "max_abs_dp": 0.0018422603607177734,
+      "python_item": "paper_cup",
+      "browser_item": "paper_cup"
+    },
+    {
+      "pageid": "94912110",
+      "label": "paper_cup",
+      "max_abs_dp": 0.000425875186920166,
+      "python_item": "paper_cup",
+      "browser_item": "paper_cup"
+    },
+    {
+      "pageid": "1051903",
+      "label": "plastic_cup",
+      "max_abs_dp": 0.005686283111572266,
+      "python_item": "plastic_cup",
+      "browser_item": "plastic_cup"
+    },
+    {
+      "pageid": "202377133",
+      "label": "paper",
+      "max_abs_dp": 7.897615432739258e-05,
+      "python_item": "paper",
+      "browser_item": "paper"
+    },
+    {
+      "pageid": "18846060",
+      "label": "paper",
+      "max_abs_dp": 0.0012350082397460938,
+      "python_item": "paper",
+      "browser_item": "paper"
+    },
+    {
+      "pageid": "86415477",
+      "label": "paper",
+      "max_abs_dp": 1.4662742614746094e-05,
+      "python_item": "paper",
+      "browser_item": "paper"
+    },
+    {
+      "pageid": "194578810",
+      "label": "paper",
+      "max_abs_dp": 5.424022674560547e-06,
+      "python_item": "paper",
+      "browser_item": "paper"
+    },
+    {
+      "pageid": "194016837",
+      "label": "paper",
+      "max_abs_dp": 0.00020405673421919346,
+      "python_item": "paper",
+      "browser_item": "paper"
+    },
+    {
+      "pageid": "123917614",
+      "label": "cardboard",
+      "max_abs_dp": 0.0022667767480015755,
+      "python_item": "cardboard",
+      "browser_item": "cardboard"
+    },
+    {
+      "pageid": "120365151",
+      "label": "electronics",
+      "max_abs_dp": 0.006335705518722534,
+      "python_item": "electronics",
+      "browser_item": "electronics"
+    },
+    {
+      "pageid": "203273596",
+      "label": "glass_bottle_jar",
+      "max_abs_dp": 0.0006214268505573273,
+      "python_item": "glass_bottle_jar",
+      "browser_item": "glass_bottle_jar"
+    },
+    {
+      "pageid": "98189155",
+      "label": "glass_bottle_jar",
+      "max_abs_dp": 0.0018353722989559174,
+      "python_item": "glass_bottle_jar",
+      "browser_item": "glass_bottle_jar"
+    },
+    {
+      "pageid": "174443180",
+      "label": "glass_bottle_jar",
+      "max_abs_dp": 0.000387364998459816,
+      "python_item": "glass_bottle_jar",
+      "browser_item": "glass_bottle_jar"
+    },
+    {
+      "pageid": "197811333",
+      "label": "glass_bottle_jar",
+      "max_abs_dp": 0.008486956357955933,
+      "python_item": "glass_bottle_jar",
+      "browser_item": "glass_bottle_jar"
+    },
+    {
+      "pageid": "4375065",
+      "label": "glass_bottle_jar",
+      "max_abs_dp": 0.012730181217193604,
+      "python_item": "plastic_bottle",
+      "browser_item": "plastic_bottle"
+    },
+    {
+      "pageid": "161574266",
+      "label": "cardboard",
+      "max_abs_dp": 0.004956364631652832,
+      "python_item": "paper",
+      "browser_item": "paper"
+    },
+    {
+      "pageid": "192935394",
+      "label": "cardboard",
+      "max_abs_dp": 0.010518461465835571,
+      "python_item": "cardboard",
+      "browser_item": "cardboard"
+    },
+    {
+      "pageid": "142188357",
+      "label": "glass_bottle_jar",
+      "max_abs_dp": 0.0032333340495824814,
+      "python_item": "glass_bottle_jar",
+      "browser_item": "glass_bottle_jar"
+    },
+    {
+      "pageid": "196497440",
+      "label": "food_scraps",
+      "max_abs_dp": 5.307156243361533e-06,
+      "python_item": "food_scraps",
+      "browser_item": "food_scraps"
+    },
+    {
+      "pageid": "104096621",
+      "label": "food_scraps",
+      "max_abs_dp": 1.2039876310154796e-05,
+      "python_item": "food_scraps",
+      "browser_item": "food_scraps"
+    },
+    {
+      "pageid": "191786868",
+      "label": "food_scraps",
+      "max_abs_dp": 0.0002308487892150879,
+      "python_item": "food_scraps",
+      "browser_item": "food_scraps"
+    },
+    {
+      "pageid": "201778592",
+      "label": "food_scraps",
+      "max_abs_dp": 0.00010186433792114258,
+      "python_item": "food_scraps",
+      "browser_item": "food_scraps"
+    },
+    {
+      "pageid": "201778593",
+      "label": "food_scraps",
+      "max_abs_dp": 2.761255018413067e-05,
+      "python_item": "food_scraps",
+      "browser_item": "food_scraps"
+    },
+    {
+      "pageid": "202093810",
+      "label": "food_scraps",
+      "max_abs_dp": 8.094310760498047e-05,
+      "python_item": "food_scraps",
+      "browser_item": "food_scraps"
+    },
+    {
+      "pageid": "195963645",
+      "label": "food_scraps",
+      "max_abs_dp": 0.0003727334551513195,
+      "python_item": "food_scraps",
+      "browser_item": "food_scraps"
+    },
+    {
+      "pageid": "3087462",
+      "label": "food_scraps",
+      "max_abs_dp": 0.013136982917785645,
+      "python_item": "food_scraps",
+      "browser_item": "food_scraps"
+    },
+    {
+      "pageid": "197811336",
+      "label": "food_scraps",
+      "max_abs_dp": 0.004089236259460449,
+      "python_item": "food_scraps",
+      "browser_item": "food_scraps"
+    },
+    {
+      "pageid": "100901235",
+      "label": "glass_bottle_jar",
+      "max_abs_dp": 0.006420165300369263,
+      "python_item": "glass_bottle_jar",
+      "browser_item": "glass_bottle_jar"
+    },
+    {
+      "pageid": "61416893",
+      "label": "food_scraps",
+      "max_abs_dp": 9.638071060180664e-05,
+      "python_item": "food_scraps",
+      "browser_item": "food_scraps"
+    },
+    {
+      "pageid": "61664694",
+      "label": "food_scraps",
+      "max_abs_dp": 0.00016510486602783203,
+      "python_item": "food_scraps",
+      "browser_item": "food_scraps"
+    },
+    {
+      "pageid": "22198957",
+      "label": "electronics",
+      "max_abs_dp": 0.0027322769165039062,
+      "python_item": "electronics",
+      "browser_item": "electronics"
+    },
+    {
+      "pageid": "104077917",
+      "label": "electronics",
+      "max_abs_dp": 0.0013530850410461426,
+      "python_item": "paper",
+      "browser_item": "paper"
+    },
+    {
+      "pageid": "53155970",
+      "label": "electronics",
+      "max_abs_dp": 0.0020780935883522034,
+      "python_item": "electronics",
+      "browser_item": "electronics"
+    },
+    {
+      "pageid": "116757519",
+      "label": "electronics",
+      "max_abs_dp": 0.011726319789886475,
+      "python_item": "electronics",
+      "browser_item": "electronics"
+    },
+    {
+      "pageid": "62246488",
+      "label": "electronics",
+      "max_abs_dp": 9.538140147924423e-05,
+      "python_item": "electronics",
+      "browser_item": "electronics"
+    },
+    {
+      "pageid": "126441681",
+      "label": "electronics",
+      "max_abs_dp": 0.0002282378263771534,
+      "python_item": "electronics",
+      "browser_item": "electronics"
+    },
+    {
+      "pageid": "196835421",
+      "label": "electronics",
+      "max_abs_dp": 0.0022141337394714355,
+      "python_item": "electronics",
+      "browser_item": "electronics"
+    },
+    {
+      "pageid": "196043610",
+      "label": "electronics",
+      "max_abs_dp": 0.01812577247619629,
+      "python_item": "electronics",
+      "browser_item": "electronics"
+    },
+    {
+      "pageid": "76443214",
+      "label": "electronics",
+      "max_abs_dp": 0.009113550186157227,
+      "python_item": "drinking_glass_ceramic",
+      "browser_item": "drinking_glass_ceramic"
+    },
+    {
+      "pageid": "134006169",
+      "label": "electronics",
+      "max_abs_dp": 0.007724195718765259,
+      "python_item": "paper",
+      "browser_item": "paper"
+    },
+    {
+      "pageid": "124364316",
+      "label": "plastic_container",
+      "max_abs_dp": 0.005635194480419159,
+      "python_item": "plastic_cup",
+      "browser_item": "plastic_cup"
+    },
+    {
+      "pageid": "197811324",
+      "label": "mask_gloves",
+      "max_abs_dp": 0.00019609928131103516,
+      "python_item": "mask_gloves",
+      "browser_item": "mask_gloves"
+    },
+    {
+      "pageid": "98336022",
+      "label": "mask_gloves",
+      "max_abs_dp": 0.019311964511871338,
+      "python_item": "textile",
+      "browser_item": "textile"
+    },
+    {
+      "pageid": "82983746",
+      "label": "soiled_paper",
+      "max_abs_dp": 0.0010080933570861816,
+      "python_item": "soiled_paper",
+      "browser_item": "soiled_paper"
+    },
+    {
+      "pageid": "187627845",
+      "label": "mask_gloves",
+      "max_abs_dp": 1.0609626770019531e-05,
+      "python_item": "mask_gloves",
+      "browser_item": "mask_gloves"
+    },
+    {
+      "pageid": "187540427",
+      "label": "mask_gloves",
+      "max_abs_dp": 0.00037770718336105347,
+      "python_item": "mask_gloves",
+      "browser_item": "mask_gloves"
+    },
+    {
+      "pageid": "104998437",
+      "label": "mask_gloves",
+      "max_abs_dp": 0.006354521960020065,
+      "python_item": "mask_gloves",
+      "browser_item": "mask_gloves"
+    },
+    {
+      "pageid": "120179045",
+      "label": "plastic_utensil_straw",
+      "max_abs_dp": 8.392333984375e-05,
+      "python_item": "plastic_utensil_straw",
+      "browser_item": "plastic_utensil_straw"
+    },
+    {
+      "pageid": "198328320",
+      "label": "paper_cup",
+      "max_abs_dp": 0.005479991436004639,
+      "python_item": "paper_cup",
+      "browser_item": "paper_cup"
+    },
+    {
+      "pageid": "80138914",
+      "label": "paper_bag",
+      "max_abs_dp": 0.001912534236907959,
+      "python_item": "paper_bag",
+      "browser_item": "paper_bag"
+    },
+    {
+      "pageid": "82684008",
+      "label": "plastic_cup",
+      "max_abs_dp": 0.007577002048492432,
+      "python_item": "drinking_glass_ceramic",
+      "browser_item": "drinking_glass_ceramic"
+    },
+    {
+      "pageid": "112826319",
+      "label": "yard_waste",
+      "max_abs_dp": 0.003275066614151001,
+      "python_item": "food_scraps",
+      "browser_item": "food_scraps"
+    },
+    {
+      "pageid": "134692162",
+      "label": "yard_waste",
+      "max_abs_dp": 0.006497025489807129,
+      "python_item": "textile",
+      "browser_item": "textile"
+    },
+    {
+      "pageid": "201778594",
+      "label": "yard_waste",
+      "max_abs_dp": 0.006148800253868103,
+      "python_item": "yard_waste",
+      "browser_item": "yard_waste"
+    },
+    {
+      "pageid": "51438554",
+      "label": "yard_waste",
+      "max_abs_dp": 0.01168408989906311,
+      "python_item": "snack_wrapper",
+      "browser_item": "snack_wrapper"
+    },
+    {
+      "pageid": "112826398",
+      "label": "yard_waste",
+      "max_abs_dp": 0.0097370445728302,
+      "python_item": "food_scraps",
+      "browser_item": "food_scraps"
+    },
+    {
+      "pageid": "76804992",
+      "label": "yard_waste",
+      "max_abs_dp": 0.006557449698448181,
+      "python_item": "snack_wrapper",
+      "browser_item": "snack_wrapper"
+    },
+    {
+      "pageid": "79296810",
+      "label": "textile",
+      "max_abs_dp": 0.00745922327041626,
+      "python_item": "textile",
+      "browser_item": "textile"
+    },
+    {
+      "pageid": "111054477",
+      "label": "textile",
+      "max_abs_dp": 0.005188465118408203,
+      "python_item": "textile",
+      "browser_item": "textile"
+    },
+    {
+      "pageid": "87900061",
+      "label": "textile",
+      "max_abs_dp": 0.0009522438049316406,
+      "python_item": "textile",
+      "browser_item": "textile"
+    },
+    {
+      "pageid": "96629120",
+      "label": "textile",
+      "max_abs_dp": 0.0047727227210998535,
+      "python_item": "textile",
+      "browser_item": "textile"
+    },
+    {
+      "pageid": "17588438",
+      "label": "textile",
+      "max_abs_dp": 0.004011332988739014,
+      "python_item": "textile",
+      "browser_item": "textile"
+    },
+    {
+      "pageid": "134894437",
+      "label": "textile",
+      "max_abs_dp": 0.0480269193649292,
+      "python_item": "textile",
+      "browser_item": "textile"
+    },
+    {
+      "pageid": "78725860",
+      "label": "glass_bottle_jar",
+      "max_abs_dp": 7.572758477181196e-05,
+      "python_item": "glass_bottle_jar",
+      "browser_item": "glass_bottle_jar"
+    },
+    {
+      "pageid": "47789075",
+      "label": "shoes",
+      "max_abs_dp": 0.0001513897441327572,
+      "python_item": "shoes",
+      "browser_item": "shoes"
+    },
+    {
+      "pageid": "182978530",
+      "label": "blister_pack",
+      "max_abs_dp": 5.0067901611328125e-06,
+      "python_item": "blister_pack",
+      "browser_item": "blister_pack"
+    },
+    {
+      "pageid": "197808883",
+      "label": "blister_pack",
+      "max_abs_dp": 2.1219253540039062e-05,
+      "python_item": "blister_pack",
+      "browser_item": "blister_pack"
+    },
+    {
+      "pageid": "201267210",
+      "label": "blister_pack",
+      "max_abs_dp": 0.0001521086087450385,
+      "python_item": "blister_pack",
+      "browser_item": "blister_pack"
+    },
+    {
+      "pageid": "69843179",
+      "label": "rope_string",
+      "max_abs_dp": 0.00017464160919189453,
+      "python_item": "rope_string",
+      "browser_item": "rope_string"
+    },
+    {
+      "pageid": "8225746",
+      "label": "pizza_box",
+      "max_abs_dp": 6.567896343767643e-05,
+      "python_item": "pizza_box",
+      "browser_item": "pizza_box"
+    },
+    {
+      "pageid": "180144877",
+      "label": "plastic_bag_film",
+      "max_abs_dp": 0.0037557482719421387,
+      "python_item": "plastic_bag_film",
+      "browser_item": "plastic_bag_film"
+    },
+    {
+      "pageid": "177258023",
+      "label": "plastic_bottle",
+      "max_abs_dp": 0.002147674560546875,
+      "python_item": "plastic_bottle",
+      "browser_item": "plastic_bottle"
+    },
+    {
+      "pageid": "196950683",
+      "label": "plastic_bottle",
+      "max_abs_dp": 0.0020851753652095795,
+      "python_item": "plastic_bottle",
+      "browser_item": "plastic_bottle"
+    },
+    {
+      "pageid": "30556137",
+      "label": "cigarette_butt",
+      "max_abs_dp": 0.0001856230664998293,
+      "python_item": "cigarette_butt",
+      "browser_item": "cigarette_butt"
+    },
+    {
+      "pageid": "69400805",
+      "label": "metal_can",
+      "max_abs_dp": 0.00035588815808296204,
+      "python_item": "metal_can",
+      "browser_item": "metal_can"
+    },
+    {
+      "pageid": "132833112",
+      "label": "metal_can",
+      "max_abs_dp": 0.00015395879745483398,
+      "python_item": "metal_can",
+      "browser_item": "metal_can"
+    },
+    {
+      "pageid": "132833110",
+      "label": "metal_can",
+      "max_abs_dp": 3.439188003540039e-05,
+      "python_item": "metal_can",
+      "browser_item": "metal_can"
+    },
+    {
+      "pageid": "200079174",
+      "label": "metal_can",
+      "max_abs_dp": 0.0024734139442443848,
+      "python_item": "metal_can",
+      "browser_item": "metal_can"
+    },
+    {
+      "pageid": "129512018",
+      "label": "cardboard",
+      "max_abs_dp": 0.000217437744140625,
+      "python_item": "cardboard",
+      "browser_item": "cardboard"
+    },
+    {
+      "pageid": "20803699",
+      "label": "carton",
+      "max_abs_dp": 0.0047841668128967285,
+      "python_item": "carton",
+      "browser_item": "carton"
+    },
+    {
+      "pageid": "186057607",
+      "label": "plastic_bottle",
+      "max_abs_dp": 0.002405550330877304,
+      "python_item": "plastic_bottle",
+      "browser_item": "plastic_bottle"
+    },
+    {
+      "pageid": "36530184",
+      "label": "plastic_bottle",
+      "max_abs_dp": 0.0011491179466247559,
+      "python_item": "plastic_bottle",
+      "browser_item": "plastic_bottle"
+    },
+    {
+      "pageid": "4323507",
+      "label": "plastic_bottle",
+      "max_abs_dp": 0.0003104209899902344,
+      "python_item": "plastic_bottle",
+      "browser_item": "plastic_bottle"
+    },
+    {
+      "pageid": "100900849",
+      "label": "glass_bottle_jar",
+      "max_abs_dp": 0.0058286190032958984,
+      "python_item": "glass_bottle_jar",
+      "browser_item": "glass_bottle_jar"
+    },
+    {
+      "pageid": "198191923",
+      "label": "carton",
+      "max_abs_dp": 0.01126188039779663,
+      "python_item": "carton",
+      "browser_item": "carton"
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+# .venv/bin/python ml/parity.py ViT-B-16-SigLIP2-256:ml/cache/b16.safetensors web/public/model 300   (run 2026-11-25)
+300 photos: cosine mean 0.9990 min 0.9947; same item type 0.983; accuracy fp32 0.913 vs int8 0.907
