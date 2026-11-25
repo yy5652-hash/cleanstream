@@ -54,12 +54,12 @@ function storedCity() {
   }
 }
 
-export default function App() {
+export default function App({ controlledAtLoad }: { controlledAtLoad: boolean }) {
   const [route, setRoute] = useState<Route>(routeFromHash)
   const [city, setCity] = useState(storedCity)
   const { lang, ready } = useLang()
   const english = usePacks(city)
-  const rulesUpdated = useRulesUpdate(english)
+  const rulesUpdated = useRulesUpdate(english, controlledAtLoad)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const packs = useMemo(() => english?.map(localizePack) ?? null, [english, lang])
   const install = useInstall()

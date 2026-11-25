@@ -355,5 +355,61 @@
     "right_when_answered": 0.7680958967266022
    }
   }
+ },
+ "heldup": {
+  "n": 100,
+  "item_acc": 0.86,
+  "frozen_commit": "e15a7a1",
+  "note": "Photos of a person holding one item, labelled and frozen before scoring, scored once; before NYC blister packs asked",
+  "app_decision": {
+   "chi": {
+    "unsafe": 1,
+    "visual_bin_acc": 0.89,
+    "right_rate": 0.85,
+    "ask_rate": 0.1,
+    "wrong_rate": 0.05,
+    "right_when_answered": 0.9444444444444444
+   },
+   "la": {
+    "unsafe": 1,
+    "visual_bin_acc": 0.91,
+    "right_rate": 0.87,
+    "ask_rate": 0.1,
+    "wrong_rate": 0.03,
+    "right_when_answered": 0.9666666666666667
+   },
+   "nyc": {
+    "unsafe": 1,
+    "visual_bin_acc": 0.89,
+    "right_rate": 0.77,
+    "ask_rate": 0.18,
+    "wrong_rate": 0.05,
+    "right_when_answered": 0.9390243902439024
+   },
+   "sea": {
+    "unsafe": 1,
+    "visual_bin_acc": 0.88,
+    "right_rate": 0.82,
+    "ask_rate": 0.15,
+    "wrong_rate": 0.03,
+    "right_when_answered": 0.9647058823529412
+   },
+   "sf": {
+    "unsafe": 2,
+    "visual_bin_acc": 0.89,
+    "right_rate": 0.82,
+    "ask_rate": 0.15,
+    "wrong_rate": 0.03,
+    "right_when_answered": 0.9647058823529412
+   },
+   "us": {
+    "unsafe": 1,
+    "visual_bin_acc": 0.91,
+    "right_rate": 0.85,
+    "ask_rate": 0.14,
+    "wrong_rate": 0.01,
+    "right_when_answered": 0.9883720930232558
+   }
+  }
  }
 }

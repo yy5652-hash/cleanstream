@@ -124,9 +124,6 @@ export function Answer({ ans, ms, pack, packs, item: chosen, preview, query = ''
           <Share pack={pack} item={item} bin={bin} caseId={condition?.id} />
         </div>
         {alternate}
-        {otherCases.map((c) => <button key={c.id} onClick={() => setConditionId(c.id)} className="mt-3 flex min-h-12 flex-wrap items-center gap-2 rounded-2xl bg-black/10 px-3 py-2 text-left font-medium">
-          {t('{condition}? →', { condition: c.label })}<BinChip bin={binById(pack, c.bin)} />
-        </button>)}
         {condition && !defaultCase && (matched ? <p className="mt-3 text-sm">{condition.label}</p> : <button onClick={() => setConditionId(null)} className="mt-3 min-h-11 text-left text-sm underline underline-offset-4">{condition.label} · {t('Change condition')}</button>)}
         <div className="mt-10 flex items-end justify-between gap-4 sm:mt-14">
           <div className="min-w-0">
@@ -135,6 +132,9 @@ export function Answer({ ans, ms, pack, packs, item: chosen, preview, query = ''
           </div>
           {preview && <img src={preview} alt={t('Item being checked')} className="size-20 shrink-0 rounded-2xl object-cover ring-2 ring-white/40 sm:size-24" />}
         </div>
+        {otherCases.map((c) => <button key={c.id} onClick={() => setConditionId(c.id)} className="mt-3 flex min-h-12 flex-wrap items-center gap-2 rounded-2xl bg-black/10 px-3 py-2 text-left font-medium">
+          {t('{condition}? →', { condition: c.label })}<BinChip bin={binById(pack, c.bin)} />
+        </button>)}
       </div>
 
       <div className="divide-y divide-line px-1 animate-rise">

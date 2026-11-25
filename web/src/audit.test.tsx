@@ -5,12 +5,20 @@ import { auditChecked, auditCsv, canAddAudit, contamination, needsCondition, sna
 import { createPilot, exportPilot, parsePilot, rate, stations, validWeights } from './pilot'
 import { belongs, type Pack } from './rules'
 import type { Audit, AuditItem } from './store'
+import { formatKg } from './format'
 import { AuditSession } from './views/Audit'
 
 const nyc: Pack = JSON.parse(readFileSync(new URL('../public/rules/nyc.json', import.meta.url), 'utf8'))
 const item = (pred: string, condition?: string): AuditItem => ({ id: pred, thumb: '', pred, p: 0.9, checked: true, condition })
 const audit = (items: AuditItem[], bin = 'green'): Audit => ({ id: 'audit', site: 'Library', pack: 'nyc', bin, date: '2026-11-22', phase: 'baseline', items })
 const render = (a: Audit, outcome: 'weight' | 'count' = 'weight') => renderToStaticMarkup(<AuditSession audit={a} pack={nyc} ready={false} idle classes={[]} close={() => {}} update={() => {}} remove={() => {}} addToPilot={() => {}} pilotOutcome={outcome} />)
+
+it('rounds displayed kilograms to two decimal places and omits trailing zeroes', () => {
+  const decimal = new Intl.NumberFormat().formatToParts(1.5).find((part) => part.type === 'decimal')!.value
+  expect([2.8000000000000003, 1.359, 8].map(formatKg)).toEqual([`2${decimal}8`, `1${decimal}36`, '8'])
+  const html = render({ ...audit([]), kind: 'weighed', weights: { totalKg: 8, contaminantKg: 2.8000000000000003 } })
+  expect(html).toContain(`${formatKg(2.8)} / 8 kg contaminants`)
+})
 
 describe('condition-aware audits', () => {
   it('uses only the chosen case and also bins, preserving unspecified non-audit acceptance', () => {

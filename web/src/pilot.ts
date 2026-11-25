@@ -66,14 +66,19 @@ function stationPhase(audits: PilotAudit[], outcome: Outcome): StationPhase {
   return { audits: audits.length, rate: total > 0 ? bad / total : null, basis: outcome }
 }
 
-export function stations(pilot: Pilot, outcome = pilot.outcome, bin = pilot.primaryBin): StationResult[] {
+export function auditsBySite(audits: PilotAudit[]): Map<string, PilotAudit[]> {
   const groups = new Map<string, PilotAudit[]>()
-  for (const audit of pilot.audits) {
-    const group = groups.get(siteKey(audit.site)) ?? []
+  for (const audit of audits) {
+    const key = siteKey(audit.site)
+    const group = groups.get(key) ?? []
     group.push(audit)
-    groups.set(siteKey(audit.site), group)
+    groups.set(key, group)
   }
-  return [...groups.entries()].map(([, allAudits]) => {
+  return groups
+}
+
+export function stations(pilot: Pilot, outcome = pilot.outcome, bin = pilot.primaryBin): StationResult[] {
+  return [...auditsBySite(pilot.audits).values()].map((allAudits) => {
     const site = allAudits[0].site
     const nameVariants = new Set(allAudits.map((audit) => audit.site)).size > 1
     const checked = allAudits.filter((audit) => !audit.pendingRecheck)

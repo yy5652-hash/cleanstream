@@ -8,19 +8,17 @@ export function rulesDiffer(loaded: Pack[], fetched: Pack): boolean {
 }
 
 // Compare against the English packs actually loaded by this page, never their translations.
-export function useRulesUpdate(packs: Pack[] | null): boolean {
+export function useRulesUpdate(packs: Pack[] | null, controlledAtLoad: boolean): boolean {
   const [updated, setUpdated] = useState(false)
   const loaded = useRef(packs)
   useEffect(() => { loaded.current = packs }, [packs])
   useEffect(() => {
     const worker = navigator.serviceWorker
-    let controlled = !!worker?.controller
     const controllerChanged = () => {
-      if (controlled) setUpdated(true)
-      controlled = true
+      if (controlledAtLoad) setUpdated(true)
     }
     const message = (event: MessageEvent) => {
-      if (event.data?.type === 'rules-activated') setUpdated(true)
+      if (event.data?.type === 'rules-activated' && controlledAtLoad) setUpdated(true)
       if (event.data?.type === 'rules-fetched' && event.data.pack && loaded.current && rulesDiffer(loaded.current, event.data.pack)) setUpdated(true)
     }
     worker?.addEventListener('controllerchange', controllerChanged)
@@ -30,7 +28,7 @@ export function useRulesUpdate(packs: Pack[] | null): boolean {
       worker?.removeEventListener('controllerchange', controllerChanged)
       worker?.removeEventListener('message', message)
     }
-  }, [])
+  }, [controlledAtLoad])
   useEffect(() => {
     if (!packs?.length) return
     let stopped = false
@@ -56,7 +54,7 @@ export function useRulesUpdate(packs: Pack[] | null): boolean {
 }
 
 export function RulesUpdateNotice({ reload = true }: { reload?: boolean }) {
-  return <p role="status" className="relative z-40 rounded-xl border border-line bg-well px-4 py-2 text-sm text-ink">
+  return <p role="status" className="relative z-40 mb-8 rounded-xl border border-line bg-well px-4 py-2 text-sm text-ink">
     {reload ? <button className="min-h-11 underline underline-offset-4" onClick={() => location.reload()}>{t('Rules updated — reload')}</button> : t('Rules updated — reload')}
   </p>
 }

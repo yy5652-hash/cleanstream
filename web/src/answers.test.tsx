@@ -129,6 +129,7 @@ describe('conditional answers', () => {
     expect(html).not.toContain('<h2 class="text-display">Trash</h2>')
     expect(html).not.toContain('Also accepted in')
     expect(html).toContain('Single-use alkaline')
+    expect(html).toMatch(/>Drop-off<.*>Tape the ends or bag each battery<.*Single-use alkaline.*>Trash</)
   })
 
   it('takes the safe default when the words match more than one case', () => {

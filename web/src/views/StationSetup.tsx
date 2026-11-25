@@ -99,10 +99,9 @@ export default function StationSetup({ pack, onCity }: { pack: Pack; onCity: (id
           {step < 3 && <Button size="lg" disabled={step === 2 && !profile.bins.length} onClick={() => setStep((n) => n + 1)}>{t('Next')}<ArrowRight aria-hidden /></Button>}
         </div>
       </section>
-      <section aria-labelledby="station-history-title" className="mt-16 border-t border-line pt-8">
-        <h2 id="station-history-title" className="mb-5 text-title">{t('What this station has seen')}</h2>
+      <div className="mt-16 border-t border-line pt-8">
         <StationHistory key={`${pack.id}-${historyVersion}`} pack={pack} profile={profile} />
-      </section>
+      </div>
     </div>
   )
 }

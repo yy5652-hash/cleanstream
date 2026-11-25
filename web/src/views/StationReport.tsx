@@ -79,13 +79,13 @@ export default function StationReport({ pack, log, onReset, profile = readStatio
 
   const csv = () => download(`station-${pack.id}-${days[0]}-to-${days[days.length - 1]}.csv`, stationCsv(pack, log, days, profile))
 
-  return <section className="space-y-8">
-    <header><h2 className="text-title">{t('Station report')}</h2><p className="mt-2 max-w-2xl text-ink-2">{t('What people held up at this station, in {city} rules. Counts only: no pictures are kept, and nothing leaves this device.', { city: pack.name })}</p>{since && <p className="mt-2 text-sm text-ink-2">{t('Counting since {date}', { date: since })}</p>}</header>
+  return <section aria-labelledby="station-history-title" className="space-y-8">
+    <header><h2 id="station-history-title" className="text-title">{t('Station report')}</h2><p className="mt-2 max-w-2xl text-ink-2">{t('What people held up at this station, in {city} rules. Counts only: no pictures are kept, and nothing leaves this device.', { city: pack.name })}</p>{since && <p className="mt-2 text-sm text-ink-2">{t('Counting since {date}', { date: since })}</p>}</header>
     <div className="flex flex-wrap gap-2"><div className="flex rounded-2xl bg-well p-1" aria-label={t('Report period')}>{RANGES.map(([n, name]) => <Button key={n} variant={range === n ? 'default' : 'ghost'} aria-pressed={range === n} onClick={() => setRange(n)}>{name()}</Button>)}</div><Button variant="outline" onClick={csv} disabled={!asked}>{t('Export CSV')}</Button><Button variant="ghost" onClick={() => { setResetError(''); setResetting('export') }}>{t('Start fresh for a pilot')}</Button></div>
     <div className="grid gap-6 border-y border-line py-6 sm:grid-cols-3">{[
       [t('Answers shown'), s.total, t('Answered with a bin')],
-      [t('Sure enough to answer'), asked ? pct((s.total - s.tapped) / asked) : t('No data'), t('{tapped} settled with a tap, {unsure} left unsure', { tapped: s.tapped, unsure: s.unsure })],
-      [t('Not for recycling'), s.total ? pct(notRecycling / s.total) : t('No data'), t('{count} items whose bin here is compost, trash or drop-off', { count: notRecycling })],
+      [t('Sure enough to answer'), asked ? pct((s.total - s.tapped) / asked) : t('—'), t('{tapped} settled with a tap, {unsure} left unsure', { tapped: s.tapped, unsure: s.unsure })],
+      [t('Not for recycling'), s.total ? pct(notRecycling / s.total) : t('—'), t('{count} items whose bin here is compost, trash or drop-off', { count: notRecycling })],
     ].map(([name, value, note]) => <div key={name}><h3 className="text-ink-2">{name}</h3><p className="mt-3 text-display">{value}</p><p className="mt-2 text-sm text-ink-2">{note}</p></div>)}</div>
     {!asked && <p className="text-ink-2">{t('Nothing yet in this period. Counts appear as camera answers are shown.')}</p>}
     {asked > 0 && <div className="grid gap-8 lg:grid-cols-2">

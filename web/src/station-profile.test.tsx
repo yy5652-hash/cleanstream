@@ -103,6 +103,14 @@ describe('physical station bins', () => {
 })
 
 describe('pilot count boundary', () => {
+  it('shows one report heading and dashes for the empty rates', () => {
+    const html = renderToStaticMarkup(<StationSetup pack={pack} onCity={() => {}} />)
+    expect(html.match(/>Station report<\/h2>/g)).toHaveLength(1)
+    expect(html).not.toContain('What this station has seen')
+    expect(html.match(/<p class="mt-3 text-display">—<\/p>/g)).toHaveLength(2)
+    expect(html).toContain('0 settled with a tap, 0 left unsure')
+    expect(html).toContain('Nothing yet in this period.')
+  })
   it('exports physical labels and escaped approval metadata while keeping city stream ids', () => {
     let log: StationLog = {}
     for (const [bin, item] of [['blue', 'metal_can'], ['green', 'paper']]) log = record(log, pack.id, '2026-11-01', { bin, item })

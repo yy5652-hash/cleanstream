@@ -29,7 +29,8 @@ vi.mock('react', async (original) => ({
 }))
 vi.mock('./model/client', () => ({ useModel: () => ({ status: 'idle', classes: [] }), loadModel: vi.fn(), classify: vi.fn() }))
 import Audit from './views/Audit'
-import Pilot from './views/Pilot'
+import Pilot, { example } from './views/Pilot'
+import Sites from './views/Sites'
 import { Sheet } from './components/Sheet'
 import { useRulesUpdate } from './components/RulesUpdate'
 
@@ -120,7 +121,7 @@ it('writes pilot weight edits to the canonical audit and removes weights from bo
   expect(snapshot.weights).toEqual(saved.weights)
   expect(auditCsv(saved, pack)).toContain('"10","2"')
   tree = drawPilot()
-  elements(tree).find((element) => element.props.children === 'Enter weights')!.props.onClick!()
+  elements(tree).find((element) => element.props.children === 'Edit weights')!.props.onClick!()
   tree = drawPilot()
   const removeForm = elements(elements(tree).find((element) => element.type === Sheet && element.props.title === 'Sample weights')!.props.children)[0]
   removeForm.props.save!(undefined)
@@ -128,22 +129,44 @@ it('writes pilot weight edits to the canonical audit and removes weights from bo
   expect(JSON.parse(values.get('cleanstream.audits')!)[0].weights).toBeUndefined()
   expect(JSON.parse(values.get('cleanstream.pilots')!)[0].audits[0].weights).toBeUndefined()
 })
-it('notifies a returning page when its worker activates or fetched rules differ from the loaded pack', async () => {
+it('shows the 36 example audits under six site headings, oldest audit first within each site', () => {
+  const pilot = example(pack)
+  values.set('cleanstream.pilots', JSON.stringify([{ ...pilot, audits: [...pilot.audits].reverse() }]))
+  drawPilot()
+  const tree = elements(drawPilot())
+  const section = tree.find((element) => element.type === 'section' && elements(element).some((child) => child.type === 'h2' && child.props.children === 'Audits in this pilot'))!
+  const headings = elements(section).filter((element) => element.type === 'h3')
+  expect(headings.map((heading) => heading.props.children).sort()).toEqual(Array.from({ length: 6 }, (_, i) => `Example station ${i + 1}`))
+  const groups = elements(section).filter((element) => element.type === 'ul')
+  expect(groups).toHaveLength(6)
+  for (const group of groups) {
+    const dates = elements(group).filter((element) => element.type === 'p').flatMap((element) => String(element.props.children).match(/\d{4}-\d{2}-\d{2}/) ?? [])
+    expect(dates).toHaveLength(6)
+    expect(dates).toEqual([...dates].sort())
+  }
+})
+it.each([false, true])('shows an activation notice only if the page was controlled at load (%s)', (controlledAtLoad) => {
+  const worker = Object.assign(new EventTarget(), { controller: controlledAtLoad ? {} : null })
+  vi.stubGlobal('navigator', { serviceWorker: worker })
+  const drawUpdate = () => draw(() => useRulesUpdate(null, controlledAtLoad))
+  expect(drawUpdate()).toBe(false)
+  worker.controller = {}
+  if (!controlledAtLoad) worker.dispatchEvent(new Event('controllerchange'))
+  worker.dispatchEvent(new MessageEvent('message', { data: { type: 'rules-activated' } }))
+  expect(drawUpdate()).toBe(controlledAtLoad)
+})
+it('notifies on fetched rules that differ even on a first visit', async () => {
   vi.useFakeTimers()
   const worker = Object.assign(new EventTarget(), { controller: {}, getRegistration: async () => undefined })
   vi.stubGlobal('navigator', { serviceWorker: worker })
   vi.stubGlobal('window', new EventTarget())
   const fetch = vi.fn().mockResolvedValue({ ok: true, json: async () => pack })
   vi.stubGlobal('fetch', fetch)
-  expect(draw(() => useRulesUpdate(packs))).toBe(false)
+  expect(draw(() => useRulesUpdate(packs, false))).toBe(false)
   await vi.advanceTimersByTimeAsync(1)
-  expect(draw(() => useRulesUpdate(packs))).toBe(false)
+  expect(draw(() => useRulesUpdate(packs, false))).toBe(false)
   worker.dispatchEvent(new MessageEvent('message', { data: { type: 'rules-fetched', pack: { ...pack, checked: '2099-01-01' } } }))
-  expect(draw(() => useRulesUpdate(packs))).toBe(true)
-  hooks.cleanups.forEach((cleanup) => cleanup()); hooks.cleanups = []; hooks.values = []
-  draw(() => useRulesUpdate(packs))
-  worker.dispatchEvent(new MessageEvent('message', { data: { type: 'rules-activated' } }))
-  expect(draw(() => useRulesUpdate(packs))).toBe(true)
+  expect(draw(() => useRulesUpdate(packs, false))).toBe(true)
 })
 it('detects a rule-only update on periodic revalidation without replacing an answer mid-session', async () => {
   vi.useFakeTimers()
@@ -151,11 +174,31 @@ it('detects a rule-only update on periodic revalidation without replacing an ans
   vi.stubGlobal('window', new EventTarget())
   const fetch = vi.fn().mockResolvedValue({ ok: true, json: async () => pack })
   vi.stubGlobal('fetch', fetch)
-  draw(() => useRulesUpdate(packs))
+  draw(() => useRulesUpdate(packs, false))
   await vi.advanceTimersByTimeAsync(1)
-  expect(draw(() => useRulesUpdate(packs))).toBe(false)
+  expect(draw(() => useRulesUpdate(packs, false))).toBe(false)
   fetch.mockResolvedValue({ ok: true, json: async () => ({ ...pack, items: {} }) })
   await vi.advanceTimersByTimeAsync(60000)
-  expect(draw(() => useRulesUpdate(packs))).toBe(true)
+  expect(draw(() => useRulesUpdate(packs, false))).toBe(true)
   expect(packs[0].items).toHaveProperty('battery')
+})
+it('shows the app decision rates and sample sizes on For sites', async () => {
+  vi.useFakeTimers()
+  const metrics = {
+    app_decision: { nyc: { test: { right_rate: 0.96, n: 6490 } } },
+    heldup: { n: 100, app_decision: { nyc: { right_when_answered: 0.939 } } },
+  }
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => metrics }))
+  const text = () => elements(draw(() => Sites({ pack }))).map((element) => element.props.children)
+  expect(text().filter((s) => s === 'Unavailable')).toHaveLength(2)
+  await vi.advanceTimersByTimeAsync(1)
+  const rendered = text()
+  const count = (6490).toLocaleString(undefined, { useGrouping: 'always' })
+  const percent = (n: number) => n.toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 1, maximumFractionDigits: 1 })
+  expect(rendered).toEqual(expect.arrayContaining([
+    percent(0.96),
+    percent(0.939),
+    `Right bin shown on ${count} held-out photos, New York rules, conditions included`,
+    'Right when it shows a bin, on 100 photos of people holding items, frozen before scoring',
+  ]))
 })

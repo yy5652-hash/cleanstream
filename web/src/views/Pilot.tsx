@@ -3,10 +3,11 @@ import { Check, Download, Plus, Printer, Trash2, Upload } from 'lucide-react'
 import { Button } from '../components/ui/button'
 import { Sheet } from '../components/Sheet'
 import { t } from '../i18n'
-import { auditBins, createPilot, defaultPrimaryBin, observedEffect, hasCounts, exportPilot, mergePilots, netEffect, stations, verdict, rate, validWeights, type Arm, type Phase, type Pilot as PilotT, type PilotAudit, type Weights, type Outcome, type StationResult } from '../pilot'
+import { auditBins, auditsBySite, createPilot, defaultPrimaryBin, observedEffect, hasCounts, exportPilot, mergePilots, netEffect, stations, verdict, rate, validWeights, type Arm, type Phase, type Pilot as PilotT, type PilotAudit, type Weights, type Outcome, type StationResult } from '../pilot'
 import type { Pack } from '../rules'
 import { download, today, uid } from '../store'
 import { usePilotRecords } from '../pilot-records'
+import { formatKg } from '../format'
 import { pct } from '../ui'
 
 const field = 'mt-2 min-h-11 w-full min-w-0 rounded-2xl border border-line bg-card px-3 text-ink'
@@ -71,7 +72,25 @@ export default function Pilot({ pack, packs }: { pack: Pack; packs: Pack[] }) {
       <Report pilot={pilot} pack={pilotPack} />
       <div className="space-y-6 print:hidden"><div className="flex flex-wrap gap-2"><Button onClick={() => window.print()}><Printer aria-hidden />{t('Print or save as PDF')}</Button><Button variant="outline" onClick={() => download(`pilot-${pilot.id}.json`, exportPilot(pilot), 'application/json')}><Download aria-hidden />{t('Export JSON')}</Button><Button variant="outline" onClick={() => input.current?.click()}><Upload aria-hidden />{t('Import JSON')}</Button><input ref={input} type="file" accept="application/json,.json" multiple hidden onChange={(e) => { void importFiles([...(e.target.files ?? [])]); e.target.value = '' }} /><Button variant="ghost" onClick={loadExample}>{t('See an example report')}</Button><Button variant="ghost" onClick={() => setDeleting(true)}><Trash2 aria-hidden />{t('Delete pilot')}</Button></div>
         {notice && <p role="status" className="rounded-2xl bg-well p-4 text-ink-2">{notice}</p>}
-        <section><h2 className="text-title">{t('Audits in this pilot')}</h2><p className="mt-2 text-sm text-ink-2">{t('Weigh the whole sample and its contaminants separately. Weight totals cover only audits with entered weights.')}</p><ul className="mt-4 divide-y divide-line">{pilot.audits.map((a) => <li key={a.id} className="flex flex-wrap items-center justify-between gap-3 py-4"><div className="min-w-0"><p className="break-words font-medium">{a.site}</p><p className="text-sm text-ink-2">{a.n === undefined ? t('{arm} · {phase} · {date} · weighed audit', { arm: armName(a.arm), phase: phaseName(a.phase), date: a.date }) : t('{arm} · {phase} · {date} · {count} items', { arm: armName(a.arm), phase: phaseName(a.phase), date: a.date, count: a.n })}</p>{a.pendingRecheck && <p role="status" className="text-sm text-ink-2">{t('Pending recheck — excluded from analysis')}</p>}{a.weights && <p className="text-sm text-ink-2">{t('{bad} / {total} kg contaminants', { bad: a.weights.contaminantKg, total: a.weights.totalKg })}</p>}</div><div className="flex flex-wrap gap-2"><Button variant="outline" onClick={() => setWeighing(a)}>{t('Enter weights')}</Button><Button variant="ghost" aria-label={t('Remove audit at {site}', { site: a.site })} onClick={() => setRemoving(a.id)}><Trash2 aria-hidden />{t('Remove')}</Button></div></li>)}</ul>{!pilot.audits.length && <p className="py-4 text-ink-2">{t('Start with a before audit above.')}</p>}</section>
+        <section>
+          <h2 className="text-title">{t('Audits in this pilot')}</h2>
+          <p className="mt-2 text-sm text-ink-2">{t('Weigh the whole sample and its contaminants separately. Weight totals cover only audits with entered weights.')}</p>
+          {[...auditsBySite(pilot.audits)].map(([site, group]) => <div key={site} className="mt-6">
+            <h3 className="break-words border-b border-line pb-2 text-sm font-semibold">{group[0].site}</h3>
+            <ul className="divide-y divide-line">{[...group].sort((a, b) => a.date.localeCompare(b.date)).map((a) => <li key={a.id} className="flex flex-wrap items-center justify-between gap-3 py-4">
+              <div className="min-w-0">
+                <p className="text-sm text-ink-2">{a.n === undefined ? t('{arm} · {phase} · {date} · weighed audit', { arm: armName(a.arm), phase: phaseName(a.phase), date: a.date }) : t('{arm} · {phase} · {date} · {count} items', { arm: armName(a.arm), phase: phaseName(a.phase), date: a.date, count: a.n })}</p>
+                {a.pendingRecheck && <p role="status" className="text-sm text-ink-2">{t('Pending recheck — excluded from analysis')}</p>}
+                {a.weights && <p className="text-sm text-ink-2">{t('{bad} / {total} kg contaminants', { bad: formatKg(a.weights.contaminantKg), total: formatKg(a.weights.totalKg) })}</p>}
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Button variant="outline" onClick={() => setWeighing(a)}>{a.weights ? t('Edit weights') : t('Enter weights')}</Button>
+                <Button variant="ghost" aria-label={t('Remove audit at {site}', { site: a.site })} onClick={() => setRemoving(a.id)}><Trash2 aria-hidden />{t('Remove')}</Button>
+              </div>
+            </li>)}</ul>
+          </div>)}
+          {!pilot.audits.length && <p className="py-4 text-ink-2">{t('Start with a before audit above.')}</p>}
+        </section>
       </div>
     </>}
     <PlanningChecklist />
@@ -100,7 +119,7 @@ export function Report({ pilot, pack }: { pilot: PilotT; pack: Pack }) {
     </div>
     {pilot.outcome === 'weight' && <StationTable rows={stations(pilot, 'count')} pack={pack} caption={t('Secondary: primary bin contamination by count')} />}
     {[...new Set(pilot.audits.map((a) => a.bin))].filter((bin) => bin !== pilot.primaryBin).map((bin) => <StationTable key={bin} rows={stations(pilot, pilot.outcome, bin).filter((s) => s.before.audits + s.after.audits > 0)} pack={pack} caption={t('Secondary bin stream: {bin}', { bin: pack.bins.find((b) => b.id === bin)?.name ?? bin })} />)}
-    <div className="overflow-x-auto"><table className="w-full table-fixed text-left text-xs [overflow-wrap:anywhere] sm:text-sm"><caption className="mb-3 text-left font-semibold">{t('Secondary: all items pooled (not independent)')}</caption><thead className="border-b border-line text-ink-2"><tr><th className="py-3 pr-3">{t('Group')}</th><th className="px-2 py-3">{t('Phase')}</th><th className="px-2 py-3">{t('Items (n)')}</th><th className="px-2 py-3">{t('By count')}</th><th className="px-2 py-3">{t('By weight')}</th></tr></thead><tbody>{(['with', 'without'] as const).flatMap((arm) => (['before', 'after'] as const).map((phase) => { const r = rate(pilot, arm, phase); return <tr key={`${arm}-${phase}`} className="border-b border-line"><th className="py-3 pr-3 font-medium">{armName(arm)}</th><td className="p-2">{phaseName(phase)}</td><td className="p-2">{r.n || t('No data')}</td><td className="p-2">{r.rate === null ? t('No data') : pct(r.rate)}{r.rate !== null && <span className="block text-xs text-ink-2">{t('{bad} contaminants', { bad: r.bad })}</span>}</td><td className="p-2">{r.weightRate === null ? t('Not weighed') : <>{pct(r.weightRate)}<span className="block text-xs text-ink-2">{t('{bad} / {total} kg', { bad: r.weights!.contaminantKg.toLocaleString(undefined, { maximumFractionDigits: 2 }), total: r.weights!.totalKg.toLocaleString(undefined, { maximumFractionDigits: 2 }) })}</span><span className="block text-xs text-ink-2">{t('{count} of {total} audits weighed', { count: r.weighedAudits, total: r.audits })}</span></>}</td></tr> }))}</tbody></table></div>
+    <div className="overflow-x-auto"><table className="w-full table-fixed text-left text-xs [overflow-wrap:anywhere] sm:text-sm"><caption className="mb-3 text-left font-semibold">{t('Secondary: all items pooled (not independent)')}</caption><thead className="border-b border-line text-ink-2"><tr><th className="py-3 pr-3">{t('Group')}</th><th className="px-2 py-3">{t('Phase')}</th><th className="px-2 py-3">{t('Items (n)')}</th><th className="px-2 py-3">{t('By count')}</th><th className="px-2 py-3">{t('By weight')}</th></tr></thead><tbody>{(['with', 'without'] as const).flatMap((arm) => (['before', 'after'] as const).map((phase) => { const r = rate(pilot, arm, phase); return <tr key={`${arm}-${phase}`} className="border-b border-line"><th className="py-3 pr-3 font-medium">{armName(arm)}</th><td className="p-2">{phaseName(phase)}</td><td className="p-2">{r.n || t('No data')}</td><td className="p-2">{r.rate === null ? t('No data') : pct(r.rate)}{r.rate !== null && <span className="block text-xs text-ink-2">{t('{bad} contaminants', { bad: r.bad })}</span>}</td><td className="p-2">{r.weightRate === null ? t('Not weighed') : <>{pct(r.weightRate)}<span className="block text-xs text-ink-2">{t('{bad} / {total} kg', { bad: formatKg(r.weights!.contaminantKg), total: formatKg(r.weights!.totalKg) })}</span><span className="block text-xs text-ink-2">{t('{count} of {total} audits weighed', { count: r.weighedAudits, total: r.audits })}</span></>}</td></tr> }))}</tbody></table></div>
     <p className="mt-5 text-sm text-ink-2">{t('Pooled item counts are descriptive only. Weight totals cover only weighed audits; the primary interval uses stations as the units.')}</p>
   </article>
 }
