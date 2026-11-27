@@ -396,7 +396,7 @@ export default function Station({ pack, start = 'off', wait = 0, rulesUpdated = 
   const iconButton = 'shrink-0 border-current/30 text-inherit hover:bg-transparent hover:text-inherit hover:opacity-80 focus-visible:ring-current'
 
   return (
-    <div data-phase={phase} role="main" translate="no" style={rootStyle} className="relative isolate flex min-h-dvh w-full min-w-0 flex-col overflow-x-clip [overflow-wrap:anywhere]">
+    <div data-phase={phase} role="main" translate="no" style={rootStyle} className="hud-dots relative isolate flex min-h-dvh w-full min-w-0 flex-col overflow-x-clip [overflow-wrap:anywhere]">
       {rulesUpdated && <RulesUpdateNotice reload={false} />}
       {target && <div key={`${item}-${target.id}`} className="pointer-events-none absolute inset-0 -z-10 animate-flood" style={{ background: targetStyle!.color }} />}
       <h1 className="sr-only">{t('Cleanstream bin station: {city} rules', { city: pack.name })}</h1>
@@ -426,9 +426,10 @@ export default function Station({ pack, start = 'off', wait = 0, rulesUpdated = 
             </p>}
           </>}
           {target && item && rule && <div className="animate-rise">
-            {shot && <img src={shot} alt={t('What the camera saw')} className="mx-auto mb-[2.5vmin] size-[16vmin] min-h-20 min-w-20 rounded-[2.5vmin] object-cover shadow-2xl ring-4 ring-white/50" />}
+            {shot && <img src={shot} alt={t('What the camera saw')} className="mx-auto mb-[2.5vmin] size-[16vmin] min-h-20 min-w-20 rounded-[2.5vmin] object-cover shadow-[0_0_48px_rgba(255,255,255,0.35)] ring-4 ring-white/60" />}
             <p className="text-[max(1.25rem,4vmin)] font-medium">{itemName(item)}</p>
             <StationDestination profile={profile} target={target} prep={rule.prep[0]} />
+            {ans?.sure && <p className="mt-[2vmin] text-[max(0.85rem,1.8vmin)] font-medium tabular-nums text-[#cfe4f6] opacity-90">{t('{p} sure · recognised on this tablet', { p: `${Math.round(ans.bins[0].p * 100)}%` })}</p>}
             {parts.length > 0 && <ul className="mt-[3vmin] flex flex-wrap justify-center gap-3">
               {parts.map((part) => <li key={part.name} className="max-w-72 rounded-2xl border border-current/30 px-4 py-3 text-left">
                 <div className="flex flex-wrap items-center gap-2 text-[max(1rem,2.5vmin)] font-medium"><span>{t('{part}:', { part: partNames[part.name] ?? t(part.name) })}</span><BinChip bin={{ ...part.bin, name: binLabel(part.bin.id) }} /></div>
@@ -468,8 +469,9 @@ export default function Station({ pack, start = 'off', wait = 0, rulesUpdated = 
             {source === 'camera' && <video ref={video} autoPlay playsInline muted aria-label={t('Live camera preview')} className="h-full w-full object-cover" />}
             {source === 'demo' && frame && <img src={frame} alt={t('Example item')} className="h-full w-full object-cover" />}
             {(source === 'off' || (source === 'demo' && !frame)) && <Video className="absolute inset-0 m-auto size-8 text-ink-2" aria-hidden />}
-            <div aria-hidden className={`pointer-events-none absolute border-ink ${phase === 'looking' ? 'inset-[12%] scale-95' : 'inset-[18%]'} transition-all`}>
-              <span className="absolute left-0 top-0 size-5 border-l-2 border-t-2 border-ink" /><span className="absolute right-0 top-0 size-5 border-r-2 border-t-2 border-ink" /><span className="absolute bottom-0 left-0 size-5 border-b-2 border-l-2 border-ink" /><span className="absolute bottom-0 right-0 size-5 border-b-2 border-r-2 border-ink" />
+            {source !== 'off' && <span aria-hidden className={`scanline ${phase === 'looking' ? 'animate-scan-fast' : 'animate-scan'}`} />}
+            <div aria-hidden key={phase} className={`pointer-events-none absolute ${phase === 'looking' ? 'inset-[14%] animate-lock' : 'inset-[18%]'}`}>
+              {['left-0 top-0 border-l-2 border-t-2', 'right-0 top-0 border-r-2 border-t-2', 'bottom-0 left-0 border-b-2 border-l-2', 'bottom-0 right-0 border-b-2 border-r-2'].map((c) => <span key={c} className={`absolute size-5 border-[#8fbbe3] drop-shadow-[0_0_6px_rgba(143,187,227,0.8)] ${c}`} />)}
             </div>
           </div>
           {source !== 'off' && <p className="text-sm text-ink-2">{source === 'demo' ? t('Demo feed: held-out test photos') : t('Hold your item here')}</p>}

@@ -14,9 +14,9 @@ export type Pack = {
   items: Record<string, Rule>
 }
 
-export const PACK_IDS = ['nyc', 'sf', 'la', 'chi', 'sea', 'us', 'wales'] as const
+export const PACK_IDS = ['nyc', 'sf', 'la', 'chi', 'sea', 'us', 'eu', 'wales'] as const
 // Shown in the city picker before the packs arrive, so the header never changes size (the test checks they match)
-export const PACK_NAMES: Record<(typeof PACK_IDS)[number], string> = { nyc: 'New York City', sf: 'San Francisco', la: 'Los Angeles', chi: 'Chicago', sea: 'Seattle', us: 'US (general)', wales: 'Wales (workplaces)' }
+export const PACK_NAMES: Record<(typeof PACK_IDS)[number], string> = { nyc: 'New York City', sf: 'San Francisco', la: 'Los Angeles', chi: 'Chicago', sea: 'Seattle', us: 'US (general)', eu: 'European Union', wales: 'Wales (workplaces)' }
 const cache = new Map<string, Promise<Pack>>()
 
 export function loadPack(id: string): Promise<Pack> {

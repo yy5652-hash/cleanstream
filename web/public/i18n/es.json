@@ -646,7 +646,8 @@
   "Schedule two baseline weeks, then four weeks with tablets in the tablet group.": "Programa dos semanas de referencia y luego cuatro semanas con tabletas en el grupo correspondiente.",
   "Use the same improved signs at every station.": "Usa la misma señalización mejorada en todas las estaciones.",
   "Check recyclables in trash as well as contamination in recycling.": "Comprueba los reciclables en la basura y los contaminantes en el reciclaje.",
-  "The number of stations needed depends on variation in station-level changes, estimated during the baseline weeks.": "El número de estaciones necesario depende de la variación de los cambios entre estaciones, estimada durante las semanas de referencia."
+  "The number of stations needed depends on variation in station-level changes, estimated during the baseline weeks.": "El número de estaciones necesario depende de la variación de los cambios entre estaciones, estimada durante las semanas de referencia.",
+  "{p} sure · recognised on this tablet": "{p} de seguridad · reconocido en esta tableta"
  },
  "cities": {
   "nyc": "Nueva York",
@@ -655,7 +656,8 @@
   "chi": "Chicago",
   "sea": "Seattle",
   "us": "EE. UU. (general)",
-  "wales": "Gales (lugares de trabajo)"
+  "wales": "Gales (lugares de trabajo)",
+  "eu": "Unión Europea"
  },
  "items": {
   "plastic_bottle": {
@@ -3361,6 +3363,289 @@
       "Grandes cantidades: consulta al equipo de jardinería"
      ],
      "why": "Los residuos de jardín no forman parte de los contenedores de reciclaje del trabajo."
+    }
+   }
+  },
+  "eu": {
+   "bins": {
+    "bio": {
+     "name": "Residuos orgánicos",
+     "accepts": "Restos de comida y residuos de jardín"
+    },
+    "paper": {
+     "name": "Papel y cartón",
+     "accepts": "Papel, cartulina y cartón limpios"
+    },
+    "glass": {
+     "name": "Vidrio",
+     "accepts": "Botellas y frascos de vidrio"
+    },
+    "packaging": {
+     "name": "Plástico y metal",
+     "accepts": "Envases de plástico y metal, cartones de bebida"
+    },
+    "textiles": {
+     "name": "Textiles",
+     "accepts": "Ropa, calzado y textiles para el hogar"
+    },
+    "hazardous": {
+     "name": "Pilas y aparatos eléctricos",
+     "accepts": "Pilas, pequeños aparatos eléctricos y otros residuos peligrosos"
+    },
+    "residual": {
+     "name": "Basura general",
+     "accepts": "Cualquier cosa que no vaya en los otros contenedores"
+    }
+   },
+   "items": {
+    "aerosol_can": {
+     "prep": [
+      "Solo cuando esté completamente vacío",
+      "Parcialmente llenos o latas de pintura: recolección de residuos peligrosos"
+     ],
+     "why": "Los aerosoles metálicos vacíos son envases. Las latas parcialmente llenas aún contienen sustancias peligrosas.",
+     "cases": {
+      "empty": {
+       "label": "Completamente vacío",
+       "prep": [
+        "Solo cuando esté completamente vacío"
+       ]
+      },
+      "full": {
+       "label": "Parcialmente lleno, pintura o solvente",
+       "prep": [
+        "Mantén la tapa puesta"
+       ],
+       "match": [
+        "pintura",
+        "solvente",
+        "aerosol de pintura",
+        "medio lleno",
+        "con contenido"
+       ]
+      }
+     }
+    },
+    "aluminum_foil": {
+     "prep": [
+      "Solo papel de aluminio limpio",
+      "Hazlo una bola"
+     ],
+     "why": "El papel de aluminio es un envase metálico. El papel manchado de comida puede ser rechazado en la planta de reciclaje."
+    },
+    "battery": {
+     "prep": [
+      "Cubre los extremos de las pilas de litio y de botón con cinta adhesiva",
+      "Nunca tires las pilas a la basura general"
+     ],
+     "why": "La ley de la UE exige que las pilas se recojan por separado. En la basura general provocan incendios."
+    },
+    "blister_pack": {
+     "prep": [
+      "Sin preparación"
+     ],
+     "why": "El plástico y el aluminio pegados no se pueden separar para reciclar."
+    },
+    "cardboard": {
+     "prep": [
+      "Aplástalo"
+     ],
+     "why": "El papel y el cartón son una de las corrientes separadas que exige la ley de la UE."
+    },
+    "carton": {
+     "prep": [
+      "Vacíalo",
+      "Déjale la tapa puesta"
+     ],
+     "why": "Los cartones de bebida son envases. La mayoría de los países los recogen con el plástico y el metal; consulta las señales locales."
+    },
+    "cigarette_butt": {
+     "prep": [
+      "Asegúrate de que esté bien apagada"
+     ],
+     "why": "Los filtros de cigarrillo contienen plástico y no se pueden reciclar."
+    },
+    "drinking_glass_ceramic": {
+     "prep": [
+      "Envuelve los trozos rotos de forma segura"
+     ],
+     "why": "Los vasos y cerámicas se derriten de forma diferente al vidrio de botellas y arruinan su reciclaje."
+    },
+    "electronics": {
+     "prep": [
+      "Borra los datos personales primero"
+     ],
+     "why": "La ley de la UE exige recoger los residuos eléctricos por separado. Las tiendas deben aceptar gratis los aparatos pequeños."
+    },
+    "foam": {
+     "prep": [
+      "Sin preparación"
+     ],
+     "why": "Pocos países de la UE reciclan la espuma de poliestireno; la basura general es la opción segura."
+    },
+    "food_scraps": {
+     "prep": [
+      "Sin envases"
+     ],
+     "why": "La ley de la UE exige la recolección separada de residuos orgánicos desde finales de 2023."
+    },
+    "glass_bottle_jar": {
+     "prep": [
+      "Vacíalo",
+      "Las tapas van con el plástico y metal"
+     ],
+     "why": "Las botellas y frascos de vidrio son una de las corrientes separadas que exige la ley de la UE."
+    },
+    "mask_gloves": {
+     "prep": [
+      "Sin preparación"
+     ],
+     "why": "Las mascarillas y guantes usados no tienen corriente de reciclaje."
+    },
+    "metal_can": {
+     "prep": [
+      "Vacíala"
+     ],
+     "why": "Los envases metálicos son una de las corrientes separadas que exige la ley de la UE."
+    },
+    "metal_lid_scrap": {
+     "prep": [
+      "Solo tapas y tapones"
+     ],
+     "why": "Las tapas y tapones metálicos son envases. Otros restos de metal van a un centro de reciclaje."
+    },
+    "paper": {
+     "prep": [
+      "Manténlo seco"
+     ],
+     "why": "El papel es una de las corrientes separadas que exige la ley de la UE."
+    },
+    "paper_bag": {
+     "prep": [
+      "Vacíala"
+     ],
+     "why": "Las bolsas de papel limpias van con el papel y el cartón."
+    },
+    "paper_cup": {
+     "prep": [
+      "Vacíalo",
+      "La tapa va con el plástico y metal"
+     ],
+     "why": "El recubrimiento de plástico impide que la mayoría de los países reciclen los vasos de papel, así que la basura general es la opción segura."
+    },
+    "pizza_box": {
+     "prep": [
+      "Raspa los restos de comida hacia los residuos orgánicos"
+     ],
+     "why": "El cartón limpio se recicla; la grasa arruina el reciclaje de papel.",
+     "ask": "¿La caja tiene grasa o comida pegada?",
+     "cases": {
+      "clean": {
+       "label": "Limpia o casi limpia",
+       "prep": [
+        "Raspa los restos de comida hacia los residuos orgánicos"
+       ],
+       "match": [
+        "limpia",
+        "limpio",
+        "sin grasa"
+       ]
+      },
+      "greasy": {
+       "label": "Grasienta o con comida pegada",
+       "prep": [
+        "Raspa los restos de comida hacia los residuos orgánicos"
+       ],
+       "match": [
+        "grasa",
+        "grasienta",
+        "grasosa",
+        "aceitosa",
+        "con comida"
+       ]
+      }
+     }
+    },
+    "plastic_bag_film": {
+     "prep": [
+      "Sin preparación"
+     ],
+     "why": "Muchas plantas de clasificación de la UE no pueden procesar plásticos delgados; la basura general es la opción segura."
+    },
+    "plastic_bottle": {
+     "prep": [
+      "Vacíala",
+      "Déjale la tapa puesta"
+     ],
+     "why": "Los envases de plástico son una de las corrientes separadas que exige la ley de la UE."
+    },
+    "plastic_container": {
+     "prep": [
+      "Vacíalo"
+     ],
+     "why": "Los envases, recipientes y bandejas de plástico son envases."
+    },
+    "plastic_cup": {
+     "prep": [
+      "Vacíalo"
+     ],
+     "why": "Los vasos de plástico limpios son envases en la mayoría de los países de la UE."
+    },
+    "plastic_lid_cap": {
+     "prep": [
+      "Déjala en la botella"
+     ],
+     "why": "Las tapas y tapones son envases de plástico."
+    },
+    "plastic_utensil_straw": {
+     "prep": [
+      "Sin preparación"
+     ],
+     "why": "Los cubiertos y popotes de plástico no son envases y está prohibida su venta en la UE."
+    },
+    "rope_string": {
+     "prep": [
+      "Sin preparación"
+     ],
+     "why": "Las cuerdas y cordeles no tienen corriente de reciclaje."
+    },
+    "shoes": {
+     "prep": [
+      "Ata los pares juntos"
+     ],
+     "why": "El calzado va con los textiles, que la ley de la UE exige recoger por separado desde 2025."
+    },
+    "snack_wrapper": {
+     "prep": [
+      "Sin preparación"
+     ],
+     "why": "Las envolturas de botanas son materiales multicapa que las plantas de clasificación no pueden separar."
+    },
+    "soiled_paper": {
+     "prep": [
+      "Sin preparación"
+     ],
+     "why": "Los pañuelos de papel y las toallas de cocina no se pueden reciclar como papel."
+    },
+    "squeezable_tube": {
+     "prep": [
+      "Exprímelo hasta vaciarlo",
+      "Deja la tapa puesta"
+     ],
+     "why": "Los tubos son envases; consulta las señales locales para tubos con capa de metal."
+    },
+    "textile": {
+     "prep": [
+      "Limpio y seco",
+      "Embolsa los artículos"
+     ],
+     "why": "La ley de la UE exige recoger los textiles por separado desde el 1 de enero de 2025."
+    },
+    "yard_waste": {
+     "prep": [
+      "Sin bolsas de plástico"
+     ],
+     "why": "Los residuos de jardín son residuos orgánicos según la ley de la UE."
     }
    }
   }

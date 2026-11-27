@@ -172,6 +172,7 @@ Right bin under each city's rules (the same model and photos; only the rule pack
 | Chicago | 82.2% | 97.7% | 95.6% | 68.1% | 73.3% | 90.9% |
 | Seattle | 79.6% | 97.9% | 96.1% | 64.4% | 72.3% | 93.2% |
 | US (general) | 84.4% | 97.8% | 95.7% | 67.0% | 74.8% | 95.5% |
+| European Union | 77.1% | 95.8% | — | 48.9% | 64.7% | — |
 | Wales (workplaces) | 75.2% | 96.0% | — | 58.6% | 74.9% | — |
 
 Item type and bin columns use photos with an item label. The material column also counts photos labelled only by material (6,992 for the held-out test and 4,257 for RealWaste). A dash means the set has no labels of that kind.

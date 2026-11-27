@@ -1,0 +1,405 @@
+{
+  "id": "eu",
+  "name": "European Union",
+  "authority": "European Union (Waste Framework Directive)",
+  "checked": "2026-11-27",
+  "sources": [
+    {
+      "label": "Waste Framework Directive 2008/98/EC (as amended)",
+      "url": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    {
+      "label": "European Commission: Waste Framework Directive",
+      "url": "https://environment.ec.europa.eu/topics/waste-and-recycling/waste-framework-directive_en"
+    },
+    {
+      "label": "WEEE Directive 2012/19/EU",
+      "url": "https://eur-lex.europa.eu/eli/dir/2012/19/oj"
+    },
+    {
+      "label": "Batteries Regulation (EU) 2023/1542",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/1542/oj"
+    },
+    {
+      "label": "Single-Use Plastics Directive (EU) 2019/904",
+      "url": "https://eur-lex.europa.eu/eli/dir/2019/904/oj"
+    }
+  ],
+  "bins": [
+    {
+      "id": "bio",
+      "name": "Bio-waste",
+      "accepts": "Food scraps and garden waste",
+      "color": "#7a4a26",
+      "ink": "#ffffff",
+      "kind": "compost"
+    },
+    {
+      "id": "paper",
+      "name": "Paper & cardboard",
+      "accepts": "Clean paper, card and cardboard",
+      "color": "#1f5fbf",
+      "ink": "#ffffff",
+      "kind": "recycle"
+    },
+    {
+      "id": "glass",
+      "name": "Glass",
+      "accepts": "Glass bottles and jars",
+      "color": "#1d7a4c",
+      "ink": "#ffffff",
+      "kind": "recycle"
+    },
+    {
+      "id": "packaging",
+      "name": "Plastic & metal",
+      "accepts": "Plastic and metal packaging, drinks cartons",
+      "color": "#f2c230",
+      "ink": "#2a1d00",
+      "kind": "recycle"
+    },
+    {
+      "id": "textiles",
+      "name": "Textiles",
+      "accepts": "Clothes, shoes and household textiles",
+      "color": "#6f4fa3",
+      "ink": "#ffffff",
+      "kind": "recycle"
+    },
+    {
+      "id": "hazardous",
+      "name": "Batteries & electricals",
+      "accepts": "Batteries, small electricals and other hazardous items",
+      "color": "#c2362b",
+      "ink": "#ffffff",
+      "kind": "recycle"
+    },
+    {
+      "id": "residual",
+      "name": "Residual waste",
+      "accepts": "Anything that can’t go in the other bins",
+      "color": "#2c3134",
+      "ink": "#ffffff",
+      "kind": "landfill"
+    }
+  ],
+  "items": {
+    "aerosol_can": {
+      "bin": "packaging",
+      "prep": [
+        "Only when completely empty",
+        "Part-full or paint sprays: hazardous collection"
+      ],
+      "why": "Empty metal aerosols are packaging. Part-full cans still hold hazardous contents.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj",
+      "cases": [
+        {
+          "id": "empty",
+          "label": "Completely empty",
+          "bin": "packaging",
+          "prep": [
+            "Only when completely empty"
+          ]
+        },
+        {
+          "id": "full",
+          "label": "Part-full, paint or solvent",
+          "bin": "hazardous",
+          "prep": [
+            "Keep the cap on"
+          ],
+          "match": [
+            "paint",
+            "solvent",
+            "part full",
+            "half full"
+          ]
+        }
+      ]
+    },
+    "aluminum_foil": {
+      "bin": "packaging",
+      "prep": [
+        "Clean foil only",
+        "Scrunch it into a ball"
+      ],
+      "why": "Aluminium foil is metal packaging. Food-covered foil can be rejected by sorters.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "battery": {
+      "bin": "hazardous",
+      "prep": [
+        "Tape the ends of lithium and button batteries",
+        "Never put batteries in residual waste"
+      ],
+      "why": "EU law requires batteries to be collected separately. In residual waste they start fires.",
+      "source": "https://eur-lex.europa.eu/eli/reg/2023/1542/oj"
+    },
+    "blister_pack": {
+      "bin": "residual",
+      "prep": [
+        "No prep"
+      ],
+      "why": "Plastic and aluminium bonded together cannot be sorted for recycling.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "cardboard": {
+      "bin": "paper",
+      "prep": [
+        "Flatten it"
+      ],
+      "why": "Paper and cardboard are one of the separate streams EU law requires.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "carton": {
+      "bin": "packaging",
+      "prep": [
+        "Empty it",
+        "Leave the cap on"
+      ],
+      "why": "Drinks cartons are packaging. Most countries collect them with plastic and metal; check local signs.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "cigarette_butt": {
+      "bin": "residual",
+      "prep": [
+        "Make sure it is out"
+      ],
+      "why": "Cigarette filters contain plastic and cannot be recycled.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2019/904/oj"
+    },
+    "drinking_glass_ceramic": {
+      "bin": "residual",
+      "prep": [
+        "Wrap broken pieces safely"
+      ],
+      "why": "Drinking glasses and ceramics melt differently from bottle glass and spoil glass recycling.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "electronics": {
+      "bin": "hazardous",
+      "prep": [
+        "Remove personal data first"
+      ],
+      "why": "EU law requires electrical waste to be collected separately. Shops must take small items back for free.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2012/19/oj"
+    },
+    "foam": {
+      "bin": "residual",
+      "prep": [
+        "No prep"
+      ],
+      "why": "Few EU countries recycle polystyrene foam; residual is the safe default.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "food_scraps": {
+      "bin": "bio",
+      "prep": [
+        "No packaging"
+      ],
+      "why": "EU law has required separate bio-waste collection since the end of 2023.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "glass_bottle_jar": {
+      "bin": "glass",
+      "prep": [
+        "Empty it",
+        "Lids go with plastic and metal"
+      ],
+      "why": "Glass bottles and jars are one of the separate streams EU law requires.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "mask_gloves": {
+      "bin": "residual",
+      "prep": [
+        "No prep"
+      ],
+      "why": "Used masks and gloves have no recycling stream.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "metal_can": {
+      "bin": "packaging",
+      "prep": [
+        "Empty it"
+      ],
+      "why": "Metal packaging is one of the separate streams EU law requires.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "metal_lid_scrap": {
+      "bin": "packaging",
+      "prep": [
+        "Lids and caps only"
+      ],
+      "why": "Metal lids and caps are packaging. Other scrap metal goes to a recycling centre.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "paper": {
+      "bin": "paper",
+      "prep": [
+        "Keep it dry"
+      ],
+      "why": "Paper is one of the separate streams EU law requires.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "paper_bag": {
+      "bin": "paper",
+      "prep": [
+        "Empty it"
+      ],
+      "why": "Clean paper bags go with paper and cardboard.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "paper_cup": {
+      "bin": "residual",
+      "prep": [
+        "Empty it",
+        "Lid goes with plastic and metal"
+      ],
+      "why": "The plastic lining keeps most countries from recycling paper cups, so residual is the safe default.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2019/904/oj"
+    },
+    "pizza_box": {
+      "bin": "paper",
+      "prep": [
+        "Scrape leftover food into bio-waste"
+      ],
+      "why": "Clean cardboard is recycled; grease ruins paper recycling.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj",
+      "ask": "Is the box greasy, or is food stuck to it?",
+      "cases": [
+        {
+          "id": "clean",
+          "label": "Clean or nearly clean",
+          "bin": "paper",
+          "prep": [
+            "Scrape leftover food into bio-waste"
+          ],
+          "match": [
+            "clean"
+          ]
+        },
+        {
+          "id": "greasy",
+          "label": "Greasy, or food stuck to it",
+          "bin": "residual",
+          "prep": [
+            "Scrape leftover food into bio-waste"
+          ],
+          "match": [
+            "greasy",
+            "oily",
+            "grease",
+            "food stuck"
+          ]
+        }
+      ]
+    },
+    "plastic_bag_film": {
+      "bin": "residual",
+      "prep": [
+        "No prep"
+      ],
+      "why": "Many EU sorting plants cannot handle film; residual is the safe default.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "plastic_bottle": {
+      "bin": "packaging",
+      "prep": [
+        "Empty it",
+        "Leave the cap on"
+      ],
+      "why": "Plastic packaging is one of the separate streams EU law requires.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "plastic_container": {
+      "bin": "packaging",
+      "prep": [
+        "Empty it"
+      ],
+      "why": "Plastic pots, tubs and trays are packaging.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "plastic_cup": {
+      "bin": "packaging",
+      "prep": [
+        "Empty it"
+      ],
+      "why": "Clean plastic cups are packaging in most EU countries.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "plastic_lid_cap": {
+      "bin": "packaging",
+      "prep": [
+        "Leave it on the bottle"
+      ],
+      "why": "Caps and lids are plastic packaging.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "plastic_utensil_straw": {
+      "bin": "residual",
+      "prep": [
+        "No prep"
+      ],
+      "why": "Plastic cutlery and straws are not packaging and are banned from sale in the EU.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2019/904/oj"
+    },
+    "rope_string": {
+      "bin": "residual",
+      "prep": [
+        "No prep"
+      ],
+      "why": "String and rope have no recycling stream.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "shoes": {
+      "bin": "textiles",
+      "prep": [
+        "Tie pairs together"
+      ],
+      "why": "Footwear goes with textiles, which EU law has required to be collected separately since 2025.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "snack_wrapper": {
+      "bin": "residual",
+      "prep": [
+        "No prep"
+      ],
+      "why": "Crisp packets are layered materials that sorting plants cannot separate.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "soiled_paper": {
+      "bin": "residual",
+      "prep": [
+        "No prep"
+      ],
+      "why": "Tissues and paper towels cannot be recycled as paper.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "squeezable_tube": {
+      "bin": "packaging",
+      "prep": [
+        "Squeeze it empty",
+        "Cap on"
+      ],
+      "why": "Tubes are packaging; check local signs for tubes with a metal layer.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "textile": {
+      "bin": "textiles",
+      "prep": [
+        "Clean and dry",
+        "Bag it"
+      ],
+      "why": "EU law has required textiles to be collected separately since 1 January 2025.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    },
+    "yard_waste": {
+      "bin": "bio",
+      "prep": [
+        "No plastic bags"
+      ],
+      "why": "Garden waste is bio-waste under EU law.",
+      "source": "https://eur-lex.europa.eu/eli/dir/2008/98/oj"
+    }
+  }
+}

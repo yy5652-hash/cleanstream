@@ -64,7 +64,8 @@ export function StationBins({ pack, profile, target, preview = false }: { pack: 
         gridColumn: split ? `${columnStart} / span 2` : undefined,
         gridRow: split ? (index < top ? 1 : 2) : undefined,
       }}>
-        {lit && <span aria-hidden className="pointer-events-none absolute inset-0 rounded-2xl border-[3px] border-current" />}
+        {lit && <span aria-hidden className="pointer-events-none absolute inset-0 rounded-2xl border-[3px] border-current shadow-[0_0_28px_rgba(255,255,255,0.55),inset_0_0_18px_rgba(255,255,255,0.25)]" />}
+        {lit && !preview && <span aria-hidden className={`pointer-events-none absolute left-1/2 w-[3px] origin-bottom animate-beam rounded-full bg-gradient-to-t from-white via-white/70 to-transparent shadow-[0_0_14px_rgba(255,255,255,0.9)] ${dense ? 'bottom-[calc(100%+var(--station-arrow-size)+0.5rem)] h-[14vh]' : 'bottom-[calc(100%+8vmin)] h-[16vh]'}`} />}
         {lit && <ArrowDown className={`absolute left-1/2 -translate-x-1/2 ${dense ? 'bottom-[calc(100%+0.25rem)] size-(--station-arrow-size)' : '-top-[8vmin] size-[7vmin]'}`} strokeWidth={3} aria-label={t('Use this bin')} />}
         {dense ? <span className="min-w-0 text-balance [overflow-wrap:anywhere]">{bin.label}</span> : bin.label}
       </div>

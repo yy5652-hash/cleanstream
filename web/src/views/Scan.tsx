@@ -138,7 +138,7 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
       <div className={`min-w-0 ${showing ? 'order-first lg:order-none' : ''}`}>
         {busy && !hasAnswer ? (
           <div className="flex min-h-72 flex-col justify-end rounded-3xl bg-well p-6 sm:p-8" role="status">
-            {preview && <img src={preview} alt={t('Item being checked')} className="mb-auto size-20 rounded-2xl object-cover" />}
+            {preview && <div className="relative mb-auto size-28 overflow-hidden rounded-2xl"><img src={preview} alt={t('Item being checked')} className="size-full object-cover" /><span aria-hidden className="scanline animate-scan-fast" />{['left-2 top-2 border-l-2 border-t-2', 'right-2 top-2 border-r-2 border-t-2', 'bottom-2 left-2 border-b-2 border-l-2', 'bottom-2 right-2 border-b-2 border-r-2'].map((c) => <span key={c} aria-hidden className={`absolute size-4 border-[#8fbbe3] ${c}`} />)}</div>}
             <p className="text-title animate-breathe">{t('Looking…')}</p>
             {progress && <p className="mt-1 text-sm text-ink-2">{progress}</p>}
           </div>

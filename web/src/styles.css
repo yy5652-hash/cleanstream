@@ -98,6 +98,25 @@
   @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
   @keyframes breathe { 50% { opacity: 0.45; } }
   @keyframes sheet { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  /* The lens: a scan line sweeps the camera view, the reticle locks on, a beam drops to the bin. */
+  --animate-scan: scan 2.8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  --animate-scan-fast: scan 0.9s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  --animate-lock: lock 700ms var(--ease-out-soft) both;
+  --animate-beam: beam 640ms var(--ease-out-soft) 120ms both;
+  @keyframes scan { 0% { top: -8%; opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+  @keyframes lock { from { inset: 4%; opacity: 0.2; } to { inset: 14%; opacity: 1; } }
+  @keyframes beam { from { transform: translateX(-50%) scaleY(0); opacity: 0; } to { transform: translateX(-50%) scaleY(1); opacity: 1; } }
+}
+
+@layer components {
+  /* Sky-blue instrument lines (Hokusai's sky), used only on the lens and the beam. */
+  .hud-line { --hud: #8fbbe3; }
+  .scanline { position: absolute; left: 0; right: 0; height: 18%; pointer-events: none; background: linear-gradient(180deg, transparent, color-mix(in srgb, #8fbbe3 38%, transparent) 70%, #cfe4f6 92%, transparent); mix-blend-mode: screen; }
+  .hud-dots { background-image: radial-gradient(color-mix(in srgb, currentColor 9%, transparent) 1px, transparent 1.4px); background-size: 28px 28px; }
+  @media (prefers-reduced-motion: reduce) {
+    .scanline { display: none; }
+    .animate-lock, .animate-beam { animation: none !important; }
+  }
 }
 
 @layer base {

@@ -646,7 +646,8 @@
   "Schedule two baseline weeks, then four weeks with tablets in the tablet group.": "安排兩週基線審計，隨後在平板組使用平板四週。",
   "Use the same improved signs at every station.": "所有站點均使用相同的改良標示。",
   "Check recyclables in trash as well as contamination in recycling.": "既要檢查回收桶中的混入物，也要檢查一般垃圾中的可回收物。",
-  "The number of stations needed depends on variation in station-level changes, estimated during the baseline weeks.": "所需站點數量取決於各站點變化的差異程度，基線週用於估計該差異。"
+  "The number of stations needed depends on variation in station-level changes, estimated during the baseline weeks.": "所需站點數量取決於各站點變化的差異程度，基線週用於估計該差異。",
+  "{p} sure · recognised on this tablet": "把握 {p} · 在本平板上辨識"
  },
  "cities": {
   "nyc": "紐約",
@@ -655,7 +656,8 @@
   "chi": "芝加哥",
   "sea": "西雅圖",
   "us": "美國（通用）",
-  "wales": "威爾斯（工作場所）"
+  "wales": "威爾斯（工作場所）",
+  "eu": "歐盟"
  },
  "items": {
   "plastic_bottle": {
@@ -3295,6 +3297,288 @@
       "數量較多：請詢問園藝維護團隊"
      ],
      "why": "庭園垃圾不屬於工作場所的回收類別。"
+    }
+   }
+  },
+  "eu": {
+   "bins": {
+    "bio": {
+     "name": "生物廢棄物桶",
+     "accepts": "廚餘與庭院垃圾"
+    },
+    "paper": {
+     "name": "紙類與紙板桶",
+     "accepts": "乾淨紙張、卡紙與紙板"
+    },
+    "glass": {
+     "name": "玻璃桶",
+     "accepts": "玻璃瓶與玻璃罐"
+    },
+    "packaging": {
+     "name": "塑膠與金屬桶",
+     "accepts": "塑膠與金屬包裝、飲料紙盒"
+    },
+    "textiles": {
+     "name": "舊衣紡織品桶",
+     "accepts": "衣物、鞋子與家居紡織品"
+    },
+    "hazardous": {
+     "name": "電池與電器桶",
+     "accepts": "電池、小型電器與其他有害物品"
+    },
+    "residual": {
+     "name": "一般垃圾桶",
+     "accepts": "無法放入其他回收桶的所有物品"
+    }
+   },
+   "items": {
+    "aerosol_can": {
+     "prep": [
+      "確定完全用完瓶內氣體",
+      "未用完或噴漆罐：送至有害廢棄物收集點"
+     ],
+     "why": "用完的金屬噴霧罐屬於包裝。未用完的噴罐仍含有有害物質。",
+     "cases": {
+      "empty": {
+       "label": "完全用完",
+       "prep": [
+        "確定完全用完瓶內氣體"
+       ]
+      },
+      "full": {
+       "label": "未用完、噴漆或溶劑",
+       "prep": [
+        "蓋緊瓶蓋"
+       ],
+       "match": [
+        "油漆",
+        "噴漆",
+        "溶劑",
+        "沒用完",
+        "剩一半"
+       ]
+      }
+     }
+    },
+    "aluminum_foil": {
+     "prep": [
+      "僅回收乾淨的鋁箔",
+      "揉成球狀"
+     ],
+     "why": "鋁箔屬於金屬包裝。沾有食物的鋁箔可能會被分選廠拒收。"
+    },
+    "battery": {
+     "prep": [
+      "鋰電池與鈕扣電池兩端請貼上膠帶",
+      "切勿放入一般垃圾"
+     ],
+     "why": "歐盟法律規定電池必須單獨回收。放入一般垃圾會引發火災。"
+    },
+    "blister_pack": {
+     "prep": [
+      "無需預先處理"
+     ],
+     "why": "塑膠與鋁箔黏合在一起，無法分選回收。"
+    },
+    "cardboard": {
+     "prep": [
+      "壓扁紙箱"
+     ],
+     "why": "廢紙與紙板是歐盟法律規定的強制分類項目之一。"
+    },
+    "carton": {
+     "prep": [
+      "倒空內容物",
+      "保留瓶蓋"
+     ],
+     "why": "飲料紙盒屬於包裝。多數國家將其與塑膠及金屬一同收集；請確認當地標示。"
+    },
+    "cigarette_butt": {
+     "prep": [
+      "確定已完全熄滅"
+     ],
+     "why": "香菸濾嘴含有塑膠成分，無法回收。"
+    },
+    "drinking_glass_ceramic": {
+     "prep": [
+      "安全包覆碎片"
+     ],
+     "why": "飲用玻璃杯和陶瓷的熔點與瓶罐玻璃不同，會破壞玻璃回收品質。"
+    },
+    "electronics": {
+     "prep": [
+      "先刪除個人資料"
+     ],
+     "why": "歐盟法律規定廢電器必須單獨回收。店家必須免費回收小型舊電器。"
+    },
+    "foam": {
+     "prep": [
+      "無需預先處理"
+     ],
+     "why": "歐盟很少有國家回收保麗龍；放入一般垃圾最安全。"
+    },
+    "food_scraps": {
+     "prep": [
+      "請勿包含包裝"
+     ],
+     "why": "歐盟法律自 2023 年底起強制要求單獨收集生物廢棄物。"
+    },
+    "glass_bottle_jar": {
+     "prep": [
+      "倒空內容物",
+      "瓶蓋與塑膠金屬類一同回收"
+     ],
+     "why": "玻璃瓶罐是歐盟法律規定的強制分類項目之一。"
+    },
+    "mask_gloves": {
+     "prep": [
+      "無需預先處理"
+     ],
+     "why": "用過的口罩和手套沒有回收管道。"
+    },
+    "metal_can": {
+     "prep": [
+      "倒空內容物"
+     ],
+     "why": "金屬包裝是歐盟法律規定的強制分類項目之一。"
+    },
+    "metal_lid_scrap": {
+     "prep": [
+      "僅限瓶蓋與蓋子"
+     ],
+     "why": "金屬瓶蓋與蓋子屬於包裝。其他廢金屬請送至回收中心。"
+    },
+    "paper": {
+     "prep": [
+      "保持乾燥"
+     ],
+     "why": "廢紙是歐盟法律規定的強制分類項目之一。"
+    },
+    "paper_bag": {
+     "prep": [
+      "倒空內容物"
+     ],
+     "why": "乾淨的紙袋可與紙類及紙板一起回收。"
+    },
+    "paper_cup": {
+     "prep": [
+      "倒空內容物",
+      "杯蓋與塑膠金屬類一同回收"
+     ],
+     "why": "紙杯內層的塑膠淋膜使多數國家無法回收，因此丟入一般垃圾最安全。"
+    },
+    "pizza_box": {
+     "prep": [
+      "刮除剩餘食物放入廚餘"
+     ],
+     "why": "乾淨的紙板可以回收；油脂會破壞廢紙回收流程。",
+     "ask": "盒子有油漬或黏著食物嗎？",
+     "cases": {
+      "clean": {
+       "label": "乾淨或幾乎乾淨",
+       "prep": [
+        "刮除剩餘食物放入廚餘"
+       ],
+       "match": [
+        "乾淨",
+        "乾燥",
+        "沒油漬"
+       ]
+      },
+      "greasy": {
+       "label": "油膩或黏有食物",
+       "prep": [
+        "刮除剩餘食物放入廚餘"
+       ],
+       "match": [
+        "油膩",
+        "油漬",
+        "沾有食物",
+        "髒污"
+       ]
+      }
+     }
+    },
+    "plastic_bag_film": {
+     "prep": [
+      "無需預先處理"
+     ],
+     "why": "歐盟許多分選廠無法處理塑膠袋與薄膜；丟入一般垃圾最安全。"
+    },
+    "plastic_bottle": {
+     "prep": [
+      "倒空內容物",
+      "保留瓶蓋"
+     ],
+     "why": "塑膠包裝是歐盟法律規定的強制分類項目之一。"
+    },
+    "plastic_container": {
+     "prep": [
+      "倒空內容物"
+     ],
+     "why": "塑膠杯、盒、罐與托盤均屬於包裝。"
+    },
+    "plastic_cup": {
+     "prep": [
+      "倒空內容物"
+     ],
+     "why": "在多數歐盟國家，乾淨的塑膠杯屬於包裝。"
+    },
+    "plastic_lid_cap": {
+     "prep": [
+      "留著並蓋在瓶子上"
+     ],
+     "why": "瓶蓋與蓋子屬於塑膠包裝。"
+    },
+    "plastic_utensil_straw": {
+     "prep": [
+      "無需預先處理"
+     ],
+     "why": "塑膠餐具和吸管不屬於包裝，且歐盟已全面禁止販售一次性產品。"
+    },
+    "rope_string": {
+     "prep": [
+      "無需預先處理"
+     ],
+     "why": "繩索與細繩沒有回收管道。"
+    },
+    "shoes": {
+     "prep": [
+      "將成雙的鞋子綁在一起"
+     ],
+     "why": "鞋類屬於紡織品，歐盟法律規定自 2025 年起必須單獨收集。"
+    },
+    "snack_wrapper": {
+     "prep": [
+      "無需預先處理"
+     ],
+     "why": "零食包裝袋屬於多層複合材質，分選廠無法分離。"
+    },
+    "soiled_paper": {
+     "prep": [
+      "無需預先處理"
+     ],
+     "why": "面紙與紙巾無法當作廢紙回收。"
+    },
+    "squeezable_tube": {
+     "prep": [
+      "擠空內容物",
+      "蓋上蓋子"
+     ],
+     "why": "軟管屬於包裝；若含有金屬薄層，請確認當地標示。"
+    },
+    "textile": {
+     "prep": [
+      "保持乾淨乾燥",
+      "裝袋"
+     ],
+     "why": "歐盟法律規定自 2025 年 1 月 1 日起紡織品必須單獨收集。"
+    },
+    "yard_waste": {
+     "prep": [
+      "請勿使用塑膠袋"
+     ],
+     "why": "根據歐盟法律，庭院廢棄物屬於生物廢棄物。"
     }
    }
   }
