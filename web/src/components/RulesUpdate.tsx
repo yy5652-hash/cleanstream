@@ -23,7 +23,6 @@ export function useRulesUpdate(packs: Pack[] | null, controlledAtLoad: boolean):
     }
     worker?.addEventListener('controllerchange', controllerChanged)
     worker?.addEventListener('message', message)
-    if (import.meta.env.PROD) void worker?.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {})
     return () => {
       worker?.removeEventListener('controllerchange', controllerChanged)
       worker?.removeEventListener('message', message)
@@ -34,7 +33,6 @@ export function useRulesUpdate(packs: Pack[] | null, controlledAtLoad: boolean):
     let stopped = false
     const controllers = new Set<AbortController>()
     const check = () => {
-      void navigator.serviceWorker?.getRegistration?.().then((registration) => registration?.update()).catch(() => {})
       for (const pack of packs) {
         const controller = new AbortController()
         controllers.add(controller)
@@ -46,9 +44,13 @@ export function useRulesUpdate(packs: Pack[] | null, controlledAtLoad: boolean):
       }
     }
     check()
-    const timer = setInterval(check, 60000)
-    window.addEventListener('focus', check)
-    return () => { stopped = true; clearInterval(timer); controllers.forEach((controller) => controller.abort()); window.removeEventListener('focus', check) }
+    const refresh = () => {
+      void navigator.serviceWorker?.getRegistration?.().then((registration) => registration?.update()).catch(() => {})
+      check()
+    }
+    const timer = setInterval(refresh, 60000)
+    window.addEventListener('focus', refresh)
+    return () => { stopped = true; clearInterval(timer); controllers.forEach((controller) => controller.abort()); window.removeEventListener('focus', refresh) }
   }, [packs])
   return updated
 }

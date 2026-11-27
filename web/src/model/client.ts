@@ -1,111 +1,136 @@
-// Main-thread handle on the model worker: one shared worker, promise per request, load progress for the UI.
-import { useSyncExternalStore } from 'react'
+// One shared worker. Requests include the wait for initialization and photo decoding in their deadline.
+import { useEffect, useSyncExternalStore } from 'react'
+import { readPhoto } from './photo'
 
 export type Prediction = { probs: Float32Array; ms: number }
-export type ModelState = { status: 'idle' | 'loading' | 'ready' | 'error'; loaded: number; total: number; classes: string[]; error?: string }
+export type ModelState = { status: 'idle' | 'loading' | 'ready' | 'error'; loaded: number; total: number; classes: string[] }
+export class ModelError extends Error {
+  readonly code: 'worker' | 'timeout' | 'image'
+  constructor(code: ModelError['code']) {
+    super(code)
+    this.name = 'ModelError'
+    this.code = code
+  }
+}
 
-// On mobile data or with Data Saver on, the 95 MB model waits until someone asks for a photo answer (idle until then).
-// Search needs no model, and a model cached by an earlier visit loads straight away.
+type Timings = { fetchMs: number; sessionMs: number; numThreads: number; prepMs: number; inferMs: number }
+declare global {
+  interface Window { __cleanstreamTimings?: Partial<Timings> }
+}
+
 type Connection = { saveData?: boolean; type?: string; effectiveType?: string }
-const metered = () => {
+function metered() {
   const c = (navigator as Navigator & { connection?: Connection }).connection
   return !!c && (!!c.saveData || c.type === 'cellular' || ['slow-2g', '2g', '3g'].includes(c.effectiveType ?? ''))
 }
 
-let state: ModelState = { status: metered() ? 'idle' : 'loading', loaded: 0, total: 0, classes: [] }
+let state: ModelState = { status: 'idle', loaded: 0, total: 0, classes: [] }
 const listeners = new Set<() => void>()
-const pending = new Map<number, { resolve: (p: Prediction) => void; reject: (e: Error) => void }>()
-let worker: Promise<Worker> | null = null
+const subscribe = (l: () => void) => (listeners.add(l), () => { listeners.delete(l) })
+const pending = new Map<number, { resolve: (p: Prediction) => void; reject: (e: ModelError) => void }>()
+let active: { worker: Worker; ready: Promise<number | undefined>; fail: (error: ModelError) => void } | undefined
 let nextId = 1
+const LOAD_TIMEOUT = 90_000
+const RUN_TIMEOUT = 30_000
 
 function set(patch: Partial<ModelState>) {
   state = { ...state, ...patch }
   listeners.forEach((l) => l())
 }
 
-// In the built app a service worker caches the model the first time it is fetched. Wait (briefly) until it controls
-// the page, so the model worker's downloads go through it and the next visit works offline.
-async function controlled() {
-  if (!import.meta.env.PROD || !('serviceWorker' in navigator)) return
+function start() {
+  if (active) return active
+  set({ status: 'loading', loaded: 0, total: 0, classes: [] })
+  let worker: Worker
   try {
-    await navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`)
-    if (navigator.serviceWorker.controller) return
-    await Promise.race([
-      new Promise((r) => navigator.serviceWorker.addEventListener('controllerchange', r, { once: true })),
-      new Promise((r) => setTimeout(r, 4000)),
-    ])
+    worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' })
   } catch {
-    /* no service worker: everything still works online */
+    set({ status: 'error' })
+    throw new ModelError('worker')
   }
+
+  let resolveReady!: (cropSize?: number) => void
+  let rejectReady!: (error: ModelError) => void
+  const ready = new Promise<number | undefined>((resolve, reject) => { resolveReady = resolve; rejectReady = reject })
+  // A preload may have no classify caller waiting on it yet.
+  void ready.catch(() => {})
+  const instance = { worker, ready, fail }
+  active = instance
+  const initTimer = setTimeout(() => fail(new ModelError('timeout')), LOAD_TIMEOUT)
+  function fail(error: ModelError) {
+    if (active !== instance) return
+    active = undefined
+    clearTimeout(initTimer)
+    worker.terminate()
+    rejectReady(error)
+    for (const request of pending.values()) request.reject(error)
+    pending.clear()
+    set({ status: 'error' })
+  }
+  worker.onerror = worker.onmessageerror = () => fail(new ModelError('worker'))
+  worker.onmessage = ({ data: m }) => {
+    if (active !== instance) return
+    if (m.type === 'progress') set({ loaded: m.loaded, total: m.total })
+    else if (m.type === 'ready') {
+      clearTimeout(initTimer)
+      window.__cleanstreamTimings = { fetchMs: m.fetchMs, sessionMs: m.sessionMs, numThreads: m.numThreads }
+      set({ status: 'ready', classes: m.classes })
+      resolveReady(m.cropSize)
+    } else if (m.type === 'result') {
+      Object.assign(window.__cleanstreamTimings!, { prepMs: m.prepMs, inferMs: m.inferMs })
+      pending.get(m.id)?.resolve({ probs: m.probs, ms: m.ms })
+    } else if (m.type === 'error') fail(new ModelError('worker'))
+  }
+  try {
+    worker.postMessage({ id: 0 })
+  } catch {
+    fail(new ModelError('worker'))
+    throw new ModelError('worker')
+  }
+  return instance
 }
 
-// The service worker adds the headers that allow several threads, but only to pages it serves, so a first visit loads once
-// more through it. This happens as the page opens, never after someone has picked a photo. Once per tab, in case it can't work.
-let ready: Promise<void> | null = null
-const prepare = () =>
-  (ready ??= controlled().then(() => {
-    if (self.crossOriginIsolated || !navigator.serviceWorker?.controller) return
-    try {
-      if (sessionStorage.getItem('cleanstream.isolating')) return
-      sessionStorage.setItem('cleanstream.isolating', '1')
-    } catch {
-      return
-    }
-    location.reload()
-    return new Promise<void>(() => {}) // the page is going away
-  }))
-
-function start(): Promise<Worker> {
-  if (worker) return worker
-  if (state.status === 'idle') set({ status: 'loading' })
-  worker = prepare().then(() => {
-    const w = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' })
-    w.onmessage = onMessage
-    w.postMessage({ id: 0 })
-    return w
-  })
-  return worker
-}
-
-function onMessage(e: MessageEvent) {
-  const m = e.data
-  if (m.type === 'progress') set({ loaded: m.loaded, total: m.total })
-  else if (m.type === 'ready') set({ status: 'ready', classes: m.classes })
-  else if (m.type === 'result') pending.get(m.id)?.resolve({ probs: m.probs, ms: m.ms })
-  else if (m.type === 'error') {
-    if (state.status !== 'ready') set({ status: 'error', error: m.message })
-    pending.get(m.id)?.reject(new Error(m.message))
-  }
-  if (m.id) pending.delete(m.id)
+/** Start or retry a download. Preload errors are published to every subscriber. */
+export function loadModel() {
+  try { start() } catch { /* start has already published the error */ }
 }
 
 let decided = false
 function autoStart() {
-  if (decided) return
+  if (decided || state.status !== 'idle') return
   decided = true
-  void prepare()
-  if (state.status !== 'idle') return void start()
-  if ('caches' in self) caches.match(`${import.meta.env.BASE_URL}model/encoder.onnx`).then((hit) => hit && start(), () => {})
+  if (!metered()) return loadModel()
+  if ('caches' in self) void caches.match(`${import.meta.env.BASE_URL}model/encoder.onnx`)
+    .then((hit) => { if (hit && state.status === 'idle') loadModel() }).catch(() => {})
 }
-
-/** Start the model download now (a button, or the first photo). */
-export const loadModel = () => void start()
 
 export function useModel(): ModelState {
-  autoStart()
-  return useSyncExternalStore(
-    (l) => (listeners.add(l), () => listeners.delete(l)),
-    () => state,
-  )
+  const snapshot = useSyncExternalStore(subscribe, () => state)
+  useEffect(autoStart, [])
+  return snapshot
 }
 
-export async function classify(source: Blob | ImageBitmapSource): Promise<Prediction> {
-  const w = await start()
-  // Ignore embedded ICC profiles like Pillow, and keep the browser's default EXIF orientation.
-  const bitmap = await createImageBitmap(source, { colorSpaceConversion: 'none', premultiplyAlpha: 'none' })
+export async function classify(source: ImageBitmapSource): Promise<Prediction> {
+  const instance = start()
   const id = nextId++
-  return new Promise((resolve, reject) => {
-    pending.set(id, { resolve, reject })
-    w.postMessage({ id, bitmap }, [bitmap])
+  return new Promise<Prediction>((resolve, reject) => {
+    const timer = setTimeout(() => {
+      // A worker can be killed silently under memory pressure. Retire it (and its other requests).
+      instance.fail(new ModelError('timeout'))
+    }, state.status === 'ready' ? RUN_TIMEOUT : LOAD_TIMEOUT)
+    void instance.ready.then(async (cropSize) => {
+      const { data, width, height } = await readPhoto(source, cropSize)
+      if (!pending.has(id)) return
+      try {
+        instance.worker.postMessage({ id, data, width, height }, [data.buffer])
+      } catch {
+        instance.fail(new ModelError('worker'))
+      }
+    }).catch(() => pending.get(id)?.reject(new ModelError('image')))
+    function cleanup() { clearTimeout(timer); pending.delete(id) }
+    pending.set(id, {
+      resolve: (prediction) => { cleanup(); resolve(prediction) },
+      reject: (error) => { cleanup(); reject(error) },
+    })
   })
 }

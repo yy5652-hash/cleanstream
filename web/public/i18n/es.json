@@ -279,6 +279,17 @@
   "Original three sources": "Las tres fuentes originales",
   "Pending": "Pendiente",
   "Photo recognition could not start": "No se pudo iniciar el reconocimiento de fotos",
+  "Could not load the rules": "No se pudieron cargar las reglas",
+  "Check your connection and try again.": "Revisa tu conexión e inténtalo de nuevo.",
+  "Camera access is off": "El acceso a la cámara está desactivado",
+  "Allow camera access for this site in your browser settings, or upload a photo instead. Photos stay on this device.": "Permite el acceso a la cámara para este sitio en los ajustes del navegador o sube una foto. Las fotos se quedan en este dispositivo.",
+  "The camera is in use": "La cámara está en uso",
+  "Close other apps that use the camera and try again, or upload a photo instead.": "Cierra otras apps que usen la cámara e inténtalo de nuevo, o sube una foto.",
+  "Upload a photo instead. Photos stay on this device.": "Sube una foto. Las fotos se quedan en este dispositivo.",
+  "Try again": "Reintentar",
+  "That photo could not be read": "No se pudo leer esa foto",
+  "Try another photo, or type the item instead.": "Prueba con otra foto o escribe el nombre del artículo.",
+  "Check your connection and try again, or type the item instead.": "Revisa tu conexión e inténtalo de nuevo, o escribe el nombre del artículo.",
   "Photograph one item at a time. Check the labels, then see what does not belong.": "Fotografía un artículo a la vez. Revisa las etiquetas y mira qué no va en ese contenedor.",
   "Photograph what you pulled out": "Fotografía lo que sacaste",
   "Photos stay on this device.": "Las fotos se quedan en este dispositivo.",
@@ -643,7 +654,8 @@
   "la": "Los Ángeles",
   "chi": "Chicago",
   "sea": "Seattle",
-  "us": "EE. UU. (general)"
+  "us": "EE. UU. (general)",
+  "wales": "Gales (lugares de trabajo)"
  },
  "items": {
   "plastic_bottle": {
@@ -2977,6 +2989,378 @@
       "No requiere preparación"
      ],
      "why": "No está en la lista de reciclables comunes de EPA."
+    }
+   }
+  },
+  "wales": {
+   "bins": {
+    "food": {
+     "name": "Residuos de comida",
+     "accepts": "Restos de comida, bolsas de té y posos de café. Sin empaques ni bebidas"
+    },
+    "paper": {
+     "name": "Papel y cartón",
+     "accepts": "Papel limpio, cartulina y cartón"
+    },
+    "glass": {
+     "name": "Vidrio",
+     "accepts": "Solo botellas y frascos de vidrio"
+    },
+    "mixed": {
+     "name": "Latas, plástico y cartones",
+     "accepts": "Latas, papel aluminio, botellas, recipientes y bandejas de plástico, cartones de bebida"
+    },
+    "cups": {
+     "name": "Vasos de café",
+     "accepts": "Vasos de papel para bebidas vacíos, sin tapa"
+    },
+    "electricals": {
+     "name": "Aparatos eléctricos pequeños y pilas",
+     "accepts": "Cualquier objeto con enchufe, batería o cable, de 50 cm o más pequeño"
+    },
+    "general": {
+     "name": "Basura general",
+     "accepts": "Cualquier cosa que no pueda ir en los otros contenedores"
+    }
+   },
+   "items": {
+    "aerosol_can": {
+     "prep": [
+      "Solo cuando esté completamente vacío",
+      "Pintura en aerosol o latas parcialmente llenas: consulta al personal"
+     ],
+     "why": "Los aerosoles vacíos de acero y aluminio van con las latas. La pintura en aerosol y las latas parcialmente llenas no."
+    },
+    "aluminum_foil": {
+     "prep": [
+      "Haz una bola con el papel aluminio limpio"
+     ],
+     "why": "El papel aluminio y las bandejas de aluminio para comida se recolectan con las latas."
+    },
+    "battery": {
+     "prep": [
+      "Cubre los extremos de las pilas de litio y de botón con cinta adhesiva",
+      "Nunca tires pilas en la basura general"
+     ],
+     "why": "Las pilas van con los aparatos eléctricos pequeños. Las baterías de litio en la basura general provocan incendios graves."
+    },
+    "blister_pack": {
+     "prep": [
+      "Sin preparación"
+     ],
+     "why": "Los empaques blíster de pastillas no se aceptan con los plásticos."
+    },
+    "cardboard": {
+     "prep": [
+      "Aplástalo",
+      "El cartón grasoso o recubierto de plástico va en la basura general"
+     ],
+     "why": "El papel y el cartón deben recolectarse por separado en todos los lugares de trabajo de Gales."
+    },
+    "carton": {
+     "prep": [
+      "Vacíalo",
+      "Déjale la tapa puesta"
+     ],
+     "why": "Los cartones de bebidas forman parte del grupo de latas, plástico y cartones."
+    },
+    "cigarette_butt": {
+     "prep": [
+      "Asegúrate de que esté bien apagada"
+     ],
+     "why": "Las colillas de cigarrillo no van en ninguno de los contenedores de reciclaje."
+    },
+    "drinking_glass_ceramic": {
+     "prep": [
+      "Envuelve los pedazos rotos de forma segura"
+     ],
+     "why": "Los vasos para beber, la vajilla y la cerámica no entran en el reciclaje de vidrio y van en la basura general."
+    },
+    "electronics": {
+     "prep": [
+      "Elimina los datos personales primero",
+      "Si mide más de 50 cm: consulta al personal"
+     ],
+     "why": "Los aparatos eléctricos pequeños deben recolectarse por separado en los lugares de trabajo de Gales desde abril de 2026."
+    },
+    "foam": {
+     "prep": [
+      "Sin preparación"
+     ],
+     "why": "El poliestireno y los empaques de espuma están excluidos del reciclaje de plástico."
+    },
+    "food_scraps": {
+     "prep": [
+      "Sin empaques",
+      "Vierte las bebidas en un fregadero, no en este contenedor"
+     ],
+     "why": "Los residuos de comida deben recolectarse por separado y ninguno puede tirarse por el drenaje."
+    },
+    "glass_bottle_jar": {
+     "prep": [
+      "Vacíalo",
+      "Las tapas y tapones van con las latas"
+     ],
+     "why": "Solo las botellas y los frascos de vidrio van en el contenedor de vidrio."
+    },
+    "mask_gloves": {
+     "prep": [
+      "Artículos clínicos o de laboratorio: usa el contenedor propio del laboratorio"
+     ],
+     "why": "Las mascarillas y los guantes no tienen contenedor de reciclaje. Los residuos clínicos o peligrosos tienen su propia ruta."
+    },
+    "metal_can": {
+     "prep": [
+      "Vacíala"
+     ],
+     "why": "Las latas de acero y aluminio se recolectan con el plástico y los cartones."
+    },
+    "metal_lid_scrap": {
+     "prep": [
+      "Solo tapas, tapones y corcholatas"
+     ],
+     "why": "Las tapas de metal y corcholatas van con las latas. Los cubiertos, ollas y sartenes son chatarra, no empaques.",
+     "cases": {
+      "lid": {
+       "label": "Tapa, tapón o corcholata",
+       "prep": [
+        "Solo tapas, tapones y corcholatas"
+       ],
+       "match": [
+        "tapa",
+        "tapón",
+        "corcholata",
+        "tapa de botella",
+        "tapa de frasco"
+       ]
+      },
+      "scrap": {
+       "label": "Cubiertos, ollas, sartenes u otra chatarra de metal",
+       "prep": [
+        "Consulta al personal si se recolecta chatarra de metal"
+       ],
+       "match": [
+        "cubiertos",
+        "tenedor",
+        "cuchillo",
+        "cuchara",
+        "olla",
+        "sartén"
+       ]
+      }
+     }
+    },
+    "paper": {
+     "prep": [
+      "Manténlo seco"
+     ],
+     "why": "El papel limpio es un flujo de reciclaje obligatorio. No se aceptan recibos, notas adhesivas ni pañuelos desechables."
+    },
+    "paper_bag": {
+     "prep": [
+      "Vacíala"
+     ],
+     "why": "Las bolsas de papel limpias van con el papel y el cartón. Las grasosas van en la basura general."
+    },
+    "paper_cup": {
+     "prep": [
+      "Vacíalo",
+      "Sin tapa"
+     ],
+     "why": "Los vasos de papel recubiertos de plástico se reciclan como cartones, por lo que esta estación los mantiene separados. No se aceptan vasos etiquetados como compostables.",
+     "cases": {
+      "standard": {
+       "label": "Vaso para llevar común",
+       "prep": [
+        "Vacíalo",
+        "Sin tapa"
+       ]
+      },
+      "compostable": {
+       "label": "Etiquetado como compostable o biodegradable",
+       "prep": [
+        "Sin preparación"
+       ],
+       "match": [
+        "compostable",
+        "biodegradable",
+        "vaso pla"
+       ]
+      }
+     }
+    },
+    "pizza_box": {
+     "prep": [
+      "Raspa los restos de comida al contenedor de residuos de comida"
+     ],
+     "why": "El cartón con comida o grasa no se puede reciclar con el papel.",
+     "ask": "¿La caja está grasosa o tiene comida pegada?",
+     "cases": {
+      "clean": {
+       "label": "Limpia o casi limpia",
+       "prep": [
+        "Raspa los restos de comida al contenedor de residuos de comida"
+       ],
+       "match": [
+        "limpia",
+        "limpio",
+        "casi limpia"
+       ]
+      },
+      "greasy": {
+       "label": "Grasosa o con comida pegada",
+       "prep": [
+        "Raspa los restos de comida al contenedor de residuos de comida",
+        "Arranca la tapa limpia para el papel y cartón"
+       ],
+       "match": [
+        "grasosa",
+        "grasoso",
+        "aceitosa",
+        "con comida"
+       ]
+      }
+     }
+    },
+    "plastic_bag_film": {
+     "prep": [
+      "Sin preparación"
+     ],
+     "why": "Las bolsas de plástico y el plástico film están excluidos del reciclaje de plástico."
+    },
+    "plastic_bottle": {
+     "prep": [
+      "Vacíala",
+      "Déjale la tapa puesta"
+     ],
+     "why": "Se aceptan botellas de plástico, a menos que el plástico sea negro."
+    },
+    "plastic_container": {
+     "prep": [
+      "Vacíalo",
+      "Las tapas de plástico film van en la basura general"
+     ],
+     "why": "Se aceptan recipientes, botes y bandejas de plástico, excepto bandejas negras, espuma y plástico compostable.",
+     "cases": {
+      "accepted": {
+       "label": "Recipiente, bote o bandeja transparente o de color",
+       "prep": [
+        "Vacíalo",
+        "Las tapas de plástico film van en la basura general"
+       ]
+      },
+      "excluded": {
+       "label": "Negro, de espuma o compostable",
+       "prep": [
+        "Sin preparación"
+       ],
+       "match": [
+        "bandeja negra",
+        "plástico negro",
+        "compostable",
+        "biodegradable"
+       ]
+      }
+     }
+    },
+    "plastic_cup": {
+     "prep": [
+      "Vacíalo"
+     ],
+     "why": "Se aceptan vasos de plástico transparente. No se aceptan vasos de espuma ni compostables.",
+     "cases": {
+      "clear": {
+       "label": "Vaso de plástico transparente",
+       "prep": [
+        "Vacíalo"
+       ]
+      },
+      "excluded": {
+       "label": "Espuma, compostable o biodegradable",
+       "prep": [
+        "Sin preparación"
+       ],
+       "match": [
+        "compostable",
+        "biodegradable",
+        "vaso pla",
+        "vaso de unicel"
+       ]
+      }
+     }
+    },
+    "plastic_lid_cap": {
+     "prep": [
+      "Déjala en la botella o ponla suelta"
+     ],
+     "why": "Se aceptan tapas y tapones de plástico rígido. No se aceptan tapas de poliestireno para vasos de café ni tapas de plástico film delgado.",
+     "cases": {
+      "rigid": {
+       "label": "Tapón de botella o tapa de recipiente rígida",
+       "prep": [
+        "Déjala en la botella o ponla suelta"
+       ]
+      },
+      "cup_lid": {
+       "label": "Tapa de vaso de café o tapa de plástico film delgado",
+       "prep": [
+        "Sin preparación"
+       ],
+       "match": [
+        "tapa de café",
+        "tapa de vaso",
+        "tapa film"
+       ]
+      }
+     }
+    },
+    "plastic_utensil_straw": {
+     "prep": [
+      "Sin preparación"
+     ],
+     "why": "Los cubiertos y popotes de plástico no tienen contenedor de reciclaje, y Gales ha prohibido el suministro de la mayoría de ellos."
+    },
+    "rope_string": {
+     "prep": [
+      "Sin preparación"
+     ],
+     "why": "El hilo y la cuerda no van en ninguno de los contenedores de reciclaje."
+    },
+    "shoes": {
+     "prep": [
+      "Pares usables: dónalos en su lugar"
+     ],
+     "why": "Los zapatos no tienen contenedor de reciclaje en el trabajo. Es mejor donar los pares que aún se puedan usar."
+    },
+    "snack_wrapper": {
+     "prep": [
+      "Sin preparación"
+     ],
+     "why": "Bolsas de papas fritas y envolturas de dulces están excluidas del reciclaje de plástico."
+    },
+    "soiled_paper": {
+     "prep": [
+      "Sin preparación"
+     ],
+     "why": "Los pañuelos desechables, toallas de papel y papel grasoso están excluidos del reciclaje de papel."
+    },
+    "squeezable_tube": {
+     "prep": [
+      "Sin preparación"
+     ],
+     "why": "La mayoría de los tubos tienen una capa de metal o plásticos mixtos, que el reciclaje de plástico no puede procesar."
+    },
+    "textile": {
+     "prep": [
+      "Ropa usable: dónala en su lugar"
+     ],
+     "why": "Solo el inventario no vendido tiene contenedor para textiles en el trabajo. Es mejor donar tu ropa personal."
+    },
+    "yard_waste": {
+     "prep": [
+      "Grandes cantidades: consulta al equipo de jardinería"
+     ],
+     "why": "Los residuos de jardín no forman parte de los contenedores de reciclaje del trabajo."
     }
    }
   }

@@ -14,54 +14,67 @@ let prep: Prep | null = null
 async function init() {
   ort.env.wasm.wasmPaths = base + 'ort/'
   ort.env.wasm.numThreads = self.crossOriginIsolated ? Math.min(4, navigator.hardwareConcurrency || 1) : 1
+  const fetchStart = performance.now()
   const [h, p, model] = await Promise.all([
     fetch(base + 'model/head.json').then((r) => r.json() as Promise<Head>),
     fetch(base + 'model/preprocess.json').then((r) => r.json() as Promise<Prep>),
     fetchWithProgress(base + 'model/encoder.onnx'),
   ])
+  const fetchMs = performance.now() - fetchStart
   prep = p
   head = { classes: h.classes, t: h.temperature, dim: h.dim, W: new Float32Array(h.W.flat()), b: new Float32Array(h.b) }
+  const sessionStart = performance.now()
   session = await ort.InferenceSession.create(model, { executionProviders: ['wasm'], graphOptimizationLevel: 'all' })
+  self.postMessage({ type: 'ready', classes: h.classes, cropSize: p.resize === 'shortest' ? p.size : undefined,
+    fetchMs, sessionMs: performance.now() - sessionStart, numThreads: ort.env.wasm.numThreads })
 }
 
 async function fetchWithProgress(url: string): Promise<Uint8Array> {
   const res = await fetch(url)
-  const total = Number(res.headers.get('content-length')) || 0
-  if (!res.body) return new Uint8Array(await res.arrayBuffer())
+  if (!res.ok) throw new Error('Model fetch failed')
+  // Fetch exposes decoded bytes. A compressed response's wire length is not a buffer size.
+  const encoding = res.headers.get('content-encoding')
+  const total = !encoding || encoding === 'identity' ? Number(res.headers.get('content-length')) || 0 : 0
+  const progress = (loaded: number) => self.postMessage({ type: 'progress', loaded, total })
+  if (!res.body) {
+    const bytes = new Uint8Array(await res.arrayBuffer())
+    progress(bytes.length)
+    return bytes
+  }
   const reader = res.body.getReader()
+  const buffer = total ? new Uint8Array(total) : null
   const chunks: Uint8Array[] = []
   let got = 0
+  let reported = 0
   for (;;) {
     const { done, value } = await reader.read()
     if (done) break
-    chunks.push(value)
+    if (buffer) buffer.set(value, got)
+    else chunks.push(value)
     got += value.length
-    if (total) self.postMessage({ type: 'progress', loaded: got, total })
+    if (got - reported >= 262144) {
+      progress(got)
+      reported = got
+    }
+  }
+  progress(got)
+  if (buffer) {
+    if (got !== total) throw new Error('Incomplete model')
+    return buffer
   }
   const out = new Uint8Array(got)
-  let o = 0
-  for (const c of chunks) {
-    out.set(c, o)
-    o += c.length
+  let offset = 0
+  for (const chunk of chunks) {
+    out.set(chunk, offset)
+    offset += chunk.length
   }
   return out
 }
 
-function pixels(bitmap: ImageBitmap): Float32Array {
+function pixels(data: Uint8ClampedArray, width: number, height: number): Float32Array {
   const { size, mean, std, resize } = prep!
-  // The shipped model uses squash. Read native pixels before applying the training resampler.
   const squash = resize === 'squash'
-  const canvas = new OffscreenCanvas(squash ? bitmap.width : size, squash ? bitmap.height : size)
-  const ctx = canvas.getContext('2d')!
-  if (squash) ctx.drawImage(bitmap, 0, 0)
-  else {
-    ctx.imageSmoothingEnabled = true
-    ctx.imageSmoothingQuality = 'high'
-    const s = Math.min(bitmap.width, bitmap.height)
-    ctx.drawImage(bitmap, (bitmap.width - s) / 2, (bitmap.height - s) / 2, s, s, 0, 0, size, size)
-  }
-  const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height)
-  const bytes = squash ? resizeBicubic(data, canvas.width, canvas.height, size, size) : data
+  const bytes = squash ? resizeBicubic(data, width, height, size, size) : data
   const channels = squash ? 3 : 4
   const out = new Float32Array(3 * size * size)
   const plane = size * size
@@ -87,22 +100,19 @@ function classify(embedding: Float32Array): Float32Array {
   return logits
 }
 
-const ready = init()
-
 self.onmessage = async (e: MessageEvent) => {
-  const { id, bitmap } = e.data as { id: number; bitmap?: ImageBitmap }
+  const { id, data, width, height } = e.data
   try {
-    await ready
-    if (!bitmap) return self.postMessage({ type: 'ready', id, classes: head!.classes })
+    if (id === 0) return await init()
     const t0 = performance.now()
     const size = prep!.size
-    const input = new ort.Tensor('float32', pixels(bitmap), [1, 3, size, size])
-    bitmap.close()
+    const input = new ort.Tensor('float32', pixels(data, width, height), [1, 3, size, size])
+    const inferStart = performance.now()
     const out = await session!.run({ pixels: input })
-    const emb = out.embedding.data as Float32Array
-    const probs = classify(emb)
-    self.postMessage({ type: 'result', id, probs, ms: performance.now() - t0 }, [probs.buffer])
-  } catch (err) {
-    self.postMessage({ type: 'error', id, message: String(err) })
+    const inferMs = performance.now() - inferStart
+    const probs = classify(out.embedding.data as Float32Array)
+    self.postMessage({ type: 'result', id, probs, ms: performance.now() - t0, prepMs: inferStart - t0, inferMs }, [probs.buffer])
+  } catch {
+    self.postMessage({ type: 'error', id })
   }
 }

@@ -29,6 +29,18 @@ beforeEach(() => {
 afterEach(() => vi.unstubAllGlobals())
 
 describe('physical station bins', () => {
+  it('renders all seven labels and marks the selected physical bin', () => {
+    const labels = ['Food', 'Paper & card', 'Glass', 'Cans, plastic & cartons', 'Coffee cups', 'Batteries & small electricals', 'General waste']
+    const bins = labels.map((name, index) => ({ ...pack.bins[0], id: `bin-${index}`, name }))
+    const sevenBinPack = { ...pack, bins }
+    const profile = profileFromBins(sevenBinPack, bins.map((bin) => bin.id))
+    const strip = renderToStaticMarkup(<StationBins pack={sevenBinPack} profile={profile} target={bins[5]} />)
+    for (const label of labels) expect(strip).toContain(`>${label.replaceAll('&', '&amp;')}</span>`)
+    expect(strip).toContain('data-physical-bin="bin-5" data-active="true"')
+    expect(strip.match(/data-active="true"/g)).toHaveLength(1)
+    expect(strip.match(/aria-label="Use this bin"/g)).toHaveLength(1)
+  })
+
   it.each(['paper', 'metal_can'])('lights and points at Recycling for a %s answer', (item) => {
     const result = answer(pack, [item], new Float32Array([1]))
     expect(result.sure).toBe(true)

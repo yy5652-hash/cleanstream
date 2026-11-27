@@ -484,7 +484,7 @@ export default function Station({ pack, start = 'off', wait = 0, rulesUpdated = 
         </div>
       </div>
 
-      <div className="mt-auto px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-[8vmin] sm:px-4">
+      <div className="mt-auto px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:px-4">
         <StationBins pack={pack} profile={profile} target={target} />
         {!profile.bins.length && <p className="text-center">{t('Hold the settings button for 2 seconds to choose bins.')}</p>}
       </div>

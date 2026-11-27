@@ -2,7 +2,8 @@ import { ArrowDown, ArrowUp, GripVertical } from 'lucide-react'
 import { useId, useRef, useState } from 'react'
 import { t } from '../i18n'
 import type { Pack } from '../rules'
-import { mergePhysicalBins, moveBin, physicalBinStyle, profileFromBins, splitPhysicalBin, type StationProfile } from '../station-config'
+import { mergePhysicalBins, moveBin, profileFromBins, splitPhysicalBin, type StationProfile } from '../station-config'
+import { StationBins } from './StationBins'
 import { Button } from './ui/button'
 
 const field = 'min-h-11 w-full rounded-xl border border-line bg-card px-3'
@@ -64,10 +65,7 @@ export function StationProfileEditor({ pack, profile, onChange }: { pack: Pack; 
     <p role="status" className="sr-only">{announcement}</p>
     {unused.length > 0 && <label className="block">{t('Add a city bin')}<select className={field} value="" onChange={(e) => { if (e.target.value) onChange({ ...profile, bins: [...profile.bins, ...profileFromBins(pack, [e.target.value]).bins] }) }}><option value="">{t('Choose a stream')}</option>{unused.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}</select></label>}
     <p className="text-sm text-ink-2">{t('Your bins, left to right')}</p>
-    {profile.bins.length ? <div className="grid gap-1 overflow-hidden rounded-2xl" style={{ gridTemplateColumns: `repeat(${ids.length}, minmax(0, 1fr))` }}>{profile.bins.map((b) => {
-      const style = physicalBinStyle(pack, b)
-      return <div key={b.id} className="min-w-0 break-words px-1 py-5 text-center text-sm font-semibold" style={{ background: style.color, color: style.ink }}>{b.label}</div>
-    })}</div> : <p>{t('Choose at least one bin to continue.')}</p>}
+    {profile.bins.length ? <StationBins pack={pack} profile={profile} target={null} preview /> : <p>{t('Choose at least one bin to continue.')}</p>}
     <label className="block text-sm">{t('Note for streams not at this station (optional)')}<textarea className={`${field} py-3`} maxLength={300} value={profile.note ?? ''} onChange={(e) => onChange({ ...profile, note: e.target.value })} /></label>
     <details className="text-sm"><summary className="min-h-11 cursor-pointer py-3">{t('Profile approval (optional)')}</summary><div className="space-y-3">
       <label className="block">{t('Approved by')}<input className={field} maxLength={160} value={profile.approvedBy ?? ''} onChange={(e) => onChange({ ...profile, approvedBy: e.target.value })} /></label>

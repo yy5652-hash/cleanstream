@@ -1,0 +1,209 @@
+{
+  "id": "wales",
+  "name": "Wales (workplaces)",
+  "authority": "Welsh Government",
+  "checked": "2026-11-27",
+  "sources": [
+    { "label": "Welsh Government: Workplace recycling code of practice (v2, April 2026)", "url": "https://www.gov.wales/separate-collection-waste-materials-recycling-code-practice" },
+    { "label": "Welsh Government: Separated waste collections for workplaces", "url": "https://www.gov.wales/separated-waste-collections-workplaces" },
+    { "label": "Welsh Government: Workplace recycling guide", "url": "https://www.gov.wales/workplace-recycling" },
+    { "label": "Welsh Government: Guide for educational settings and universities", "url": "https://www.gov.wales/workplace-recycling-regulations-guide-educational-settings-and-universities" },
+    { "label": "Natural Resources Wales: Separating your waste for collection", "url": "https://naturalresources.wales/guidance-and-advice/environmental-topics/waste-management/workplace-recycling-separating-your-waste-for-collection/?lang=en" }
+  ],
+  "bins": [
+    { "id": "food", "name": "Food waste", "accepts": "Food scraps, tea bags and coffee grounds. No packaging or drinks", "color": "#7a4a26", "ink": "#ffffff", "kind": "compost" },
+    { "id": "paper", "name": "Paper & card", "accepts": "Clean paper, card and cardboard", "color": "#1f5fbf", "ink": "#ffffff", "kind": "recycle" },
+    { "id": "glass", "name": "Glass", "accepts": "Glass bottles and jars only", "color": "#1d7a4c", "ink": "#ffffff", "kind": "recycle" },
+    { "id": "mixed", "name": "Cans, plastic & cartons", "accepts": "Cans, foil, plastic bottles, pots and trays, drinks cartons", "color": "#f2c230", "ink": "#2a1d00", "kind": "recycle" },
+    { "id": "cups", "name": "Coffee cups", "accepts": "Empty paper drinks cups, lids off", "color": "#6f4fa3", "ink": "#ffffff", "kind": "recycle" },
+    { "id": "electricals", "name": "Small electricals & batteries", "accepts": "Anything with a plug, battery or cable, 50 cm or smaller", "color": "#c2362b", "ink": "#ffffff", "kind": "recycle" },
+    { "id": "general", "name": "General waste", "accepts": "Anything that can't go in the other bins", "color": "#2c3134", "ink": "#ffffff", "kind": "landfill" }
+  ],
+  "items": {
+    "aerosol_can": {
+      "bin": "mixed", "prep": ["Only when completely empty", "Spray paint or part-full cans: ask staff"],
+      "why": "Empty steel and aluminium aerosols go with cans. Spray paint and part-full cans don't.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf"
+    },
+    "aluminum_foil": {
+      "bin": "mixed", "prep": ["Scrunch clean foil into a ball"],
+      "why": "Aluminium foil and foil food trays are collected with cans.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf"
+    },
+    "battery": {
+      "bin": "electricals", "prep": ["Tape the ends of lithium and button batteries", "Never put batteries in general waste"],
+      "why": "Batteries go with small electricals. Lithium batteries in general waste start serious fires.",
+      "source": "https://www.gov.wales/workplace-recycling"
+    },
+    "blister_pack": {
+      "bin": "general", "prep": ["No prep"],
+      "why": "Blister packs for tablets are listed as not accepted with plastics.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf"
+    },
+    "cardboard": {
+      "bin": "paper", "prep": ["Flatten it", "Greasy or plastic-coated card goes in general waste"],
+      "why": "Paper and card must be collected separately in every Welsh workplace.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf"
+    },
+    "carton": {
+      "bin": "mixed", "prep": ["Empty it", "Leave the cap on"],
+      "why": "Drinks cartons are part of the cans, plastic and cartons stream.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf"
+    },
+    "cigarette_butt": {
+      "bin": "general", "prep": ["Make sure it is out"],
+      "why": "Cigarette ends don't belong in any of the recycling streams.",
+      "source": "https://www.gov.wales/separated-waste-collections-workplaces"
+    },
+    "drinking_glass_ceramic": {
+      "bin": "general", "prep": ["Wrap broken pieces safely"],
+      "why": "Drinking glasses, crockery and ceramics are excluded from glass recycling and go in general waste.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf"
+    },
+    "electronics": {
+      "bin": "electricals", "prep": ["Remove personal data first", "Bigger than 50 cm: ask staff"],
+      "why": "Small electricals have had to be collected separately in Welsh workplaces since April 2026.",
+      "source": "https://www.gov.wales/workplace-recycling"
+    },
+    "foam": {
+      "bin": "general", "prep": ["No prep"],
+      "why": "Polystyrene and foam packaging are excluded from plastic recycling.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf"
+    },
+    "food_scraps": {
+      "bin": "food", "prep": ["No packaging", "Pour drinks into a sink, not this bin"],
+      "why": "Food waste must be collected separately, and none of it may go down the drain.",
+      "source": "https://www.gov.wales/workplace-recycling-regulations-guide-educational-settings-and-universities"
+    },
+    "glass_bottle_jar": {
+      "bin": "glass", "prep": ["Empty it", "Lids and caps go with cans"],
+      "why": "Only glass bottles and jars go in the glass stream.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf"
+    },
+    "mask_gloves": {
+      "bin": "general", "prep": ["Lab or clinical items: use the lab's own bin"],
+      "why": "Masks and gloves have no recycling stream. Clinical or hazardous waste has its own route.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf"
+    },
+    "metal_can": {
+      "bin": "mixed", "prep": ["Empty it"],
+      "why": "Steel and aluminium tins and cans are collected with plastic and cartons.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf"
+    },
+    "metal_lid_scrap": {
+      "bin": "mixed", "prep": ["Lids, caps and bottle tops only"],
+      "why": "Metal lids and bottle tops go with cans. Cutlery, pots and pans are scrap metal, not packaging.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf",
+      "cases": [
+        { "id": "lid", "label": "Lid, cap or bottle top", "bin": "mixed", "prep": ["Lids, caps and bottle tops only"], "match": ["lid", "cap", "bottle top", "jar lid"] },
+        { "id": "scrap", "label": "Cutlery, pots, pans or other scrap metal", "bin": "general", "prep": ["Ask staff whether scrap metal is collected"], "match": ["cutlery", "fork", "knife", "spoon", "pot", "pan", "scrap metal"] }
+      ]
+    },
+    "paper": {
+      "bin": "paper", "prep": ["Keep it dry"],
+      "why": "Clean paper is a required recycling stream. Receipts, sticky notes and tissues are not accepted.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf"
+    },
+    "paper_bag": {
+      "bin": "paper", "prep": ["Empty it"],
+      "why": "Clean paper bags go with paper and card. Greasy ones go in general waste.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf"
+    },
+    "paper_cup": {
+      "bin": "cups", "prep": ["Empty it", "Lid off"],
+      "why": "Plastic-lined paper cups are recycled like cartons, so this station keeps them apart. Cups marked compostable are not accepted.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf",
+      "cases": [
+        { "id": "standard", "label": "Ordinary takeaway cup", "bin": "cups", "prep": ["Empty it", "Lid off"] },
+        { "id": "compostable", "label": "Marked compostable or biodegradable", "bin": "general", "prep": ["No prep"], "match": ["compostable", "biodegradable", "pla cup"] }
+      ]
+    },
+    "pizza_box": {
+      "bin": "paper", "prep": ["Scrape leftover food into food waste"],
+      "why": "Card with food or grease on it can't be recycled with paper.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf",
+      "ask": "Is the box greasy, or is food stuck to it?",
+      "cases": [
+        { "id": "clean", "label": "Clean or nearly clean", "bin": "paper", "prep": ["Scrape leftover food into food waste"], "match": ["clean"] },
+        { "id": "greasy", "label": "Greasy, or food stuck to it", "bin": "general", "prep": ["Scrape leftover food into food waste", "Tear off a clean lid for paper and card"], "match": ["greasy", "oily", "grease", "food stuck"] }
+      ]
+    },
+    "plastic_bag_film": {
+      "bin": "general", "prep": ["No prep"],
+      "why": "Plastic bags and film are excluded from plastic recycling.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf"
+    },
+    "plastic_bottle": {
+      "bin": "mixed", "prep": ["Empty it", "Leave the lid on"],
+      "why": "Plastic bottles are accepted, unless the plastic is black.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf"
+    },
+    "plastic_container": {
+      "bin": "mixed", "prep": ["Empty it", "Film lids go in general waste"],
+      "why": "Plastic pots, tubs and trays are accepted, except black trays, foam and compostable plastic.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf",
+      "cases": [
+        { "id": "accepted", "label": "Clear or coloured pot, tub or tray", "bin": "mixed", "prep": ["Empty it", "Film lids go in general waste"] },
+        { "id": "excluded", "label": "Black, foam or compostable", "bin": "general", "prep": ["No prep"], "match": ["black tray", "black plastic", "compostable", "biodegradable"] }
+      ]
+    },
+    "plastic_cup": {
+      "bin": "mixed", "prep": ["Empty it"],
+      "why": "Clear plastic cups are accepted. Foam and compostable cups are not.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf",
+      "cases": [
+        { "id": "clear", "label": "Clear plastic cup", "bin": "mixed", "prep": ["Empty it"] },
+        { "id": "excluded", "label": "Foam, compostable or biodegradable", "bin": "general", "prep": ["No prep"], "match": ["compostable", "biodegradable", "pla cup", "foam cup"] }
+      ]
+    },
+    "plastic_lid_cap": {
+      "bin": "mixed", "prep": ["Leave it on the bottle, or put it in loose"],
+      "why": "Rigid plastic lids and caps are accepted. Polystyrene drinks-cup lids and thin film lids are not.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf",
+      "cases": [
+        { "id": "rigid", "label": "Rigid bottle cap or tub lid", "bin": "mixed", "prep": ["Leave it on the bottle, or put it in loose"] },
+        { "id": "cup_lid", "label": "Coffee-cup lid or thin film lid", "bin": "general", "prep": ["No prep"], "match": ["coffee lid", "cup lid", "film lid"] }
+      ]
+    },
+    "plastic_utensil_straw": {
+      "bin": "general", "prep": ["No prep"],
+      "why": "Plastic cutlery and straws have no recycling stream, and Wales has banned supplying most of them.",
+      "source": "https://www.gov.wales/workplace-recycling-regulations-guide-educational-settings-and-universities"
+    },
+    "rope_string": {
+      "bin": "general", "prep": ["No prep"],
+      "why": "String and rope don't belong in any of the recycling streams.",
+      "source": "https://www.gov.wales/separated-waste-collections-workplaces"
+    },
+    "shoes": {
+      "bin": "general", "prep": ["Wearable pairs: donate them instead"],
+      "why": "Shoes have no workplace recycling stream. Wearable pairs are better donated.",
+      "source": "https://www.gov.wales/separated-waste-collections-workplaces"
+    },
+    "snack_wrapper": {
+      "bin": "general", "prep": ["No prep"],
+      "why": "Crisp packets and sweet wrappers are excluded from plastic recycling.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf"
+    },
+    "soiled_paper": {
+      "bin": "general", "prep": ["No prep"],
+      "why": "Tissues, paper towels and greasy paper are excluded from paper recycling.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf"
+    },
+    "squeezable_tube": {
+      "bin": "general", "prep": ["No prep"],
+      "why": "Most tubes have a metal layer or mixed plastics, which plastic recycling can't take.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf"
+    },
+    "textile": {
+      "bin": "general", "prep": ["Wearable clothes: donate them instead"],
+      "why": "Only unsold stock has a textile stream at work. Clothes you own are better donated.",
+      "source": "https://www.gov.wales/sites/default/files/publications/2026-03/separate-collection-of-waste-materials-for-recycling-a-code-of-practice-for-wales-v2_0.pdf"
+    },
+    "yard_waste": {
+      "bin": "general", "prep": ["Large amounts: ask the grounds team"],
+      "why": "Garden waste isn't one of the workplace recycling streams.",
+      "source": "https://www.gov.wales/separated-waste-collections-workplaces"
+    }
+  }
+}

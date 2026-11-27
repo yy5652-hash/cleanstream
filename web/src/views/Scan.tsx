@@ -4,7 +4,7 @@ import { Answer } from '../components/Answer'
 import { ItemSearch } from '../components/Search'
 import { t } from '../i18n'
 import { itemName } from '../items'
-import { classify, loadModel, useModel } from '../model/client'
+import { classify, loadModel, ModelError, useModel } from '../model/client'
 import { answer, type Pack } from '../rules'
 import { stationDemoUrl } from '../station-links'
 import { linkedAnswer, sampleUrl, thumbUrl, useSamples, type Sample } from '../ui'
@@ -20,7 +20,9 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
   const [probs, setProbs] = useState<Float32Array | null>(null)
   const [ms, setMs] = useState(0)
   const [busy, setBusy] = useState(false)
-  const [failed, setFailed] = useState(false)
+  // 'model': recognition could not load or run here; 'photo': this photo could not be read.
+  const [failed, setFailed] = useState<false | 'model' | 'photo'>(false)
+  const lastPhoto = useRef<Blob | null>(null)
   const [camera, setCamera] = useState(false)
   const [over, setOver] = useState(false)
   const [picked, setPicked] = useState<string | null>(null)
@@ -63,12 +65,13 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
     history.replaceState(null, '', '#scan')
     setBusy(true)
     reveal()
+    lastPhoto.current = blob
     try {
       const r = await classify(blob)
       setProbs(r.probs)
       setMs(r.ms)
-    } catch {
-      setFailed(true)
+    } catch (e) {
+      setFailed(e instanceof ModelError && e.code === 'image' ? 'photo' : 'model')
     } finally {
       setBusy(false)
       reveal()
@@ -141,8 +144,9 @@ export default function Scan({ pack, packs }: { pack: Pack; packs: Pack[] }) {
           </div>
         ) : failed && !hasAnswer ? (
           <div className="rounded-3xl bg-well p-6 sm:p-8" role="alert">
-            <p className="text-title">{t('Photo recognition could not start')}</p>
-            <p className="mt-1.5 text-ink-2">{model.status === 'error' ? t('The model could not load: {error}', { error: String(model.error) }) : t('Try again, or type the item instead.')}</p>
+            <p className="text-title">{failed === 'photo' ? t('That photo could not be read') : t('Photo recognition could not start')}</p>
+            <p className="mt-1.5 text-ink-2">{failed === 'photo' ? t('Try another photo, or type the item instead.') : t('Check your connection and try again, or type the item instead.')}</p>
+            {failed === 'model' && lastPhoto.current && <button onClick={() => { const photo = lastPhoto.current; if (photo) (loadModel(), onImage(photo)) }} className="mt-4 inline-flex min-h-11 items-center rounded-2xl bg-primary px-5 font-semibold text-primary-foreground hover:bg-primary/90">{t('Try again')}</button>}
           </div>
         ) : hasAnswer ? (
           <Answer key={`${pack.id}-${chosen}-${query}-${preview}-${caseId}`} caseId={caseId} query={query} ans={ans} ms={ms} pack={pack} packs={packs} item={chosen} preview={fromSearch ? null : preview} onChoose={(id, query = '') => (setChosen(id), setCaseId(undefined), setQuery(query))} />

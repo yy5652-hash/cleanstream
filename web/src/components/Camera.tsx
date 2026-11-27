@@ -4,27 +4,49 @@ import { ImageUp, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { t } from '../i18n'
 
+export type CameraFailure = 'denied' | 'none' | 'busy'
+
+/** Map a getUserMedia rejection to what the person can do about it. */
+export function cameraFailure(error: unknown): CameraFailure {
+  const name = error instanceof DOMException || error instanceof Error ? error.name : ''
+  if (name === 'NotAllowedError' || name === 'SecurityError' || name === 'PermissionDeniedError') return 'denied'
+  if (name === 'NotReadableError' || name === 'TrackStartError' || name === 'AbortError') return 'busy'
+  return 'none'
+}
+
 export function CameraSheet({ open, onClose, onImage, onUpload, status }: { open: boolean; onClose: () => void; onImage: (b: Blob) => void; onUpload: () => void; status?: string }) {
   const video = useRef<HTMLVideoElement>(null)
-  const [failed, setFailed] = useState(false)
+  const [failed, setFailed] = useState<false | CameraFailure>(false)
+  const [stream, setStream] = useState<MediaStream | null>(null)
+  const [live, setLive] = useState(false)
 
   useEffect(() => {
     if (!open) return
     setFailed(false)
-    let stream: MediaStream | null = null
+    setLive(false)
+    let got: MediaStream | null = null
     let gone = false
     const start = navigator.mediaDevices?.getUserMedia?.({ video: { facingMode: 'environment', width: { ideal: 1280 } } })
-    if (!start) return setFailed(true)
+    if (!start) return setFailed('none')
     start.then((s) => {
       if (gone) return s.getTracks().forEach((tr) => tr.stop())
-      stream = s
-      if (video.current) video.current.srcObject = s
-    }).catch(() => setFailed(true))
+      got = s
+      setStream(s)
+    }).catch((e) => setFailed(cameraFailure(e)))
     return () => {
       gone = true
-      stream?.getTracks().forEach((tr) => tr.stop())
+      got?.getTracks().forEach((tr) => tr.stop())
+      setStream(null)
     }
   }, [open])
+
+  // Attach once both the stream and the element exist; iOS needs an explicit play().
+  useEffect(() => {
+    const v = video.current
+    if (!v || !stream) return
+    v.srcObject = stream
+    void v.play().catch(() => {})
+  }, [stream, failed])
 
   const snap = () => {
     const v = video.current
@@ -45,19 +67,19 @@ export function CameraSheet({ open, onClose, onImage, onUpload, status }: { open
             {failed ? (
               <div className="grid h-full place-items-center p-8 text-center">
                 <div className="max-w-sm">
-                  <p className="text-2xl font-semibold tracking-tight">{t('No camera available')}</p>
-                  <p className="mt-2 text-white/75">{t('Allow camera access in your browser, or upload a photo instead. Photos stay on this device.')}</p>
+                  <p className="text-2xl font-semibold tracking-tight">{failed === 'denied' ? t('Camera access is off') : failed === 'busy' ? t('The camera is in use') : t('No camera available')}</p>
+                  <p className="mt-2 text-white/75">{failed === 'denied' ? t('Allow camera access for this site in your browser settings, or upload a photo instead. Photos stay on this device.') : failed === 'busy' ? t('Close other apps that use the camera and try again, or upload a photo instead.') : t('Upload a photo instead. Photos stay on this device.')}</p>
                 </div>
               </div>
             ) : (
-              <video ref={video} autoPlay playsInline muted className="absolute inset-0 size-full object-cover" />
+              <video ref={video} autoPlay playsInline muted onLoadedMetadata={() => setLive(true)} className="absolute inset-0 size-full object-cover" />
             )}
             <Dialog.Close aria-label={t('Close')} className="absolute right-4 top-[max(1rem,env(safe-area-inset-top))] grid size-11 place-items-center rounded-full bg-black/55 text-white"><X className="size-5" aria-hidden /></Dialog.Close>
             {status && <p className="absolute inset-x-0 bottom-4 mx-auto w-fit max-w-[90%] rounded-full bg-black/60 px-4 py-2 text-center text-sm text-white">{status}</p>}
           </div>
           <div className="grid grid-cols-3 items-center px-6 py-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
             <button onClick={onUpload} className="flex w-fit items-center gap-2 rounded-full px-1 py-2 text-[15px] text-white"><ImageUp className="size-5" aria-hidden />{t('Upload')}</button>
-            {!failed && <button onClick={snap} aria-label={t('Capture')} className="mx-auto size-[4.5rem] rounded-full border-4 border-white p-1 active:scale-95"><span className="block size-full rounded-full bg-white" /></button>}
+            {!failed && <button onClick={snap} disabled={!live} aria-label={t('Capture')} className="mx-auto size-[4.5rem] rounded-full border-4 border-white p-1 active:scale-95 disabled:opacity-40"><span className="block size-full rounded-full bg-white" /></button>}
           </div>
         </Dialog.Content>
       </Dialog.Portal>

@@ -14,30 +14,42 @@ export type Pack = {
   items: Record<string, Rule>
 }
 
-export const PACK_IDS = ['nyc', 'sf', 'la', 'chi', 'sea', 'us'] as const
+export const PACK_IDS = ['nyc', 'sf', 'la', 'chi', 'sea', 'us', 'wales'] as const
 // Shown in the city picker before the packs arrive, so the header never changes size (the test checks they match)
-export const PACK_NAMES: Record<(typeof PACK_IDS)[number], string> = { nyc: 'New York City', sf: 'San Francisco', la: 'Los Angeles', chi: 'Chicago', sea: 'Seattle', us: 'US (general)' }
+export const PACK_NAMES: Record<(typeof PACK_IDS)[number], string> = { nyc: 'New York City', sf: 'San Francisco', la: 'Los Angeles', chi: 'Chicago', sea: 'Seattle', us: 'US (general)', wales: 'Wales (workplaces)' }
 const cache = new Map<string, Promise<Pack>>()
 
 export function loadPack(id: string): Promise<Pack> {
-  if (!cache.has(id)) cache.set(id, fetch(`${import.meta.env.BASE_URL}rules/${id}.json`).then((r) => r.json()))
+  if (!cache.has(id)) {
+    const pack = fetch(`${import.meta.env.BASE_URL}rules/${id}.json`).then((r) => {
+      if (!r.ok) throw new Error(`rules/${id}.json: ${r.status}`)
+      return r.json() as Promise<Pack>
+    })
+    // A failed fetch must not stay cached, so Retry fetches again.
+    pack.catch(() => cache.delete(id))
+    cache.set(id, pack)
+  }
   return cache.get(id)!
 }
 
 // The current city first, so the first screen need not wait for the others; the rest follow straight after.
-export function usePacks(first: string): Pack[] | null {
+export function usePacks(first: string): { packs: Pack[] | null; failed: boolean; retry: () => void } {
   const [packs, setPacks] = useState<Pack[] | null>(null)
+  const [failed, setFailed] = useState(false)
+  const [attempt, setAttempt] = useState(0)
   useEffect(() => {
     let live = true
+    setFailed(false)
     const add = (p: Pack) => {
       if (live) setPacks((cur) => (cur?.some((x) => x.id === p.id) ? cur : [...(cur ?? []), p].sort((a, b) => PACK_IDS.indexOf(a.id as never) - PACK_IDS.indexOf(b.id as never))))
     }
-    loadPack(first).then(add).then(() => PACK_IDS.forEach((id) => loadPack(id).then(add)))
+    const fail = () => { if (live) setFailed(true) }
+    loadPack(first).then(add).then(() => PACK_IDS.forEach((id) => loadPack(id).then(add, fail)), fail)
     return () => {
       live = false
     }
-  }, [first])
-  return packs
+  }, [first, attempt])
+  return { packs, failed, retry: () => setAttempt((n) => n + 1) }
 }
 
 export const binById = (pack: Pack, id: string) => pack.bins.find((b) => b.id === id)!

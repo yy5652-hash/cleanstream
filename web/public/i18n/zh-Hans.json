@@ -279,6 +279,17 @@
   "Original three sources": "最初的三个来源",
   "Pending": "待完成",
   "Photo recognition could not start": "无法启动照片识别",
+  "Could not load the rules": "无法加载分类规则",
+  "Check your connection and try again.": "请检查网络后重试。",
+  "Camera access is off": "相机权限已关闭",
+  "Allow camera access for this site in your browser settings, or upload a photo instead. Photos stay on this device.": "请在浏览器设置里允许本网站使用相机，或改为上传照片。照片只保存在本设备上。",
+  "The camera is in use": "相机正被占用",
+  "Close other apps that use the camera and try again, or upload a photo instead.": "请关闭正在使用相机的其他应用后重试，或改为上传照片。",
+  "Upload a photo instead. Photos stay on this device.": "请改为上传照片。照片只保存在本设备上。",
+  "Try again": "重试",
+  "That photo could not be read": "无法读取这张照片",
+  "Try another photo, or type the item instead.": "请换一张照片，或输入物品名称。",
+  "Check your connection and try again, or type the item instead.": "请检查网络后重试，或输入物品名称。",
   "Photograph one item at a time. Check the labels, then see what does not belong.": "每次拍一件物品，核对标签，再查看哪些不属于这个桶。",
   "Photograph what you pulled out": "拍下从桶中取出的物品",
   "Photos stay on this device.": "照片留在本设备。",
@@ -643,7 +654,8 @@
   "la": "洛杉矶",
   "chi": "芝加哥",
   "sea": "西雅图",
-  "us": "美国（通用）"
+  "us": "美国（通用）",
+  "wales": "威尔士（工作场所）"
  },
  "items": {
   "plastic_bottle": {
@@ -2907,6 +2919,377 @@
       "无需预处理"
      ],
      "why": "不在 EPA 常见可回收物清单上。"
+    }
+   }
+  },
+  "wales": {
+   "bins": {
+    "food": {
+     "name": "厨余垃圾",
+     "accepts": "食物残渣、茶包和咖啡渣。不含包装或饮料"
+    },
+    "paper": {
+     "name": "纸类与纸板",
+     "accepts": "干净的纸张、卡纸和纸板"
+    },
+    "glass": {
+     "name": "玻璃",
+     "accepts": "仅限玻璃瓶和玻璃罐"
+    },
+    "mixed": {
+     "name": "金属罐、塑料与复合纸盒",
+     "accepts": "金属罐、铝箔、塑料瓶、塑料盒/托盘、饮料纸盒"
+    },
+    "cups": {
+     "name": "咖啡杯",
+     "accepts": "空纸杯，取下杯盖"
+    },
+    "electricals": {
+     "name": "小型电器与电池",
+     "accepts": "带插头、电池或电线，且各边不超过 50 cm 的物品"
+    },
+    "general": {
+     "name": "其他垃圾",
+     "accepts": "无法投入其他桶的任何物品"
+    }
+   },
+   "items": {
+    "aerosol_can": {
+     "prep": [
+      "仅在完全用空时",
+      "喷漆罐或未用完的喷雾罐：请咨询工作人员"
+     ],
+     "why": "用空的钢制和铝制喷雾罐与金属罐一起回收。喷漆罐和未用完的喷雾罐不可回收。"
+    },
+    "aluminum_foil": {
+     "prep": [
+      "将干净的铝箔揉成球"
+     ],
+     "why": "铝箔和铝箔食品托盘与金属罐一起收运。"
+    },
+    "battery": {
+     "prep": [
+      "用胶带封住锂电池和纽扣电池的两端",
+      "绝不能将电池放入其他垃圾桶"
+     ],
+     "why": "电池应放入小型电器桶。投入其他垃圾桶的锂电池会引发严重火灾。"
+    },
+    "blister_pack": {
+     "prep": [
+      "无需处理"
+     ],
+     "why": "药用泡罩包装列为不可与塑料一起回收的物品。"
+    },
+    "cardboard": {
+     "prep": [
+      "压扁",
+      "油腻或覆塑料膜的纸板放入其他垃圾桶"
+     ],
+     "why": "威尔士的每个工作场所都必须单独收集纸类和纸板。"
+    },
+    "carton": {
+     "prep": [
+      "倒空",
+      "保留瓶盖"
+     ],
+     "why": "饮料纸盒属于金属罐、塑料和复合纸盒这一回收类别。"
+    },
+    "cigarette_butt": {
+     "prep": [
+      "确保已熄灭"
+     ],
+     "why": "烟头不属于任何回收类别。"
+    },
+    "drinking_glass_ceramic": {
+     "prep": [
+      "安全包裹碎屑"
+     ],
+     "why": "饮用玻璃杯、餐具和陶瓷不在玻璃回收范围内，应放入其他垃圾桶。"
+    },
+    "electronics": {
+     "prep": [
+      "先删除个人数据",
+      "大于 50 cm：请咨询工作人员"
+     ],
+     "why": "自2026年4月起，威尔士的工作场所必须单独收集小型电器。"
+    },
+    "foam": {
+     "prep": [
+      "无需处理"
+     ],
+     "why": "泡沫塑料和泡沫包装不属于塑料回收范围。"
+    },
+    "food_scraps": {
+     "prep": [
+      "不得带包装",
+      "将饮料倒入水槽，而非此桶"
+     ],
+     "why": "厨余垃圾必须单独收集，且任何厨余垃圾都不得倒入下水道。"
+    },
+    "glass_bottle_jar": {
+     "prep": [
+      "倒空",
+      "瓶盖和罐盖与金属罐一起回收"
+     ],
+     "why": "只有玻璃瓶和玻璃罐才能投入玻璃回收桶。"
+    },
+    "mask_gloves": {
+     "prep": [
+      "实验室或临床用品：请使用实验室专用垃圾桶"
+     ],
+     "why": "口罩和手套没有回收渠道。临床或危险废物有其专门的处理途径。"
+    },
+    "metal_can": {
+     "prep": [
+      "倒空"
+     ],
+     "why": "钢制和铝制罐头/金属罐与塑料及复合纸盒一起收集。"
+    },
+    "metal_lid_scrap": {
+     "prep": [
+      "仅限瓶盖、罐盖和顶盖"
+     ],
+     "why": "金属盖和瓶顶盖与金属罐一起回收。餐具、锅具属于废金属，而非包装。",
+     "cases": {
+      "lid": {
+       "label": "瓶盖、罐盖或顶盖",
+       "prep": [
+        "仅限瓶盖、罐盖和顶盖"
+       ],
+       "match": [
+        "瓶盖",
+        "罐盖",
+        "铁盖",
+        "金属盖"
+       ]
+      },
+      "scrap": {
+       "label": "餐具、锅具或其他废金属",
+       "prep": [
+        "咨询工作人员是否收集废金属"
+       ],
+       "match": [
+        "餐具",
+        "刀叉",
+        "平底锅",
+        "废铁",
+        "废金属"
+       ]
+      }
+     }
+    },
+    "paper": {
+     "prep": [
+      "保持干燥"
+     ],
+     "why": "干净的纸张是法定回收类别。收据、便签纸和面巾纸不予接收。"
+    },
+    "paper_bag": {
+     "prep": [
+      "倒空"
+     ],
+     "why": "干净的纸袋与纸类和纸板一起回收。油腻的放入其他垃圾桶。"
+    },
+    "paper_cup": {
+     "prep": [
+      "倒空",
+      "取下杯盖"
+     ],
+     "why": "内衬塑料的纸杯像复合纸盒一样回收，因此本站将其单独存放。标有可堆肥的纸杯不予接收。",
+     "cases": {
+      "standard": {
+       "label": "普通外卖杯",
+       "prep": [
+        "倒空",
+        "取下杯盖"
+       ]
+      },
+      "compostable": {
+       "label": "标有可堆肥或可降解",
+       "prep": [
+        "无需处理"
+       ],
+       "match": [
+        "可堆肥",
+        "可降解",
+        "环保纸杯",
+        "PLA杯"
+       ]
+      }
+     }
+    },
+    "pizza_box": {
+     "prep": [
+      "将剩余食物刮入厨余垃圾桶"
+     ],
+     "why": "沾有食物或油渍的纸板无法与纸类一起回收。",
+     "ask": "盒子有油渍，还是粘有食物？",
+     "cases": {
+      "clean": {
+       "label": "干净或近乎干净",
+       "prep": [
+        "将剩余食物刮入厨余垃圾桶"
+       ],
+       "match": [
+        "干净",
+        "未沾油"
+       ]
+      },
+      "greasy": {
+       "label": "油腻或粘有食物",
+       "prep": [
+        "将剩余食物刮入厨余垃圾桶",
+        "撕下干净的盒盖投入纸类与纸板桶"
+       ],
+       "match": [
+        "油腻",
+        "油渍",
+        "食物残渣",
+        "脏披萨盒"
+       ]
+      }
+     }
+    },
+    "plastic_bag_film": {
+     "prep": [
+      "无需处理"
+     ],
+     "why": "塑料袋和塑料膜不属于塑料回收范围。"
+    },
+    "plastic_bottle": {
+     "prep": [
+      "倒空",
+      "保留瓶盖"
+     ],
+     "why": "接收塑料瓶，但黑色塑料瓶除外。"
+    },
+    "plastic_container": {
+     "prep": [
+      "倒空",
+      "封口膜放入其他垃圾桶"
+     ],
+     "why": "接收塑料罐、盒及托盘，黑色托盘、泡沫和可堆肥塑料除外。",
+     "cases": {
+      "accepted": {
+       "label": "透明或有色的塑料罐、盒或托盘",
+       "prep": [
+        "倒空",
+        "封口膜放入其他垃圾桶"
+       ]
+      },
+      "excluded": {
+       "label": "黑色、泡沫或可堆肥",
+       "prep": [
+        "无需处理"
+       ],
+       "match": [
+        "黑色托盘",
+        "黑色塑料",
+        "可堆肥",
+        "泡沫盒"
+       ]
+      }
+     }
+    },
+    "plastic_cup": {
+     "prep": [
+      "倒空"
+     ],
+     "why": "接收透明塑料杯。泡沫杯和可堆肥杯不予接收。",
+     "cases": {
+      "clear": {
+       "label": "透明塑料杯",
+       "prep": [
+        "倒空"
+       ]
+      },
+      "excluded": {
+       "label": "泡沫、可堆肥或可降解",
+       "prep": [
+        "无需处理"
+       ],
+       "match": [
+        "泡沫杯",
+        "可堆肥",
+        "可降解",
+        "PLA杯"
+       ]
+      }
+     }
+    },
+    "plastic_lid_cap": {
+     "prep": [
+      "留在瓶上，或单独放入"
+     ],
+     "why": "接收硬质塑料盖和瓶盖。聚乙烯泡沫咖啡杯盖和薄封口膜盖不予接收。",
+     "cases": {
+      "rigid": {
+       "label": "硬质瓶盖或塑料盒盖",
+       "prep": [
+        "留在瓶上，或单独放入"
+       ]
+      },
+      "cup_lid": {
+       "label": "咖啡杯盖或薄封口膜盖",
+       "prep": [
+        "无需处理"
+       ],
+       "match": [
+        "咖啡杯盖",
+        "杯盖",
+        "薄膜盖",
+        "塑料膜盖"
+       ]
+      }
+     }
+    },
+    "plastic_utensil_straw": {
+     "prep": [
+      "无需处理"
+     ],
+     "why": "塑料餐具和吸管没有回收渠道，且威尔士已禁止供应大部分此类物品。"
+    },
+    "rope_string": {
+     "prep": [
+      "无需处理"
+     ],
+     "why": "绳索和细绳不属于任何回收类别。"
+    },
+    "shoes": {
+     "prep": [
+      "尚可穿的鞋子：建议捐赠"
+     ],
+     "why": "工作场所没有鞋类回收渠道。尚可穿的鞋子最好捐赠。"
+    },
+    "snack_wrapper": {
+     "prep": [
+      "无需处理"
+     ],
+     "why": "薯片袋和糖果包装纸不属于塑料回收范围。"
+    },
+    "soiled_paper": {
+     "prep": [
+      "无需处理"
+     ],
+     "why": "面巾纸、纸巾和油腻纸张不属于废纸回收范围。"
+    },
+    "squeezable_tube": {
+     "prep": [
+      "无需处理"
+     ],
+     "why": "大多数挤压管含有金属层或复合塑料，塑料回收无法处理。"
+    },
+    "textile": {
+     "prep": [
+      "尚可穿的衣物：建议捐赠"
+     ],
+     "why": "工作场所仅针对未售出库存提供纺织品回收。个人衣物最好捐赠。"
+    },
+    "yard_waste": {
+     "prep": [
+      "大量绿化垃圾：请咨询绿化维护团队"
+     ],
+     "why": "庭院/园艺垃圾不属于工作场所回收类别。"
     }
    }
   }

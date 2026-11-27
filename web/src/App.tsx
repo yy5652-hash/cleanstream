@@ -58,7 +58,7 @@ export default function App({ controlledAtLoad }: { controlledAtLoad: boolean })
   const [route, setRoute] = useState<Route>(routeFromHash)
   const [city, setCity] = useState(storedCity)
   const { lang, ready } = useLang()
-  const english = usePacks(city)
+  const { packs: english, failed: packsFailed, retry: retryPacks } = usePacks(city)
   const rulesUpdated = useRulesUpdate(english, controlledAtLoad)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const packs = useMemo(() => english?.map(localizePack) ?? null, [english, lang])
@@ -87,13 +87,23 @@ export default function App({ controlledAtLoad }: { controlledAtLoad: boolean })
 
   if (!ready) return null // the first language is still loading: no flash of English
 
+  const loadError = (
+    <div role="alert" className="max-w-md">
+      <p className="text-title">{t('Could not load the rules')}</p>
+      <p className="mt-2 text-ink-2">{t('Check your connection and try again.')}</p>
+      <button onClick={retryPacks} className="mt-5 inline-flex min-h-11 items-center rounded-2xl bg-primary px-5 font-semibold text-primary-foreground hover:bg-primary/90">{t('Try again')}</button>
+    </div>
+  )
+
   // ?kiosk: the bin station alone, full window, for a tablet mounted above the bins
   if (params.has('kiosk')) {
     const start = params.get('source') === 'demo' ? 'demo' : 'camera'
-    return pack ? <Suspense fallback={null}><Station pack={pack} rulesUpdated={rulesUpdated} start={start} wait={Number(params.get('wait')) || 0} /></Suspense> : null
+    const kioskWait = <div className="grid min-h-dvh place-items-center p-8 text-center text-ink-2" role="status">{t('Loading…')}</div>
+    if (!pack) return packsFailed ? <div className="grid min-h-dvh place-items-center p-8">{loadError}</div> : kioskWait
+    return <Suspense fallback={kioskWait}><Station pack={pack} rulesUpdated={rulesUpdated} start={start} wait={Number(params.get('wait')) || 0} /></Suspense>
   }
 
-  const loading = <p className="min-h-[70vh] text-ink-2">{t('Loading…')}</p>
+  const loading = packsFailed ? <div className="min-h-[70vh]">{loadError}</div> : <p className="min-h-[70vh] text-ink-2">{t('Loading…')}</p>
   return (
     <Shell section={ROUTES[route]} city={city} setCity={setCity} install={install}>
       {rulesUpdated && <RulesUpdateNotice />}

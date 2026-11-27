@@ -2,6 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // Capture interaction even while the entry module is downloading.
+      for (const event of ['pointerdown', 'keydown', 'input']) {
+        window.addEventListener(event, () => { window.__cleanstreamInteracted = true }, { once: true, capture: true })
+      }
+    </script>
     <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
     <link rel="manifest" href="%BASE_URL%manifest.webmanifest" />
     <link rel="apple-touch-icon" href="%BASE_URL%icons/apple-touch-icon.png" />
