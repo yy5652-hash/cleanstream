@@ -8,12 +8,37 @@
       "la": 100,
       "sea": 100,
       "sf": 100,
-      "us": 100
+      "us": 100,
+      "wales": 99
     },
     "max_abs_dp": 0.0480269193649292,
     "mean_abs_dp": 0.0002915212598894664
   },
-  "disagreements": [],
+  "disagreements": [
+    {
+      "pageid": "112826398",
+      "label": "yard_waste",
+      "max_abs_dp": 0.0097370445728302,
+      "python_item": "food_scraps",
+      "browser_item": "food_scraps",
+      "python_top_p": 0.4642050564289093,
+      "browser_top_p": 0.4739421010017395,
+      "decisions": {
+        "wales": {
+          "python": [
+            "ask-item",
+            null,
+            "general"
+          ],
+          "browser": [
+            "ask-item",
+            null,
+            "food"
+          ]
+        }
+      }
+    }
+  ],
   "rows": [
     {
       "pageid": "51052957",

@@ -44,7 +44,7 @@ The app has three sections: **Sort** for anyone at a bin, **Learn** for the rule
 | Section | What you get |
 | --- | --- |
 | **Sort** | Point the camera, upload a photo, or try a held-out test photo. The answer comes first, in the bin's colour, with the first prep step. Below it: each part of a cup (cup, lid, sleeve or straw) with its own bin, the reason, the official source, and what the same item gets in other cities. Suggested alternatives sit right under the answer ("Or is it a paper cup?"), search finds any other item, and when it isn't sure it asks. Or type the item: search knows everyday names (tin foil, Amazon box, styrofoam). Every answer has a share link that keeps its condition (`#scan?item=pizza_box&city=nyc&case=greasy`), and the app installs to a home screen and works offline once the app, model and rules have downloaded; rule files are checked online first, so safety updates reach returning users. |
-| **Learn** | The rule table for New York, San Francisco, Los Angeles, Chicago, Seattle and US general guidance (EPA and The Recycling Partnership), one column per bin, with a source link on every item and a filter for items where places disagree. Today's three is a daily challenge, the same for everyone in a city, with a streak kept on the device. There is also a ten-item quiz, half of it items places disagree on. |
+| **Learn** | The rule table for New York, San Francisco, Los Angeles, Chicago, Seattle, US general guidance and Welsh workplaces (EPA and The Recycling Partnership), one column per bin, with a source link on every item and a filter for items where places disagree. Today's three is a daily challenge, the same for everyone in a city, with a streak kept on the device. There is also a ten-item quiz, half of it items places disagree on. |
 | **Bin station** (For sites) | A three-step setup: choose the city, switch on the bins and drag them into their order on site, then scan a QR code with the tablet. No account. The kiosk shows a tip and a live count while idle. When an item is held still, the whole screen fills with that bin's colour, an arrow points at the physical bin, and it can say the answer out loud. It notices an item by the share of the view that changed (changes in light are ignored) and classifies a crop around it, so small items count. When it isn't sure it offers big buttons for the likeliest items, plus "neither" (search any item) and "I don't know" (keep it out of the bins and ask staff); a pizza box asks whether it is greasy; a battery of unknown chemistry goes to drop-off. Each station names its physical bins (merge NYC blue and green into one "Recycling" bin, rename, reorder, add a note for streams that aren't there, record who approved the setup), and the kiosk and poster use those names. It uses the front camera by default, with a camera picker in its settings; settings open after a two-second hold against stray taps, plus an optional operator PIN for unattended stations. It keeps counts, never pictures, and answers from the demo feed are never counted; a station report shows answers shown per day and bin, the items people ask about most and how often it was unsure, with CSV export. |
 | **Audit** (For sites) | Record a weighed audit directly (total and contaminant weight, auditor, notes), or photograph each item pulled from a bin, one item per photo, or drop a whole batch. A person confirms or corrects each label and, where the bin depends on condition, picks it (a greasy pizza box in the paper bin is a contaminant); until then the rate is marked provisional and can't be exported or added to a pilot. It flags what doesn't belong and gives the contamination rate and the worst offenders. |
 | **Pilot** (For sites) | The measurement plan below as a tool: audit before and after, at stations with tablets and comparison stations without, with weights when you have them. A station is a physical site with one arm; each pilot fixes one primary bin stream and one primary outcome (weight by default) when it is created. The report leads with a table per site, then the net effect: the mean change at tablet sites minus the mean change at comparison sites, with a 95% Welch t interval over site-level changes. Sites missing the primary outcome are marked incomplete, sites whose after-audits are not dated after their before-audits are excluded, and a run that is not marked complete is labelled interim. It gives a verdict only for a completed run with at least three sites per arm and non-zero variation, and otherwise shows the observed difference as "Not enough to tell yet"; other bins and pooled item counts are secondary views. A planning checklist replaces any power promise, since the number of sites needed depends on how much site-level changes vary. It prints on one page. Sites can merge their results as JSON, with no pictures in the file. |
@@ -172,6 +172,7 @@ Right bin under each city's rules (the same model and photos; only the rule pack
 | Chicago | 82.2% | 97.7% | 95.6% | 68.1% | 73.3% | 90.9% |
 | Seattle | 79.6% | 97.9% | 96.1% | 64.4% | 72.3% | 93.2% |
 | US (general) | 84.4% | 97.8% | 95.7% | 67.0% | 74.8% | 95.5% |
+| Wales (workplaces) | 75.2% | 96.0% | — | 58.6% | 74.9% | — |
 
 Item type and bin columns use photos with an item label. The material column also counts photos labelled only by material (6,992 for the held-out test and 4,257 for RealWaste). A dash means the set has no labels of that kind.
 
@@ -197,7 +198,17 @@ Chromium and [`ml/web_parity.py`](ml/web_parity.py) compares the result with the
 ([`ml/results/web_parity.json`](ml/results/web_parity.json)). Before 2026-11-25 the page shrank photos with the
 browser's own smoothing and colour handling instead of the training resampler, and disagreed with the scorer on 11 of 100
 New York decisions (photos near the 60% line flipped both ways). With the Pillow-exact resampler, all 100 photos get the
-same decision under every rule pack, and item probabilities differ by 0.0003 on average (at most 0.048 on one photo).
+same decision under every US rule pack, and item probabilities differ by 0.0003 on average (at most 0.048 on one photo).
+Under the Welsh pack one photo is asked about by both, with a different bin narrowly ahead behind the question.
+
+**Seven bins in Wales.** The Welsh workplace pack (Welsh Government code of practice, v2 April 2026) needed no retraining:
+on the same held-out photos the screen shows the right bin 94.5% of the time, asks 2.5% and is wrong 3.0%, and no battery or
+device is shown a regular bin. The station bar lays out up to eight bins (one row on a landscape tablet, two on a phone).
+
+**On a stranger's phone.** Run headless in the iPhone (WebKit) and Android (Chromium) engines on a fast connection, a first
+visit has the model ready in 15.7 s and 5.5 s and answers a photo in 0.9 s and 2.3 s. Photos over 16 megapixels are shrunk
+before reading (the iOS canvas limit; smaller photos keep the exact training resampler), and a failed download, worker crash
+or timeout shows a Retry button instead of an endless spinner.
 
 ## Run it
 
@@ -231,7 +242,7 @@ uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python torch to
 | Path | What |
 | --- | --- |
 | `web/` | The app: React + TypeScript + Vite + Tailwind, ONNX Runtime Web in a worker, no backend |
-| `web/public/rules/` | Rule packs (New York, San Francisco, Los Angeles, Chicago, Seattle, US general) with sources |
+| `web/public/rules/` | Rule packs (New York, San Francisco, Los Angeles, Chicago, Seattle, US general, Wales workplaces) with sources |
 | `web/public/model/` | `encoder.onnx`, the trained head, preprocessing and evaluation metrics |
 | `ml/` | Dataset preparation, Commons photo fetching, embedding (`embed_int8.py` for the shipped 8-bit weights), training, paired comparison (`compare.py`), final evaluation (`final_eval.py`), export and parity checks |
 | `ml/commons_credits.csv` | Title, author, licence and page of every Wikimedia Commons photo fetched for training |
@@ -268,7 +279,7 @@ page of each in [`ml/commons_credits.csv`](ml/commons_credits.csv)), and for eva
 photos from [Pexels](https://www.pexels.com) (listed in `ml/field.csv`, not redistributed), and 100 held-up photos from
 Wikimedia Commons (CC0, public domain, CC BY or CC BY-SA; photographer, licence and page of each in
 [`ml/heldup.csv`](ml/heldup.csv), not redistributed). Encoder: SigLIP 2 (Google, Apache 2.0) via
-[open_clip](https://github.com/mlfoundations/open_clip). Rules: DSNY and NYC311; Recology and SF Environment; LA Sanitation; Chicago Streets and Sanitation; Seattle Public
+[open_clip](https://github.com/mlfoundations/open_clip). Rules: DSNY and NYC311; Recology and SF Environment; LA Sanitation; Chicago Streets and Sanitation; Welsh Government (workplace recycling code of practice, v2 April 2026); Seattle Public
 Utilities; US EPA and
 The Recycling Partnership (links on every item of the rules page). Sample photos in the app are held-out test photos from
 TrashNet, the Garbage Dataset and TACO.
