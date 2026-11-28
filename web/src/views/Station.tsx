@@ -429,7 +429,7 @@ export default function Station({ pack, start = 'off', wait = 0, rulesUpdated = 
             {shot && <img src={shot} alt={t('What the camera saw')} className="mx-auto mb-[2.5vmin] size-[16vmin] min-h-20 min-w-20 rounded-[2.5vmin] object-cover shadow-[0_0_48px_rgba(255,255,255,0.35)] ring-4 ring-white/60" />}
             <p className="text-[max(1.25rem,4vmin)] font-medium">{itemName(item)}</p>
             <StationDestination profile={profile} target={target} prep={rule.prep[0]} />
-            {ans?.sure && <p className="mt-[2vmin] text-[max(0.85rem,1.8vmin)] font-medium tabular-nums text-[#cfe4f6] opacity-90">{t('{p} sure · recognised on this tablet', { p: `${Math.round(ans.bins[0].p * 100)}%` })}</p>}
+            {ans?.sure && <p className="mt-[2vmin] text-[max(0.85rem,1.8vmin)] font-medium tabular-nums opacity-75">{t('{p} sure · recognised on this tablet', { p: `${Math.min(99, Math.round(ans.bins[0].p * 100))}%` })}</p>}
             {parts.length > 0 && <ul className="mt-[3vmin] flex flex-wrap justify-center gap-3">
               {parts.map((part) => <li key={part.name} className="max-w-72 rounded-2xl border border-current/30 px-4 py-3 text-left">
                 <div className="flex flex-wrap items-center gap-2 text-[max(1rem,2.5vmin)] font-medium"><span>{t('{part}:', { part: partNames[part.name] ?? t(part.name) })}</span><BinChip bin={{ ...part.bin, name: binLabel(part.bin.id) }} /></div>
